@@ -3,13 +3,13 @@
 #include <stdint.h>
 #include <unistd.h>
 #define SW 150
-#define SH 175
-#define PW 5
-#define PH 5
+#define SH 150
+#define PW 8
+#define PH 8
 static int speed = 20000;
 void wait() { usleep(speed); }
 static int side = 0;
-void rotate() { side = (side + 1 % 4); }
+void gut_rotate(long δ) { side = side + δ; }
 void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
                uint32_t pattern);
 void init_gut() {
@@ -18,7 +18,7 @@ void init_gut() {
   SetTargetFPS(0);
 }
 static void draw();
-void line_to(long ρ, long δ) {
+void gut_line_to(long ρ, long δ) {
   static int curr_ρ = 0, δ_sum = 0;
   static uint32_t colors[] = {
       0xFF777700, 0xFF770000, 0xFF007700, 0xFF007777, 0xFF000077, 0,
