@@ -21,21 +21,14 @@ static void draw();
 void line_to(long ρ, long δ) {
   static int curr_ρ = 0, δ_sum = 0;
   static uint32_t colors[] = {
-      0xFF770000, // Navy;
-      0xFF007700, // Green;
-      0xFF007777, // Olive;
-      0xFF000077, // Maroon;
-      0,
-      0xFF0000FF, // Red;
-      0xFF00FFFF, // Yellow;
-      0xFF00FF00, // Lime;
-      0xFFFF0000, // Blue;
+      0xFF777700, 0xFF770000, 0xFF007700, 0xFF007777, 0xFF000077, 0,
+      0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFF0000, 0xFFFFFF00,
   };
   int last_δ_sum = δ_sum;
   int last_curr_ρ = curr_ρ;
-//  draw_line(last_δ_sum, -16, last_δ_sum, +16, colors[ρ + 4], 0xFFFFFFFF);
+  //  draw_line(last_δ_sum, -16, last_δ_sum, +16, colors[ρ + 4], 0xFFFFFFFF);
   draw_line(last_δ_sum, last_curr_ρ, δ_sum = δ_sum + δ * 14, curr_ρ = ρ * 4,
-            colors[ρ + 4], 0xFFFFFFFF);
+            colors[ρ + 5], 0xFFFFFFFF);
   draw();
 }
 void clear_gut() { CloseWindow(); }
@@ -165,4 +158,3 @@ void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t p,
     }
   }
 }
-
