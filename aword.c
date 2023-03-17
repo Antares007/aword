@@ -40,38 +40,12 @@ int main(int argc, char **argv) {
   τext ω[] = {
                                                         T(b)
                                                         T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-DB(T(m)T(m)T(m)T(m)T(m)T(m)T(m)T(m)T(p)T(m)T(m)T(p)T(m)T(m))(T(m)T(m)T(m)T(m)T(m)T(m)T(m)T(m)T(p)T(m)T(m)T(p)T(m)T(m))
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(m)
-                                                        T(p)
-                                                        T(m)
-                                                        T(m)
-                                                        T(p)
-                                                        T(m)
-                                                        T(m)
                                                         T(o)
              };
   // clang-format on
   τext ο[512];
   long α = 0;
-  init_gut(0);
+  init_gut(20);
   ω[4].c(α, ω + 4, ο, 0, 1);
   clear_gut();
   return 0;
