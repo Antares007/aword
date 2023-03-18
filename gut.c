@@ -24,8 +24,8 @@ void gut_line_to(long ρ, long δ) {
       0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
       0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF,
   };
-  O[0] += D[0] * δ * 8;
-  O[1] += D[1] * δ * 8;
+  O[0] += D[0] * δ * 16;
+  O[1] += D[1] * δ * 16;
   int x1 = P[0];
   int y1 = P[1];
   P[0] = O[0] + 4 * ρ * D[1];
