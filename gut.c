@@ -8,30 +8,33 @@
 #define PH 4
 #define BGColor GOLD
 
-static int O[] = {SW / 2, SH / 8}, P[] = {SW / 2, SH / 8}, D[] = {0, 1};
+static int base[] = {SW / 2, SH / 8}, point[] = {SW / 2, SH / 8},
+           direction[] = {0, 1};
 int gut_close_requested() { return WindowShouldClose(); }
+// only 90⁰ rotations δ = -1 | 1
 void gut_rotate(long δ) {
-  int D_0_ = D[0];
-  D[0] = D[1] * δ * -1;
-  D[1] = D_0_ * δ;
+  int dx = direction[0];
+  direction[0] = direction[1] * δ * -1;
+  direction[1] = dx * δ;
 }
 static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
                       uint32_t pattern);
-static void draw();
+static void draw_frame();
+// main procedure to drawing guts
 void gut_line_to(long ρ, long δ) {
   ρ = (4 - ρ) * δ;
+  base[0] += direction[0] * δ * 16;
+  base[1] += direction[1] * δ * 16;
+  int x1 = point[0];
+  int y1 = point[1];
+  point[0] = base[0] + 4 * ρ * direction[1];
+  point[1] = base[1] + 4 * ρ * direction[0] * -1;
   static uint32_t colors[] = {
       0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
       0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF,
   };
-  O[0] += D[0] * δ * 16;
-  O[1] += D[1] * δ * 16;
-  int x1 = P[0];
-  int y1 = P[1];
-  P[0] = O[0] + 4 * ρ * D[1];
-  P[1] = O[1] + 4 * ρ * D[0] * -1;
-  draw_line(x1, y1, P[0], P[1], colors[4 + ρ], -1);
-  draw();
+  draw_line(x1, y1, point[0], point[1], colors[4 + ρ], -1);
+  draw_frame();
 }
 void gut_init(long fps) {
   SetTraceLogLevel(LOG_WARNING);
@@ -49,7 +52,7 @@ static void render_screen() {
     if (screen[i])
       DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
 }
-static void draw() {
+static void draw_frame() {
   BeginDrawing();
   ClearBackground(BGColor);
 
@@ -69,7 +72,8 @@ static int abs(int a) { return a < 0 ? a * -1 : a; }
 #define rol() ((pattern = (pattern << 1) | (pattern >> 31)) & 1)
 static void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2,
                       uint32_t p, uint32_t pattern) {
-  /*  OneLoneCoder Pixel Game Engine v1.17
+  /*  this algorithm for drawing lines was ported from
+      OneLoneCoder Pixel Game Engine v1.17
       "Like the command prompt console one, but not..." - javidx9 */
   int x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
   dx = x2 - x1;
