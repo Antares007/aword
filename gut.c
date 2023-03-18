@@ -2,26 +2,21 @@
 #include <raylib.h>
 #include <stdint.h>
 #include <unistd.h>
-#define SW 250
+#define SW 400
 #define SH 250
 #define PW 4
 #define PH 4
-#define BGColor BLACK
+#define BGColor GOLD
 
-static void draw();
-static int O[] = {SW / 2, 10}, P[] = {SW / 2, 10}, D[] = {0, 1};
+static int O[] = {SW / 2, SH / 8}, P[] = {SW / 2, SH / 8}, D[] = {0, 1};
+
 void gut_rotate(long δ) {
   int D_0_ = D[0];
   D[0] = D[1] * δ * -1;
   D[1] = D_0_ * δ;
 }
-void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
+static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
                uint32_t pattern);
-void init_gut(long fps) {
-  SetTraceLogLevel(LOG_WARNING);
-  InitWindow(SW * PW, SH * PH, "actionable word show");
-  SetTargetFPS(fps);
-}
 static void draw();
 void gut_line_to(long ρ, long δ) {
   ρ = (4 - ρ) * δ;
@@ -38,30 +33,41 @@ void gut_line_to(long ρ, long δ) {
   draw_line(x1, y1, P[0], P[1], colors[4 + ρ], -1);
   draw();
 }
+void init_gut(long fps) {
+  SetTraceLogLevel(LOG_WARNING);
+  InitWindow(SW * PW, SH * PH, "actionable word show");
+  SetTargetFPS(fps);
+}
 void clear_gut() { CloseWindow(); }
 static uint32_t screen[SW * SH] = {};
+static void clear_screen() {
+  for (long i = 0; i < SW * SH; i++)
+    screen[i] = *(uint32_t *)&BGColor;
+}
+static void render_screen() {
+  for (long i = 0; i < SW * SH; i++)
+    if (screen[i])
+      DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
+}
 static void draw() {
   BeginDrawing();
   ClearBackground(BGColor);
 
   if (GetCharPressed() == 'c')
-    for (long i = 0; i < SW * SH; i++)
-      screen[i] = *(uint32_t *)&BGColor;
+    clear_screen();
   else
-    for (long i = 0; i < SW * SH; i++)
-      if (screen[i])
-        DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
+    render_screen();
   DrawText(TextFormat("fps: %i", GetFPS()), 0, 0, 45, RED);
   EndDrawing();
 }
-void draw_pixel(int x, int y, uint32_t p) { screen[x + SW * y] = p; }
+static void draw_pixel(int x, int y, uint32_t p) { screen[x + SW * y] = p; }
 static void swap(int *a, int *b) {
   int t = *b;
   *b = *a, *a = t;
 }
 static int abs(int a) { return a < 0 ? a * -1 : a; }
 #define rol() ((pattern = (pattern << 1) | (pattern >> 31)) & 1)
-void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t p,
+static void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t p,
                uint32_t pattern) {
   /*  OneLoneCoder Pixel Game Engine v1.17
       "Like the command prompt console one, but not..." - javidx9 */
