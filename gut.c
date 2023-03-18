@@ -9,14 +9,14 @@
 #define BGColor GOLD
 
 static int O[] = {SW / 2, SH / 8}, P[] = {SW / 2, SH / 8}, D[] = {0, 1};
-
+int gut_close_requested() { return WindowShouldClose(); }
 void gut_rotate(long δ) {
   int D_0_ = D[0];
   D[0] = D[1] * δ * -1;
   D[1] = D_0_ * δ;
 }
 static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
-               uint32_t pattern);
+                      uint32_t pattern);
 static void draw();
 void gut_line_to(long ρ, long δ) {
   ρ = (4 - ρ) * δ;
@@ -33,12 +33,12 @@ void gut_line_to(long ρ, long δ) {
   draw_line(x1, y1, P[0], P[1], colors[4 + ρ], -1);
   draw();
 }
-void init_gut(long fps) {
+void gut_init(long fps) {
   SetTraceLogLevel(LOG_WARNING);
   InitWindow(SW * PW, SH * PH, "actionable word show");
   SetTargetFPS(fps);
 }
-void clear_gut() { CloseWindow(); }
+void gut_clear() { CloseWindow(); }
 static uint32_t screen[SW * SH] = {};
 static void clear_screen() {
   for (long i = 0; i < SW * SH; i++)
@@ -67,8 +67,8 @@ static void swap(int *a, int *b) {
 }
 static int abs(int a) { return a < 0 ? a * -1 : a; }
 #define rol() ((pattern = (pattern << 1) | (pattern >> 31)) & 1)
-static void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2, uint32_t p,
-               uint32_t pattern) {
+static void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2,
+                      uint32_t p, uint32_t pattern) {
   /*  OneLoneCoder Pixel Game Engine v1.17
       "Like the command prompt console one, but not..." - javidx9 */
   int x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;

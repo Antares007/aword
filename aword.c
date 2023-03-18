@@ -26,8 +26,14 @@ N(bark) {
 }
 N(o) { δ = -1, X; }
 N(b) { ρ = (ρ + 1) % 4, δ = 1, X; }
+int gut_close_requested();
 void gut_line_to(long, long);
-N(t) { gut_line_to(ρ, δ), X; }
+extern void exit (int) __attribute__ ((__noreturn__));
+N(t) {
+  if (gut_close_requested())
+    exit(0);
+  gut_line_to(ρ, δ), X;
+}
 N(p) {
   if (δ > 0)
     X;
@@ -36,32 +42,27 @@ N(p) {
   else
     ρ = ω[-1].q++ % 4, X;
 }
-void init_gut(long fps);
-void clear_gut();
+void gut_clear();
+void gut_init(long fps);
 int main(int argc, char **argv) {
   // clang-format off
   τext*ω = 1 + (τext[]) {
-                                                        T(b)
-                                 DB(T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t))
-                                   (T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t))
-                                                        T(t)
-                                                        T(t)
-                                                        T(t)
-                                                        T(t)
-                                                        T(p)
-                                                        T(t)
-                                                        T(t)
-                                                        T(p)
-                                                        T(t)
-                                                        T(t)
-                                                        T(p)
-                                                        T(t)
-                                                        T(t)
-                                                        T(o)
+                          T(b)
+    DB(T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t))
+      (T(t)T(t)T(p)T(t)T(t)T(p)T(t)T(t))
+                          T(t)
+                          T(t)
+                          T(p)
+                          T(t)
+                          T(t)
+                          T(p)
+                          T(t)
+                          T(t)
+                          T(o)
   };
   // clang-format on
   τext ο[512];
   long α = 0, ρ = 0, δ = 1;
-  init_gut(0), X, clear_gut();
+  gut_init(0), X, gut_clear();
   return 0;
 }
