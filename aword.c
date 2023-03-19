@@ -1,11 +1,12 @@
 #define N(args)                                                                \
-  void args(long α, struct text_t *ω, struct text_t *ο, long ρ, long δ, long σ)
+  void args(long α, long β, struct text_t *ω, struct text_t *ο, long ρ,        \
+            long δ, long σ)
 #define T(aw) {.q = 0}, {{aw}}, {.t = 0}, {.q = 0}, {{t}}, {.cs = #aw},
 #define B(...) DB()(__VA_ARGS__)
 #define D(...) DB(__VA_ARGS__)()
 #define D_(...) {.t = (text_t[]){T(goto_home) __VA_ARGS__ T(o)}},
 #define DB(...) {.t = (text_t[]){T(goto_home) __VA_ARGS__ T(o)}}, {{bark}}, D_
-#define X ω[3 * δ].c(α, ω + 3 * δ, ο, ρ, δ, σ)
+#define X ω[3 * δ].c(α, β, ω + 3 * δ, ο, ρ, δ, σ)
 typedef struct text_t {
   union {
     void *v;
@@ -16,7 +17,8 @@ typedef struct text_t {
   };
 } text_t;
 void gut_rotate(long δ);
-
+#include <stdio.h>
+#include "aw.h"
 N(goto_home) { δ = ο[σ++].q, gut_rotate(δ), ω = ο[σ++].t, X; }
 N(bark) {
   ο[--σ].t = ω, ο[--σ].q = δ, gut_rotate(-δ), ω = ω[δ].t + 1, δ = 1, X;
@@ -40,11 +42,40 @@ N(p) {
 }
 void gut_clear();
 void gut_init(long fps);
-N(mamam) { X; }
-N(shvils) { X; }
-N(aushena) { X; }
-N(sakhli) { X; }
-N(da) { X; }
+N(mamam) {
+  if (δ == 1 && ρ == 3)
+    ο[β++].cs = "მამამ";
+  X;
+}
+N(shvils) {
+  if (δ == 1 && ρ == 3)
+    ο[β++].cs = "შვილს";
+  X;
+}
+N(aushena) {
+  if (δ == -1 && ρ == 3) {
+    const char *s = ο[--α].cs;
+    const char *op = ο[--β].cs;
+    const char *os = ο[--β].cs;
+    printf("%s %s %s აუშენა\n", s, op, os);
+  }
+  X;
+}
+N(sakhli) {
+  if (δ == 1 && ρ == 3)
+    ο[α++].cs = "სახლი";
+  X;
+}
+AW(da)(
+  Blue___(X)
+  Green__(X)
+  Yellow_(X)
+  Red____(X)
+  _Maroon(X)
+  __Olive(X)
+  ___Lime(X)
+  ___Navy(X)
+)
 N(dedam) { X; }
 N(gamoackho) { X; }
 N(gemrieli) { X; }
@@ -52,13 +83,13 @@ N(namckhvari) { X; }
 int main(int argc, char **argv) {
   // clang-format off
   text_t*ω = 1 + (text_t[]) {
-    T(b)T(p)T(mamam)T(shvils)T(aushena)T(sakhli)
+    T(b)T(mamam)T(shvils)T(aushena)T(sakhli)
         T(da)
-        T(p)T(dedam)T(gamoackho)T(gemrieli)T(namckhvari)T(o)
+        T(dedam)T(gamoackho)T(gemrieli)T(namckhvari)T(o)
   };
   // clang-format on
-  text_t ο[512];
-  long α = 0, ρ = 0, δ = 1, σ = sizeof(ο) / sizeof(*ο);
+  text_t ο[170 * 3];
+  long α = 0, β = 170, ρ = 3, δ = 1, σ = 340;
   gut_init(5), X, gut_clear();
   return 0;
 }

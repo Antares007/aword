@@ -26,12 +26,19 @@ static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
 static void draw_frame();
 // main procedure to drawing guts
 void gut_line_to(long ρ, long δ, const char *text) {
-  ρ = (4 - ρ) * δ;
   static uint32_t colors[] = {
-      0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
-      0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF,
+      0xFF000077,
+      0xFF007777,
+      0xFF007700,
+      0xFF770000,
+      0,
+      0xFFFF0000,
+      0xFF00FF00,
+      0xFF00FFFF,
+      0xFF0000FF,
   };
-  uint32_t color = colors[4 + ρ];
+  int y = (1+ρ) * δ;
+  uint32_t color = colors[y+4];
   base[0] += direction[0] * δ * 16;
   base[1] += direction[1] * δ * 16;
   if (δ == 1)
@@ -42,8 +49,8 @@ void gut_line_to(long ρ, long δ, const char *text) {
     texts_length--;
   int x1 = point[0];
   int y1 = point[1];
-  point[0] = base[0] + 4 * ρ * direction[1];
-  point[1] = base[1] + 4 * ρ * direction[0] * -1;
+  point[0] = base[0] + 4 * y * direction[1];
+  point[1] = base[1] + 4 * y * direction[0] * -1;
   draw_line(x1, y1, point[0], point[1], color, -1);
   draw_frame();
 }
