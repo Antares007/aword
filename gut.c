@@ -6,7 +6,7 @@
 #define SH 250
 #define PW 4
 #define PH 4
-#define BGColor GOLD
+#define BGColor DARKGRAY
 
 static int base[] = {SW / 2, SH / 8}, point[] = {SW / 2, SH / 8},
            direction[] = {0, 1};
@@ -17,23 +17,34 @@ void gut_rotate(long δ) {
   direction[0] = direction[1] * δ * -1;
   direction[1] = dx * δ;
 }
+float texts_positions[1024][2];
+uint32_t texts_colors[1024];
+const char *texts_content[1024];
+long texts_length = 0;
 static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
                       uint32_t pattern);
 static void draw_frame();
 // main procedure to drawing guts
-void gut_line_to(long ρ, long δ) {
+void gut_line_to(long ρ, long δ, const char *text) {
   ρ = (4 - ρ) * δ;
-  base[0] += direction[0] * δ * 16;
-  base[1] += direction[1] * δ * 16;
-  int x1 = point[0];
-  int y1 = point[1];
-  point[0] = base[0] + 4 * ρ * direction[1];
-  point[1] = base[1] + 4 * ρ * direction[0] * -1;
   static uint32_t colors[] = {
       0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
       0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF,
   };
-  draw_line(x1, y1, point[0], point[1], colors[4 + ρ], -1);
+  uint32_t color = colors[4 + ρ];
+  base[0] += direction[0] * δ * 16;
+  base[1] += direction[1] * δ * 16;
+  if (δ == 1)
+    texts_content[texts_length] = text, texts_colors[texts_length] = color,
+    texts_positions[texts_length][0] = base[0],
+    texts_positions[texts_length][1] = base[1], texts_length++;
+  else
+    texts_length--;
+  int x1 = point[0];
+  int y1 = point[1];
+  point[0] = base[0] + 4 * ρ * direction[1];
+  point[1] = base[1] + 4 * ρ * direction[0] * -1;
+  draw_line(x1, y1, point[0], point[1], color, -1);
   draw_frame();
 }
 void gut_init(long fps) {
@@ -51,6 +62,9 @@ static void render_screen() {
   for (long i = 0; i < SW * SH; i++)
     if (screen[i])
       DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
+  for (long i = 0; i < texts_length; i++)
+    DrawText(texts_content[i], texts_positions[i][0] * PW,
+             texts_positions[i][1] * PH, 45, *(Color*)&texts_colors[i]);
 }
 static void draw_frame() {
   BeginDrawing();
