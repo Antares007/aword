@@ -1,12 +1,18 @@
+// clang-format off
 #define N(args)                                                                \
   void args(long α, long β, struct text_t *ω, struct text_t *ο, long ρ,        \
             long δ, long σ)
-#define T(aw) {.q = 0}, {{aw}}, {.t = 0}, {.q = 0}, {{t}}, {.cs = #aw},
-#define B(...) DB()(__VA_ARGS__)
-#define D(...) DB(__VA_ARGS__)()
-#define D_(...) {.t = (text_t[]){T(goto_home) __VA_ARGS__ T(o)}},
-#define DB(...) {.t = (text_t[]){T(goto_home) __VA_ARGS__ T(o)}}, {{bark}}, D_
-#define X ω[3 * δ].c(α, β, ω + 3 * δ, ο, ρ, δ, σ)
+#define T(aw) {.q = -3}, {{aw}}, {.q = +3},                                    \
+              {.q = -3}, {{t }}, {.q = +3},
+#define White(sopos)  (δ sopos + 1)
+#define Black(sopos)  (δ sopos - 1)
+#define Yellow(sopos) (ρ sopos + 3)
+#define Red(sopos)    (ρ sopos + 2)
+#define Green(sopos)  (ρ sopos + 1)
+#define Blue(sopos)   (ρ sopos + 0)
+#define X                                                                      \
+  (Green(==) ? ω[ω[δ].q].c(α, β, ω + ω[δ].q, ο, ρ, δ, σ)                       \
+             : ω[3 *  δ].c(α, β, ω + 3 * δ,  ο, ρ, δ, σ))
 typedef struct text_t {
   union {
     void *v;
@@ -16,79 +22,104 @@ typedef struct text_t {
     N((*c));
   };
 } text_t;
-void gut_rotate(long δ);
-#include "aw.h"
-#include <stdio.h>
-N(goto_home) { δ = ο[σ++].q, gut_rotate(δ), ω = ο[σ++].t, X; }
-N(bark) {
-  ο[--σ].t = ω, ο[--σ].q = δ, gut_rotate(-δ), ω = ω[δ].t + 1, δ = 1, X;
-}
 int gut_close_requested();
 void gut_line_to(long, long, const char *);
 N(t) {
   if (gut_close_requested())
     return;
-  gut_line_to(ρ, δ, ω[1].cs), X;
+  gut_line_to(ρ, δ, ""), X;
 }
-N(p) {
-  if (δ > 0)
-    X;
-  else if (ρ < 3)
-    ρ++, δ = 1, X;
-  else
-    ρ = ω[-1].q++ % 4, X;
+N(b) {
+  White(=);
+  Green(=);
+  X;
 }
-void gut_clear();
-void gut_init(long fps);
-N(mamam) { X; }
-N(shvils) { X; }
-N(aushena) { X; }
-N(sakhli) { X; }
-N(b) { ρ = 1, δ = +1, X; }
-N(o) { δ = -1, X; }
-N(da) { X; }
+N(enter) {
+  if (White(==)) {
+    if (Yellow(==)) {
+      ο[σ++].t = ω;
+    }
+  } else if (Yellow(==)) {
+    σ--;
+    ω[-1].t = ω - 3;
+  }
+  X;
+}
+N(o) {
+  if (Yellow(==)) {
+    ο[σ++].t = ω;
+    ω[1].t = ω + 3;
+  }
+  Black(=), X;
+}
+N(da) {
+  if (White(==)) {
+    if (Yellow(==))
+      ο[σ++].t = ω;
+  }
+  X;
+}
 N(an) {
-  if (δ > 0) {
-    if (ρ == 1)
-      δ = -1;
-    else if (ρ == 0)
-      ρ++;
+  if (White(==)) {
+    if (Yellow(==))
+      ο[σ++].t = ω;
+    else if (Green(==))
+      Black(=);
+    else if (Blue(==))
+      Green(=);
   }
   X;
 }
 N(ara) {
-  if (δ > 0) {
-    if (ρ == 1)
-      δ = -1;
-    else if (ρ == 2)
-      ρ--;
+  if (White(==)) {
+    if (Yellow(==))     ο[σ++].t = ω;
+    else if (Green(==)) Black(=);
+    else if (Red(==))   Green(=);
   }
   X;
 }
-N(dedam) { X; }
-N(gamoackho) { X; }
-N(gemrieli) { X; }
-N(namckhvari) { X; }
-N(r0) {
-  if (δ > 0 && ρ != 3)
-    ρ = 0;
-  X;
-}
-N(r2) {
-  if (δ > 0 && ρ != 3)
-    ρ = 2;
-  X;
-}
+#define AWname(argo, Mn)                                                       \
+  N(argo) {                                                                    \
+    if (White(==) && Yellow(==))                                               \
+      ο[Mn++].t = ω;                                                           \
+    X;                                                                         \
+  }
+#define AWverb3(argo, M1, M2, M3)                                              \
+  N(argo) {                                                                    \
+    if (White(==)) {                                                           \
+    } else {                                                                   \
+      if (Yellow(==)) {                                                        \
+        text_t *exit  = ο[--σ].t;                                              \
+        text_t *m1    = ο[--M1].t;                                             \
+        text_t *m2    = ο[--M2].t;                                             \
+        text_t *m3    = ο[--M3].t;                                             \
+        text_t *enter = ο[--σ].t;                                              \
+        enter[1].t    = m1;                                                    \
+        m1[-1].t      = enter,  m1[1].t = m2;                                  \
+        m2[-1].t      = m1,     m2[1].t = m3;                                  \
+        m3[-1].t      = m2,     m3[1].t = exit;                                \
+        ο[σ++].t      = enter;                                                 \
+      }                                                                        \
+    }                                                                          \
+    X;                                                                         \
+  }
+#define AWgoto(color)                                                          \
+  N(goto_##color) {                                                            \
+    if (White(==) && Yellow(!=))                                               \
+      Blue(=);                                                                 \
+    X;                                                                         \
+  }
+AWname(mamam,β) AWname(shvils,α) AWname(sakhli,σ) AWverb3(aushena,β,α,σ);
+AWname(dedam,β) AWname(gemrieli,α) AWname(namckhvari,σ) AWverb3(gamoackho,β,α,σ);
+AWgoto(Blue) AWgoto(Red);
+void gut_init(long fps);void gut_clear();
 int main(int argc, char **argv) {
   // clang-format off
   text_t*ω = 1 + (text_t[]) {
     T(b)
-      T(mamam)T(r2)T(shvils)T(aushena)T(sakhli)
+      T(enter)
+      T(mamam)T(shvils)T(aushena)T(sakhli)
       T(da)
-      T(dedam)T(gamoackho)T(gemrieli)T(namckhvari)
-      T(ara)
-      T(dedam)T(gamoackho)T(gemrieli)T(namckhvari)
-      T(an)
       T(dedam)T(gamoackho)T(gemrieli)T(namckhvari)
     T(o)
   };
