@@ -2,13 +2,13 @@
 #include <raylib.h>
 #include <stdint.h>
 #include <unistd.h>
-#define SW 400
-#define SH 400
-#define PW 3
-#define PH 3
+#define SW 800
+#define SH 700
+#define PW 1
+#define PH 1
 #define BGColor BLACK
 
-static float base[] = {SW / 2.f, 2.f}, point[] = {SW / 2.f, 2.f},
+static float base[] = {SW / 2.f, 30.f}, point[] = {SW / 2.f, 30.f},
              direction[] = {0, 1};
 int gut_close_requested() { return WindowShouldClose(); }
 // only 90⁰ rotations δ = -1 | 1
@@ -57,7 +57,7 @@ void gut_clear() { CloseWindow(); }
 static uint32_t screen[SW * SH] = {};
 static void clear_screen() {
   for (long i = 0; i < SW * SH; i++)
-    screen[i] = *(uint32_t *)&BGColor;
+    screen[i] = 0;
 }
 static void render_screen() {
   for (long i = 0; i < SW * SH; i++)
@@ -65,7 +65,7 @@ static void render_screen() {
       DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
   for (long i = 0; i < texts_length; i++)
     DrawText(texts_content[i], texts_positions[i][0] * PW,
-             texts_positions[i][1] * PH, 25, *(Color *)&texts_colors[i]);
+             texts_positions[i][1] * PH, 5, *(Color *)&texts_colors[i]);
 }
 static void draw_frame() {
   BeginDrawing();
