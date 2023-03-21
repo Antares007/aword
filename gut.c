@@ -2,10 +2,10 @@
 #include <raylib.h>
 #include <stdint.h>
 #include <unistd.h>
-#define SW 800
-#define SH 700
-#define PW 1
-#define PH 1
+#define SW 200
+#define SH 200
+#define PW 4
+#define PH 4
 #define BGColor BLACK
 
 static float base[] = {SW / 2.f, 30.f}, point[] = {SW / 2.f, 30.f},
@@ -65,7 +65,7 @@ static void render_screen() {
       DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
   for (long i = 0; i < texts_length; i++)
     DrawText(texts_content[i], texts_positions[i][0] * PW,
-             texts_positions[i][1] * PH, 5, *(Color *)&texts_colors[i]);
+             texts_positions[i][1] * PH, 45, *(Color *)&texts_colors[i]);
 }
 static void draw_frame() {
   BeginDrawing();

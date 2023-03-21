@@ -55,95 +55,62 @@ N(t) {
   gut_line_to(ρ, δ, ω[1].cs);
   X;
 }
-N(b) {
-  White(=);
-  ρ = (ρ + 1) % 4;
-  X;
-}
-N(o) { Black(=), X; }
-N(da) { X; }
-N(an) {
-  if (White(==)) {
-    if (Green(==))
-      Black(=);
-    else if (Blue(==))
-      Green(=);
-  }
-  X;
-}
-N(ara) {
-  if (White(==)) {
-    if (Green(==))
-      Black(=);
-    else if (Red(==))
-      Green(=);
-  }
-  X;
-}
 #define AWgoto(color)                                                          \
   N(goto_##color) {                                                            \
     if (White(==) && Yellow(!=))                                               \
       Blue(=);                                                                 \
     X;                                                                         \
   }
-AWgoto(Blue) AWgoto(Red);
-N(id) { X; }
-N(deda) { X; }
-N(mama) { X; }
-N(gemriel) { X; }
-N(shvils) { X; }
-N(namckhvars) { X; }
-N(sakhls) { X; }
-N(ackhobs) { X; }
-N(ushenebs) { X; }
-AWord(                                      //
-    b3,                                     //
-    DB(T(mama)T(deda)T(shvils))             //
-      (T(shvils)      T(deda)    T(mama)  ) //
-    DB(T(mama)      T(deda)      T(shvils)) //
-      (T(shvils)      T(deda)    T(mama)  ) //
-    DB(T(mama)      T(deda)      T(shvils)) //
-      (T(shvils)      T(deda)    T(mama)  ) //
-);
-AWord(                                                                   
-    borjgal1,                                                            
-    DB(T(mama) T(mama) T(mama) T(mama))(T(deda) T(deda) T(deda) T(deda)) 
-);                                                                       
-void gut_init(long fps);
+AWgoto(Blue) AWgoto(Red) AWgoto(Green) AWgoto(Yellow);
+N(b) {
+  if (Yellow(==))
+    White(=), Green(=), X;
+}
+N(o) { Black(=), X; }
+// clang-format off
+N(an) {
+  if (White(==)) {
+    if (Blue(==)) Green(=);
+    else if (Green(==)) Black(=); } X; }
+N(da) { X; }
+N(ara) {
+  if (White(==)) {
+    if (Red(==)) Green(=);
+    else if (Green(==)) Black(=); } X; }
+// clang-format on
+void gut_init(long);
 void gut_clear();
-AWord(borjgal,
-  DB(T(mama)T(shvils)T(sakhls)T(ushenebs)T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(b3))
-    (T(mama)T(shvils)T(sakhls)T(ushenebs)T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(b3))
-  DB(T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(b3))
-    (T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(mama) T(shvils) T(sakhls) T(ushenebs)T(b3))
-  DB(T(mama) T(shvils) T(sakhls) T(ushenebs)T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(b3))
-    (T(deda)T(gemriel)T(namckhvars)T(ackhobs)T(mama) T(shvils) T(sakhls) T(ushenebs)T(b3))
-)
+N(one) {
+  if (White(==) && Yellow(==))
+    ο[α++].q = 1;
+  X;
+}
+N(add) {
+  if (White(==) && Green(==)) {
+    long sum = 0;
+    while (128 < α)
+      sum += ο[--α].q;
+    ο[α++].q = sum;
+  }
+  X;
+}
+#include <stdio.h>
+N(print) {
+  if (Black(==) && Green(==)) {
+    for (long i = 128; i < α; i++)
+      printf("%ld ", ο[i].q);
+    printf("\nα:%ld\n", α);
+    α = 128;
+  }
+  X;
+}
+text_t ct[] = {T(b) T(print) T(one) T(one) T(one) T(add) T(one) T(o)};
 int main(int argc, char **argv) {
   // clang-format off
-  text_t*ω = 1 + (text_t[]) {
-    T(b)
-    T(mama)   T(shvils) T(sakhls)     T(ushenebs)
-    T(deda)   T(gemriel)T(namckhvars) T(ackhobs)
-    T(borjgal)
-    T(deda)   T(gemriel)T(namckhvars) T(ackhobs)
-    T(mama)   T(shvils) T(sakhls)     T(ushenebs)
-    T(mama)   T(shvils)
-    T(borjgal1)
-    T(sakhls) T(ushenebs)
-    T(deda)   T(gemriel)T(namckhvars) T(ackhobs)
-    T(mama)   T(shvils) T(sakhls)     T(ushenebs)
-    T(borjgal)
-    T(deda)   T(gemriel)T(namckhvars) T(ackhobs)
-    T(mama)   T(shvils) T(sakhls)     T(ushenebs)
-    T(o)
-  };
+  text_t*ω = 1 + ct;
   // clang-format on
   text_t ο[128 * 4];
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
-  ο[α++].cs = "baaaa";
-  ο[α++].q = 5;
-  ο[α++].q = 0;
-  gut_init(0), X, gut_clear();
+  gut_init(4), X, gut_clear();
   return 0;
 }
