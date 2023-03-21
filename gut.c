@@ -2,20 +2,21 @@
 #include <raylib.h>
 #include <stdint.h>
 #include <unistd.h>
-#define SW 600
+#define SW 400
 #define SH 400
-#define PW 2
-#define PH 2
-#define BGColor DARKGRAY
+#define PW 3
+#define PH 3
+#define BGColor BLACK
 
-static int base[] = {SW / 2, SH / 8}, point[] = {SW / 2, SH / 8},
-           direction[] = {0, 1};
+static float base[] = {SW / 2.f, 2.f}, point[] = {SW / 2.f, 2.f},
+             direction[] = {0, 1};
 int gut_close_requested() { return WindowShouldClose(); }
 // only 90⁰ rotations δ = -1 | 1
-void gut_rotate(long δ) {
-  int dx = direction[0];
-  direction[0] = direction[1] * δ * -1;
-  direction[1] = dx * δ;
+void gut_rotate(float theta) {
+  float x = direction[0];
+  float y = direction[1];
+  direction[0] = x * cosf(theta) + y * sinf(theta);
+  direction[1] = x * -sinf(theta) + y * cosf(theta);
 }
 float texts_positions[1024][2];
 uint32_t texts_colors[1024];
@@ -27,30 +28,23 @@ static void draw_frame();
 // main procedure to drawing guts
 void gut_line_to(long ρ, long δ, const char *text) {
   static uint32_t colors[] = {
-      0xFF000077,
-      0xFF007777,
-      0xFF007700,
-      0xFF770000,
-      0,
-      0xFFFF0000,
-      0xFF00FF00,
-      0xFF00FFFF,
-      0xFF0000FF,
+      0xFF007777, 0xFF000077, 0xFF007700, 0xFF770000, 0,
+      0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF00FFFF,
   };
-  int y = (1+ρ) * δ;
-  uint32_t color = colors[y+4];
-  base[0] += direction[0] * δ * 16;
-  base[1] += direction[1] * δ * 16;
+  int y = (1 + ρ) * δ;
+  uint32_t color = colors[y + 4];
+  base[0] += direction[0] * (float)δ * 16.f;
+  base[1] += direction[1] * (float)δ * 16.f;
   if (δ == 1)
     texts_content[texts_length] = text, texts_colors[texts_length] = color,
     texts_positions[texts_length][0] = base[0],
     texts_positions[texts_length][1] = base[1], texts_length++;
   else
     texts_length--;
-  int x1 = point[0];
-  int y1 = point[1];
-  point[0] = base[0] + 4 * y * direction[1];
-  point[1] = base[1] + 4 * y * direction[0] * -1;
+  float x1 = point[0];
+  float y1 = point[1];
+  point[0] = base[0] + 4.f * (float)y * direction[1];
+  point[1] = base[1] + 4.f * (float)y * direction[0] * -1.f;
   draw_line(x1, y1, point[0], point[1], color, -1);
   draw_frame();
 }
@@ -71,7 +65,7 @@ static void render_screen() {
       DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
   for (long i = 0; i < texts_length; i++)
     DrawText(texts_content[i], texts_positions[i][0] * PW,
-             texts_positions[i][1] * PH, 25, *(Color*)&texts_colors[i]);
+             texts_positions[i][1] * PH, 25, *(Color *)&texts_colors[i]);
 }
 static void draw_frame() {
   BeginDrawing();
