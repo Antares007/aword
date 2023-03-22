@@ -19,6 +19,8 @@ typedef struct text_t {
     N((*c));
   };
 } text_t;
+#include "evalmap.h"
+#define Text(...) ((text_t[]){EVAL32(MAP(T, __VA_ARGS__))} + 1)
 #define D_(...) ((text_t[]){T(ret) __VA_ARGS__ T(o)} + 1),
 #define DB(...) ((text_t[]){T(ret) __VA_ARGS__ T(o)} + 1), 0, D_
 void gut_rotate(float theta);
@@ -119,15 +121,13 @@ N(an) {
   } else if (Green(==)  ) { White(=); }
   X;
 }
-text_t ct[] = {
-  T(b)    T(one) T(one) T(one) T(add) T(one) T(da)   T(print)
-  T(an)   T(add) T(one) T(one) T(one)        T(da)   T(print)
-  T(ara)  T(seven) T(print)
-  T(o)
-};
+text_t *ω = Text(b,
+                  one, one, one, add, one, da, print,
+                  an, add, one, one, one, da, print,
+                  ara, seven, print,
+                  o);
 // clang-format on
 int main(int argc, char **argv) {
-  text_t *ω = 1 + ct;
   text_t ο[128 * 4];
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
   gut_init(400, 90, // screen(w,h)
