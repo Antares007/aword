@@ -2,14 +2,13 @@
 #include <raylib.h>
 #include <stdint.h>
 #include <unistd.h>
-#define SW 200
-#define SH 200
-#define PW 4
-#define PH 4
+static int screen_width;
+static int screen_height;
+static int pixel_width;
+static int pixel_height;
 #define BGColor BLACK
 
-static float base[] = {SW / 2.f, 30.f}, point[] = {SW / 2.f, 30.f},
-             direction[] = {0, 1};
+static float base[2], point[2], direction[2] = {0, 1};
 int gut_close_requested() { return WindowShouldClose(); }
 // only 90⁰ rotations δ = -1 | 1
 void gut_rotate(float theta) {
@@ -28,11 +27,11 @@ static void draw_frame();
 // main procedure to drawing guts
 void gut_line_to(long ρ, long δ, const char *text) {
   static uint32_t colors[] = {
-      0xFF007777, 0xFF000077, 0xFF007700, 0xFF770000, 0,
-      0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF00FFFF,
+      0xFF000000, 0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
+      0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF, 0XFFFFFFFF,
   };
   int y = (1 + ρ) * δ;
-  uint32_t color = colors[y + 4];
+  uint32_t color = colors[y + 5];
   base[0] += direction[0] * (float)δ * 16.f;
   base[1] += direction[1] * (float)δ * 16.f;
   if (δ == 1)
@@ -48,24 +47,44 @@ void gut_line_to(long ρ, long δ, const char *text) {
   draw_line(x1, y1, point[0], point[1], color, -1);
   draw_frame();
 }
-void gut_init(long fps) {
-  SetTraceLogLevel(LOG_WARNING);
-  InitWindow(SW * PW, SH * PH, "actionable word show");
-  SetTargetFPS(fps);
-}
-void gut_clear() { CloseWindow(); }
-static uint32_t screen[SW * SH] = {};
+static uint32_t *screen;
 static void clear_screen() {
-  for (long i = 0; i < SW * SH; i++)
+  for (long i = 0; i < screen_width * screen_height; i++)
     screen[i] = 0;
 }
+#include <stdlib.h>
+void gut_init(int _screenwidth, int _screenheight, int _pixelwidth,
+              int _pixelheight, int basex, int basey, int dx, int dy,
+              long fps) {
+  screen_width = _screenwidth;
+  screen_height = _screenheight;
+  pixel_width = _pixelwidth;
+  pixel_height = _pixelheight;
+  base[0] = point[0] = basex;
+  base[1] = point[1] = basey;
+  direction[0] = dx;
+  direction[1] = dy;
+  SetTraceLogLevel(LOG_WARNING);
+  InitWindow(screen_width * pixel_width, screen_height * pixel_height,
+             "actionable word show");
+  SetTargetFPS(fps);
+  screen = malloc(screen_width * screen_height * sizeof(*screen));
+  clear_screen();
+}
+void gut_clear() {
+  CloseWindow();
+  free(screen);
+}
 static void render_screen() {
-  for (long i = 0; i < SW * SH; i++)
+  for (long i = 0; i < screen_width * screen_height; i++)
     if (screen[i])
-      DrawRectangle((i % SW) * PW, i / SW * PH, PW, PH, *(Color *)&screen[i]);
+      DrawRectangle((i % screen_width) * pixel_width,
+                    i / screen_width * pixel_height, pixel_width, pixel_height,
+                    *(Color *)&screen[i]);
   for (long i = 0; i < texts_length; i++)
-    DrawText(texts_content[i], texts_positions[i][0] * PW,
-             texts_positions[i][1] * PH, 45, *(Color *)&texts_colors[i]);
+    DrawText(texts_content[i], texts_positions[i][0] * pixel_width,
+             texts_positions[i][1] * pixel_height, 45 * pixel_width * 1 / 8.f,
+             *(Color *)&texts_colors[i]);
 }
 static void draw_frame() {
   BeginDrawing();
@@ -78,12 +97,14 @@ static void draw_frame() {
   DrawText(TextFormat("fps: %i", GetFPS()), 0, 0, 45, RED);
   EndDrawing();
 }
-static void draw_pixel(int x, int y, uint32_t p) { screen[x + SW * y] = p; }
+static void draw_pixel(int x, int y, uint32_t p) {
+  screen[x + screen_width * y] = p;
+}
 static void swap(int *a, int *b) {
   int t = *b;
   *b = *a, *a = t;
 }
-static int abs(int a) { return a < 0 ? a * -1 : a; }
+// static int abs(int a) { return a < 0 ? a * -1 : a; }
 #define rol() ((pattern = (pattern << 1) | (pattern >> 31)) & 1)
 static void draw_line(int32_t x1, int32_t y1, int32_t x2, int32_t y2,
                       uint32_t p, uint32_t pattern) {
