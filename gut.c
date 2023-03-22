@@ -27,8 +27,8 @@ static void draw_frame();
 // main procedure to drawing guts
 void gut_line_to(long ρ, long δ, const char *text) {
   static uint32_t colors[] = {
-      0xFF000000, 0xFF000077, 0xFF007777, 0xFF007700, 0xFF770000, 0,
-      0xFFFF0000, 0xFF00FF00, 0xFF00FFFF, 0xFF0000FF, 0XFFFFFFFF,
+      0xFF000000, 0xFF007777, 0xFF000077, 0xFF007700, 0xFF770000, 0,
+      0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF00FFFF, 0XFFFFFFFF,
   };
   int y = (1 + ρ) * δ;
   uint32_t color = colors[y + 5];

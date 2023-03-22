@@ -5,8 +5,8 @@
 #define X ω[3 * δ].c(τ, α, β, ω + 3 * δ, ο, ρ, δ, σ)
 #define White(sopos) δ sopos + 1
 #define Black(sopos) δ sopos - 1
-#define Red(sopos) ρ sopos + 3
-#define Yellow(sopos) ρ sopos + 2
+#define Yellow(sopos) ρ sopos + 3
+#define Red(sopos) ρ sopos + 2
 #define Green(sopos) ρ sopos + 1
 #define Blue(sopos) ρ sopos + 0
 typedef struct text_t {
@@ -57,32 +57,35 @@ N(t) {
 }
 #define AWgoto(color)                                                          \
   N(goto_##color) {                                                            \
-    if (White(==) && Red(!=))                                                  \
+    if (White(==) && Yellow(!=))                                                  \
       Blue(=);                                                                 \
     X;                                                                         \
   }
-AWgoto(Blue) AWgoto(Yellow) AWgoto(Green) AWgoto(Red);
-N(b) {
-  if (Red(==))
-    White(=), Green(=), X;
-}
-N(o) { Black(=), X; }
+AWgoto(Blue) AWgoto(Red) AWgoto(Green) AWgoto(Yellow);
 // clang-format off
 N(an) {
   if (White(==)) {
     if (Blue(==)) Green(=);
     else if (Green(==)) Black(=); } X; }
-N(da) { X; }
 N(ara) {
   if (White(==)) {
-    if (Yellow(==)) Green(=);
+    if (Red(==)) Green(=);
     else if (Green(==)) Black(=); } X; }
 // clang-format on
 void gut_init(int screenwidth, int screenheight, int pixelwidth,
               int pixelheight, int basex, int basey, int dx, int dy, long fps);
 void gut_clear();
+
+#include <stdio.h>
+
+N(b) { White(=), X; }
+N(o) {
+  if (Yellow(==)) Green(=); else
+  if (Green(==)) Yellow(=);
+  Black(=), X;
+}
 N(one) {
-  if (White(==) && Red(==))
+  if (White(==) && Yellow(==))
     ο[α++].q = 1;
   X;
 }
@@ -95,9 +98,8 @@ N(add) {
   }
   X;
 }
-#include <stdio.h>
 N(print) {
-  if (Black(==) && Green(==)) {
+  if (White(==) && Green(==)) {
     for (long i = 128; i < α; i++)
       printf("%ld ", ο[i].q);
     printf("\nα:%ld\n", α);
@@ -105,23 +107,29 @@ N(print) {
   }
   X;
 }
-// text_t ct[] = {T(b) T(print) T(one) T(one) T(one) T(add) T(one) T(o)};
-N(id) { X; }
-N(b2) { White(=), X; }
-N(o2) { getchar(); }
-N(da2) {
+N(da) {
   if (Black(==)) {
-    White(=);
+    if (Yellow(!=))
+      White(=);
+  } else if (Yellow(==)) {
+    Black(=), Green(=);
+  } else if (Green(==)) {
+    Yellow(=);
   } else {
-    if (Yellow(!=)) {
-      Black(=);
-    }
-    ρ = (ρ + 1) % 4;
+    //??
   }
   X;
 }
-text_t ct[] = {T(b2) T(id) T(da2) T(id) T(da2) T(id) T(da2) T(id) T(da2) T(id)
-                   T(id) T(o2)};
+text_t ct[] = {
+  T(b)
+  T(one) T(one) T(one) T(add) T(one)
+  T(da)
+  T(print)
+  T(da)
+  T(one) T(one) T(one) T(add) T(one)
+  T(da)
+  T(print)
+  T(o)};
 
 int main(int argc, char **argv) {
   // clang-format off
@@ -129,11 +137,11 @@ int main(int argc, char **argv) {
   // clang-format on
   text_t ο[128 * 4];
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
-  gut_init(200, 100, // screen(w,h)
-           5, 5,     // pixel(w,h)
-           4, 40,    // base(x,y)
+  gut_init(300, 150, // screen(w,h)
+           6, 6,     // pixel(w,h)
+           4, 75,    // base(x,y)
            1, 0,     // direction(x,y)
-           50        // fps
+           77         // fps
            ),
       X, gut_clear();
   return 0;
