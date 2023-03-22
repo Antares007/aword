@@ -57,38 +57,21 @@ N(t) {
 }
 #define AWgoto(color)                                                          \
   N(goto_##color) {                                                            \
-    if (White(==) && Yellow(!=))                                                  \
-      Blue(=);                                                                 \
+    if (Green(==))                                                             \
+      White(=), color(=);                                                      \
     X;                                                                         \
   }
 AWgoto(Blue) AWgoto(Red) AWgoto(Green) AWgoto(Yellow);
 // clang-format off
-N(an) {
-  if (White(==)) {
-    if (Blue(==)) Green(=);
-    else if (Green(==)) Black(=); } X; }
-N(ara) {
-  if (White(==)) {
-    if (Red(==)) Green(=);
-    else if (Green(==)) Black(=); } X; }
 // clang-format on
 void gut_init(int screenwidth, int screenheight, int pixelwidth,
               int pixelheight, int basex, int basey, int dx, int dy, long fps);
 void gut_clear();
 
 #include <stdio.h>
-
-N(b) { White(=), X; }
-N(o) {
-  if (Yellow(==)) Green(=); else
-  if (Green(==)) Yellow(=);
-  Black(=), X;
-}
-N(one) {
-  if (White(==) && Yellow(==))
-    ο[α++].q = 1;
-  X;
-}
+// clang-format off
+N(one) { if (Black(==) && Green(==)) ο[α++].q = 1; X; }
+N(seven) { if (Black(==) && Green(==)) ο[α++].q = 7; X; }
 N(add) {
   if (White(==) && Green(==)) {
     long sum = 0;
@@ -107,41 +90,51 @@ N(print) {
   }
   X;
 }
+N(b) { White(=), X; }
+N(o) {
+  if        (Yellow(==) ) { Green(=); }
+  else if   (Green(==)  ) { Yellow(=); }
+  Black(=), X;
+}
+N(ara) {
+  if (White(==)) {
+    if      (Red(==)    ) { Yellow(=),            α = ο[σ++].q; }
+    else if (Yellow(==) ) { Black(=),   Green(=), ο[--σ].q = α;; }
+    else if (Green(==)  ) { Yellow(=),  Black(=); }
+  } else if (Green(==)  ) { White(=); }
+  X;
+}
 N(da) {
-  if (Black(==)) {
-    if (Yellow(!=))
-      White(=);
-  } else if (Yellow(==)) {
-    Black(=), Green(=);
-  } else if (Green(==)) {
-    Yellow(=);
-  } else {
-    //??
-  }
+  if (White(==)) {
+    if      (Yellow(==) ) { Black(=), Green(=),   ο[--σ].q = α; }
+    else if (Green(==)  ) { Yellow(=); }
+  } else if (Green(==)  ) { White(=); }
+  X;
+}
+N(an) {
+  if (White(==)) {
+    if      (Blue(==)   ) { Yellow(=),            α = ο[σ++].q; }
+    else if (Yellow(==) ) { Black(=),   Green(=), ο[--σ].q = α;; }
+    else if (Green(==)  ) { Yellow(=),  Black(=); }
+  } else if (Green(==)  ) { White(=); }
   X;
 }
 text_t ct[] = {
-  T(b)
-  T(one) T(one) T(one) T(add) T(one)
-  T(da)
-  T(print)
-  T(da)
-  T(one) T(one) T(one) T(add) T(one)
-  T(da)
-  T(print)
-  T(o)};
-
+  T(b)    T(one) T(one) T(one) T(add) T(one) T(da)   T(print)
+  T(an)   T(add) T(one) T(one) T(one)        T(da)   T(print)
+  T(ara)  T(seven) T(print)
+  T(o)
+};
+// clang-format on
 int main(int argc, char **argv) {
-  // clang-format off
-  text_t*ω = 1 + ct;
-  // clang-format on
+  text_t *ω = 1 + ct;
   text_t ο[128 * 4];
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
-  gut_init(300, 150, // screen(w,h)
-           6, 6,     // pixel(w,h)
-           4, 75,    // base(x,y)
-           1, 0,     // direction(x,y)
-           77         // fps
+  gut_init(400, 90, // screen(w,h)
+           4, 4,    // pixel(w,h)
+           4, 45,   // base(x,y)
+           1, 0,    // direction(x,y)
+           7        // fps
            ),
       X, gut_clear();
   return 0;
