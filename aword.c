@@ -1,56 +1,38 @@
-#define N(args)                                                                \
-  void args(long τ, long α, long β, struct text_t *ω, struct text_t *ο,        \
-            long ρ, long δ, long σ)
-#define T(aw) {.q = 0}, {{aw}}, {.q = 0}, {.q = 0}, {{t}}, {.cs = #aw},
-#define X ω[3 * δ].c(τ, α, β, ω + 3 * δ, ο, ρ, δ, σ)
-#define White(sopos) δ sopos + 1
-#define Black(sopos) δ sopos - 1
-#define Yellow(sopos) ρ sopos + 3
-#define Red(sopos) ρ sopos + 2
-#define Green(sopos) ρ sopos + 1
-#define Blue(sopos) ρ sopos + 0
-typedef struct text_t {
-  union {
-    void *v;
-    float f;
-    long q;
-    const char *cs;
-    struct text_t *t;
-    N((*c));
-  };
-} text_t;
+#include "nnsd.h"
+// clang-format off
+N(ara) {
+  if (White(==)) {
+    if      (Red(==)    ) { Yellow(=); }
+    else if (Yellow(==) ) { Black(=),   Green(=); }
+    else if (Green(==)  ) { Yellow(=),  Black(=); }
+  } else if (Green(==)  ) { White(=); }
+  X;
+}
+N(da) {
+  if (White(==)) {
+    if      (Yellow(==) ) { Black(=), Green(=); }
+    else if (Green(==)  ) { Yellow(=); }
+  } else if (Green(==)  ) { White(=); }
+  X;
+}
+N(an) {
+  if (White(==)) {
+    if      (Blue(==)   ) { Yellow(=); }
+    else if (Yellow(==) ) { Black(=),   Green(=); }
+    else if (Green(==)  ) { Yellow(=),  Black(=); }
+  } else if (Green(==)  ) { White(=); }
+  X;
+}
+// clang-format on
 #include "evalmap.h"
-#define Text(...) ((text_t[]){EVAL32(MAP(T, __VA_ARGS__))} + 1)
-#define D_(...) ((text_t[]){T(ret) __VA_ARGS__ T(o)} + 1),
-#define DB(...) ((text_t[]){T(ret) __VA_ARGS__ T(o)} + 1), 0, D_
+#define TS(...) EVAL32(MAP(T, __VA_ARGS__))
+#define Text(...) ((text_t[]){TS(__VA_ARGS__)} + 1)
 void gut_rotate(float theta);
-N(ret) { δ = ο[σ++].q, ω = ο[σ++].t, gut_rotate(-ο[σ++].f), X; }
-#define AWord(name, ...)                                                       \
-  N(name);                                                                     \
-  text_t *name##_texts[] = {__VA_ARGS__};                                      \
-  N(name) {                                                                    \
-    long hands = sizeof(name##_texts) / sizeof(void *) / 3;                    \
-    long hand_index = ω[1].q;                                                  \
-    text_t *hand = name##_texts[1 + hand_index * 3 + δ];                       \
-    ο[--σ].f = δ * (hand_index + 1) * 3.1416 / (hands + 1);                    \
-    gut_rotate(ο[σ].f);                                                        \
-    if (White(==)) {                                                           \
-      ο[--σ].t = ω;                                                            \
-      ο[--σ].q = 1;                                                            \
-    } else if (hand_index + 1 < hands) {                                       \
-      ο[--σ].t = ω - 3;                                                        \
-      ο[--σ].q = 1;                                                            \
-      ω[1].q++;                                                                \
-    } else {                                                                   \
-      ο[--σ].t = ω;                                                            \
-      ο[--σ].q = -1;                                                           \
-      ω[1].q = 0;                                                              \
-    }                                                                          \
-    White(=);                                                                  \
-    ω = hand, X;                                                               \
-  }
+N(rotate) { gut_rotate(ω[δ].f), X; }
+// clang-format off
 int gut_close_requested();
 void gut_line_to(long, long, const char *);
+#include<stdio.h>
 N(t) {
   if (gut_close_requested())
     return;
@@ -98,44 +80,67 @@ N(o) {
   else if   (Green(==)  ) { Yellow(=); }
   Black(=), X;
 }
-N(ara) {
-  if (White(==)) {
-    if      (Red(==)    ) { Yellow(=),            α = ο[σ++].q; }
-    else if (Yellow(==) ) { Black(=),   Green(=), ο[--σ].q = α;; }
-    else if (Green(==)  ) { Yellow(=),  Black(=); }
-  } else if (Green(==)  ) { White(=); }
-  X;
-}
-N(da) {
-  if (White(==)) {
-    if      (Yellow(==) ) { Black(=), Green(=),   ο[--σ].q = α; }
-    else if (Green(==)  ) { Yellow(=); }
-  } else if (Green(==)  ) { White(=); }
-  X;
-}
-N(an) {
-  if (White(==)) {
-    if      (Blue(==)   ) { Yellow(=),            α = ο[σ++].q; }
-    else if (Yellow(==) ) { Black(=),   Green(=), ο[--σ].q = α;; }
-    else if (Green(==)  ) { Yellow(=),  Black(=); }
-  } else if (Green(==)  ) { White(=); }
-  X;
-}
-text_t *ω = Text(b,
-                  one, one, one, add, one, da, print,
-                  an, add, one, one, one, da, print,
-                  ara, seven, print,
-                  o);
-// clang-format on
+N(id) { X; }
+// clang-format off
+N(A) {X;}
+N(B) {X;}
+N(C) {X;}
+N(D) {X;}
+N(E) {X;}
+N(F) {X;}
+
+#include<string.h>
+#define AWord(name, ...) N(name) {if(White(==)&&Green(==)) {__VA_ARGS__;} X;}
+#define AName(name, ...) N(name) {if(Black(==)&&Green(==)) {__VA_ARGS__;} X;}
+
+N(aw_match) { if(White(==) && Green(==)) {
+} X; }
+#define Match(value)  {.q=0},{.c=aw_match},{.cs=value}, {.q=0},{.c=t},{.cs=value},
+
+N(aw_string) { if(Black(==) && Green(==)) {
+  ο[α++].cs = ω[1].cs, ο[α++].q = strlen(ω[1].cs);
+} X; }
+#define String(value) {.q=0},{.c=aw_string},{.cs=value}, {.q=0},{.c=t},{.cs=value},
+
+N(aw_long) { if(Black(==) && Green(==)) {
+  ο[α++].q = ω[1].q;
+} X; }
+#define Long(value)   {.q=0},{.c=aw_long},{.q=value}, {.q=0},{.c=t},{.cs="aw_long"},
+
+N(debug) { printf("τ(%ld)α(%ld)β(%ld)σ(%ld)\n", τ, α, β, σ), X; }
+N(tab) { if(White(==)&&Green(==)) ο[σ++].q = α; X;}
+N(untab) { if(White(==)&&Green(==)) α = ο[--σ].q; X;}
+AWord(go_Red, Red(=))
+AWord(go_Blue, Blue(=))
+
+NNSD(S)
+//(TS(D,D,D,D))(TS(A,A,A,A))
+(TS(E,E,ara, E,E))(TS(B,B, go_Red,B,B))
+//(TS(F,F,F,F))(TS(C,C,C,C))
+  ;
+text_t *ω = (text_t[]){
+  T(b)
+  //String("bao") Long(0) T(tab)
+  TS(A,B,C,D)
+  T(S)
+  TS(A,B,C,ara, D)
+  T(o)
+} + 1;
 int main(int argc, char **argv) {
   text_t ο[128 * 4];
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
-  gut_init(400, 90, // screen(w,h)
-           4, 4,    // pixel(w,h)
-           4, 45,   // base(x,y)
-           1, 0,    // direction(x,y)
-           7        // fps
+  gut_init(200, 200, // screen(w,h)
+           4, 4,     // pixel(w,h)
+           100, 2, // base(x,y)
+           0, 1,     // direction(x,y)
+           77         // fps
            ),
       X, gut_clear();
   return 0;
 }
+//text_t *ω = Text(b,
+//                  one, one, one, add, one, da, print,
+//                  da, add, one, one, one, da, print,
+//                  da, seven, print,
+//                  o);
+// clang-format on
