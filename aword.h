@@ -1,7 +1,9 @@
 #pragma once
-#define N(args)                                                                \
-  void args(long τ, long α, long β, struct text_t *ω, struct text_t *ο,        \
-            long ρ, long δ, long σ)
+#define Args                                                                   \
+  long τ, long α, long β, struct text_t *ω, struct text_t *ο, long ρ, long δ,  \
+      long σ
+#define Forward τ, α, β, ω, ο, ρ, δ, σ
+#define N(args) void args(Args)
 #define T(aw) {.q = 0}, {{aw}}, {.q = 0}, {.q = 0}, {{t}}, {.cs = #aw},
 #define X ω[3 * δ].c(τ, α, β, ω + 3 * δ, ο, ρ, δ, σ)
 #define White(sopos) δ sopos + 1

@@ -23,9 +23,10 @@ const char *texts_content[1024];
 long texts_length = 0;
 static void draw_line(int x1, int y1, int x2, int y2, uint32_t pixel,
                       uint32_t pattern);
-static void draw_frame();
+int gut_draw_frame();
 // main procedure to drawing guts
-void gut_line_to(long ρ, long δ, const char *text) {
+#include "aword.h"
+void gut_line_to(long δ, long ρ, const char *text) {
   static uint32_t colors[] = {
       0xFF000000, 0xFF007777, 0xFF000077, 0xFF007700, 0xFF770000, 0,
       0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFF00FFFF, 0XFFFFFFFF,
@@ -45,7 +46,6 @@ void gut_line_to(long ρ, long δ, const char *text) {
   point[0] = base[0] + 4.f * (float)y * direction[1];
   point[1] = base[1] + 4.f * (float)y * direction[0] * -1.f;
   draw_line(x1, y1, point[0], point[1], color, -1);
-  draw_frame();
 }
 static uint32_t *screen;
 static void clear_screen() {
@@ -86,16 +86,19 @@ static void render_screen() {
              texts_positions[i][1] * pixel_height, 45 * pixel_width * 1 / 8.f,
              *(Color *)&texts_colors[i]);
 }
-static void draw_frame() {
+int gut_draw_frame() {
+  if (gut_close_requested())
+    return 's';
   BeginDrawing();
   ClearBackground(BGColor);
-
-  if (GetCharPressed() == 'c')
+  int key = GetCharPressed();
+  if (key == 'c')
     clear_screen();
   else
     render_screen();
   DrawText(TextFormat("fps: %i", GetFPS()), 0, 0, 45, RED);
   EndDrawing();
+  return key;
 }
 static void draw_pixel(int x, int y, uint32_t p) {
   screen[x + screen_width * y] = p;
