@@ -36,9 +36,8 @@ void gut_line_to(long δ, long ρ, const char *);
 int gut_draw_frame();
 static int stop=1;
 #include<stdlib.h>
+N(nnsd_arm) { gut_line_to(δ, ρ, ""), X; }
 N(t) {
-  if (gut_close_requested())
-    return;
   gut_line_to(δ, ρ, ω[1].cs);
   int key = gut_draw_frame();
   if (key == 'd') stop = !stop;
@@ -112,21 +111,22 @@ AWord(pause, getchar())
 AWord(printα, printf("%ld\n", α))
 AWord(tab, ο[τ++].q = α)
 AWord(untab, α = ο[--τ].q)
-
-                    NNSD3(S)
- (T(D)T(D)T(D)T(D))         (T(A)T(A)T(A)T(A))
- (T(E)T(E)T(E)T(E))         (T(B)T(B)T(B)T(B))
- (T(F)T(F)T(F)T(F))         (T(C)T(C)T(C)T(C))
+N(S);
+    NNSD3(M) 
+ (T(D)T(D)T(D)T(D)T(D))          (T(A)T(A)T(A)T(A)T(A))
+ (T(E)T(E)T(E)T(E)T(E))          (T(B)T(B)T(B)T(B)T(B))
+ (T(F)T(F)T(F)T(F)T(E))          (T(C)T(C)T(C)T(C)T(C))
+;
+    NNSD3(S) 
+ (T(D)) (T(A))
+ (T(E)) (T(B))
+ (T(F)) (T(C))
 ;
 
 text_t *ω = (text_t[]){
   T(b)
   T(A)
-  T(A)
-  T(A)
   T(S)
-  T(B)
-  T(B)
   T(B)
   T(o)
 } + 1;
@@ -135,13 +135,49 @@ int main(int argc, char **argv) {
   long τ = 0, α = 128, β = 256, ρ = 3, δ = 1, σ = 384;
   gut_init(200, 200, // screen(w,h)
            4,   4,   // pixel(w,h)
-           100, 10,  // base(x,y)
+           100, 70,  // base(x,y)
            0, 1,     // direction(x,y)
            0         // fps
            ),
       X, gut_clear();
   return 0;
 }
+
+typedef struct type_t {
+  void(*init)(text_t*value);
+  void(*sum)(struct type_t*other_type, text_t*other_value, text_t*value);
+  long width;
+} type_t;
+static type_t types[] = {{}};
+//TYPE(
+//  'long',
+//  *(long*)v = 0,
+//  *(long*)v = 1,
+//  if (o->type == 'long') {
+//    *(long*)a += *(long*)b;
+//    return 'long';
+//  } else if (o->type == 'sum') {
+//    
+//  } else {
+//    return 'sum';
+//  }
+//)
+//AName(Long, ο[τ++].q = 'long', ο[α++].q = ω[1].q);
+AWord(add, {
+  if (τ) {
+    type_t type  = types[ο[--τ].q];
+    text_t*value = ο + β;
+    β += type.width;
+    type.init(value);
+    type.sum(&type, value, ο + (α -= type.width));
+    while (τ) {
+      type_t other_type = types[ο[--τ].q];
+      type.sum(&other_type, value, ο + (α -= other_type.width));
+    }
+  } else Blue(=);
+})
+// T(int, 1) T(int, 4) T(add)
+
 //AName(one,    ο[α++].q = 1)
 //AName(seven,  ο[α++].q = 7)
 //AWord(add,    long sum = 0; while (128 < α) sum += ο[--α].q; ο[α++].q = sum)

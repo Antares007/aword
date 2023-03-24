@@ -2,8 +2,20 @@
 #include "aword.h"
 // clang-format off
 #define NNSD_T(name, i) {.q = i},               {.c = name},    {.q = 0},
-#define NNSD_R(n, i)    {.f = -3.1416 / n * i}, {.c = rotate},  {.f = +3.1416 / n * i},
+#define NNSD_R(n, i)    {.f = -3.1416 / n * i}, {.c = rotate},  {.f = +3.1416 / n * i}, \
+                        {.q = 0},               {.c = nnsd_arm},{.q = 0},
 #define NNSD_ARM(name, i, n, a, ...) (text_t[]){NNSD_T(name, i) NNSD_R(n,a) __VA_ARGS__ T(o)} + 1,
+
+#define NNSD47(...) NNSD_ARM(rm, 7, 5, +1, __VA_ARGS__) }
+#define NNSD46(...) NNSD_ARM(bm, 6, 5, -1, __VA_ARGS__) NNSD47
+#define NNSD45(...) NNSD_ARM(rm, 5, 5, +2, __VA_ARGS__) NNSD46
+#define NNSD44(...) NNSD_ARM(lm, 4, 5, -2, __VA_ARGS__) NNSD45
+#define NNSD43(...) NNSD_ARM(rm, 3, 5, +3, __VA_ARGS__) NNSD44
+#define NNSD42(...) NNSD_ARM(lm, 2, 5, -3, __VA_ARGS__) NNSD43
+#define NNSD41(...) NNSD_ARM(rm, 1, 5, +4, __VA_ARGS__) NNSD42
+#define NNSD40(...) NNSD_ARM(lm, 0, 5, -4, __VA_ARGS__) NNSD41
+#define NNSD4(name)                                                            \
+  NNSDBody(name, 4) static text_t *name##_hands[4*2] = {NNSD40
 
 #define NNSD35(...) NNSD_ARM(rm, 5, 4, +1, __VA_ARGS__) }
 #define NNSD34(...) NNSD_ARM(bm, 4, 4, -1, __VA_ARGS__) NNSD35

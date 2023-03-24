@@ -33,8 +33,8 @@ void gut_line_to(long δ, long ρ, const char *text) {
   };
   int y = (1 + ρ) * δ;
   uint32_t color = colors[y + 5];
-  base[0] += direction[0] * (float)δ * 16.f;
-  base[1] += direction[1] * (float)δ * 16.f;
+  base[0] += direction[0] * (float)δ * 18.f;
+  base[1] += direction[1] * (float)δ * 18.f;
   if (δ == 1)
     texts_content[texts_length] = text, texts_colors[texts_length] = color,
     texts_positions[texts_length][0] = base[0],
@@ -43,8 +43,8 @@ void gut_line_to(long δ, long ρ, const char *text) {
     texts_length--;
   float x1 = point[0];
   float y1 = point[1];
-  point[0] = base[0] + 4.f * (float)y * direction[1];
-  point[1] = base[1] + 4.f * (float)y * direction[0] * -1.f;
+  point[0] = base[0] + 2.f * (float)y * direction[1];
+  point[1] = base[1] + 2.f * (float)y * direction[0] * -1.f;
   draw_line(x1, y1, point[0], point[1], color, -1);
 }
 static uint32_t *screen;
