@@ -27,49 +27,46 @@
   NNSDBody(name, 1) static text_t *name##_hands[1*2] = {NNSD01
 // clang-format on
 static N(rm) {
-  if (Green(==))
-    White(=), X;
-  else {
+  if (Yellow(==)){
     text_t *nω = ο[--σ].t;
     ο[σ++].q = ω[-1].q;
     White(=), ω = nω, X;
-  }
+  } else 
+    White(=), X;
 }
 static N(lm) {
-  if (Green(==))
-    White(=), X;
-  else
+  if (Yellow(==))
     White(=), ω = ο[--σ].t, X;
+  else
+    White(=), X;
 }
 static N(bm) {
-  if (Green(==))
-    White(=), X;
-  else {
+  if (Yellow(==)) {
     Black(=);
     --σ;
     ω = ο[--σ].t;
     X;
-  }
+  } else 
+    White(=), X;
 }
 #define NNSDBody(name, hands)                                                  \
   static text_t *name##_hands[hands * 2];                                      \
   N(name) {                                                                    \
     if (White(==)) {                                                           \
-      if (Yellow(==))                                                          \
-        Black(=), Green(=), X;                                                 \
-      else {                                                                   \
-        if (Green(==))                                                         \
-          Yellow(=);                                                           \
+      if (Green(==)) {                                                         \
+        Yellow(=);                                                             \
         ο[σ++].t = ω;                                                          \
         ω = name##_hands[1], White(=), X;                                      \
+      } else {                                                                 \
+        if (Yellow(==)) Green(=);                                              \
+        Black(=), X;                                                           \
       }                                                                        \
-    } else if (Green(==)) {                                                    \
-      White(=), X;                                                             \
-    } else {                                                                   \
+    } else if (Yellow(==)) {                                                   \
       long hand = ο[--σ].q;                                                    \
       ο[σ++].t = ω;                                                            \
       ο[σ++].t = name##_hands[hand + 2];                                       \
       ω = name##_hands[hand - 1], White(=), X;                                 \
-    }                                                                          \
+    } else                                                                     \
+      White(=), X;                                                             \
     (void)lm;                                                                  \
   }

@@ -45,9 +45,6 @@ N(t) {
   else if (key == 's') return;
   //if (δ != 1 || ρ != 1) return X;
   if (stop) printf("%2ld %ld  %3ld %3ld %3ld %s\n", δ, ρ, τ, α - 128, σ - 384, ω[1].cs);
-  static long lα = 128, lτ = 0;
-  if (lα == α && lτ == τ) return X;
-  lα = α, lτ = τ;printf("\n"); 
   while(key !='n' && stop) {
     if (key == 's') return;
     else if (key == 'r') stop = !stop;
@@ -97,7 +94,12 @@ AWord(aw_match, {
     ο[α++].q  = pos+1;
     ο[α++].cs = in;
     ο[α++].q  = len;
-  } else Blue(=);
+  } else {
+    ο[α++].q  = pos;
+    ο[α++].cs = in;
+    ο[α++].q  = len;
+    Blue(=);
+  }
 });
 #define Match(value)  {.q=0},{.c=aw_match},{.cs=value}, {.q=0},{.c=t},{.cs=value},
 AName(aw_string, ο[α++].cs = ω[1].cs, ο[α++].q = strlen(ω[1].cs));
@@ -111,16 +113,21 @@ AWord(printα, printf("%ld\n", α))
 AWord(tab, ο[τ++].q = α)
 AWord(untab, α = ο[--τ].q)
 
-                 NNSD2(S)
- (T(an) T(untab))        (T(tab) Match("b"))
-
- (T(an) T(untab))        (T(tab) T(S) Match("a"))
+                    NNSD3(S)
+ (T(D)T(D)T(D)T(D))         (T(A)T(A)T(A)T(A))
+ (T(E)T(E)T(E)T(E))         (T(B)T(B)T(B)T(B))
+ (T(F)T(F)T(F)T(F))         (T(C)T(C)T(C)T(C))
 ;
 
 text_t *ω = (text_t[]){
   T(b)
-  String("baaaooo") Long(0) 
+  T(A)
+  T(A)
+  T(A)
   T(S)
+  T(B)
+  T(B)
+  T(B)
   T(o)
 } + 1;
 int main(int argc, char **argv) {
