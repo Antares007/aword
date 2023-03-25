@@ -1,17 +1,15 @@
 *"In the beginning was the Word, and the Word was with God, and the Word was God." John 1:1*
 
 # Abstract
-In the world of software, we face an unresolved issue: the absence of a universal compositional unit or building block that would make it ten times easier, or even more, to connect software systems and express problems in a language that resembles human speech. We require a definitive term to bring about a software revolution. Today, We have made significant progress in this endeavor and have created a perfect loop with actionable words and sentences.
+In the realm of software, we face a persistent issue: the lack of a universal compositional unit or building block that would significantly simplify the process of connecting software systems and expressing problems in a language that resembles human speech. What we require is a definitive term that can bring about a revolution in software development. Fortunately, we have made significant progress in this endeavor and have created a perfect loop with actionable words and sentences.
 
-Actionable word is essential unit of composition which will give us ability to program machines without knowing how to code. it has ability to split programming in two pars. programming by actionable words which is task any human can do. and making actionable words will be task for more experianced programers who knows how to code i.e. programm in machine/programming languages.
+An actionable word is an essential unit of composition that enables us to program machines without knowing how to code. It has the ability to split programming into two parts: programming by actionable words, which any human can do, and making actionable words, which requires more experienced programmers who know how to code in machine/programming languages.
 
-Just like human language actionable words has concept of rotation around words core.
+Just like human language, actionable words have a concept of rotation around the word's core. In actionable sentences, execution flows like a current in wires, and we can control the direction of execution flow from left to right, right to left, top to bottom, and bottom to top. The power of actionable words is the ability to compose execution flow in a way that is scalable, distributable, and tailored to our needs. In software, any problem can be solved through indirection, where actionable words are composed with each other through indirect connections.
 
-In actionable sentences execution is flowing like current in wiers. and we can controll of swiching directions and direct execution flow from left to right and from right to left and from top to bottom and from bottom to top. power actionable words give us is to have ability to compose execution flow in a way we wish and that is scalable and distributable across globe. in software any problem can be solved thrue indirection acrionable words composing with each other thrue indirect connection.
+An actionable word is a new building block, so it is a new concept. To better understand it, we can draw analogies to other building blocks. For example, we can compare it to a cell in botany, which is a unit of composition in the cellular dimension. In a cell, we have other building blocks, such as proteins, which are constructed from simpler building blocks like molecules. Similarly, actionable words are like cells, and C functions/lambda functions are more like molecules and proteins in cells.
 
-Actionable word is a new building block so it is a new thing and to help to think about it we can give several analogy. lets take for example cell from botany. we can think of it like a building block. unit of composition in celural dimension. in cell we have other kind of building block, like proteins, which are in turn constucted from more smpler bulding blocks like molecules etc. so to compare acionable word is a cell like thing and C functions/lamdas are more like molecules and proteins in cells. 
-
-We will describe protocol of actionable word and show the way how to build more powerfull unit of compositions.
+We will describe the protocol of actionable words and show how to build more powerful units of composition.
 
 # Actionable word
 Actionable word is defined in terms of actionable sentence and actionable sentence includes defionition of actionable word. just like in human language sentence is groupe of words which contains idea followed by dot. actionable word is four sided thing.
