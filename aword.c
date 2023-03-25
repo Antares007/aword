@@ -100,34 +100,25 @@ AWord(aw_match, {
     Blue(=);
   }
 });
-#define Match(value)  {.q=0},{.c=aw_match},{.cs=value}, {.q=0},{.c=t},{.cs=value},
 AName(aw_string, ο[α++].cs = ω[1].cs, ο[α++].q = strlen(ω[1].cs));
-#define String(value) {.q=0},{.c=aw_string},{.cs=value}, {.q=0},{.c=t},{.cs=value},
 AName(aw_long, ο[α++].q = ω[1].q);
-#define Long(value)   {.q=0},{.c=aw_long},{.q=value}, {.q=0},{.c=t},{.cs="aw_long"},
-AWord(go_Red, Red(=))
-AWord(go_Blue, Blue(=))
-AWord(pause, getchar())
-AWord(printα, printf("%ld\n", α))
-AWord(tab, ο[τ++].q = α)
-AWord(untab, α = ο[--τ].q)
+AWord(print, printf("%s", ω[1].cs))
+#define Tv(aword, value) {.q=0},{.c=aword},{.v=(void*)value},
 N(S);
-    NNSD3(M) 
- (T(D)T(D)T(D)T(D)T(D))          (T(A)T(A)T(A)T(A)T(A))
- (T(E)T(E)T(E)T(E)T(E))          (T(B)T(B)T(B)T(B)T(B))
- (T(F)T(F)T(F)T(F)T(E))          (T(C)T(C)T(C)T(C)T(C))
-;
-    NNSD3(S) 
- (T(D)) (T(A))
- (T(E)) (T(B))
- (T(F)) (T(C))
-;
+text_t *hands[] = {
+  Text()
+};
 
-text_t *ω = (text_t[]){
+NNSD3(S) 
+(Tv(print, "finalize first option.\n")  ) (Tv(print, "try first option")  )
+(Tv(print, "finalize second option.\n") ) (Tv(print, "try second option") )
+(Tv(print, "finalize third option.\n")  ) (Tv(print, "try third option")  )
+;
+text_t *ω = (text_t[]) {
   T(b)
-  T(A)
+  Tv(print, "start.\n")
   T(S)
-  T(B)
+  Tv(print, " and flow below and ")
   T(o)
 } + 1;
 int main(int argc, char **argv) {
@@ -142,42 +133,7 @@ int main(int argc, char **argv) {
       X, gut_clear();
   return 0;
 }
-
-typedef struct type_t {
-  void(*init)(text_t*value);
-  void(*sum)(struct type_t*other_type, text_t*other_value, text_t*value);
-  long width;
-} type_t;
-static type_t types[] = {{}};
-//TYPE(
-//  'long',
-//  *(long*)v = 0,
-//  *(long*)v = 1,
-//  if (o->type == 'long') {
-//    *(long*)a += *(long*)b;
-//    return 'long';
-//  } else if (o->type == 'sum') {
-//    
-//  } else {
-//    return 'sum';
-//  }
-//)
-//AName(Long, ο[τ++].q = 'long', ο[α++].q = ω[1].q);
-AWord(add, {
-  if (τ) {
-    type_t type  = types[ο[--τ].q];
-    text_t*value = ο + β;
-    β += type.width;
-    type.init(value);
-    type.sum(&type, value, ο + (α -= type.width));
-    while (τ) {
-      type_t other_type = types[ο[--τ].q];
-      type.sum(&other_type, value, ο + (α -= other_type.width));
-    }
-  } else Blue(=);
-})
-// T(int, 1) T(int, 4) T(add)
-
+// clang-format off
 //AName(one,    ο[α++].q = 1)
 //AName(seven,  ο[α++].q = 7)
 //AWord(add,    long sum = 0; while (128 < α) sum += ο[--α].q; ο[α++].q = sum)

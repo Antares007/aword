@@ -3,8 +3,9 @@
 // clang-format off
 #define NNSD_T(name, i) {.q = i},               {.c = name},    {.q = 0},
 #define NNSD_R(n, i)    {.f = -3.1416 / n * i}, {.c = rotate},  {.f = +3.1416 / n * i}, \
-                        {.q = 0},               {.c = nnsd_arm},{.q = 0},
-#define NNSD_ARM(name, i, n, a, ...) (text_t[]){NNSD_T(name, i) NNSD_R(n,a) __VA_ARGS__ T(o)} + 1,
+                        {.q = 0},               {.c = nnsd_arm},{.q = 488},
+#define NNSD_ARM(name, i, n, a, ...) (text_t[]){ \
+    NNSD_T(name, i) NNSD_R(n,a) __VA_ARGS__ T(o)} + 1,
 
 #define NNSD47(...) NNSD_ARM(rm, 7, 5, +1, __VA_ARGS__) }
 #define NNSD46(...) NNSD_ARM(bm, 6, 5, -1, __VA_ARGS__) NNSD47
@@ -38,39 +39,39 @@
 #define NNSD(name)                                                            \
   NNSDBody(name, 1) static text_t *name##_hands[1*2] = {NNSD01
 // clang-format on
+/* right arm will pop Shiva from stack,
+   which was pushed there by Shiva when flow camein to her from above, and
+   he will push his own index and will go down on shiva. */
 static N(rm) {
-  if (Yellow(==)){
-    text_t *nω = ο[--σ].t;
-    ο[σ++].q = ω[-1].q;
-    White(=), ω = nω, X;
-  } else 
-    White(=), X;
+  long index = ω[-1].q;
+  if (Yellow(==)) White(=), ω = ο[--σ].t, ο[σ++].q = index, X;
+  else            White(=), X;
 }
+/* left arm will pop Right arm from
+  stack which was pushed there by shiva when flow was going up. */
 static N(lm) {
-  if (Yellow(==))
-    White(=), ω = ο[--σ].t, X;
-  else
-    White(=), X;
+  if (Yellow(==)) White(=), ω = ο[--σ].t, X;
+  else            White(=), X;
 }
+/* last left arm will drop right arm from stack
+   then will pop Shiva from the stack and will go up on Shiva */
 static N(bm) {
-  if (Yellow(==)) {
-    Black(=);
-    --σ;
-    ω = ο[--σ].t;
-    X;
-  } else 
-    White(=), X;
+  if (Yellow(==)) Black(=), --σ, ω = ο[--σ].t, X;
+  else            White(=), X;
 }
 #define NNSDBody(name, hands)                                                  \
   static text_t *name##_hands[hands * 2];                                      \
   N(name) {                                                                    \
-    if (White(==)) {                                                           \
+    if(ο[σ-1].t == ω && ω[-2].q == 488) {                                      \
+      return (void)printf("found left recursion %lx\n", ω[-2].q);              \
+    } else if (White(==)) {                                                    \
       if (Green(==)) {                                                         \
         Yellow(=);                                                             \
         ο[σ++].t = ω;                                                          \
         ω = name##_hands[1], White(=), X;                                      \
       } else {                                                                 \
-        if (Yellow(==)) Green(=);                                              \
+        if (Yellow(==))                                                        \
+          Green(=);                                                            \
         Black(=), X;                                                           \
       }                                                                        \
     } else if (Yellow(==)) {                                                   \
