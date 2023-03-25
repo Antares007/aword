@@ -1,6 +1,8 @@
 CC|=gcc
 CFLAGS+=-std=gnu17 -Wall
 
+show.out: show.c shiva.o aradani.o gut.o
+	${CC}    $^ -o $@ ${CFLAGS} -lraylib -lm
 aword.out: aword.c gut.o
 	${CC}    $^ -o $@ ${CFLAGS} -lraylib -lm
 %.out: %.c

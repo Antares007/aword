@@ -3,6 +3,7 @@
 #define N(args)                                                                \
   void args(long α, struct t_t *ω, struct t_t *ο, long ρ, long δ, long σ)
 #define T(aw) {.q = 0}, {.c = aw}, {.q = 0},
+#define Tv(aw, value) {.q = 0}, {.c = aw}, {.v = (void *)value},
 #define X ω[δ].c(α, ω + δ, ο, ρ, δ, σ)
 #define W(         aw) (ω = (aw))
 #define White(  sopos) δ sopos +3
@@ -21,5 +22,4 @@ typedef struct t_t {
     N((*c));
   };
 } t_t;
-#define Tv(aw, value) {.q = 0}, {.c = aw}, {.v = (void *)value},
 N(b);N(o);N(shiva);N(shiv_arm);N(last_arm);N(ara);N(da);N(ni);
