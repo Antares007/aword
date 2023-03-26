@@ -14,7 +14,7 @@ static int length = 1;
 
 static void draw_aword(Vector2 *pos, aword *aw, int step) {
   Font font = GetFontDefault();
-  float fontSize = 10 + step * 4;
+  float fontSize = 20 + step * 2;
   float spacing = 10;
   Vector2 m = MeasureTextEx(font, aw->name, fontSize, spacing);
   DrawRectangle(pos->x - 10, pos->y - 10, m.x + 20, m.y + 20, aw->color);
@@ -26,7 +26,7 @@ static void draw_aword(Vector2 *pos, aword *aw, int step) {
 static void draw() {
   BeginDrawing();
   ClearBackground(BLACK);
-  Vector2 pos = {GetScreenWidth() / 2.f, GetScreenHeight() / 8.f};
+  Vector2 pos = {GetScreenWidth() / 2.f, GetScreenHeight() / 2.f};
   for (long i = 1; i < length; i++) {
     draw_aword(&pos, &awords[i], i);
   }
@@ -68,5 +68,5 @@ N(text_index) {
 void text_index_init() {
   SetTraceLogLevel(LOG_WARNING);
   InitWindow(GetScreenHeight(), GetScreenHeight(), "actionable word show");
-  SetTargetFPS(79);
+  SetTargetFPS(7);
 }
