@@ -74,5 +74,5 @@ N(text_index) {
 void text_index_init() {
   SetTraceLogLevel(LOG_WARNING);
   InitWindow(GetScreenHeight(), GetScreenHeight(), "actionable word show");
-  SetTargetFPS(7);
+  SetTargetFPS(0);
 }
