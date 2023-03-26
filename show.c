@@ -24,9 +24,9 @@ static t_t *my_hands[] = {
 #include<unistd.h>
 int main() {
   t_t *ω = 1 + (t_t[]){
-                   T(b)                       //
-    Tv(shiva, my_hands)
-                   T(o)                       //
+T(b)                       //
+Tv(shiva, my_hands)
+T(o)                       //
                };
   t_t ο[128];
   long α = 0, ρ, δ, σ = 64;

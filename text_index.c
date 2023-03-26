@@ -61,9 +61,15 @@ N(text_index) {
   }
   length += dstep;
   if (WindowShouldClose())
-    CloseWindow();
-  else
-    draw(), X;
+    return CloseWindow();
+  int key = GetCharPressed();
+  while (key != 'n') {
+    key = GetCharPressed();
+    if (key == 's')
+      return;
+    draw();
+  }
+  X;
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_WARNING);
