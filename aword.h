@@ -22,4 +22,4 @@ typedef struct t_t {
     N((*c));
   };
 } t_t;
-N(b);N(o);N(shiva);N(shiv_arm);N(last_arm);N(ara);N(da);N(ni);
+N(b);N(o);N(shiva);N(right_arm);N(left_arm);N(last_arm);N(ara);N(da);N(ni);
