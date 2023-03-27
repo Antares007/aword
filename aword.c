@@ -1,22 +1,20 @@
 #include <stdio.h>
 #include <unistd.h>
-#define LOG (void)0//printf("%s %ld\n", __FUNCTION__, d), usleep(20000)
-#define Got(o) LOG,((void (**)(long, long, void *, long, long))o)
-void b(long a, long w, void **o, long r, long d) {
-  Got(o)[w - 3](a, w - 3, o, r, -3);
-}
-void m(long a, long w, void **o, long r, long d) {
-  Got(o)[w + d](a, w + d, o, r, d);
-}
-void dot(long a, long w, void **o, long r, long d) {
-  Got(o)[w + 3](a, w + 3, o, r, 3);
-}
+#define aword long a, long w, void **o, long r, long d
+void b(aword);
+void m(aword);
+void hands(aword);
+void sleepw(aword) { usleep(20000), m(a, w, o, r, d); }
+void print(aword) { if (r == 1 && d == 3) puts(o[w + 1]); sleepw(a, w, o, r, d); }
+void dot(aword) { m(a, w, o, r == 3 ? 1 : r, 3); }
 int main() {
-  long a = 0, w = 512;
-  void *o[w];
-  long r = 1, d = 3;
-  o[--w] = 0, o[--w] = b, o[--w] = 0;
-  o[--w] = 0, o[--w] = m, o[--w] = 0;
-  o[--w] = 0, o[--w] = dot, o[--w] = 0;
-  Got(o)[w + 4](a, w + 4, o, r, d);
+  long a = 512, w;
+  void *o[a];
+  long r = 3, d = 3;
+  o[--a] = 0, o[--a] = b, o[--a] = 0;
+  o[--a] = "a", o[--a] = print, o[--a] = 0;
+  o[--a] = "b", o[--a] = print, o[--a] = 0;
+  o[--a] = "o", o[--a] = print, o[--a] = 0;
+  o[--a] = 0, o[w = --a] = dot, o[--a] = 0;
+  m(a, w, o, r, d);
 }
