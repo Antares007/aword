@@ -15,6 +15,10 @@ An actionable word is a new building block, so it is a new concept. To better un
 
 We will describe the protocol of actionable words and show how to build more powerful units of composition.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Antares007/a_word/main/a_word.png?token=GHSAT0AAAAAAB7AAMGSZIMOCSJWEE5TNDTOZAA2H6Q" alt="a word"/>
+</p>
+
 # Actionable word
 Actionable word is defined in terms of actionable sentence and actionable sentence includes defionition of actionable word. just like in human language sentence is groupe of words which contains idea followed by dot. actionable word is four sided thing.
 ```

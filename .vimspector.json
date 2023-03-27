@@ -1,0 +1,16 @@
+{
+  "configurations": {
+    "launch": {
+      "adapter": "CodeLLDB",
+      "configuration": {
+        "request": "launch",
+        "program": "./mamam.out",
+        "args": [],
+        "cwd": "${workspaceRoot}",
+        "environment": [  ],
+        "externalConsole": true,
+        "MIMode": "lldb"
+      }
+    }
+  }
+}

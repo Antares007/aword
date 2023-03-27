@@ -3,7 +3,7 @@ CFLAGS+=-std=gnu17 -Wall
 
 show.out: show.c shiva.o aradani.o text_index.o
 	${CC}    $^ -o $@ ${CFLAGS} -lraylib -lm
-%.out: %.c
+%.out: %.c sword.o
 	${CC}    $^ -o $@ ${CFLAGS} -luv
 %.o: %.c
 	${CC} -c $^ -o $@ ${CFLAGS}
