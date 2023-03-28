@@ -3,6 +3,8 @@
 # Abstract
 In the realm of software, we face a persistent issue: the lack of a universal compositional unit or building block that would significantly simplify the process of connecting software systems and expressing problems in a language that resembles human speech. What we require is a definitive term that can bring about a revolution in software development. Fortunately, we have made significant progress in this endeavor and have created a perfect loop with actionable words and sentences.
 
+the main idea is to make execution flow strait in time so it will move only one direction like time does. 
+
  actionable word is the unit of composition which does not require call stack. The power of actionable words is the ability to compose execution flow in a way that is scalable, distributable, and tailored to our needs. In software, any problem can be solved through indirection, where actionable words are composed with each other through indirect connections. 
 Actionable word is the unit of composition which can resolve memory managment problems.
 
