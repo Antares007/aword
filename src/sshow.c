@@ -20,17 +20,13 @@ S(toti, {
 });
 int main() {
   long a = 512;
-  void *o[a];
+  void *memory[2 * a];
+  void **o = memory + a;
   long r = 3, d = 3;
-  T(b)
-  Ta(print, " ")
-  Ta(print, "White")
-  Ta(print, " ")
-  T(toti)
-  Ta(print, " ")
-  T(toti)
-  Ta(print, " ")
-  Ta(print, "\n")
-  T(dot) m(a, a + 1, o, r, d);
+  o[0] = (void*)a;
+  T(b)                  //
+  Ta(print, ".\n")      //
+  T(dot)                //
+  m(a, a + 1, o, r, d); //
   return 0;
 }
