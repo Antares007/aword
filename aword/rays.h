@@ -16,5 +16,5 @@
 S(Pink)
 S(Olive) S(Maroon) S(Lime) S(Aqua) S(Blue) S(Green) S(Red) S(Yellow) S(Purple)
 #undef S
-
-#define P ((void (**)(char *, ...))o)[0]("> %s %s\n", __FILE__, __FUNCTION__),((void (**)(long))o)[1](200000)
+void (*print)(char *, ...);
+#define P print = o[0], print("S %s %s\n", __FILE__, __FUNCTION__),((void (**)(long))o)[1](200000)

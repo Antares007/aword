@@ -1,6 +1,6 @@
 const util = require("node:util");
 const exec = util.promisify(require("node:child_process").exec);
-const { lstat } = require("node:fs/promises");
+const { lstat, writeFile } = require("node:fs/promises");
 const exists = async (f) => {
   try {
     await lstat(f);
@@ -22,7 +22,8 @@ async function precomile(hash) {
 async function compileTree(hash, path = "aword") {
   if (empty == hash) {
     await compileBlob("m.c", hash);
-  } else {
+  } else if (await exists(await binPath(hash)));
+  else {
     const list = await Promise.all(
       (
         await lsTree(hash)
@@ -32,16 +33,55 @@ async function compileTree(hash, path = "aword") {
         .map(async (e) => {
           if (e.type === "blob") await compileBlob(join(path, e.name), e.hash);
           else await compileTree(e.hash, join(path, e.name));
-          return e.hash;
+          return e;
         })
     );
     if (list.length == 1)
-      await exec(`cp ${await binPath(list[0])} ${await binPath(hash)}`);
+      await exec(`cp ${await binPath(list[0].hash)} ${await binPath(hash)}`);
     else {
-      console.log(list);
-      throw new Error("wait");
+      await reducetree(list, path, hash);
     }
   }
+}
+async function reducetree(list, base_path, base_hash) {
+  const js = base_hash + ".c";
+  await writeFile(
+    js,
+    `#include "aword/rays.h"
+Ray(Blue___) { P, Blue(o, a); }
+Ray(Green__) { P, Green(o, a); }
+Ray(Red____) { P, Red(o, a); }
+Ray(Yellow_) { P, Yellow(o, a); }
+Ray(Purple_) { P, Purple(o, a); }
+Ray(Aqua___) { P, Aqua(o, a); }
+Ray(Lime___) { P, Lime(o, a); }
+Ray(Maroon_) { P, Maroon(o, a); }
+typedef void (*t_t)(void **, long);
+t_t (*load_tree)(const char *hash);
+t_t t0;
+Ray(Olive__) { P, (t0 - 16 * 4)(o, a); }
+Ray(Pink___) { P,
+  load_tree = o[2];
+${list
+  .map((e, i) =>
+    i
+      ? `
+  o[a++] = (t0 - 16 * 5);
+  o[a++] = (t0 - 16 * 4);
+  t0 = load_tree("${e.hash}");`
+      : `
+  print("--- %x %s\\n", t0, "${e.hash}");
+  o[a++] = Pink;
+  o[a++] = Olive;
+  t0 = load_tree("${e.hash}");
+`
+  )
+  .join("\n")}
+  (t0 - 16 * 5)(o, a);
+}`
+  );
+  await compileBlob(js, base_hash);
+  //  await exec(`rm -f ${js}`);
 }
 async function compileBlob(c, hash) {
   const aword_path = await binPath(hash);
