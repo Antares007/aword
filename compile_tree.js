@@ -12,12 +12,32 @@ const exists = async (f) => {
 const { join } = require("node:path");
 const compile = require("./compile.js");
 const empty = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-precomile(process.argv[2]);
-async function precomile(hash) {
+setup(process.argv[2]);
+async function setup(hash) {
   await compile("b.c", "b");
   await compile("m.c", "m");
   await compile("o.c", "o");
-  await compileTree(hash);
+  await exec("rm -rf precompile");
+  await exec("mkdir precompile");
+  await precompile(hash);
+  await exec("git add precompile/aword")
+  const sha1 = (await exec("git write-tree --prefix=precompile/aword")).stdout.trim()
+}
+async function precompile(hash, path = "aword") {
+  await exec(`mkdir -p ${join("precompile", path)}`);
+  await Promise.all(
+    (
+      await lsTree(hash)
+    ).map(async (e) => {
+      if (e.type === "blob" && e.name.endsWith("c")) {
+        const c = join(path, e.name);
+        const o = join("precompile", path, e.name);
+        await exec(`gcc -E -P -DTPATH="${path}" -DTNAME="${e.name}" ${c} > ${o}`);
+      } else if (e.type == "tree") {
+        await precompile(e.hash, join(path, e.name));
+      }
+    })
+  );
 }
 async function compileTree(hash, path = "aword") {
   if (empty == hash) {
@@ -44,23 +64,23 @@ async function compileTree(hash, path = "aword") {
   }
 }
 async function reducetree(list, base_path, base_hash) {
-  const js = base_hash + ".c";
+  const js = "S.c";
   await writeFile(
     js,
     `#include "aword/rays.h"
-Ray(Blue___) { P, Blue(o, a); }
-Ray(Green__) { P, Green(o, a); }
-Ray(Red____) { P, Red(o, a); }
-Ray(Yellow_) { P, Yellow(o, a); }
-Ray(Purple_) { P, Purple(o, a); }
-Ray(Aqua___) { P, Aqua(o, a); }
-Ray(Lime___) { P, Lime(o, a); }
-Ray(Maroon_) { P, Maroon(o, a); }
+Ray(Blue___) { P(S), Blue(o, a); }
+Ray(Green__) { P(S), Green(o, a); }
+Ray(Red____) { P(S), Red(o, a); }
+Ray(Yellow_) { P(S), Yellow(o, a); }
+Ray(Purple_) { P(S), Purple(o, a); }
+Ray(Aqua___) { P(S), Aqua(o, a); }
+Ray(Lime___) { P(S), Lime(o, a); }
+Ray(Maroon_) { P(S), Maroon(o, a); }
 typedef void (*t_t)(void **, long);
 t_t (*load_tree)(const char *hash);
 t_t t0;
-Ray(Olive__) { P, (t0 - 16 * 4)(o, a); }
-Ray(Pink___) { P,
+Ray(Olive__) { P(S), (t0 - 16 * 4)(o, a); }
+Ray(Pink___) { P(S),
   load_tree = o[2];
 ${list
   .map((e, i) =>
