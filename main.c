@@ -1,25 +1,29 @@
-const char *empty_tree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-void *load_tree(const char *hash);
-int compile_tree(const char *hash);
+#include "aword.h"
 #include <stdio.h>
+N(Purple_cb) { printf("%s\n", __FUNCTION__); }
+N(Green_cb) { printf("%s\n", __FUNCTION__); }
+typedef N((*aword_t));
+
+void *map_ram(const char *file);
+
+unsigned long w(const char *aword, void **o);
+#define T(...)
 #include <unistd.h>
-void (*tree)(void **, long);
-void GreenCB(void **o, long a) {
-  printf("%s\n", __FUNCTION__), (tree - 16 * 4)(o, a);
-}
-void PurpleCB(void **o, long a) {
-  printf("%s\n", __FUNCTION__), (tree - 16 * 4)(o, a);
-}
-typedef void (*t_t)(void**, long);
-int main(int argc, char **argv) {
-  void *o[1024];
-  long a = 0;
-  tree = load_tree(argv[1]); printf("tree %s loaded at:%p\n", argv[1], tree);
-  o[a++] = printf;
-  o[a++] = usleep;
-  o[a++] = load_tree;
-  o[a++] = PurpleCB;
-  o[a++] = GreenCB;
-  (tree - 16 * 5)(o, a);
+int main() {
+  void **o = map_ram("ram.ram");
+  long a = (long)o[0];
+  long t = 0;
+  o[t++] = printf;
+  o[t++] = usleep;
+  o[t++] = Purple_cb;
+  o[t++] = Green_cb;
+
+  a -= w("b", o + a), a -= w("m", o + a), a -= w("o", o + a);
+
+  ((aword_t)(o + a + 2 * 0))(o, t, a);
+  //((aword_t)(o + a + 2*1))(o, a);
+  //((aword_t)(o + a + 2*2))(o, a);
+  //((aword_t)(o + a + 2*3))(o, a);
+  //((aword_t)(o + a + 2*4))(o, a);
   return 0;
 }
