@@ -1,11 +1,7 @@
 #define N(argo) void argo(void **o, long t, long a, long r, long i)
-#define ALEN(...) (sizeof((const void *[]){__VA_ARGS__}) / sizeof(void *))
 #define Tab(n, a, b) o[--t] = a, o[--t] = (void *)n, o[--t] = b,
 #define Ta(n, a) Tab(n, a, 0)
 #define T(n) Ta(n, 0)
-#define D(...)                                                                 \
-  T(skip) T(ALEN(__VA_ARGS__)) __VA_ARGS__ T(ALEN(__VA_ARGS__)) T(jump)
-void *map_ram(const char *file);
 #include <stdio.h>
 #include <unistd.h>
 #define P printf("%p %5ld %2ld %s\n", o, t, i, __FUNCTION__), usleep(100000)
@@ -35,8 +31,7 @@ int main() {
   T(ti)
   // T(ti)
   //  DB(T(b) T(ti) T(dot))     (T(b) T(ti) T(dot))
-  Ta(print, "hey\n")
-
-      T(dot) m(o, t + 1, t, 5, 1);
+  Ta(print, "hey\n") T(dot)
+  m(o, t + 1, t, 5, 1);
   return 0;
 }
