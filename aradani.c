@@ -13,18 +13,24 @@ N(not) {
     if (Red(==))        m(o, t, a, Yellow(=), i);
     else if (Yellow(==))m(o, t, a, Green(=),  Purple(=));
     else if (Green(==)) m(o, t, a, Yellow(=), Purple(=));
+    else                m(o, t, a, r,         i);
   } else if (Green(==)) m(o, t, a, r,         White(=));
+  else                  m(o, t, a, r,         i);
 }
 N(and) {
   if (White(==)) {
     if (Yellow(==))     m(o, t, a, Green(=),  Purple(=));
     else if (Green(==)) m(o, t, a, Yellow(=), i);
+    else                m(o, t, a, r,         i);
   } else if (Green(==)) m(o, t, a, r,         White(=));
+  else                  m(o, t, a, r,         i);
 }
 N(or) {
   if (White(==)) {
     if (Blue(==))       m(o, t, a, Yellow(=), i);
     else if (Yellow(==))m(o, t, a, Green(=),  Purple(=));
     else if (Green(==)) m(o, t, a, Yellow(=), Purple(=));
+    else                m(o, t, a, r,         i);
   } else if (Green(==)) m(o, t, a, r,         White(=));
+  else                  m(o, t, a, r,         i);
 }
