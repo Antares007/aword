@@ -1,29 +1,42 @@
-#include "aword.h"
-#include <stdio.h>
-N(Purple_cb) { printf("%s\n", __FUNCTION__); }
-N(Green_cb) { printf("%s\n", __FUNCTION__); }
-typedef N((*aword_t));
-
+#define N(argo) void argo(void **o, long t, long a, long r, long i)
+#define ALEN(...) (sizeof((const void *[]){__VA_ARGS__}) / sizeof(void *))
+#define Tab(n, a, b) o[--t] = a, o[--t] = (void *)n, o[--t] = b,
+#define Ta(n, a) Tab(n, a, 0)
+#define T(n) Ta(n, 0)
+#define D(...)                                                                 \
+  T(skip) T(ALEN(__VA_ARGS__)) __VA_ARGS__ T(ALEN(__VA_ARGS__)) T(jump)
 void *map_ram(const char *file);
-
-unsigned long w(const char *aword, void **o);
-#define T(...)
+#include <stdio.h>
 #include <unistd.h>
+#define P printf("%p %5ld %2ld %s\n", o, t, i, __FUNCTION__), usleep(100000)
+typedef N((*w_t));
+
+N(m) { ((w_t *)o)[t + i * 3](o, t + i * 3, a, r, i); }
+N(jump) { m(o, t + ((long)o[t + i] + 5) * i, a, r, i); }
+N(skip) { jump(o, t, a, r, i); }
+
+N(b) { m(o, t, a, r, -1); }
+N(ti) { P, m(o, t, a, r, i); }
+N(dot) { m(o, t, a, r, +1); }
+
+N(print) { printf("%s", (char *)o[t + 1]), m(o, t, a, r, i); }
+N(A) { m(o, t, a, r, i); }
+N(barkcore) {}
+N(bark) {
+  long ti = t;
+  o[t] = barkcore;
+  t = a;
+  T(b) T(A) T(dot) barkcore(o, ti, t, r, i);
+}
 int main() {
-  void **o = map_ram("ram.ram");
-  long a = (long)o[0];
-  long t = 0;
-  o[t++] = printf;
-  o[t++] = usleep;
-  o[t++] = Purple_cb;
-  o[t++] = Green_cb;
+  void *o[1024];
+  long t = sizeof(o) / sizeof(*o);
+  T(b)
+  T(ti)
+  // T(ti)
+  //  DB(T(b) T(ti) T(dot))     (T(b) T(ti) T(dot))
+  Ta(print, "hey\n")
 
-  a -= w("b", o + a), a -= w("m", o + a), a -= w("o", o + a);
-
-  ((aword_t)(o + a + 2 * 0))(o, t, a);
-  //((aword_t)(o + a + 2*1))(o, a);
-  //((aword_t)(o + a + 2*2))(o, a);
-  //((aword_t)(o + a + 2*3))(o, a);
-  //((aword_t)(o + a + 2*4))(o, a);
+      T(dot) m(o, t + 1, t, 5, 1);
   return 0;
 }
