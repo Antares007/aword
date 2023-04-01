@@ -17,20 +17,30 @@ N(print) { printf("%s", (char *)o[t + 1]), ((w_t *)o)[a](o, t, a, r, i); }
 // focus on text index and multitasking
 // make a promt
 // what information we have to stop and continue execution
-N(text_index);
+N(tndx);
 N(m) { ((w_t *)o)[t + i * 3](o, t + i * 3, a, r, i); }
 N(and);
 N(or);
+N(go_Blue) {
+  if (r == 1 && i == -1)
+    r = 0;
+  ((w_t *)o)[a](o, t, a, r, i);
+}
 N(one) { ((w_t *)o)[a](o, t, a, r, i); }
 N(add) { ((w_t *)o)[a](o, t, a, r, i); }
 N(prn) { ((w_t *)o)[a](o, t, a, r, i); }
+N(program) {
+
+}
 int main() {
-  void *o[1024];
-  long t = sizeof(o) / sizeof(*o);
-  T(b) T(one) T(one) T(add) T(one) T(and) T(prn)
-  T(text_index)
-  T(dot)
-  o[--t] = m;
-  m(o, t + 2, t, 3, 1);
+  void *o[0x10000];
+  long t, a = t = sizeof(o) / sizeof(*o);
+  T(b)
+  T(tndx)
+  T(one)
+  T(add)
+  T(go_Blue)
+  T(one) T(one) T(and) T(prn) T(or) T(add) T(one) T(one) T(dot) o[--a] = m;
+  m(o, t - 2, a, 3, -1);
   return 0;
 }
