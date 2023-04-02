@@ -1,7 +1,8 @@
 // clang-format off
-#define Ta(nar, val) 0, nar, (void *)val,
-#define T(nar) 0, nar, 0,
-#define B(...) ((void *[]){__VA_ARGS__}+1)
+#define T(nar) 0, 0, 0, 0, 0, 0, 0, 0, nar, \
+               0, 0, 0, 0, 0, 0, 0, 0,
+#define TAW 8 // T arm width
+#define B(...) ((void *[]){__VA_ARGS__} + TAW)
 #define O(tari) void tari(void**o, void **t, long a, long r, long i)
 #define N(argo, ...) O(argo) { if (r == 1 && i == -1) __VA_ARGS__; else M(r); }
 #define V(asil, ...) O(asil) { if (r == 1 && i ==  1) __VA_ARGS__; else M(r); }
@@ -10,15 +11,14 @@ typedef O((*t_t));
 #include <raylib.h>
 #include <stdio.h>
 #define P printf("%ld %2ld %s\n", r, i, __FUNCTION__)
-static O(m) { ((t_t*)t)[i * 3](o, t + i * 3, a, r, i); }
+static O(m) { ((t_t*)t)[i * (2*TAW+1)](o, t + i * (2*TAW+1), a, r, i); }
 static O(b) {
   if (r == 1)
     m(o, t, a, r, 1);
   else
-    m(o, t[-1], a, r, (long)t[1]);
+    m(o, t[-TAW], a, r, (long)t[TAW]);
 }
 static O(dot) { m(o, t, a, r == 3 ? 1 : r == 1 ? 3 : r, -1); }
-static O(jump) { m(o, t + (long)t[1] * 3 * i, a, r, i); }
 // clang-format on
 
 static Font font;
@@ -33,9 +33,9 @@ V(shouldclose, M(!!WindowShouldClose()))
 N(getcharpressed, ({
     long key = GetCharPressed();
     if (key)
-      t[1] = (void *)key;
-    if (t[1]) {
-      o[a++] = t[1];
+      t[TAW] = (void *)key;
+    if (t[TAW]) {
+      o[a++] = t[TAW];
       M(1);
     } else
       M(0);
@@ -61,27 +61,30 @@ O(toti_core) {
 }
 O(toti) {
   void **R = t[+1];
-  R[-1] = t, R[+1] = (void *)+1;
+  R[-TAW] = t, R[+TAW] = (void *)+1;
   void **L = t[-1];
-  L[-1] = t, L[+1] = (void *)-1;
+  L[-TAW] = t, L[+TAW] = (void *)-1;
   *t = toti_core;
   toti_core(o, t, a, r, i);
 }
-#define D_(...) B(__VA_ARGS__),
-#define DB(...) B(__VA_ARGS__), toti, D_
 O(left) { M(r); }
 O(right) { M(r); }
+O(us) {
+  t[-1] = B(T(b) T(left) T(dot));
+  t[+1] = B(T(b) T(right) T(dot));
+  toti(o, t, a, r, i);
+}
 int main() {
   void *o[64];
   long a = 0;
-  void **t = B(T(b)                                          //
-               T(begindrawing)                               //
-               T(fps)                                        //
-               DB(T(b) T(left) T(dot))(T(b) T(right) T(dot)) //
-               T(and) T(getcharpressed) T(write_char)        //
+  void **t = B(T(b)                                   //
+               T(begindrawing)                        //
+               T(fps)                                 //
+               T(us)                                  //
+               T(and) T(getcharpressed) T(write_char) //
                T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) T(dot));
-  t[-1] = t;
-  t[1] = (void *)1;
+  t[-TAW] = t;
+  t[TAW] = (void *)1;
 
   SetTraceLogLevel(LOG_ERROR);
   SetTargetFPS(0);
