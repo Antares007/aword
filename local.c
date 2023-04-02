@@ -3,18 +3,18 @@
 #include <stdio.h>
 // clang-format off
 #define AWords                                \
-  X(b,    {0,  0}, {0,  0}, {0,  0}, {0,  0}, \
-          {0, -1}, {1, -1}, {2, -1}, {3, -1}) \
+  X(b,    {3, -1}, {2, -1}, {0,  0}, {0, -1}, \
+          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
   X(and,  {1,  1}, {2, -1}, {3, -1}, {0, -1}, \
-          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
+          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
   X(aw,   {3, -1}, {2, -1}, {1, -1}, {0, -1}, \
           {0,  1}, {1,  1}, {2,  1}, {3,  1}) \
   X(or,   {1,  1}, {2, -1}, {3,  1}, {3, -1}, \
-          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
+          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
   X(not,  {1,  1}, {3, -1}, {3,  1}, {0, -1}, \
-          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
+          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
   X(orand,{1,  1}, {2, -1}, {3, -1}, {3, -1}, \
-          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
+          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
   X(o,    {1,  1}, {2,  1}, {3,  1}, {0,  1}, \
           {0,  0}, {0,  0}, {0,  0}, {0,  0})
 // clang-format on
@@ -66,9 +66,11 @@ void draw_aword(const char *text, char exits[8][2]) {
 }
 int main(void) {
   InitWindow(1500, 600, "AWord Drawing");
+  SetTargetFPS(0);
   while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(WHITE);
+    DrawText(TextFormat("%d", GetFPS()), 0, 0, 25, BLACK);
     long awi[] = {aw_b,     aw_aw, aw_and, aw_aw, aw_or, aw_aw,
                   aw_orand, aw_aw, aw_not, aw_aw, aw_o};
     for (long i = 0; i < sizeof(awi) / sizeof(*awi); i++) {
