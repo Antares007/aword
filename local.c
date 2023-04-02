@@ -67,7 +67,13 @@ void draw_aword(const char *text, char exits[8][2]) {
 int main(void) {
   InitWindow(1500, 600, "AWord Drawing");
   SetTargetFPS(0);
+  float zoom = 2.0f;
   while (!WindowShouldClose()) {
+    int wheelMove = GetMouseWheelMove();
+    if (wheelMove > 0)
+      zoom += 0.1;
+    else if (wheelMove < 0)
+      zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
     DrawText(TextFormat("%d", GetFPS()), 0, 0, 25, BLACK);
@@ -77,7 +83,7 @@ int main(void) {
       Camera2D camera = {0};
       camera.target = (Vector2){0, 0};
       camera.rotation = 0.0f;
-      camera.zoom = 3.0f;
+      camera.zoom = zoom;
       camera.offset =
           (Vector2){100 + i * 41 * camera.zoom, GetScreenHeight() / 2.f};
       BeginMode2D(camera);
