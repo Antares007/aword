@@ -1,7 +1,11 @@
 // clang-format off
+#define Ta(nar, var) 0, 0, 0, 0, 0, 0, 0, 0, nar, \
+                     (void*)var, 0, 0, 0, 0, 0, 0, 0,
 #define T(nar) 0, 0, 0, 0, 0, 0, 0, 0, nar, \
                0, 0, 0, 0, 0, 0, 0, 0,
-#define TAW 8 // T arm width
+// T arm width
+#define TAW 8
+//
 #define B(...) ((void *[]){__VA_ARGS__} + TAW)
 #define O(tari) void tari(void**o, void **t, long a, long r, long i)
 #define N(argo, ...) O(argo) { if (r == 1 && i == -1) __VA_ARGS__; else M(r); }
@@ -43,44 +47,61 @@ O(not );
 O(and);
 O(orand);
 O(or);
-// clang-format off
 static O(b) {
-  if (r == 1) m(o, t, a, r, 1);
-  else        m(o, t[-1], a, r, (long)t[1]);
+  if (r == 1)
+    m(o, t, a, r, 1);
+  else
+    m(o, t[-1], a, r, (long)t[1]);
 }
 O(toti_heart) {
   if (i == 1) {
-    if (r == 3)       m(o, t, a, 1, -1);
-    else              m(o, t[(long)t[TAW]], a, (r == 1) ? r = 3 : r, 1);
-  } else if (r == 1)  m(o, t, a, r, 1);
+    if (r == 3)
+      m(o, t, a, 1, -1); // turn around
+    else
+      m(o, t[(long)t[TAW]], a, (r == 1) ? r = 3 : r, 1); // turn right
+  } else if (r == 1)
+    m(o, t, a, r, 1); // turn around
   else {
     long arm_index = (long)t[TAW];
-    t[TAW] = (void*)(1 + (((long)t[TAW]) % (long)t[-TAW]));
-    m(o, t[-arm_index], a, r, 1);
+    t[TAW] = (void *)(1 + (((long)t[TAW]) % (long)t[-TAW]));
+    m(o, t[-arm_index], a, r, 1); // turn right
   }
 }
 O(toti) {
   long arm_index = 1;
-  for(; arm_index <= TAW && t[arm_index]; arm_index++) {
+  for (; arm_index <= TAW && t[arm_index]; arm_index++) {
     void **R = t[+arm_index];
     R[-1] = t, R[+1] = (void *)+1;
     void **L = t[-arm_index];
     L[-1] = t, L[+1] = (void *)-1;
   }
-  t[+TAW] = (void*)1;
-  t[-TAW] = (void*)(arm_index - 1);
+  t[+TAW] = (void *)1;
+  t[-TAW] = (void *)(arm_index - 1);
   *t = toti_heart;
   toti_heart(o, t, a, r, i);
 }
-O(left)   { P, M(r); }
-O(right)  { P, M(r); }
-O(left2)  { P, M(r); }
-O(right2) { P, M(r); }
+O(left) { M(r); }
+O(right) { M(r); }
+O(left2) { M(r); }
+O(right2) { M(r); }
 O(us) {
-  t[-1] = B(T(b) T(left) T(dot));
-  t[+1] = B(T(b) T(right) T(dot));
-  t[-2] = B(T(b) T(left2) T(dot));
-  t[+2] = B(T(b) T(right2) T(dot));
+  t[-1] = B(T(b) T(left) T(dot)), t[+1] = B(T(b) T(right) T(dot));
+  t[-2] = B(T(b) T(left2) T(dot)), t[+2] = B(T(b) T(right2) T(dot));
+  toti(o, t, a, r, i);
+}
+O(prep_for_record) {
+  t[-1] = B(T(b) T(dot)), t[+1] = B(T(b) T(dot));
+  toti(o, t, a, r, i);
+}
+O(draw_recorded_data) {
+  t[-1] = B(T(b) T(dot)), t[+1] = B(T(b) T(dot));
+  toti(o, t, a, r, i);
+}
+O(load_program) {
+  t_t user_toti = t[1];
+  void *mem[100];
+  t[-1] = B(T(b) T(prep_for_record) T(user_toti) T(dot)),
+  t[+1] = B(T(b) T(draw_recorded_data) T(dot));
   toti(o, t, a, r, i);
 }
 int main() {
@@ -89,11 +110,11 @@ int main() {
   void **t = B(T(b)                                   //
                T(begindrawing)                        //
                T(fps)                                 //
-               T(us)                                  //
+               Ta(load_program, us)                   //
                T(and) T(getcharpressed) T(write_char) //
                T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) T(dot));
   t[-1] = t;
-  t[ 1] = (void *)1;
+  t[1] = (void *)1;
 
   SetTraceLogLevel(LOG_ERROR);
   SetTargetFPS(0);
