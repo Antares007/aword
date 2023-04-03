@@ -7,9 +7,9 @@
 #define Blue(op)    r op 0
 
 #define Ta(nar, var)  0, 0, 0, 0, 0, 0, 0, 0, nar, \
-                      (void*)var, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, (void*)var,
 #define T(nar)        0, 0, 0, 0, 0, 0, 0, 0, nar, \
-                      0, 0, 0, 0, 0, 0, 0, 0,
+                      0, 0, 0, 0, 0, 0, 0, #nar,
 #define AW 8
 #define R +(long)
 #define L -(long)
@@ -27,7 +27,17 @@
 #define M(r) m(o, t, a, r, i, s)
 // clang-format on
 typedef O((*t_t));
+#include <raylib.h>
+static Vector2 pos = {100, 450};
+static Vector2 dir = {1, 0};
+static void rotate() {
+  int x = dir.x;
+  dir.x = dir.y;
+  dir.y = x * -1;
+}
 static O(m) {
+  pos.x += 31 * dir.x * i;
+  pos.y += 41 * dir.y * i;
   ((t_t *)t)[i * (2 * AW + 1)](o, t + i * (2 * AW + 1), a, r, i, s);
 }
 static O(b) {
@@ -38,36 +48,39 @@ static O(b) {
 }
 O(toti_heart) {
   if (White(==)) {
-    if (Green(==))
+    if (Green(==)) {
       m(o, t, a, r, Black(=), s);
-    else
-      m(o, t[R t[R AW]], a, (Green(==)) ? Yellow(=) : r, i, s);
-  } else if (Green(==))
+    } else {
+      long arm_index = (long)t[+AW];
+      void **left_arm = t[-arm_index];
+      m(o, left_arm, a, (Green(==)) ? Yellow(=) : r, i, s);
+    }
+  } else if (Green(==)) {
     m(o, t, a, r, White(=), s);
-  else {
-    long arm_index = (long)t[R AW];
-    long arm_count = (long)t[L AW];
-    t[R AW] = (void *)(1 + arm_index % arm_count);
-    m(o, t[L arm_index], a, r, White(=), s);
+  } else {
+    long arm_count = (long)t[-AW];
+    long arm_index = (long)t[+AW];
+    t[+AW] = (void *)(1 + arm_index % arm_count);
+    void **right_arm = t[+arm_index];
+    m(o, right_arm, a, r, White(=), s);
   }
 }
 O(toti) {
   long arm_index = 1;
-  for (; arm_index <= AW && t[R arm_index]; arm_index++) {
-    void **rarm = t[R arm_index];
-    rarm[L 1] = t, rarm[R 1] = (void *)R 1;
-    void **larm = t[L arm_index];
-    larm[L 1] = t, larm[R 1] = (void *)L 1;
+  for (; arm_index <= AW && t[arm_index]; arm_index++) {
+    void **left_arm = t[-arm_index];
+    left_arm[-1] = t, left_arm[+1] = (void *)1;
+    void **right_arm = t[+arm_index];
+    right_arm[-1] = t, right_arm[+1] = (void *)-1;
   }
-  t[R AW] = (void *)R 1;
-  t[L AW] = (void *)(arm_index - 1);
+  t[+AW] = (void *)1;
+  t[-AW] = (void *)(arm_index - 1);
   *t = toti_heart;
   toti_heart(o, t, a, r, i, s);
 }
 static O(dot) {
   m(o, t, a, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : r, Black(=), s);
 }
-#include <raylib.h>
 #include <stdio.h>
 static Font font;
 V(begindrawing, BeginDrawing(), ClearBackground(BLACK), M(r));
@@ -95,12 +108,26 @@ O(not );
 O(and);
 O(orand);
 O(or);
+O(left) {
+  DrawText("left", 0, 0, 45, YELLOW);
+  M(r);
+}
+O(right) {
+  DrawText("right", 0, 0, 45, RED);
+  M(r);
+}
+O(us) {
+  t[-1] = B(T(b) T(left) T(dot)), t[+1] = B(T(b) T(right) T(dot));
+  toti(o, t, a, r, i, s);
+}
 int main() {
   void *o[1024];
   long a = 1024;
-  void **t =
-      B(T(b) T(begindrawing) T(fps) T(and) T(getcharpressed) T(write_char)
-            T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) T(dot));
+  void **t = B(T(b)                                                   //
+               T(begindrawing) T(fps)                                 //
+               T(and) T(getcharpressed) T(write_char) T(us)           //
+               T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) //
+               T(dot));
   long r, i, s = 0;
   t[L 1] = t;
   t[R 1] = (void *)1;
