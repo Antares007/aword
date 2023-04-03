@@ -1,27 +1,60 @@
 // clang-format off
-#define Ta(nar, var) 0, 0, 0, 0, 0, 0, 0, 0, nar, \
-                     (void*)var, 0, 0, 0, 0, 0, 0, 0,
-#define T(nar) 0, 0, 0, 0, 0, 0, 0, 0, nar, \
-               0, 0, 0, 0, 0, 0, 0, 0,
-// T arm width
-#define TAW 8
-//
-#define B(...) ((void *[]){__VA_ARGS__} + TAW)
+#define White(op)   i op 1
+#define Black(op)   i op -1
+#define Yellow(op)  r op 3
+#define Red(op)     r op 2
+#define Green(op)   r op 1
+#define Blue(op)    r op 0
+
+#define Ta(nar, var)  0, 0, 0, 0, 0, 0, 0, 0, nar, \
+                      (void*)var, 0, 0, 0, 0, 0, 0, 0,
+#define T(nar)        0, 0, 0, 0, 0, 0, 0, 0, nar, \
+                      0, 0, 0, 0, 0, 0, 0, 0,
+#define AW 8
+#define B(...) ((void *[]){__VA_ARGS__} + AW)
+//(({}),(void**)0) 
 #define O(tari) void tari(void**o, void **t, long a, long r, long i)
-#define N(argo, ...) O(argo) { if (r == 1 && i == -1) __VA_ARGS__; else M(r); }
-#define V(asil, ...) O(asil) { if (r == 1 && i ==  1) __VA_ARGS__; else M(r); }
+#define N(argo, ...) O(argo) { if (Green(==) && Black(==)) __VA_ARGS__; else M(r); }
+#define V(asil, ...) O(asil) { if (Green(==) && White(==)) __VA_ARGS__; else M(r); }
 #define M(r) m(o, t, a, r, i)
 typedef O((*t_t));
-#include <raylib.h>
-#include <stdio.h>
-#include <unistd.h>
-#define P printf("%ld %2ld %s\n", r, i, __FUNCTION__), usleep(100000)
-static O(m) { ((t_t*)t)[i * (2*TAW+1)](o, t + i * (2*TAW+1), a, r, i); }
+static O(m) { ((t_t*)t)[i*(2*AW+1)](o, t+i*(2*AW+1), a, r, i); }
+static O(b) {
+  if (Green(==)) m(o, t, a, r, White(=));
+  else m(o, t[-1], a, r, (long)t[+1]);
+}
+O(toti_heart) {
+  if (White(==)) {
+    if (Green(==))
+      m(o, t, a, r, Black(=));
+    else
+      m(o, t[(long)t[AW]], a, (Green(==)) ? Yellow(=) : r, i);
+  } else if (Green(==))
+    m(o, t, a, r, White(=));
+  else {
+    long arm_index = (long)t[+AW];
+    long arm_count = (long)t[-AW];
+    t[+AW] = (void *)(1 + arm_index % arm_count);
+    m(o, t[-arm_index], a, r, White(=));
+  }
+}
+O(toti) {
+  long arm_index = 1;
+  for (; arm_index <= AW && t[+arm_index]; arm_index++) {
+    void **R = t[+arm_index];
+    R[-1] = t, R[+1] = (void *)+1;
+    void **L = t[-arm_index];
+    L[-1] = t, L[+1] = (void *)-1;
+  }
+  t[+AW] = (void *)1;
+  t[-AW] = (void *)(arm_index - 1);
+  *t = toti_heart;
+  toti_heart(o, t, a, r, i);
+}
 static O(dot) { m(o, t, a, r == 3 ? 1 : r == 1 ? 3 : r, -1); }
-// clang-format on
-
+#include<raylib.h>
+#include<stdio.h>
 static Font font;
-
 V(begindrawing, BeginDrawing(), ClearBackground(BLACK), M(r));
 V(enddrawing, EndDrawing(), M(r));
 V(the_end, ({ return; }))
@@ -31,8 +64,7 @@ V(fps,
 V(shouldclose, M(!!WindowShouldClose()))
 N(getcharpressed, ({
     long key = GetCharPressed();
-    if (key)
-      t[1] = (void *)key;
+    if (key) t[1] = (void *)key;
     if (t[1]) {
       o[a++] = t[1];
       M(1);
@@ -47,75 +79,16 @@ O(not );
 O(and);
 O(orand);
 O(or);
-static O(b) {
-  if (r == 1)
-    m(o, t, a, r, 1);
-  else
-    m(o, t[-1], a, r, (long)t[1]);
-}
-O(toti_heart) {
-  if (i == 1) {
-    if (r == 3)
-      m(o, t, a, 1, -1); // turn around
-    else
-      m(o, t[(long)t[TAW]], a, (r == 1) ? r = 3 : r, 1); // turn right
-  } else if (r == 1)
-    m(o, t, a, r, 1); // turn around
-  else {
-    long arm_index = (long)t[TAW];
-    t[TAW] = (void *)(1 + (((long)t[TAW]) % (long)t[-TAW]));
-    m(o, t[-arm_index], a, r, 1); // turn right
-  }
-}
-O(toti) {
-  long arm_index = 1;
-  for (; arm_index <= TAW && t[arm_index]; arm_index++) {
-    void **R = t[+arm_index];
-    R[-1] = t, R[+1] = (void *)+1;
-    void **L = t[-arm_index];
-    L[-1] = t, L[+1] = (void *)-1;
-  }
-  t[+TAW] = (void *)1;
-  t[-TAW] = (void *)(arm_index - 1);
-  *t = toti_heart;
-  toti_heart(o, t, a, r, i);
-}
-O(left) { M(r); }
-O(right) { M(r); }
-O(left2) { M(r); }
-O(right2) { M(r); }
-O(us) {
-  t[-1] = B(T(b) T(left) T(dot)), t[+1] = B(T(b) T(right) T(dot));
-  t[-2] = B(T(b) T(left2) T(dot)), t[+2] = B(T(b) T(right2) T(dot));
-  toti(o, t, a, r, i);
-}
-O(prep_for_record) {
-  t[-1] = B(T(b) T(dot)), t[+1] = B(T(b) T(dot));
-  toti(o, t, a, r, i);
-}
-O(draw_recorded_data) {
-  t[-1] = B(T(b) T(dot)), t[+1] = B(T(b) T(dot));
-  toti(o, t, a, r, i);
-}
-O(load_program) {
-  t_t user_toti = t[1];
-  void *mem[100];
-  t[-1] = B(T(b) T(prep_for_record) T(user_toti) T(dot)),
-  t[+1] = B(T(b) T(draw_recorded_data) T(dot));
-  toti(o, t, a, r, i);
-}
 int main() {
-  void *o[64];
+  void *o[1024];
   long a = 0;
-  void **t = B(T(b)                                   //
-               T(begindrawing)                        //
-               T(fps)                                 //
-               Ta(load_program, us)                   //
-               T(and) T(getcharpressed) T(write_char) //
+  void **t = B(T(b)
+               T(begindrawing)
+               T(fps)
+               T(and) T(getcharpressed) T(write_char)
                T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) T(dot));
   t[-1] = t;
   t[1] = (void *)1;
-
   SetTraceLogLevel(LOG_ERROR);
   SetTargetFPS(0);
   InitWindow(1500, 900, "aword os");
@@ -124,36 +97,34 @@ int main() {
   CloseWindow();
   return 0;
 }
-// clang-format off
 O(not) {
-  if (i == 1) {
-    if (r == 3) r = 1, i = -1;
-    else if (r == 2) r = 3;
-    else if (r == 1) r = 3, i = -1;
-  } else if (r != 3) i = 1;
+  if (White(==)) {
+    if (Yellow(==)) Green(=), Black(=);
+    else if (Green(==)) Yellow(=), Black(=);
+    else if (Red(==)) Yellow(=);
+  } else if (Green(==)) White(=);
   M(r);
 }
 O(and) {
-  if (i == 1) {
-    if (r == 3) r = 1, i = -1, t[1] = (void*)a;
-    else if (r == 0) a = (long)t[1];
-    else if (r == 1) r = 3;
-  } else if (r != 3) i = 1;
+  if (White(==)) {
+    if (Yellow(==)) Green(=), Black(=);
+    else if (Green(==)) Yellow(=);
+  } else if (Green(==)) White(=);
   M(r);
 }
 O(orand) {
-  if (i == 1) {
-    if (r == 3) r = 1, i = -1, t[1] = (void*)a;
-    else if (r == 0) a = (long)t[1], r = 3;
-    else if (r == 1) r = 3;
-  } else if (r != 3) i = 1;
+  if (White(==)) {
+    if (Yellow(==)) Green(=), Black(=);
+    else if (Green(==)) Yellow(=);
+    else if (Blue(==)) Yellow(=);
+  } else if (Green(==)) White(=);
   M(r);
 }
 O(or) {
-  if (i == 1) {
-    if (r == 3) r = 1, i = -1, t[1] = (void*)a;
-    else if (r == 0) a = (long)t[1], r = 3;
-    else if (r == 1) r = 3, i = -1;
-  } else if (r != 3) i = 1;
+  if (White(==)) {
+    if (Yellow(==)) Green(=), Black(=);
+    else if (Green(==)) Yellow(=), Black(=);
+    else if (Blue(==)) Yellow(=);
+  } else if (Green(==)) White(=);
   M(r);
 }
