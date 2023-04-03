@@ -13,29 +13,29 @@
 #define AW 8
 #define B(...) ((void *[]){__VA_ARGS__} + AW)
 //(({}),(void**)0) 
-#define O(tari) void tari(void**o, void **t, long a, long r, long i)
+#define O(tari) void tari(void**o, void **t, long a, long r, long i, long s)
 #define N(argo, ...) O(argo) { if (Green(==) && Black(==)) __VA_ARGS__; else M(r); }
 #define V(asil, ...) O(asil) { if (Green(==) && White(==)) __VA_ARGS__; else M(r); }
-#define M(r) m(o, t, a, r, i)
+#define M(r) m(o, t, a, r, i, s)
 typedef O((*t_t));
-static O(m) { ((t_t*)t)[i*(2*AW+1)](o, t+i*(2*AW+1), a, r, i); }
+static O(m) { ((t_t*)t)[i*(2*AW+1)](o, t+i*(2*AW+1), a, r, i, s); }
 static O(b) {
-  if (Green(==)) m(o, t, a, r, White(=));
-  else m(o, t[-1], a, r, (long)t[+1]);
+  if (Green(==)) m(o, t, a, r, White(=), s);
+  else m(o, t[-1], a, r, (long)t[+1], s);
 }
 O(toti_heart) {
   if (White(==)) {
     if (Green(==))
-      m(o, t, a, r, Black(=));
+      m(o, t, a, r, Black(=), s);
     else
-      m(o, t[(long)t[AW]], a, (Green(==)) ? Yellow(=) : r, i);
+      m(o, t[(long)t[AW]], a, (Green(==)) ? Yellow(=) : r, i, s);
   } else if (Green(==))
-    m(o, t, a, r, White(=));
+    m(o, t, a, r, White(=), s);
   else {
     long arm_index = (long)t[+AW];
     long arm_count = (long)t[-AW];
     t[+AW] = (void *)(1 + arm_index % arm_count);
-    m(o, t[-arm_index], a, r, White(=));
+    m(o, t[-arm_index], a, r, White(=), s);
   }
 }
 O(toti) {
@@ -49,9 +49,9 @@ O(toti) {
   t[+AW] = (void *)1;
   t[-AW] = (void *)(arm_index - 1);
   *t = toti_heart;
-  toti_heart(o, t, a, r, i);
+  toti_heart(o, t, a, r, i, s);
 }
-static O(dot) { m(o, t, a, r == 3 ? 1 : r == 1 ? 3 : r, -1); }
+static O(dot) { m(o, t, a, r == 3 ? 1 : r == 1 ? 3 : r, -1, s); }
 #include<raylib.h>
 #include<stdio.h>
 static Font font;
@@ -81,7 +81,7 @@ O(orand);
 O(or);
 int main() {
   void *o[1024];
-  long a = 0;
+  long a = 0, s=1024;
   void **t = B(T(b)
                T(begindrawing)
                T(fps)
@@ -93,7 +93,7 @@ int main() {
   SetTargetFPS(0);
   InitWindow(1500, 900, "aword os");
   font = LoadFont("NovaMono-Regular.ttf");
-  m(o, t, a, 3, 1);
+  m(o, t, a, 3, 1, s);
   CloseWindow();
   return 0;
 }
