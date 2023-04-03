@@ -11,8 +11,6 @@
 #define T(nar)        0, 0, 0, 0, 0, 0, 0, 0, nar, \
                       0, 0, 0, 0, 0, 0, 0, #nar,
 #define AW 8
-#define R +(long)
-#define L -(long)
 #define B(...)                                                                 \
   (({                                                                          \
      void *text[] = {__VA_ARGS__};                                             \
@@ -21,35 +19,26 @@
        o[--a] = text[--i];                                                     \
    }),                                                                         \
    o + a + AW)
-#define O(tari) void tari(void**o, void **t, long a, long r, long i, long s)
-#define N(argo, ...) O(argo) { if (Green(==) && Black(==)) __VA_ARGS__; else M(r); }
-#define V(asil, ...) O(asil) { if (Green(==) && White(==)) __VA_ARGS__; else M(r); }
+#define N(tari) void tari(void**o, void **t, long a, long r, long i, long s)
 #define M(r) m(o, t, a, r, i, s)
 // clang-format on
-typedef O((*t_t));
-#include <raylib.h>
-static Vector2 pos = {100, 450};
-static Vector2 dir = {1, 0};
-static void rotate() {
-  int x = dir.x;
-  dir.x = dir.y;
-  dir.y = x * -1;
-}
-static O(m) {
-  pos.x += 31 * dir.x * i;
-  pos.y += 41 * dir.y * i;
+typedef N((*t_t));
+static N(m) {
   ((t_t *)t)[i * (2 * AW + 1)](o, t + i * (2 * AW + 1), a, r, i, s);
 }
-static O(b) {
+static N(b) {
   if (Green(==))
     m(o, t, a, r, White(=), s);
   else
-    m(o, t[L 1], a, r, (long)t[R 1], s);
+    m(o, t[-1], a, r, (long)t[+1], s);
 }
-O(toti_heart) {
+static N(dot) {
+  m(o, t, a, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : r, Black(=), s);
+}
+N(toti_heart) {
   if (White(==)) {
-    if (Green(==)) {
-      m(o, t, a, r, Black(=), s);
+    if (Yellow(==)) {
+      m(o, t, a, Green(=), Black(=), s);
     } else {
       long arm_index = (long)t[+AW];
       void **left_arm = t[-arm_index];
@@ -65,9 +54,9 @@ O(toti_heart) {
     m(o, right_arm, a, r, White(=), s);
   }
 }
-O(toti) {
+N(toti) {
   long arm_index = 1;
-  for (; arm_index <= AW && t[arm_index]; arm_index++) {
+  for (; arm_index < AW && t[arm_index]; arm_index++) {
     void **left_arm = t[-arm_index];
     left_arm[-1] = t, left_arm[+1] = (void *)1;
     void **right_arm = t[+arm_index];
@@ -78,68 +67,90 @@ O(toti) {
   *t = toti_heart;
   toti_heart(o, t, a, r, i, s);
 }
-static O(dot) {
-  m(o, t, a, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : r, Black(=), s);
-}
-#include <stdio.h>
+#include <raylib.h>
 static Font font;
-V(begindrawing, BeginDrawing(), ClearBackground(BLACK), M(r));
-V(enddrawing, EndDrawing(), M(r));
-V(the_end, ({ return; }))
-V(fps,
-  DrawTextEx(font, TextFormat("%d", GetFPS()), (Vector2){0, 0}, 25, 4, WHITE),
-  M(r))
-V(shouldclose, M(!!WindowShouldClose()))
-N(getcharpressed, ({
-    long key = GetCharPressed();
-    if (key)
-      t[R 1] = (void *)key;
-    if (t[R 1]) {
-      o[s++] = t[R 1];
-      M(Green(=));
-    } else
-      M(Blue(=));
-  }))
-V(write_char,
-  DrawTextEx(font, TextFormat("%ld", o[--s]), (Vector2){100, 100}, 45, 4,
-             WHITE),
-  M(r))
-O(not );
-O(and);
-O(orand);
-O(or);
-O(left) {
-  DrawText("left", 0, 0, 45, YELLOW);
+N(begindrawing) {
+  if (Green(==) && White(==))
+    BeginDrawing(), ClearBackground(BLACK);
+  M(r);
+};
+N(enddrawing) {
+  if (Green(==) && White(==))
+    EndDrawing();
+  M(r);
+};
+N(the_end) {
+  if (Green(!=) || White(!=))
+    M(r);
+}
+N(fps) {
+  if (Green(==) && White(==))
+    DrawTextEx(font, TextFormat("%d", GetFPS()), (Vector2){0, 0}, 25, 4, WHITE);
   M(r);
 }
-O(right) {
-  DrawText("right", 0, 0, 45, RED);
+N(shouldclose) {
+  if (Green(==) && White(==))
+    M(!!WindowShouldClose());
+  else
+    M(r);
+}
+N(getcharpressed) {
+  if (Green(==) && Black(==))
+    ({
+      long key = GetCharPressed();
+      if (key)
+        t[+1] = (void *)key;
+      if (t[+1]) {
+        o[s++] = t[+1];
+        M(Green(=));
+      } else
+        M(Blue(=));
+    });
+  else
+    M(r);
+}
+N(write_char) {
+  if (Green(==) && White(==))
+    DrawTextEx(font, TextFormat("%ld", o[--s]), (Vector2){200, 100}, 45, 4,
+               WHITE),
+        M(r);
+  else
+    M(r);
+}
+N(not );
+N(and);
+N(orand);
+N(or);
+N(left) {
+  DrawText("left", 200, 0, 45, YELLOW);
   M(r);
 }
-O(us) {
+N(right) {
+  DrawText("right", 400, 0, 45, RED);
+  M(r);
+}
+N(us) {
   t[-1] = B(T(b) T(left) T(dot)), t[+1] = B(T(b) T(right) T(dot));
   toti(o, t, a, r, i, s);
 }
 int main() {
   void *o[1024];
   long a = 1024;
-  void **t = B(T(b)                                                   //
-               T(begindrawing) T(fps)                                 //
-               T(and) T(getcharpressed) T(write_char) T(us)           //
-               T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) //
-               T(dot));
+  void **t =
+      B(T(b) T(begindrawing) T(fps) T(and) T(getcharpressed) T(write_char) T(us)
+            T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) T(dot));
   long r, i, s = 0;
-  t[L 1] = t;
-  t[R 1] = (void *)1;
+  t[-1] = t;
+  t[+1] = (void *)1;
   SetTraceLogLevel(LOG_ERROR);
-  SetTargetFPS(0);
+  SetTargetFPS(60);
   InitWindow(1500, 900, "aword os");
   font = LoadFont("NovaMono-Regular.ttf");
   m(o, t, a, Yellow(=), White(=), s);
   CloseWindow();
   return 0;
 }
-O(not ) {
+N(not ) {
   if (White(==)) {
     if (Yellow(==))
       Green(=), Black(=);
@@ -151,7 +162,7 @@ O(not ) {
     White(=);
   M(r);
 }
-O(and) {
+N(and) {
   if (White(==)) {
     if (Yellow(==))
       Green(=), Black(=);
@@ -161,7 +172,7 @@ O(and) {
     White(=);
   M(r);
 }
-O(orand) {
+N(orand) {
   if (White(==)) {
     if (Yellow(==))
       Green(=), Black(=);
@@ -173,7 +184,7 @@ O(orand) {
     White(=);
   M(r);
 }
-O(or) {
+N(or) {
   if (White(==)) {
     if (Yellow(==))
       Green(=), Black(=);
