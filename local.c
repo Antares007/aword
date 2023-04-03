@@ -3,18 +3,18 @@
 #include <stdio.h>
 // clang-format off
 #define AWords                                \
-  X(b,    {3, -1}, {2, -1}, {0,  0}, {0, -1}, \
-          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
+  X(b,    {0,  0}, {0,  0}, {0,  0}, {0,  0}, \
+          {0, -1}, {1, -1}, {2, -1}, {3, -1}) \
   X(and,  {1,  1}, {2, -1}, {3, -1}, {0, -1}, \
-          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
+          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
   X(aw,   {3, -1}, {2, -1}, {1, -1}, {0, -1}, \
           {0,  1}, {1,  1}, {2,  1}, {3,  1}) \
   X(or,   {1,  1}, {2, -1}, {3,  1}, {3, -1}, \
-          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
+          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
   X(not,  {1,  1}, {3, -1}, {3,  1}, {0, -1}, \
-          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
+          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
   X(orand,{1,  1}, {2, -1}, {3, -1}, {3, -1}, \
-          {0,  1}, {1, -1}, {2,  1}, {3,  1}) \
+          {0, -1}, {1, -1}, {2, -1}, {3,  1}) \
   X(o,    {1,  1}, {2,  1}, {3,  1}, {0,  1}, \
           {0,  0}, {0,  0}, {0,  0}, {0,  0})
 // clang-format on
@@ -57,13 +57,13 @@ void draw_aword(const char *text, char exits[8][2]) {
     DrawLineBezierCubic(startPos, endPos, startControlPos, endControlPos, thick,
                         color);
     if (si == 1)
-      DrawTriangle((Vector2){startPos.x - vspase, startPos.y},
+      DrawTriangle((Vector2){startPos.x - vspase / 2.f, startPos.y},
                    (Vector2){startPos.x, startPos.y + vspase / 2.f},
                    (Vector2){startPos.x, startPos.y - vspase / 2.f}, color);
     else
       DrawTriangle((Vector2){startPos.x, startPos.y - vspase / 2.f},
                    (Vector2){startPos.x, startPos.y + vspase / 2.f},
-                   (Vector2){startPos.x + vspase, startPos.y}, color);
+                   (Vector2){startPos.x + vspase / 2.f, startPos.y}, color);
   }
   DrawTextEx(font, text, spos, width * .8f, 0, BLACK);
 }
