@@ -63,7 +63,7 @@ N(right) {
 }
 N(us) {
   ω[-1] = B(T(b) T(left) T(o)), ω[+1] = B(T(b) T(right) T(o));
-  toti(ο, ω, α, ρ, δ, σ);
+  toti(α, ω, ο, ρ, δ, σ);
 }
 int main() {
   long α = 1024;
@@ -76,7 +76,7 @@ int main() {
   SetTargetFPS(60);
   InitWindow(1500, 900, "aword os");
   font = LoadFont("NovaMono-Regular.ttf");
-  m(ο, ω, α, ρ, δ, σ);
+  m(α, ω, ο, ρ, δ, σ);
   CloseWindow();
   return 0;
 }

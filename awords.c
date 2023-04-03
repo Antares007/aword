@@ -1,31 +1,31 @@
 #include "awords.h"
-N(m) { ((t_t *)ω)[δ * (2 * AW + 1)](ο, ω + δ * (2 * AW + 1), α, ρ, δ, σ); }
+N(m) { ((t_t *)ω)[δ * (2 * AW + 1)](α, ω + δ * (2 * AW + 1), ο, ρ, δ, σ); }
 N(b) {
   if (Green(==))
-    m(ο, ω, α, ρ, White(=), σ);
+    m(α, ω, ο, ρ, White(=), σ);
   else
-    m(ο, ω[-1], α, ρ, (long)ω[+1], σ);
+    m(α, ω[-1], ο, ρ, (long)ω[+1], σ);
 }
 N(o) {
-  m(ο, ω, α, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : ρ, Black(=), σ);
+  m(α, ω, ο, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : ρ, Black(=), σ);
 }
 static N(toti_heart) {
   if (White(==)) {
     if (Yellow(==)) {
-      m(ο, ω, α, Green(=), Black(=), σ);
+      m(α, ω, ο, Green(=), Black(=), σ);
     } else {
       long arm_index = (long)ω[+AW];
       void **left_arm = ω[-arm_index];
-      m(ο, left_arm, α, (Green(==)) ? Yellow(=) : ρ, δ, σ);
+      m(α, left_arm, ο, (Green(==)) ? Yellow(=) : ρ, δ, σ);
     }
   } else if (Green(==)) {
-    m(ο, ω, α, ρ, White(=), σ);
+    m(α, ω, ο, ρ, White(=), σ);
   } else {
     long arm_count = (long)ω[-AW];
     long arm_index = (long)ω[+AW];
     ω[+AW] = (void *)(1 + arm_index % arm_count);
     void **right_arm = ω[+arm_index];
-    m(ο, right_arm, α, ρ, White(=), σ);
+    m(α, right_arm, ο, ρ, White(=), σ);
   }
 }
 N(toti) {
@@ -39,7 +39,7 @@ N(toti) {
   ω[+AW] = (void *)1;
   ω[-AW] = (void *)(arm_index - 1);
   *ω = toti_heart;
-  toti_heart(ο, ω, α, ρ, δ, σ);
+  toti_heart(α, ω, ο, ρ, δ, σ);
 }
 N(not ) {
   if (White(==)) {

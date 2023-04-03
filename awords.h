@@ -20,8 +20,8 @@
        ο[--α] = text[--i];                                                     \
    }),                                                                         \
    ο + α + AW)
-#define N(argo) void argo(void**ο, void **ω, long α, long ρ, long δ, long σ)
-#define M(ρ) m(ο, ω, α, ρ, δ, σ)
+#define N(argo) void argo(long α, void **ω, void**ο, long ρ, long δ, long σ)
+#define M(ρ) m(α, ω, ο, ρ, δ, σ)
 // clang-format on
 typedef N((*t_t));
 N(m);N(b);N(o);N(toti);N(not);N(and);N(or);N(orand);
