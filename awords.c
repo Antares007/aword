@@ -1,10 +1,11 @@
 #include "awords.h"
-N(m) { ((t_t *)ω)[δ * (2 * AW + 1)](α, ω + δ * (2 * AW + 1), ο, ρ, δ, σ); }
+#include "aword_colors.h"
+N(m) { ω += (AW + 1 + AW) * δ, ο[ω].go(α, ω, ο, ρ, δ, σ); }
 N(b) {
   if (Green(==))
     m(α, ω, ο, ρ, White(=), σ);
   else
-    m(α, ω[-1], ο, ρ, (long)ω[+1], σ);
+    m(α, ο[ω - 1].q, ο, ρ, ο[ω + 1].q, σ);
 }
 N(o) {
   m(α, ω, ο, Yellow(==) ? Green(=) : Green(==) ? Yellow(=) : ρ, Black(=), σ);
@@ -14,31 +15,31 @@ static N(toti_heart) {
     if (Yellow(==)) {
       m(α, ω, ο, Green(=), Black(=), σ);
     } else {
-      long arm_index = (long)ω[+AW];
-      void **left_arm = ω[-arm_index];
+      long arm_index = ο[ω + AW].q;
+      long left_arm = ο[ω - arm_index].q;
       m(α, left_arm, ο, (Green(==)) ? Yellow(=) : ρ, δ, σ);
     }
   } else if (Green(==)) {
     m(α, ω, ο, ρ, White(=), σ);
   } else {
-    long arm_count = (long)ω[-AW];
-    long arm_index = (long)ω[+AW];
-    ω[+AW] = (void *)(1 + arm_index % arm_count);
-    void **right_arm = ω[+arm_index];
+    long arm_count = ο[ω - AW].q;
+    long arm_index = ο[ω + AW].q;
+    ο[ω + AW].q = (1 + arm_index % arm_count);
+    long right_arm = ο[ω + arm_index].q;
     m(α, right_arm, ο, ρ, White(=), σ);
   }
 }
 N(toti) {
   long arm_index = 1;
-  for (; arm_index < AW && ω[arm_index]; arm_index++) {
-    void **left_arm = ω[-arm_index];
-    left_arm[-1] = ω, left_arm[+1] = (void *)1;
-    void **right_arm = ω[+arm_index];
-    right_arm[-1] = ω, right_arm[+1] = (void *)-1;
+  for (; arm_index < AW && ο[ω + arm_index].q; arm_index++) {
+    long left_arm = ο[ω - arm_index].q;
+    ο[left_arm - 1].q = ω, ο[left_arm + 1].q = 1;
+    long right_arm = ο[ω + arm_index].q;
+    ο[right_arm - 1].q = ω, ο[right_arm + 1].q = -1;
   }
-  ω[+AW] = (void *)1;
-  ω[-AW] = (void *)(arm_index - 1);
-  *ω = toti_heart;
+  ο[ω + AW].q = 1;
+  ο[ω - AW].q = arm_index - 1;
+  ο[ω].v = toti_heart;
   toti_heart(α, ω, ο, ρ, δ, σ);
 }
 N(not ) {
@@ -51,7 +52,7 @@ N(not ) {
       Yellow(=);
   } else if (Green(==))
     White(=);
-  M(ρ);
+  m(α, ω, ο, ρ, δ, σ);
 }
 N(and) {
   if (White(==)) {
@@ -61,7 +62,7 @@ N(and) {
       Yellow(=);
   } else if (Green(==))
     White(=);
-  M(ρ);
+  m(α, ω, ο, ρ, δ, σ);
 }
 N(orand) {
   if (White(==)) {
@@ -73,7 +74,7 @@ N(orand) {
       Yellow(=);
   } else if (Green(==))
     White(=);
-  M(ρ);
+  m(α, ω, ο, ρ, δ, σ);
 }
 N(or) {
   if (White(==)) {
@@ -85,5 +86,5 @@ N(or) {
       Yellow(=);
   } else if (Green(==))
     White(=);
-  M(ρ);
+  m(α, ω, ο, ρ, δ, σ);
 }
