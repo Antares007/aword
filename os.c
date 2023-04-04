@@ -59,7 +59,7 @@ N(right) {
   m(α, ω, ο, ρ, δ, σ);
 }
 N(us) {
-  ο[ω - 1].q = B(T(b) T(left) T(o)), ο[ω + 1].q = B(T(b) T(right) T(o));
+  D(B(T(b) T(left) T(o)), B(T(b) T(right) T(o)), 1);
   toti(α, ω, ο, ρ, δ, σ);
 }
 int main() {

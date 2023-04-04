@@ -3,6 +3,9 @@
 #define T(nar) Ta(nar, 0)
 #define Ta(nar, var)                                                           \
 #nar, 0, 0, 0, 0, 0, 0, 0, nar, 0, 0, 0, 0, 0, 0, 0, (void *)var,
+#define D(lb, rb, i)                                                           \
+  ο[ω - i].q = lb;                                                             \
+  ο[ω + i].q = rb
 #define B(...)                                                                 \
   (({                                                                          \
      void *text[] = {__VA_ARGS__};                                             \
