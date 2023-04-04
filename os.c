@@ -31,9 +31,9 @@ N(getcharpressed) {
   if (Green(==) && Black(==)) {
     long key = GetCharPressed();
     if (key)
-      ο[ω + 1].q = key;
-    if (ο[ω + 1].q) {
-      ο[σ++] = ο[ω + 1];
+      ο[ω OP(+) 1].q = key;
+    if (ο[ω OP(+) 1].q) {
+      ο[σ++] = ο[ω OP(+) 1];
       m(α, ω, ο, Green(=), δ, σ);
     } else
       m(α, ω, ο, Blue(=), δ, σ);
@@ -59,7 +59,7 @@ N(right) {
   m(α, ω, ο, ρ, δ, σ);
 }
 N(us) {
-  D(B(T(b) T(left) T(o)), B(T(b) T(right) T(o)), 1);
+  D(B(T(b) T(left) T(o)), B(T(b) T(right) T(o)));
   toti(α, ω, ο, ρ, δ, σ);
 }
 int main() {
@@ -72,8 +72,8 @@ int main() {
         T(us)                                                  //
         T(orand) T(shouldclose) T(the_end) T(or) T(enddrawing) //
         T(o));
-  ο[ω - 1].q = ω;
-  ο[ω + 1].q = 1;
+  ο[ω OP(-) 1].q = ω;
+  ο[ω OP(+) 1].q = 1;
   SetTraceLogLevel(LOG_ERROR);
   SetTargetFPS(60);
   InitWindow(1500, 900, "aword os");
