@@ -3,7 +3,7 @@
 N(m) { ω = ω OP(+)(AW + 1 + AW) * δ, ο[ω].go(α, ω, ο, ρ, δ, σ); }
 N(b) {
   if (Green(==))
-    m(α, ω, ο, ρ, White(=), σ);
+    m(α, ω, ο, ρ, White, σ);
   else
     m(α, ο[ω OP(-) 1].q, ο, ρ, ο[ω OP(+) 1].q, σ);
 }
@@ -44,50 +44,4 @@ N(toti) {
   ο[ω OP(-) AW].q = 1;
   ο[ω].v = toti_heart;
   toti_heart(α, ω, ο, ρ, δ, σ);
-}
-N(not ) {
-  if (White(==)) {
-    if (Yellow(==))
-      Green(=), Black(=);
-    else if (Green(==))
-      Yellow(=), Black(=);
-    else if (Red(==))
-      Yellow(=);
-  } else if (Green(==))
-    White(=);
-  m(α, ω, ο, ρ, δ, σ);
-}
-N(and) {
-  if (White(==)) {
-    if (Yellow(==))
-      Green(=), Black(=);
-    else if (Green(==))
-      Yellow(=);
-  } else if (Green(==))
-    White(=);
-  m(α, ω, ο, ρ, δ, σ);
-}
-N(orand) {
-  if (White(==)) {
-    if (Yellow(==))
-      Green(=), Black(=);
-    else if (Green(==))
-      Yellow(=);
-    else if (Blue(==))
-      Yellow(=);
-  } else if (Green(==))
-    White(=);
-  m(α, ω, ο, ρ, δ, σ);
-}
-N(or) {
-  if (White(==)) {
-    if (Yellow(==))
-      Green(=), Black(=);
-    else if (Green(==))
-      Yellow(=), Black(=);
-    else if (Blue(==))
-      Yellow(=);
-  } else if (Green(==))
-    White(=);
-  m(α, ω, ο, ρ, δ, σ);
 }

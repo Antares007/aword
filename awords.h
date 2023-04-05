@@ -1,41 +1,42 @@
 #pragma once
+// clang-format off
+#ifndef bWords
+#define OP(a, op, b) a.tin op - (b)
+#define Push(s) --s.tin
+#define Pull(s) s.tin++
+#else
+#define OP(a, op, b) a.tin op + (b)
+#define Push(s) s.tin++
+#define Pull(s) --s.tin
+#endif
 #define AW 8
-#define T(nar) Ta(nar, 0)
-#define Ta(nar, var)                                                           \
-  0, 0, 0, 0, 0, 0, 0, 0, nar, 0, 0, 0, 0, 0, 0, 0, (void *)var,
-#define D(lb, rb)                                                              \
-  {                                                                            \
-    long i = ++ο[ω + AW].q;                                                    \
-    ο[ω - i].q = lb;                                                           \
-    ο[ω + i].q = rb;                                                           \
-  }
-#define OP(p) +p
-#define Push(s) s++
-#define Pull(s) --s
-#define B(...)                                                                 \
-  (({                                                                          \
-     void *text[] = {__VA_ARGS__};                                             \
-     long i = sizeof(text) / sizeof(void *);                                   \
-     while (i)                                                                 \
-       ο[--α].v = text[--i];                                                   \
-   }),                                                                         \
-   α + AW)
-#define N(argo)                                                                \
-  void argo(long α, long ω, struct text_t *ο, long ρ, long δ, long σ)
-#define BConnect(ωa, ωb, δ) ο[ωa OP(-) 1].q = ωb, ο[ωa OP(+) 1].q = δ
-typedef struct text_t {
-  union {
-    long q;
-    void *v;
-    const char *cs;
-    N((*go));
-  };
-} text_t;
-N(m);
-N(b);
-N(o);
-N(toti);
-N(not );
-N(and);
-N(or);
-N(orand);
+
+#define D(n, ...)                                         \
+  ({ nar_t arms[][20][2] = {__VA_ARGS__};                 \
+    ο[OP(ω, +, AW - 1)].q = sizeof(arms) / sizeof(*arms); \
+    ο[OP(ω, +, AW)].v = arms; })
+// first Β is unicode greek Beta
+#define Β(...) {__VA_ARGS__, o}}
+#define B(...) {{__VA_ARGS__, o}, Β
+
+#define T(ina, ...) ο[Push(α)].q=0, \
+                    ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
+                    ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
+                    ο[__VA_ARGS__ Push(α)].v=ina, \
+                    ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
+                    ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
+                    ο[Push(α)].q=0
+#define N(argo) void argo(tin_v α, tin_v ω, struct txt_t *ο, ray_v ρ, dir_v δ, tin_v σ)
+typedef struct ray_v { long ray; } ray_v;
+typedef struct tin_v { long tin; } tin_v;
+typedef struct dir_v { long dir; } dir_v;
+typedef struct txt_t {
+  union { long q; void *v; const char *cs; struct txt_t *t; tin_v w; N((*go)); };
+} txt_t;
+typedef N((*nar_t));
+#define White   (dir_v){+1}
+#define Black   (dir_v){-1}
+#define Yellow  (ray_v){3}
+#define Red     (ray_v){2}
+#define Green   (ray_v){1}
+#define Blue    (ray_v){0}
