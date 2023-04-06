@@ -80,9 +80,9 @@ N(us) {
 #include <assert.h>
 int main() {
   win_v α = {1024}, ω;
-  txt_t β[α.tin + 1 + α.tin];
-  txt_t *ο = β + α.tin;
-//  α.tin = 0 - α.tin;
+  txt_t β[α.win + 1 + α.win];
+  txt_t *ο = β + α.win;
+//  α.win = 0 - α.win;
   ray_v ρ = {3};
   dir_v δ = {1};
   win_v σ = {0};

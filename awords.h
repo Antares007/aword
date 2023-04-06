@@ -1,24 +1,24 @@
 #pragma once
 // clang-format off
 #ifndef bWords
-#define Plus(a, b) a.tin - (b) 
-#define Push(s) --s.tin
-#define Pull(s) s.tin++
+#define Plus(a, b) a.win - (b) 
+#define Push(s) --s.win
+#define Pull(s) s.win++
 #else
-#define Plus(a, b) a.tin + (b)
-#define Push(s) s.tin++
-#define Pull(s) --s.tin
+#define Plus(a, b) a.win + (b)
+#define Push(s) s.win++
+#define Pull(s) --s.win
 #endif
 #define T(ina, ...) ο[Push(α)].q=0, \
                     ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
                     ο[__VA_ARGS__ Push(α)].v=ina, \
                     ο[Push(α)].q=0,ο[Push(α)].q=0,ο[Push(α)].q=0, \
                     ο[Push(α)].q=0
-#define Twin(nar) (T(nar, ο[Push(σ)].w.tin =), ο[Pull(σ)].w)
+#define Twin(nar) (T(nar, ο[Push(σ)].w.win =), ο[Pull(σ)].w)
 #define Args win_v α, win_v ω, struct txt_t *ο, ray_v ρ, dir_v δ, win_v σ
 #define N(argo) void argo(Args)
 typedef struct ray_v { long ray; } ray_v;
-typedef struct win_v { long tin; } win_v;
+typedef struct win_v { long win; } win_v;
 typedef struct dir_v { long dir; } dir_v;
 typedef struct txt_t {
   union { long q; void *v; const char *cs; struct txt_t *t; win_v w; N((*go)); };

@@ -1,7 +1,7 @@
 #include "awords.h"
 N(go) {
-  ω.tin = Plus(ω, (1 + 4 + 4) * δ.dir);
-  ο[ω.tin].go(α, ω, ο, ρ, δ, σ);
+  ω.win = Plus(ω, (1 + 4 + 4) * δ.dir);
+  ο[ω.win].go(α, ω, ο, ρ, δ, σ);
 }
 N(go_White) { go(α, ω, ο, ρ, (dir_v){+1}, σ); }
 N(go_Black) { go(α, ω, ο, ρ, (dir_v){-1}, σ); }
@@ -20,7 +20,7 @@ N(o) {
   P_Red /*   */ (ω).v = go_DarkRed;
   P_Green /* */ (ω).v = go_DarkYellow;
   P_Blue /*  */ (ω).v = go_DarkBlue;
-  ο[ω.tin].v = aradani_heart;
+  ο[ω.win].v = aradani_heart;
   aradani_heart(α, ω, ο, ρ, δ, σ);
 }
 
@@ -59,7 +59,7 @@ N(toti) {
   }
   P_Red(ω).w = r;
   P_DarkRed(ω).w = r;
-  ο[ω.tin].v = toti_heart;
+  ο[ω.win].v = toti_heart;
   toti_heart(α, ω, ο, ρ, δ, σ);
 #undef WriteArm
 }
@@ -68,7 +68,7 @@ N(not ) {
   P_Red /*        */ (ω).v = go_Yellow;
   P_Green /*      */ (ω).v = go_DarkYellow;
   P_Blue /*       */ (ω).v = go_Blue;
-  ο[ω.tin].v = aradani_heart;
+  ο[ω.win].v = aradani_heart;
   P_DarkBlue /*   */ (ω).v = go_DarkBlue;
   P_DarkGreen /*  */ (ω).v = go_Green;
   P_DarkRed /*    */ (ω).v = go_DarkRed;
@@ -80,7 +80,7 @@ N(and) {
   P_Red /*        */ (ω).v = go_Red;
   P_Green /*      */ (ω).v = go_Yellow;
   P_Blue /*       */ (ω).v = go_Blue;
-  ο[ω.tin].v = aradani_heart;
+  ο[ω.win].v = aradani_heart;
   P_DarkBlue /*   */ (ω).v = go_DarkBlue;
   P_DarkGreen /*  */ (ω).v = go_Green;
   P_DarkRed /*    */ (ω).v = go_DarkRed;
@@ -92,7 +92,7 @@ N(or) {
   P_Red /*        */ (ω).v = go_Red;
   P_Green /*      */ (ω).v = go_DarkYellow;
   P_Blue /*       */ (ω).v = go_Yellow;
-  ο[ω.tin].v = aradani_heart;
+  ο[ω.win].v = aradani_heart;
   P_DarkBlue /*   */ (ω).v = go_DarkBlue;
   P_DarkGreen /*  */ (ω).v = go_Green;
   P_DarkRed /*    */ (ω).v = go_DarkRed;
@@ -104,7 +104,7 @@ N(orand) {
   P_Red /*        */ (ω).v = go_Red;
   P_Green /*      */ (ω).v = go_Yellow;
   P_Blue /*       */ (ω).v = go_Yellow;
-  ο[ω.tin].v = aradani_heart;
+  ο[ω.win].v = aradani_heart;
   P_DarkBlue /*   */ (ω).v = go_DarkBlue;
   P_DarkGreen /*  */ (ω).v = go_Green;
   P_DarkRed /*    */ (ω).v = go_DarkRed;
