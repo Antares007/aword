@@ -1,11 +1,11 @@
 #pragma once
 // clang-format off
 #ifndef bWords
-#define OP(a, op, b) a.tin op - (b) 
+#define Plus(a, b) a.tin - (b) 
 #define Push(s) --s.tin
 #define Pull(s) s.tin++
 #else
-#define OP(a, op, b) a.tin op + (b)
+#define Plus(a, b) a.tin + (b)
 #define Push(s) s.tin++
 #define Pull(s) --s.tin
 #endif
@@ -24,11 +24,11 @@ typedef struct txt_t {
   union { long q; void *v; const char *cs; struct txt_t *t; win_v w; N((*go)); };
 } txt_t;
 typedef N((*nar_t));
-#define P_Yellow(w) ο[OP(w, +, 4)]
-#define P_Red(w) ο[OP(w, +, 3)]
-#define P_Green(w) ο[OP(w, +, 2)]
-#define P_Blue(w) ο[OP(w, +, 1)]
-#define P_DarkBlue(w) ο[OP(w, -, 1)]
-#define P_DarkGreen(w) ο[OP(w, -, 2)]
-#define P_DarkRed(w) ο[OP(w, -, 3)]
-#define P_DarkYellow(w) ο[OP(w, -, 4)]
+#define P_Yellow(w)     ο[Plus(w, +4)]
+#define P_Red(w)        ο[Plus(w, +3)]
+#define P_Green(w)      ο[Plus(w, +2)]
+#define P_Blue(w)       ο[Plus(w, +1)]
+#define P_DarkBlue(w)   ο[Plus(w, -1)]
+#define P_DarkGreen(w)  ο[Plus(w, -2)]
+#define P_DarkRed(w)    ο[Plus(w, -3)]
+#define P_DarkYellow(w) ο[Plus(w, -4)]

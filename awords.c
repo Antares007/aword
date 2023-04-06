@@ -1,6 +1,6 @@
 #include "awords.h"
 N(go) {
-  ω.tin = OP(ω, +, (1 + 4 + 4) * δ.dir);
+  ω.tin = Plus(ω, (1 + 4 + 4) * δ.dir);
   ο[ω.tin].go(α, ω, ο, ρ, δ, σ);
 }
 N(go_White) { go(α, ω, ο, ρ, (dir_v){+1}, σ); }
@@ -13,7 +13,7 @@ N(go_DarkBlue) /*  */ { go_Black(α, ω, ο, (ray_v){0}, δ, σ); };
 N(go_DarkGreen) /* */ { go_Black(α, ω, ο, (ray_v){1}, δ, σ); };
 N(go_DarkRed) /*   */ { go_Black(α, ω, ο, (ray_v){2}, δ, σ); };
 N(go_DarkYellow) /**/ { go_Black(α, ω, ο, (ray_v){3}, δ, σ); };
-N(aradani_heart) { ο[OP(ω, +, (1 + ρ.ray) * δ.dir)].go(α, ω, ο, ρ, δ, σ); }
+N(aradani_heart) { ο[Plus(ω, (1 + ρ.ray) * δ.dir)].go(α, ω, ο, ρ, δ, σ); }
 N(b) { go_White(α, ω, ο, ρ, δ, σ); }
 N(o) {
   P_Yellow /**/ (ω).v = go_DarkGreen;

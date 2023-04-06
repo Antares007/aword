@@ -1,4 +1,3 @@
-// #define bWords
 #include "awords.h"
 #include <raylib.h>
 #include <stdio.h>
@@ -83,14 +82,14 @@ int main() {
   win_v α = {1024}, ω;
   txt_t β[α.tin + 1 + α.tin];
   txt_t *ο = β + α.tin;
-  // α.tin = 0 - α.tin;
+  α.tin = 0 - α.tin;
   ray_v ρ = {3};
   dir_v δ = {1};
   win_v σ = {0};
   ω = Twin(b);
   T(begindrawing);
-  assert(ο[OP(ω, +, 0)].v == b);
-  assert(ο[OP(ω, +, 1 + 4 + 4)].v == begindrawing);
+  assert(ο[Plus(ω, 0)].v == b);
+  assert(ο[Plus(ω, 1 + 4 + 4)].v == begindrawing);
   T(fps), T(print);
   T(and), T(us);
   T(orand), T(shouldclose), T(the_end), T(or), T(enddrawing);
