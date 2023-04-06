@@ -24,6 +24,9 @@ typedef struct txt_t {
   union { long q; void *v; const char *cs; struct txt_t *t; win_v w; N((*go)); };
 } txt_t;
 typedef N((*nar_t));
+//           p p p pw p p p p p p p pw p p p p
+// -b...o...-4-3-2-10+1+2+3+4-4-3-2-10+1+2+3+4...+b
+//          |___4___1___4___||___4___1___4___|
 #define P_Yellow(w)     ο[Plus(w, +4)]
 #define P_Red(w)        ο[Plus(w, +3)]
 #define P_Green(w)      ο[Plus(w, +2)]

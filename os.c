@@ -82,7 +82,7 @@ int main() {
   win_v α = {1024}, ω;
   txt_t β[α.tin + 1 + α.tin];
   txt_t *ο = β + α.tin;
-  α.tin = 0 - α.tin;
+//  α.tin = 0 - α.tin;
   ray_v ρ = {3};
   dir_v δ = {1};
   win_v σ = {0};
