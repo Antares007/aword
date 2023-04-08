@@ -38,17 +38,35 @@ N(toti) {
   τ[5] = tot + 5;
   toti_pith(τ, ρ, δ);
 }
+N(begin_drawing) {
+  if (δ == 1) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+  }
+  m(τ, ρ, δ);
+}
+N(end_drawing) {
+  if (δ == 1) {
+    EndDrawing();
+    if (WindowShouldClose())
+      CloseWindow();
+    else
+      m(τ, ρ, δ);
+  } else
+    m(τ, ρ, δ);
+}
+N(seven) {
+  if (δ == 1) {
+    DrawText("7", 100, 100, 45, RED);
+  }
+  m(τ, ρ, δ);
+}
 int main() {
   InitWindow(1800, 1000, "aword");
   SetTargetFPS(60);
-  // void *text[] = {T(b), T(toti), T(r), T(o)};
-  // m(text + 5, 3, 1);
-  while (!WindowShouldClose()) {
-    BeginDrawing();
-    ClearBackground(BLACK);
-    EndDrawing();
-  }
-  CloseWindow();
+  void *text[] = {T(b),    T(begin_drawing), T(seven),
+                  T(toti), T(end_drawing),   T(o)};
+  m(text + 5, 3, 1);
 }
 N(go_Yellow) /*    */ { m(τ, 3, +1); }
 N(go_Red) /*       */ { m(τ, 2, +1); }
