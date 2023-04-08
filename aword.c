@@ -1,5 +1,5 @@
-#include<raylib.h>
 #include <assert.h>
+#include <raylib.h>
 #include <stdio.h>
 #include <unistd.h>
 long ident = 0;
@@ -39,27 +39,27 @@ N(toti) {
   toti_pith(τ, ρ, δ);
 }
 int main() {
-  InitWindow(1800,1000, "aword");
+  InitWindow(1800, 1000, "aword");
   SetTargetFPS(60);
-  //void *text[] = {T(b), T(toti), T(r), T(o)};
-  //m(text + 5, 3, 1);
-  while(!WindowShouldClose()) {
+  // void *text[] = {T(b), T(toti), T(r), T(o)};
+  // m(text + 5, 3, 1);
+  while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(BLACK);
     EndDrawing();
   }
   CloseWindow();
 }
-N(go_Yellow) /*    */ {}
-N(go_Red) /*       */ {}
-N(go_Green) /*     */ {}
-N(go_Blue) /*      */ {}
-N(go_DarkBlue) /*  */ {}
-N(go_DarkGreen) /* */ {}
-N(go_DarkRed) /*   */ {}
-N(go_DarkYellow) /**/ {}
+N(go_Yellow) /*    */ { m(τ, 3, +1); }
+N(go_Red) /*       */ { m(τ, 2, +1); }
+N(go_Green) /*     */ { m(τ, 1, +1); }
+N(go_Blue) /*      */ { m(τ, 0, +1); }
+N(go_DarkBlue) /*  */ { m(τ, 0, -1); }
+N(go_DarkGreen) /* */ { m(τ, 1, -1); }
+N(go_DarkRed) /*   */ { m(τ, 2, -1); }
+N(go_DarkYellow) /**/ { m(τ, 3, -1); }
 N(aradani_pith) {}
-N(not) {
+N(not ) {
   τ[+1 + 3] = /*Yellow*/ go_DarkGreen;
   τ[+1 + 2] = /*Red   */ go_Yellow;
   τ[+1 + 1] = /*Green */ go_DarkYellow;
