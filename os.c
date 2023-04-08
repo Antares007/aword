@@ -1,7 +1,5 @@
 #include "awords.h"
 #include <raylib.h>
-#include <stdio.h>
-#include <unistd.h>
 N(go);
 N(go_Green);
 N(go_Blue);
@@ -13,24 +11,40 @@ N(orand);
 N(or);
 
 static Font font;
-N(begindrawing) {
+N(begindrawing_pith) {
   if (ρ.ray == 1 && δ.dir == 1)
     BeginDrawing(), ClearBackground(BLACK);
   go(α, ω, ο, ρ, δ, σ);
+}
+N(begindrawing) {
+  P;
+  α.win -= 4, ο[--α.win].go = begindrawing_pith, α.win -= 4;
+  --σ.win, ο[σ.win].go(α, ω, ο, ρ, δ, σ);
 };
-N(enddrawing) {
+N(enddrawing_pith) {
   if (ρ.ray == 1 && δ.dir == 1)
     EndDrawing();
   go(α, ω, ο, ρ, δ, σ);
 };
-N(the_end) {
-  if (ρ.ray != 1 || δ.dir != 1)
-    go(α, ω, ο, ρ, δ, σ);
-}
-N(fps) {
+N(enddrawing) {
+  P;
+  α.win -= 4, ο[--α.win].go = enddrawing_pith, α.win -= 4;
+  --σ.win, ο[σ.win].go(α, ω, ο, ρ, δ, σ);
+};
+N(fps_pith) {
   if (ρ.ray == 1 && δ.dir == 1)
     DrawTextEx(font, TextFormat("%d", GetFPS()), (Vector2){0, 0}, 25, 4, WHITE);
   go(α, ω, ο, ρ, δ, σ);
+}
+N(fps) {
+  P;
+  α.win -= 4, ο[--α.win].go = fps_pith, α.win -= 4;
+  --σ.win, ο[σ.win].go(α, ω, ο, ρ, δ, σ);
+};
+
+N(the_end) {
+  if (ρ.ray != 1 || δ.dir != 1)
+    go(α, ω, ο, ρ, δ, σ);
 }
 N(shouldclose) {
   if (ρ.ray == 1 && δ.dir == 1)
@@ -71,35 +85,45 @@ N(print) {
 }
 N(id1) { DrawText("Right", 300, 400, 45, RED), go(α, ω, ο, ρ, δ, σ); }
 N(id2) { DrawText("Left", 400, 400, 45, YELLOW), go(α, ω, ο, ρ, δ, σ); }
-N(us) {
-  nar_t *arms[] = {(nar_t[]){id1, o}, (nar_t[]){id2, o}};
-  P_Blue(ω).v = arms;
-  P_DarkBlue(ω).q = sizeof(arms) / sizeof(*arms);
-  toti(α, ω, ο, ρ, δ, σ);
-}
 #include <assert.h>
+N(m_pith) { P, go(α, ω, ο, ρ, δ, σ); }
+N(m) { P,
+  α.win -= 4, ο[--α.win].v = m_pith, α.win -= 4;
+  ο[--σ.win].go(α, ω, ο, ρ, δ, σ); }
+N(branch_pith) { P; }
+N(branch) {
+  α.win -= 4, ο[ω.win = --α.win].v = branch_pith, α.win -= 4;
+  ο[σ.win++].v = b;
+  ο[σ.win++].v = m;
+  ο[σ.win++].v = o;
+  ο[--σ.win].go(α, ω, ο, ρ, δ, σ);
+}
 int main() {
   win_v α = {1024}, ω;
   txt_t β[α.win + 1 + α.win];
   txt_t *ο = β + α.win;
-//  α.win = 0 - α.win;
+  //  α.win = 0 - α.win;
   ray_v ρ = {3};
-  dir_v δ = {1};
+  dir_v δ = {-1};
   win_v σ = {0};
-  ω = Twin(b);
-  T(begindrawing);
-  assert(ο[Plus(ω, 0)].v == b);
-  assert(ο[Plus(ω, 1 + 4 + 4)].v == begindrawing);
-  T(fps), T(print);
-  T(and), T(us);
-  T(orand), T(shouldclose), T(the_end), T(or), T(enddrawing);
-  T(o);
+  ο[σ.win++].v = b;
+  ο[σ.win++].v = branch;
+  // ο[σ.win++].v = begindrawing;
+  // ο[σ.win++].v = fps;
+  // ο[σ.win++].v = print;
+  // ο[σ.win++].v = orand;
+  // ο[σ.win++].v = shouldclose;
+  // ο[σ.win++].v = the_end;
+  // ο[σ.win++].v = or;
+  // ο[σ.win++].v = enddrawing;
+  ο[σ.win++].v = o;
+  //  SetTraceLogLevel(LOG_ERROR);
+  //  SetTargetFPS(60);
+  //  InitWindow(1500, 900, "aword os");
+  //  font = LoadFont("NovaMono-Regular.ttf");
 
-  SetTraceLogLevel(LOG_ERROR);
-  SetTargetFPS(60);
-  InitWindow(1500, 900, "aword os");
-  font = LoadFont("NovaMono-Regular.ttf");
-  go(α, ω, ο, ρ, δ, σ);
-  CloseWindow();
+  --σ.win, ο[σ.win].go(α, ω, ο, ρ, δ, σ);
+
+  //  CloseWindow();
   return 0;
 }

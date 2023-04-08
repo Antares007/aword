@@ -35,3 +35,8 @@ typedef N((*nar_t));
 #define P_DarkGreen(w)  ο[Plus(w, -2)]
 #define P_DarkRed(w)    ο[Plus(w, -3)]
 #define P_DarkYellow(w) ο[Plus(w, -4)]
+
+#include <stdio.h>
+#include <unistd.h>
+#define P printf("%s\n", __FUNCTION__), usleep(200000)
+N(b_pith);
