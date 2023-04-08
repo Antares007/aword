@@ -1,3 +1,4 @@
+#include<raylib.h>
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -38,8 +39,16 @@ N(toti) {
   toti_pith(τ, ρ, δ);
 }
 int main() {
-  void *text[] = {T(b), T(toti), T(r), T(o)};
-  m(text + 5, 3, 1);
+  InitWindow(1800,1000, "aword");
+  SetTargetFPS(60);
+  //void *text[] = {T(b), T(toti), T(r), T(o)};
+  //m(text + 5, 3, 1);
+  while(!WindowShouldClose()) {
+    BeginDrawing();
+    ClearBackground(BLACK);
+    EndDrawing();
+  }
+  CloseWindow();
 }
 N(go_Yellow) /*    */ {}
 N(go_Red) /*       */ {}
