@@ -11,7 +11,9 @@
   N(name##_pith)
 #define N(arg) void arg(Args)
 #define Args void **τ, long ρ, long δ
-#define T(ina) 0, 0, 0, 0, 0, ina, 0, 0, 0, 0, 0
+#define Ti(in, a) #in, 0, 0, 0, 0, in, 0, 0, 0, 0, (void *)a
+#define Ta(in, a) Ti(in, a), Ti(ti, #in)
+#define T(ina) Ta(ina, 0)
 
 static N(m) { ((N((**)))τ)[11 * δ](τ + 11 * δ, ρ, δ); }
 static N(b) { m(τ, ρ, δ * -1); }
