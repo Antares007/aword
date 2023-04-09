@@ -23,15 +23,15 @@ N(not ) {
   aradani_pith(τ, ρ, δ);
 }
 N(and) {
-  τ[+3 + 1] = /*Yellow*/ go_DarkGreen;
-  τ[+2 + 1] = /*Red   */ go_Red;
-  τ[+1 + 1] = /*Green */ go_Yellow;
-  τ[+0 + 1] = /*Blue  */ go_Blue;
+  τ[+4] = /*Yellow*/ go_DarkGreen;
+  τ[+3] = /*Red   */ go_Red;
+  τ[+2] = /*Green */ go_Yellow;
+  τ[+1] = /*Blue  */ go_Blue;
   τ[0] = aradani_pith;
-  τ[-0 - 1] = /*DarkBlue  */ go_DarkBlue;
-  τ[-1 - 1] = /*DarkGreen */ go_Green;
-  τ[-2 - 1] = /*DarkRed   */ go_DarkRed;
-  τ[-3 - 1] = /*DarkYellow*/ go_DarkYellow;
+  τ[-1] = /*DarkBlue  */ go_DarkBlue;
+  τ[-2] = /*DarkGreen */ go_Green;
+  τ[-3] = /*DarkRed   */ go_DarkRed;
+  τ[-4] = /*DarkYellow*/ go_DarkYellow;
   aradani_pith(τ, ρ, δ);
 }
 N(or) {

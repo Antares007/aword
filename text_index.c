@@ -12,32 +12,33 @@ Vector2 angle_dir(float angle) {
   return (Vector2){x / magnitude, y / magnitude};
 }
 typedef struct step_t {
-  float rotation;
+  Vector2 pos;
+  Vector2 dir;
   char *text;
   long ρ;
   long δ;
 } step_t;
-
-long rotation = 0;
+Vector2 pos = {0, 0};
+Vector2 dir = {1, 0};
 step_t steps[1024] = {};
 long sc = 0;
 
 void draw();
+void ti_turn_left(Args, N((*cb))) {
+  int x = dir.x;
+  dir.x = dir.y * δ;
+  dir.y = x * -1 * δ;
+  cb(τ, ρ, δ);
+}
 void ti_move(Args, N((*cb))) {
-  steps[sc].rotation = rotation;
+  steps[sc].dir = dir;
+  steps[sc].pos.x = (pos.x += dir.x * δ);
+  steps[sc].pos.y = (pos.y += dir.y * δ);
   steps[sc].ρ = ρ;
   steps[sc].δ = δ;
   steps[sc].text = τ[4];
   sc++;
   draw();
-  cb(τ, ρ, δ);
-}
-void ti_around(Args, N((*cb))) {
-  rotation = rotation + 180;
-  cb(τ, ρ, δ);
-}
-void ti_left(Args, N((*cb))) {
-  rotation = rotation + 90;
   cb(τ, ρ, δ);
 }
 static Color colors[] = {
@@ -51,28 +52,31 @@ static Color colors[] = {
     RED,      // Red
     YELLOW,   // Yellow
 };
+static float zoom = 4;
 void draw() {
   while (GetCharPressed() != 'n') {
+    int wheelMove = GetMouseWheelMove();
+    if (wheelMove > 0)
+      zoom += 0.1;
+    else if (wheelMove < 0)
+      zoom -= 0.1;
     BeginDrawing();
     ClearBackground(BLACK);
-    Camera2D camera = {.target = {0, 0}, .rotation = 0, .zoom = 1};
+    Camera2D camera = {.target = {0, 0}, .rotation = 0, .zoom = zoom};
     camera.offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f};
-
+    BeginMode2D(camera);
+    Vector2 s_pos = {0, 0};
     for (long i = 0; i < sc; i++) {
-      camera.rotation = steps[i].rotation;
-      Vector2 dir = angle_dir(camera.rotation);
-      camera.offset.x += dir.x * 100;
-      camera.offset.y += dir.y * 100;
-      float size = 45;
-      float spacing = 4;
-      Vector2 m = MeasureTextEx(font, steps[i].text, size, spacing);
-      BeginMode2D(camera);
-      int ry = (steps[i].ρ + 1) * steps[i].δ + 4;
-      Vector2 pos = {-m.x / 2.f, -50 + 10 * ry};
-      //      DrawRectangleV(pos, m, WHITE);
-      DrawTextEx(font, steps[i].text, pos, size, spacing, colors[ry]);
-      EndMode2D();
+      step_t s = steps[i];
+      int ry = (s.ρ + 1) * s.δ;
+      Vector2 n_pos = {s.pos.x * 50 + s.dir.y * ry * 10,
+                       s.pos.y * 50 + s.dir.x * -1 * ry * 10};
+      DrawLineBezier(s_pos, n_pos, 2, colors[ry + 4]);
+      DrawText(TextFormat("%ld %2ld %s", s.ρ, s.δ, s.text), n_pos.x, n_pos.y, 8,
+               BLUE);
+      s_pos = n_pos;
     }
+    EndMode2D();
     EndDrawing();
   }
 }
