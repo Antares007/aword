@@ -16,7 +16,7 @@ typedef struct step_t {
   Vector2 dir;
   char *text;
   long ρ;
-  long δ;
+  long ι;
 } step_t;
 Vector2 pos = {0, 0};
 Vector2 dir = {1, 0};
@@ -26,20 +26,20 @@ long sc = 0;
 void draw();
 void ti_turn_left(Args, N((*cb))) {
   int x = dir.x;
-  dir.x = dir.y * δ;
-  dir.y = x * -1 * δ;
-  cb(τ, ρ, δ);
+  dir.x = dir.y * ι;
+  dir.y = x * -1 * ι;
+  cb(ο, τ, α, ρ, ι);
 }
 void ti_move(Args, N((*cb))) {
   steps[sc].dir = dir;
-  steps[sc].pos.x = (pos.x += dir.x * δ);
-  steps[sc].pos.y = (pos.y += dir.y * δ);
+  steps[sc].pos.x = (pos.x += dir.x * ι);
+  steps[sc].pos.y = (pos.y += dir.y * ι);
   steps[sc].ρ = ρ;
-  steps[sc].δ = δ;
+  steps[sc].ι = ι;
   steps[sc].text = τ[4];
   sc++;
   draw();
-  cb(τ, ρ, δ);
+  cb(ο, τ, α, ρ, ι);
 }
 static Color colors[] = {
     GOLD,     // Gold
@@ -68,11 +68,11 @@ void draw() {
     Vector2 s_pos = {0, 0};
     for (long i = 0; i < sc; i++) {
       step_t s = steps[i];
-      int ry = (s.ρ + 1) * s.δ;
+      int ry = (s.ρ + 1) * s.ι;
       Vector2 n_pos = {s.pos.x * 50 + s.dir.y * ry * 10,
                        s.pos.y * 50 + s.dir.x * -1 * ry * 10};
       DrawLineBezier(s_pos, n_pos, 2, colors[ry + 4]);
-      DrawText(TextFormat("%ld %2ld %s", s.ρ, s.δ, s.text), n_pos.x, n_pos.y, 8,
+      DrawText(TextFormat("%ld %2ld %s", s.ρ, s.ι, s.text), n_pos.x, n_pos.y, 8,
                BLUE);
       s_pos = n_pos;
     }
