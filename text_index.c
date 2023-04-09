@@ -18,10 +18,10 @@ typedef struct step_t {
   long ρ;
   long ι;
 } step_t;
-Vector2 pos = {0, 0};
-Vector2 dir = {1, 0};
-step_t steps[1024] = {};
-long sc = 0;
+static Vector2 pos = {0, 0};
+static Vector2 dir = {1, 0};
+static step_t steps[1024] = {};
+static long sc = 0;
 
 void draw();
 void ti_turn_left(Args, N((*cb))) {
@@ -56,7 +56,11 @@ static Color colors[] = {
 };
 static float zoom = 4;
 void draw() {
-  while (GetCharPressed() != 'n') {
+  int key = GetCharPressed();
+  while (key != 'n') {
+    key = GetCharPressed();
+    if (key == 'c')
+      sc = 0;
     int wheelMove = GetMouseWheelMove();
     if (wheelMove > 0)
       zoom += 0.1;
@@ -74,8 +78,7 @@ void draw() {
       Vector2 n_pos = {s.pos.x * 50 + s.dir.y * ry * 10,
                        s.pos.y * 50 + s.dir.x * -1 * ry * 10};
       DrawLineBezier(s_pos, n_pos, 2, colors[ry + 4]);
-      DrawText(TextFormat("%s", s.text), n_pos.x, n_pos.y, 8,
-               BLUE);
+      DrawText(TextFormat("%s", s.text), n_pos.x, n_pos.y, 8, BLUE);
       s_pos = n_pos;
     }
     EndMode2D();
