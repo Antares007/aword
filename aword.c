@@ -19,8 +19,6 @@ N(cb) {
   else
     ti_turn_left(ο, τ, α, ρ, ι, mc);
 }
-N(A) { m(ο, τ, α, ρ, ι); }
-N(B) { m(ο, τ, α, ρ, ι); }
 N(toti_pith) {
   if (ρ == 1 && ι == 1)
     ti_turn_left(ο, τ, α, ρ, ι, mb);
@@ -29,12 +27,6 @@ N(toti_pith) {
 }
 N(and);
 N(go_Red);
-N(toti) {
-  void *tot[] = {Ta(cb, τ), T(A), T(B), T(A), T(and), T(B), T(A), T(B), T(o)};
-  *τ = toti_pith;
-  τ[5] = tot + 5;
-  toti_pith(ο, τ, α, ρ, ι);
-}
 N(M) { m(ο, τ, α, ρ, ι); }
 W(one, 1, -1) {
   ο[α++] = (void *)1;
@@ -53,11 +45,29 @@ W(print, 1, 1) {
   printf("%ld\n", v);
   M(ο, τ, α, ρ, ι);
 }
+N(two) {
+  void *tot[] = {Ta(cb, τ), T(one), T(one), T(plus), T(o)};
+  *τ = toti_pith;
+  τ[5] = tot + 5;
+  toti_pith(ο, τ, α, ρ, ι);
+}
+N(four) {
+  void *tot[] = {Ta(cb, τ), T(two), T(two), T(plus), T(o)};
+  *τ = toti_pith;
+  τ[5] = tot + 5;
+  toti_pith(ο, τ, α, ρ, ι);
+}
+N(five) {
+  void *tot[] = {Ta(cb, τ), T(plus), T(one), T(four), T(o)};
+  *τ = toti_pith;
+  τ[5] = tot + 5;
+  toti_pith(ο, τ, α, ρ, ι);
+}
 void ti_init();
 int main() {
   ti_init();
   void *ο[1024];
   long α = 0;
-  void *text[] = {T(b), T(one), T(plus), T(one), T(and), T(print), T(o)};
+  void *text[] = {T(b), T(four), T(plus), T(five), T(and), T(print), T(o)};
   M(ο, text + 5, α, 3, 1);
 }

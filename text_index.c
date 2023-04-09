@@ -30,16 +30,18 @@ void ti_turn_left(Args, N((*cb))) {
   dir.y = x * -1 * ι;
   cb(ο, τ, α, ρ, ι);
 }
-void ti_move(Args, N((*cb))) {
+N(toti_pith);
+N(cb);
+void ti_move(Args, N((*callback))) {
   steps[sc].dir = dir;
   steps[sc].pos.x = (pos.x += dir.x * ι);
   steps[sc].pos.y = (pos.y += dir.y * ι);
   steps[sc].ρ = ρ;
   steps[sc].ι = ι;
-  steps[sc].text = τ[-5];
+  steps[sc].text = τ[0] == cb ? "cb" : τ[-5];
   sc++;
   draw();
-  cb(ο, τ, α, ρ, ι);
+  callback(ο, τ, α, ρ, ι);
 }
 static Color colors[] = {
     GOLD,     // Gold
@@ -72,7 +74,7 @@ void draw() {
       Vector2 n_pos = {s.pos.x * 50 + s.dir.y * ry * 10,
                        s.pos.y * 50 + s.dir.x * -1 * ry * 10};
       DrawLineBezier(s_pos, n_pos, 2, colors[ry + 4]);
-      DrawText(TextFormat("%ld %2ld %s", s.ρ, s.ι, s.text), n_pos.x, n_pos.y, 8,
+      DrawText(TextFormat("%s", s.text), n_pos.x, n_pos.y, 8,
                BLUE);
       s_pos = n_pos;
     }
