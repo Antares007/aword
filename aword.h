@@ -11,8 +11,8 @@
   N(name##_pith)
 #define N(arg) void arg(Args)
 #define Args void **τ, long ρ, long δ
-#define Ta(in, a) 0, 0, 0, 0, 0, in, 0, 0, 0, 0, (void *)a
-#define T(ina) Ta(ina, #ina)
+#define Ta(in, a) 0, 0, 0, 0, 0, in, 0, 0, 0, #in, (void *)a
+#define T(ina) Ta(ina, 0)
 
 N(m);
 N(b);
