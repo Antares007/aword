@@ -36,7 +36,7 @@ void ti_move(Args, N((*cb))) {
   steps[sc].pos.y = (pos.y += dir.y * ι);
   steps[sc].ρ = ρ;
   steps[sc].ι = ι;
-  steps[sc].text = τ[4];
+  steps[sc].text = τ[-5];
   sc++;
   draw();
   cb(ο, τ, α, ρ, ι);

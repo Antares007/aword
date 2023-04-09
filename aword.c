@@ -35,12 +35,29 @@ N(toti) {
   τ[5] = tot + 5;
   toti_pith(ο, τ, α, ρ, ι);
 }
-void ti_init();
 N(M) { m(ο, τ, α, ρ, ι); }
+W(one, 1, -1) {
+  ο[α++] = (void *)1;
+  M(ο, τ, α, ρ, ι);
+}
+W(plus, 1, 1) {
+  long sum = 0;
+  while (α)
+    sum += (long)ο[--α];
+  ο[α++] = (void *)sum;
+  M(ο, τ, α, ρ, ι);
+}
+#include "stdio.h"
+W(print, 1, 1) {
+  long v = (long)ο[--α];
+  printf("%ld\n", v);
+  M(ο, τ, α, ρ, ι);
+}
+void ti_init();
 int main() {
   ti_init();
   void *ο[1024];
   long α = 0;
-  void *text[] = {T(b), T(m), T(o)};
-  m(ο, text + 5, α, 3, 1);
+  void *text[] = {T(b), T(one), T(plus), T(one), T(and), T(print), T(o)};
+  M(ο, text + 5, α, 3, 1);
 }
