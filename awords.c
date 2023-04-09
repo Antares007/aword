@@ -1,81 +1,62 @@
-#include "awords.h"
-N(go) {
-  ω.win = Plus(ω, (1 + 4 + 4) * δ.dir);
-  ο[ω.win].go(α, ω, ο, ρ, δ, σ);
-}
-N(go_White) { go(α, ω, ο, ρ, (dir_v){-1}, σ); }
-N(go_Black) { go(α, ω, ο, ρ, (dir_v){+1}, σ); }
-N(go_Yellow) /*    */ { go_White(α, ω, ο, (ray_v){3}, δ, σ); }
-N(go_Red) /*       */ { go_White(α, ω, ο, (ray_v){2}, δ, σ); }
-N(go_Green) /*     */ { go_White(α, ω, ο, (ray_v){1}, δ, σ); }
-N(go_Blue) /*      */ { go_White(α, ω, ο, (ray_v){0}, δ, σ); }
-N(go_DarkBlue) /*  */ { go_Black(α, ω, ο, (ray_v){0}, δ, σ); };
-N(go_DarkGreen) /* */ { go_Black(α, ω, ο, (ray_v){1}, δ, σ); };
-N(go_DarkRed) /*   */ { go_Black(α, ω, ο, (ray_v){2}, δ, σ); };
-N(go_DarkYellow) /**/ { go_Black(α, ω, ο, (ray_v){3}, δ, σ); };
-N(aradani_heart) { P, ο[Plus(ω, (1 + ρ.ray) * δ.dir)].go(α, ω, ο, ρ, δ, σ); }
-N(b_pith) { P, go_White(α, ω, ο, ρ, δ, σ); }
-#include <assert.h>
-N(b) {
-  α.win -= 4, ο[ω.win = --α.win].v = b_pith, α.win -= 4;
-  b_pith(α, ω, ο, ρ, δ, σ);
-}
+#include "aword.h"
+N(b) { m(τ, ρ, δ * -1); }
+N(o) { m(τ, ρ == 3 ? 1 : ρ == 1 ? 3 : ρ, δ * -1); }
 
-N(o) {
-  P;
-  ο[--α.win].v /*Yellow*/ = go_DarkGreen;
-  ο[--α.win].v /*Red   */ = go_DarkRed;
-  ο[--α.win].v /*Green */ = go_DarkYellow;
-  ο[--α.win].v /*Blue  */ = go_DarkBlue;
-  ο[--α.win].v = aradani_heart;
-  --α.win, --α.win, --α.win, --α.win;
-  --σ.win, ο[σ.win].go(α, ω, ο, ρ, δ, σ);
-}
+N(go) /*           */ { m(τ, ρ, δ); }
+N(go_Yellow) /*    */ { m(τ, 3, +1); }
+N(go_Red) /*       */ { m(τ, 2, +1); }
+N(go_Green) /*     */ { m(τ, 1, +1); }
+N(go_Blue) /*      */ { m(τ, 0, +1); }
+N(go_DarkBlue) /*  */ { m(τ, 0, -1); }
+N(go_DarkGreen) /* */ { m(τ, 1, -1); }
+N(go_DarkRed) /*   */ { m(τ, 2, -1); }
+N(go_DarkYellow) /**/ { m(τ, 3, -1); }
+N(aradani_pith) { ((N((**)))τ)[(ρ + 1) * δ](τ, ρ, δ); }
 N(not ) {
-  P_Yellow /*     */ (ω).v = go_DarkGreen;
-  P_Red /*        */ (ω).v = go_Yellow;
-  P_Green /*      */ (ω).v = go_DarkYellow;
-  P_Blue /*       */ (ω).v = go_Blue;
-  ο[ω.win].v = aradani_heart;
-  P_DarkBlue /*   */ (ω).v = go_DarkBlue;
-  P_DarkGreen /*  */ (ω).v = go_Green;
-  P_DarkRed /*    */ (ω).v = go_DarkRed;
-  P_DarkYellow /* */ (ω).v = go_DarkYellow;
-  aradani_heart(α, ω, ο, ρ, δ, σ);
+  τ[+3 + 1] = /*Yellow*/ go_DarkGreen;
+  τ[+2 + 1] = /*Red   */ go_Yellow;
+  τ[+1 + 1] = /*Green */ go_DarkYellow;
+  τ[+0 + 1] = /*Blue  */ go_DarkBlue;
+  τ[0] = aradani_pith;
+  τ[-0 - 1] = /*DarkBlue  */ go_DarkBlue;
+  τ[-1 - 1] = /*DarkGreen */ go_Green;
+  τ[-2 - 1] = /*DarkRed   */ go_DarkRed;
+  τ[-3 - 1] = /*DarkYellow*/ go_DarkYellow;
+  aradani_pith(τ, ρ, δ);
 }
 N(and) {
-  P_Yellow /*     */ (ω).v = go_DarkGreen;
-  P_Red /*        */ (ω).v = go_Red;
-  P_Green /*      */ (ω).v = go_Yellow;
-  P_Blue /*       */ (ω).v = go_Blue;
-  ο[ω.win].v = aradani_heart;
-  P_DarkBlue /*   */ (ω).v = go_DarkBlue;
-  P_DarkGreen /*  */ (ω).v = go_Green;
-  P_DarkRed /*    */ (ω).v = go_DarkRed;
-  P_DarkYellow /* */ (ω).v = go_DarkYellow;
-  aradani_heart(α, ω, ο, ρ, δ, σ);
+  τ[+3 + 1] = /*Yellow*/ go_DarkGreen;
+  τ[+2 + 1] = /*Red   */ go_Red;
+  τ[+1 + 1] = /*Green */ go_Yellow;
+  τ[+0 + 1] = /*Blue  */ go_Blue;
+  τ[0] = aradani_pith;
+  τ[-0 - 1] = /*DarkBlue  */ go_DarkBlue;
+  τ[-1 - 1] = /*DarkGreen */ go_Green;
+  τ[-2 - 1] = /*DarkRed   */ go_DarkRed;
+  τ[-3 - 1] = /*DarkYellow*/ go_DarkYellow;
+  aradani_pith(τ, ρ, δ);
 }
 N(or) {
-  P_Yellow /*     */ (ω).v = go_DarkGreen;
-  P_Red /*        */ (ω).v = go_Red;
-  P_Green /*      */ (ω).v = go_DarkYellow;
-  P_Blue /*       */ (ω).v = go_Yellow;
-  ο[ω.win].v = aradani_heart;
-  P_DarkBlue /*   */ (ω).v = go_DarkBlue;
-  P_DarkGreen /*  */ (ω).v = go_Green;
-  P_DarkRed /*    */ (ω).v = go_DarkRed;
-  P_DarkYellow /* */ (ω).v = go_DarkYellow;
-  aradani_heart(α, ω, ο, ρ, δ, σ);
+  τ[+3 + 1] = /*Yellow*/ go_DarkGreen;
+  τ[+2 + 1] = /*Red   */ go_Red;
+  τ[+1 + 1] = /*Green */ go_DarkYellow;
+  τ[+0 + 1] = /*Blue  */ go_Yellow;
+  τ[0] = aradani_pith;
+  τ[-0 - 1] = /*DarkBlue  */ go_DarkBlue;
+  τ[-1 - 1] = /*DarkGreen */ go_Green;
+  τ[-2 - 1] = /*DarkRed   */ go_DarkRed;
+  τ[-3 - 1] = /*DarkYellow*/ go_DarkYellow;
+  aradani_pith(τ, ρ, δ);
 }
 N(orand) {
-  P_Yellow /*     */ (ω).v = go_DarkGreen;
-  P_Red /*        */ (ω).v = go_Red;
-  P_Green /*      */ (ω).v = go_Yellow;
-  P_Blue /*       */ (ω).v = go_Yellow;
-  ο[ω.win].v = aradani_heart;
-  P_DarkBlue /*   */ (ω).v = go_DarkBlue;
-  P_DarkGreen /*  */ (ω).v = go_Green;
-  P_DarkRed /*    */ (ω).v = go_DarkRed;
-  P_DarkYellow /* */ (ω).v = go_DarkYellow;
-  aradani_heart(α, ω, ο, ρ, δ, σ);
+  τ[+3 + 1] = /*Yellow*/ go_DarkGreen;
+  τ[+2 + 1] = /*Red   */ go_Red;
+  τ[+1 + 1] = /*Green */ go_Yellow;
+  τ[+0 + 1] = /*Blue  */ go_Yellow;
+  τ[0] = aradani_pith;
+  τ[-0 - 1] = /*DarkBlue  */ go_DarkBlue;
+  τ[-1 - 1] = /*DarkGreen */ go_Green;
+  τ[-2 - 1] = /*DarkRed   */ go_DarkRed;
+  τ[-3 - 1] = /*DarkYellow*/ go_DarkYellow;
+  aradani_pith(τ, ρ, δ);
 }

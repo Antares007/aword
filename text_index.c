@@ -3,63 +3,86 @@
 #include <raylib.h>
 #include <stdio.h>
 #include <unistd.h>
-Camera2D camera = {
-    .target = (Vector2){0, 0},
-    .rotation = 0.0f,
-    .zoom = 1.f,
-    .offset = (Vector2){900, 500},
-};
-Vector2 dir = {1, 0};
-// W(begin_mode2d, 1, 1) { BeginMode2D(camera), m(τ, ρ, δ); }
-// W(end_mode2d, 1, 1) { EndMode2D(), m(τ, ρ, δ); }
-void camera_move(long δ) {
-  BeginMode2D(camera);
-  camera.offset.x += dir.x * 50 * δ;
-  camera.offset.y += dir.y * 50 * δ;
-}
-void camera_turn_left() {
-  float x = dir.x;
-  dir.x = dir.y, dir.y = x * -1;
-}
-N(ti);
+static Font font;
+typedef struct step_t {
+  void **prev_t;
+  void **t;
+  long r;
+  long d;
+} step_t;
 N(cb);
-void draw(long depth, void **t, long d, long x, long y) {
-  if (!depth)
-    return;
-  if (t[0] == ti)
-    DrawText(t[5], x, y, 45, WHITE), x += 50 * d;
-  else if (t[0] == b)
-    d = -d, y += 50;
-  else if (t[0] == o)
-    d = -d, y -= 50;
-  draw(depth - 1, t + 11 * d, d, x, y);
+N(toti_pith);
+void turn_left(Camera2D *c, Vector2 *v) {
+  c->rotation += 90;
+  int x = v->x;
+  v->x = v->y;
+  v->y = x * -1;
 }
-N(ti) {
+void move(Camera2D *c, Vector2 *v) {
+  c->offset.x += v->x * 100;
+  c->offset.y += v->y * 100;
+}
+N(m) {
+  static step_t steps[1024];
+  static long step = 0;
+  step %= sizeof(steps) / sizeof(*steps);
+  steps[step].prev_t = τ;
+  steps[step].t = (τ += 11 * δ);
+  steps[step].r = ρ;
+  steps[step].d = δ;
+  step++;
+
   while (GetCharPressed() != 'n') {
     BeginDrawing();
     ClearBackground(BLACK);
-    draw(100, τ, δ, 500, 500);
+    Camera2D camera = {
+        .target = (Vector2){0, 0},
+        .rotation = 180.0f,
+        .zoom = 1.f,
+        .offset = (Vector2){900, 500},
+    };
+    Vector2 dir = {-1, 0};
+    for (long i = 0; i < step; i++) {
+      void **curr_t = steps[i].t;
+      void **prev_t = steps[i].prev_t;
+      char *text = curr_t[0] == toti_pith ? "pith"
+                   : curr_t[0] == cb      ? "cb"
+                                          : (char *)steps[i].t[5];
+      if (curr_t[0] == o) {
+        move(&camera, &dir);
+        turn_left(&camera, &dir);
+        turn_left(&camera, &dir);
+      } else if (curr_t[0] == b) {
+        move(&camera, &dir);
+        turn_left(&camera, &dir);
+        turn_left(&camera, &dir);
+      } else if (curr_t[0] == cb) {
+        move(&camera, &dir);
+        turn_left(&camera, &dir);
+        if (steps[i].r == 1)
+          turn_left(&camera, &dir);
+      } else if (curr_t[0] == toti_pith) {
+        move(&camera, &dir);
+        if (steps[i].r == 1 && steps[i].d == 1)
+          turn_left(&camera, &dir);
+      } else
+        move(&camera, &dir);
+
+      BeginMode2D(camera);
+      DrawRectangleLines(-49, -49, 98, 98, WHITE);
+      DrawTextEx(font, text, (Vector2){-49, -49}, 45, 4, WHITE);
+      DrawRectangle(0, -49, 49, 20, WHITE);
+
+      DrawTextEx(font, TextFormat("%ld",i), (Vector2){0, -49}, 20, 4, BLACK);
+      EndMode2D();
+    }
     EndDrawing();
   }
-  m(τ, ρ, δ);
+  ((N((**)))τ)[0](τ, ρ, δ);
 }
 void ti_init() {
+  SetTraceLogLevel(LOG_ERROR);
   InitWindow(1800, 1000, "aword");
   SetTargetFPS(60);
-}
-W(begin_drawing, 1, 1) {
-  BeginDrawing();
-  ClearBackground(BLACK);
-  m(τ, ρ, δ);
-}
-W(end_drawing, 1, 1) {
-  EndDrawing();
-  if (WindowShouldClose())
-    CloseWindow();
-  else
-    m(τ, ρ, δ);
-}
-W(seven, 1, 1) {
-  DrawText("7", 100, 100, 45, RED);
-  m(τ, ρ, δ);
+  font = LoadFontEx("NovaMono-Regular.ttf", 90, 0, 0);
 }

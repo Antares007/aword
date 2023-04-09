@@ -1,11 +1,12 @@
 #include "aword.h"
-N(ti);
 N(cb) {
   if (ρ == 1)
     m(τ, ρ, 1);
   else
     m(τ[5], ρ == 3 ? 1 : ρ, (long)τ[-5]);
 }
+N(A) { m(τ, ρ, δ); }
+N(B) { m(τ, ρ, δ); }
 N(toti_pith) {
   if (ρ == 1 && δ == 1) {
     ((void **)τ[5])[5] = τ;
@@ -15,16 +16,15 @@ N(toti_pith) {
     m(τ, ρ, δ);
 }
 N(toti) {
-  void *tot[] = {T(cb), T(o)};
+  void *tot[] = {T(cb), T(A), T(B), T(o)};
   *τ = toti_pith;
   τ[5] = tot + 5;
   toti_pith(τ, ρ, δ);
 }
 void ti_init();
-N(A) { m(τ, ρ, δ); }
-N(B) { m(τ, ρ, δ); }
+N(M) { m(τ, ρ, δ); }
 int main() {
   ti_init();
-  void *text[] = {T(b), T(m), T(A), T(B), T(o)};
+  void *text[] = {T(b), T(m), T(toti), T(M), T(o)};
   m(text + 5, 3, 1);
 }
