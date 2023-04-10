@@ -68,6 +68,6 @@ int main() {
   ti_init();
   void *ο[1024];
   long α = 0;
-  void *text[] = {T(b), T(four), T(plus), T(five), T(and), T(print), T(o)};
+  void *text[] = {T(b), T(one), T(plus), T(one), T(one), T(one), T(and), T(print), T(o)};
   M(ο, text + 5, α, 3, 1);
 }

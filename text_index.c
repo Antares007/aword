@@ -30,7 +30,6 @@ void ti_turn_left(Args, N((*cb))) {
   dir.y = x * -1 * ι;
   cb(ο, τ, α, ρ, ι);
 }
-N(toti_pith);
 N(cb);
 void ti_move(Args, N((*callback))) {
   steps[sc].dir = dir;
@@ -88,7 +87,7 @@ void draw() {
 
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1800, 1000, "aword");
+  InitWindow(1800, 600, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
