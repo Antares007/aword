@@ -11,52 +11,74 @@ typedef struct base_t {
 } base_t;
 typedef N((*n_t));
 // clang-format off
-// b                                   
 N(Yellow    ) { P, b[t + 5].c(b, a, t + 9, o); }
 N(Red       ) { P, b[t + 6].c(b, a, t + 9, o); }
 N(Green     ) { P, b[t + 7].c(b, a, t + 9, o); }
 N(Blue      ) { P, b[t + 8].c(b, a, t + 9, o); }
-// t                                       
 N(DarkBlue  ) { P, b[t - 8].c(b, a, t - 9, o); }
 N(DarkGreen ) { P, b[t - 7].c(b, a, t - 9, o); }
 N(DarkRed   ) { P, b[t - 6].c(b, a, t - 9, o); }
 N(DarkYellow) { P, b[t - 5].c(b, a, t - 9, o); }
-N(brow) { b[o].c(b, a, t, o); }
-N(grow) { b[a - 1].c(b, a - 1, t, o); }
-// o
-// clang-format on
-#define MC(Yellow, Red, Green, Blue)                                           \
-  b[--o].v = Yellow;                                                           \
-  b[--o].v = Red;                                                              \
-  b[--o].v = Green;                                                            \
-  b[--o].v = Blue
+N(grow      ) { b[a - 1].c(b, a - 1, t, o); }
 N(s) {
-  MC(Yellow, Red, Green, Blue);
-  b[t = --o].v = "s";
-  MC(Blue, Green, Red, Yellow);
-  brow(b, a, t, o);
+  b[--o].v = Yellow, b[o].v = Yellow, b[o].v = Yellow;
+  b[--o].v = Red,    b[o].v = Red,    b[o].v = Red;
+  b[--o].v = Green,  b[o].v = Green,  b[o].v = Green;
+  b[--o].v = Blue,   b[o].v = Blue,   b[o].v = Blue;
+  b[t=--o].v = "s";
+  b[--o].v = Blue,   b[o].v = Blue,   b[o].v = Blue;
+  b[--o].v = Green,  b[o].v = Green,  b[o].v = Green;
+  b[--o].v = Red,    b[o].v = Red,    b[o].v = Red;
+  b[--o].v = Yellow, b[o].v = Yellow, b[o].v = Yellow;
+  Yellow(b, a, t, o);
 }
 N(d) {
   b[--o].v = "d";
-  MC(DarkBlue, DarkYellow, DarkRed, DarkGreen);
+  b[--o].v = DarkBlue;
+  b[--o].v = DarkYellow;
+  b[--o].v = DarkRed;
+  b[--o].v = DarkGreen;
   grow(b, a, t, o);
 }
 N(sd) {
-  MC(d, Red, Green, Blue);
+  b[--o].v = d;
+  b[--o].v = Red;
+  b[--o].v = Green;
+  b[--o].v = Blue;
   b[t = --o].v = "sd";
-  MC(Blue, Green, Red, Yellow);
-  brow(b, a, t, o);
+  b[--o].v = Blue;
+  b[--o].v = Green;
+  b[--o].v = Red;
+  b[--o].v = Yellow;
+  Yellow(b, a, t, o);
 }
 N(wor) {
-  MC(DarkYellow, DarkRed, DarkGreen, DarkBlue);
+  b[--o].v = DarkYellow;
+  b[--o].v = DarkRed;
+  b[--o].v = DarkGreen;
+  b[--o].v = DarkBlue;
   b[--o].v = "wor";
-  MC(Blue, Green, Red, Yellow);
+  b[--o].v = Blue;
+  b[--o].v = Green;
+  b[--o].v = Red;
+  b[--o].v = Yellow;
+  grow(b, a, t, o);
+}
+N(love_Green_heart) {
+  b[a++].v = s;
+  b[a++].v = d;
   grow(b, a, t, o);
 }
 N(love) {
-  MC(DarkYellow, DarkRed, DarkGreen, DarkBlue);
+  b[--o].v = DarkYellow;
+  b[--o].v = DarkRed;
+  b[--o].v = DarkGreen;
+  b[--o].v = DarkBlue;
   b[--o].v = "love";
-  MC(Blue, Green, Red, Yellow);
+  b[--o].v = Blue;
+  b[--o].v = love_Green_heart;
+  b[--o].v = Red;
+  b[--o].v = Yellow;
   grow(b, a, t, o);
 }
 int main() {
