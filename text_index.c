@@ -67,9 +67,9 @@ void draw() {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(WHITE);
     Camera2D camera = {.target = {0, 0}, .rotation = 0, .zoom = zoom};
-    camera.offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f};
+    camera.offset = (Vector2){GetScreenWidth() / 3.f, GetScreenHeight() / 2.f};
     BeginMode2D(camera);
     Vector2 s_pos = {0, 0};
     for (long i = 0; i < sc; i++) {
@@ -90,5 +90,5 @@ void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1800, 1000, "aword");
   SetTargetFPS(60);
-  font = LoadFontEx("NovaMono-Regular.ttf", 35, 0, 0);
+  font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
