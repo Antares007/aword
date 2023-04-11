@@ -6,96 +6,61 @@ long tindex;
 #define OS(tin, value)                                                         \
   (tindex = tin), (β[(tindex) + 512].v = #value), (β[tindex].v = value)
 // clang-format off
-//Purple                                           ττττ-9 0
-//DarkBlue                                         τ   -8+1
-//DarkGreen                                        τ   -7+2
-//DarkRed                                          τ   -6+3
-//DarkYellow                                       τ   -5+4
-N(Yellow    ) { ti(τ + 9, α, β, ο, σ, τ + 5); } // τ   -4+5
-N(Red       ) { ti(τ + 9, α, β, ο, σ, τ + 6); } // τ   -3+6
-N(Green     ) { ti(τ + 9, α, β, ο, σ, τ + 7); } // τ   -2+7
-N(Blue      ) { ti(τ + 9, α, β, ο, σ, τ + 8); } // τ   -1+8
-N(Purple    ) { ti(τ + 9, α, β, ο, σ, τ + 9); } // ττττ 0±9
-N(DarkBlue  ) { ti(τ - 9, α, β, ο, σ, τ - 8); } // τ   +1-8
-N(DarkGreen ) { ti(τ - 9, α, β, ο, σ, τ - 7); } // τ   +2-7
-N(DarkRed   ) { ti(τ - 9, α, β, ο, σ, τ - 6); } // τ   +3-6
-N(DarkYellow) { ti(τ - 9, α, β, ο, σ, τ - 5); } // τ   +4-5
-//Yellow                                           τ   +5-4
-//Red                                              τ   +6-3
-//Green                                            τ   +7-2
+//Purple                                           ττττ+9 0
 //Blue                                             τ   +8-1
-//Purple                                           ττττ+9 0 
-N(grow      ) { β[α - 1].c(τ, α - 1, β, ο, σ); }
-#define TAB(name, A4,A3,A2,A1,T,B1,B2,B3,B4)          \
-  OS(--ο, A4), OS(--ο, A3), OS(--ο, A2), OS(--ο, A1), \
-  OS(τ=--ο, T),                                       \
-  OS(--ο, B1), OS(--ο, B2), OS(--ο, B3), OS(--ο, B4), β[512+τ].v = #name
+//Green                                            τ   +7-2
+//Red                                              τ   +6-3
+//Yellow                                           τ   +5-4
+N(DarkYellow) { ti(τ - 9, α, β, ο, σ, τ - 5); } // τ   +4-5
+N(DarkRed   ) { ti(τ - 9, α, β, ο, σ, τ - 6); } // τ   +3-6
+N(DarkGreen ) { ti(τ - 9, α, β, ο, σ, τ - 7); } // τ   +2-7
+N(DarkBlue  ) { ti(τ - 9, α, β, ο, σ, τ - 8); } // τ   +1-8
+N(Purple    ) { ti(τ - 9, α, β, ο, σ, τ - 9); } // ττττ 0±9
+N(Blue      ) { ti(τ + 9, α, β, ο, σ, τ + 8); } // τ   -1+8
+N(Green     ) { ti(τ + 9, α, β, ο, σ, τ + 7); } // τ   -2+7
+N(Red       ) { ti(τ + 9, α, β, ο, σ, τ + 6); } // τ   -3+6
+N(Yellow    ) { ti(τ + 9, α, β, ο, σ, τ + 5); } // τ   -4+5
+//DarkYellow                                       τ   -5+4
+//DarkRed                                          τ   -6+3
+//DarkGreen                                        τ   -7+2
+//DarkBlue                                         τ   -8+1
+//Purple                                           ττττ-9 0
+// clang-format on
+N(grow) { β[α - 1].c(τ, α - 1, β, ο, σ); }
+
+#define TAB_rest(B4, B3, B2, B1)                                               \
+  β[ο - 1].v = B1;                                                             \
+  β[ο - 2].v = B2;                                                             \
+  β[ο - 3].v = B3;                                                             \
+  β[ο - 4].v = B4;                                                             \
+  ο -= 9
+#define TAB_name(name)                                                         \
+  β[τ = ο - 5].v = Purple, β[τ + 512].v = #name;                               \
+  TAB_rest
+#define TAB(A4, A3, A2, A1)                                                    \
+  β[ο - 6].v = A1;                                                             \
+  β[ο - 7].v = A2;                                                             \
+  β[ο - 8].v = A3;                                                             \
+  β[ο - 9].v = A4;                                                             \
+  TAB_name
 N(tab) {
-  TAB(tab,
-      Yellow,
-      Red,
-      Green,
-      Blue,
-      Purple,
-      Blue,
-      Green,
-      Red,
-      Yellow);
+  TAB(Yellow, Red, Green, Blue)(tab)(Blue, Green, Red, Yellow);
   Yellow(τ, α, β, ο, σ);
 }
 N(dot) {
-  TAB(dot,
-      0,
-      0,
-      0,
-      0,
-      Purple,
-      DarkBlue,
-      DarkYellow,
-      DarkRed,
-      DarkGreen
-      );
-  grow(τ, α, β, ο, σ);
-}
-N(toti) {
-  TAB(toti,
-      dot,
-      Red,
-      Green,
-      Blue,
-      Purple,
-      DarkBlue,
-      DarkYellow,
-      DarkRed,
-      DarkGreen
-      );
-  Yellow(τ, α, β, ο, σ);
-}
-N(and) {
-  TAB(and, 
-      DarkYellow,
-      DarkRed,
-      Green,
-      DarkBlue,
-      Purple,
-      Blue,
-      Yellow,
-      Red,
-      DarkGreen);
+  TAB(DarkGreen, DarkRed, DarkYellow, DarkBlue)(dot)(0, 0, 0, 0);
   grow(τ, α, β, ο, σ);
 }
 N(word) {
-  TAB(word,
-      DarkYellow,
-      DarkRed,
-      DarkGreen,
-      DarkBlue,
-      Purple,
-      Blue,
-      Green,
-      Red,
-      Yellow
-      );
+  TAB(Yellow, Red, Green, Blue)(word)(DarkBlue, DarkGreen, DarkRed, DarkYellow);
+  grow(τ, α, β, ο, σ);
+}
+N(toti) {
+  TAB(Yellow, Red, Green, Blue)(toti)(Blue, Green, Red, dot);
+  Yellow(τ, α, β, ο, σ);
+}
+N(and) {
+  TAB(DarkGreen, Red, Yellow, Blue)(and)(DarkBlue, Green, DarkRed, DarkYellow);
   grow(τ, α, β, ο, σ);
 }
 void ti_init();
@@ -107,8 +72,7 @@ int main() {
   OS(α++, word);
   OS(α++, toti);
   OS(α++, word);
-  OS(α++, toti);
-  OS(α++, word);
+  OS(α++, and);
   OS(α++, word);
   OS(α++, dot);
   ti_init(), grow(τ, α, β, ο, σ);
