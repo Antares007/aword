@@ -7,20 +7,20 @@
 
 static Font font;
 static Color colors[] = {
-    GOLD,     // Gold
-    MAROON,   // Maroon
-    GREEN,    // Green
-    DARKBLUE, // Dark Blue
-    PURPLE,   // Black
-    BLUE,     // Blue
-    LIME,     // Lime
-    RED,      // Red
     YELLOW,   // Yellow
+    RED,      // Red
+    LIME,     // Lime
+    BLUE,     // Blue
+    PURPLE,   // Black
+    DARKBLUE, // Dark Blue
+    GREEN,    // Green
+    MAROON,   // Maroon
+    GOLD,     // Gold
 };
 typedef struct tabos_t {
-  long t, a, b;
-  const char **o;
-  long s, r;
+  long t, a;
+  const char **b;
+  long o, s, r;
 } tabos_t;
 static tabos_t tabos[1024];
 static long tabs = 0;
@@ -36,18 +36,29 @@ static void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
-    Camera2D camera = {.target = {0, 0}, .rotation = 0, .zoom = zoom};
-    camera.offset = (Vector2){GetScreenWidth() / 3.f, GetScreenHeight() / 2.f};
+    const float tab_width = 2;
+    Camera2D camera = {.target = {tabos[tabs - 1].s * tab_width, 0},
+                       .rotation = 0,
+                       .zoom = zoom};
+    camera.offset = (Vector2){GetScreenWidth() , GetScreenHeight() / 2.f};
     BeginMode2D(camera);
+    DrawLine(0, 0, camera.target.x, 0, BLACK);
     Vector2 startPos = {0, 0};
+    Vector2 startControlPos = startPos;
+
     for (long i = 0; i < tabs; i++) {
       tabos_t tab = tabos[i];
-      for (long s = 4; s < tab.s; s += 9) {
-        Vector2 pos = {s * 2, 0};
-        Vector2 endPos = {tab.t * 2, tab.r * 4};
-        DrawLineBezier(startPos, endPos, 2, colors[tab.r + 4]);
+      for (long ti = tab.o + 4; ti < tab.s; ti += 9) {
+        Vector2 endPos = {tab.t * tab_width, tab.r * tab_width};
+
+        float thick = 2;
+        Color color = colors[tab.r + 4];
+
+        DrawLineBezier(startPos, endPos, thick, color);
         startPos = endPos;
-        DrawTextPro(font, tab.o[s], pos, (Vector2){0, 0}, -90, 10, 2, BLACK);
+        DrawLine(ti * tab_width, -30, ti * tab_width, 30, BLACK);
+        DrawTextPro(font, tab.b[ti], (Vector2){ti * tab_width, 0},
+                    (Vector2){0, 0}, -90, 10, 2, BLACK);
       }
     }
     EndMode2D();
@@ -57,12 +68,12 @@ static void draw() {
 void ti(Args, long ray) {
   tabos[tabs].t = τ;
   tabos[tabs].a = α;
-  tabos[tabs].b = β;
-  tabos[tabs].o = (void *)&ο[512];
+  tabos[tabs].b = (void *)&β[512];
+  tabos[tabs].o = ο;
   tabos[tabs].s = σ;
   tabos[tabs].r = ray - τ;
   tabs++;
-  draw(), ο[ray].c(τ, α, β, ο, σ);
+  draw(), β[ray].c(τ, α, β, ο, σ);
 }
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
