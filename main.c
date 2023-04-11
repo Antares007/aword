@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #define P printf("%5s %s\n", (char *)ο[τ].v, __FUNCTION__), usleep(100000)
-#define N(argo) void argo(long τ, long σ, long β, struct base_t *ο, long α)
+#define N(argo) void argo(long τ, long α, long β, struct base_t *ο, long σ)
 typedef struct base_t {
   union {
     long q;
@@ -26,15 +26,15 @@ N(DarkYellow) { P, ο[τ + 5].c(τ + 9, α, β, ο, σ); } // τ   -4+5
 N(DarkRed   ) { P, ο[τ + 6].c(τ + 9, α, β, ο, σ); } // τ   -3+6
 N(DarkGreen ) { P, ο[τ + 7].c(τ + 9, α, β, ο, σ); } // τ   -2+7
 N(DarkBlue  ) { P, ο[τ + 8].c(τ + 9, α, β, ο, σ); } // τ   -1+8
-N(Purple    ) { P, ο[τ + 9].c(τ + 9, α, β, ο, σ); } // ττττ 0+9-
-N(Blue      ) { P, ο[τ - 8].c(τ - 9, α, β, ο, σ); } // τ   +1 8-
-N(Green     ) { P, ο[τ - 7].c(τ - 9, α, β, ο, σ); } // τ   +2 7-
-N(Red       ) { P, ο[τ - 6].c(τ - 9, α, β, ο, σ); } // τ   +3 6-
-N(Yellow    ) { P, ο[τ - 5].c(τ - 9, α, β, ο, σ); } // τ   +4 5-
-//DarkYellow                                           τ   +5 4-
-//DarkRed                                              τ   +6 3-
-//DarkGreen                                            τ   +7 2-
-//DarkBlue                                             τ   +8 1-
+N(Purple    ) { P, ο[τ + 9].c(τ + 9, α, β, ο, σ); } // ττττ 0±9
+N(Blue      ) { P, ο[τ - 8].c(τ - 9, α, β, ο, σ); } // τ   +1-8
+N(Green     ) { P, ο[τ - 7].c(τ - 9, α, β, ο, σ); } // τ   +2-7
+N(Red       ) { P, ο[τ - 6].c(τ - 9, α, β, ο, σ); } // τ   +3-6
+N(Yellow    ) { P, ο[τ - 5].c(τ - 9, α, β, ο, σ); } // τ   +4-5
+//DarkYellow                                           τ   +5-4
+//DarkRed                                              τ   +6-3
+//DarkGreen                                            τ   +7-2
+//DarkBlue                                             τ   +8-1
 //Purple                                               ττττ+9 0 
 N(grow      ) { ο[α].c(τ, α + 1, β, ο, σ); }
 N(tab) {
@@ -42,7 +42,7 @@ N(tab) {
   ο[β*0+σ++].v = Red;
   ο[β*0+σ++].v = Green;
   ο[β*0+σ++].v = Blue;
-  ο[τ=β*0+σ++].v = "tab0"; ο[  β*1+σ++].v = "tab1"; ο[  β*2+σ++].v = "tab2";
+  ο[τ=β*0+σ++].v = "tab";
   ο[β*0+σ++].v = Blue;
   ο[β*0+σ++].v = Green;
   ο[β*0+σ++].v = Red;
