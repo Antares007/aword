@@ -7,29 +7,30 @@
 
 static Font font;
 static Color colors[] = {
-    YELLOW,   // Yellow
-    RED,      // Red
-    LIME,     // Lime
-    BLUE,     // Blue
-    PURPLE,   // Black
-    DARKBLUE, // Dark Blue
-    GREEN,    // Green
-    MAROON,   // Maroon
-    GOLD,     // Gold
+    {255, 255, 0, 255}, // Yellow
+    {128, 0, 128, 255}, // Purple
+    {255, 0, 0, 255},   // Red
+    {0, 128, 0, 255},   // Green
+    {0, 0, 255, 255},   // Blue
+    {0, 0, 0, 255},     // Black
+    {0, 0, 128, 255},   // Navy
+    {0, 255, 0, 255},   // Lime
+    {128, 0, 0, 255},   // Maroon
+    {255, 0, 255, 255}, // Fuchsia
+    {128, 128, 0, 255}  // Olive
+
 };
-typedef struct tabos_t {
-  long t, a;
-  const char **b;
-  long o, s, r;
-} tabos_t;
-static tabos_t tabos[1024];
-static long tabs = 0;
+static base_t *o;
+static long tabs[1024][2];
+static long tc = 0;
 static float zoom = 4;
 static float off = 0;
 static void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
     key = GetCharPressed();
+    if (key == 'c')
+      tc = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off += GetMouseDelta().x;
     int wheelMove = GetMouseWheelMove();
@@ -39,44 +40,28 @@ static void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
-    const float tab_width = 2;
-    Camera2D camera = {.target = {tabos[tabs - 1].s * tab_width + off, 0},
-                       .rotation = 0,
-                       .zoom = zoom};
-    camera.offset = (Vector2){GetScreenWidth(), GetScreenHeight() / 2.f};
+    Camera2D camera = {.target = {0 + off, 0}, .rotation = 0, .zoom = zoom};
+    camera.offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f};
     BeginMode2D(camera);
-    DrawLine(0, 0, camera.target.x, 0, BLACK);
-    Vector2 startPos = {camera.target.x - 100, -50};
-
-    for (long i = 0; i < tabs; i++) {
-      tabos_t tab = tabos[i];
-      for (long ti = tab.o + 4; ti < tab.s; ti += 9) {
-        Vector2 endPos = {tab.t * tab_width, tab.r * tab_width};
-
-        float thick = 2;
-        Color color = colors[tab.r + 4];
-        DrawLineBezier(startPos, endPos, thick, color);
-        startPos = endPos;
-        DrawLine(ti * tab_width - 5, -30, ti * tab_width - 5, 30, BLACK);
-        DrawTextPro(font, tab.b[ti], (Vector2){ti * tab_width, -20},
-                    (Vector2){0, 0}, -90, 10, 2, BLACK);
-      }
+    Vector2 startPos = {0, 0};
+    for (long i = 0; i < tc; i++) {
+      Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5};
+      DrawTextEx(font, o[tabs[i][0]].v, endPos, 10, 0, colors[tabs[i][1] + 5]);
+      DrawLineBezier(startPos, endPos, 2, colors[tabs[i][1] + 5]);
+      startPos = endPos;
     }
     EndMode2D();
     EndDrawing();
   }
 }
 void ti(Args, long ray) {
-  tabos[tabs].t = τ;
-  tabos[tabs].a = α;
-  tabos[tabs].b = (void *)&β[512];
-  tabos[tabs].o = ο;
-  tabos[tabs].s = σ;
-  tabos[tabs].r = ray - τ;
-  tabs++;
-  draw(), β[ray].c(τ, α, β, ο, σ);
+  tabs[tc][0] = τ;
+  tabs[tc][1] = ray - τ;
+  tc++;
+  draw(), ο[ray].c(τ, α, β, ο, σ);
 }
-void ti_init() {
+void ti_init(Args) {
+  o = ο;
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1800, 600, "aword");
   SetTargetFPS(60);
