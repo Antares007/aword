@@ -25,10 +25,13 @@ typedef struct tabos_t {
 static tabos_t tabos[1024];
 static long tabs = 0;
 static float zoom = 4;
+static float off = 0;
 static void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
     key = GetCharPressed();
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+      off += GetMouseDelta().x;
     int wheelMove = GetMouseWheelMove();
     if (wheelMove > 0)
       zoom += 0.1;
@@ -37,14 +40,13 @@ static void draw() {
     BeginDrawing();
     ClearBackground(WHITE);
     const float tab_width = 2;
-    Camera2D camera = {.target = {tabos[tabs - 1].s * tab_width, 0},
+    Camera2D camera = {.target = {tabos[tabs - 1].s * tab_width + off, 0},
                        .rotation = 0,
                        .zoom = zoom};
-    camera.offset = (Vector2){GetScreenWidth() , GetScreenHeight() / 2.f};
+    camera.offset = (Vector2){GetScreenWidth(), GetScreenHeight() / 2.f};
     BeginMode2D(camera);
     DrawLine(0, 0, camera.target.x, 0, BLACK);
-    Vector2 startPos = {0, 0};
-    Vector2 startControlPos = startPos;
+    Vector2 startPos = {camera.target.x - 100, -50};
 
     for (long i = 0; i < tabs; i++) {
       tabos_t tab = tabos[i];
@@ -53,11 +55,10 @@ static void draw() {
 
         float thick = 2;
         Color color = colors[tab.r + 4];
-
         DrawLineBezier(startPos, endPos, thick, color);
         startPos = endPos;
-        DrawLine(ti * tab_width, -30, ti * tab_width, 30, BLACK);
-        DrawTextPro(font, tab.b[ti], (Vector2){ti * tab_width, 0},
+        DrawLine(ti * tab_width - 5, -30, ti * tab_width - 5, 30, BLACK);
+        DrawTextPro(font, tab.b[ti], (Vector2){ti * tab_width, -20},
                     (Vector2){0, 0}, -90, 10, 2, BLACK);
       }
     }
