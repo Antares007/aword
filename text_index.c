@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <math.h>
 #include <raylib.h>
+#include <raymath.h>
 #include <stdio.h>
 #include <unistd.h>
 
@@ -20,11 +21,14 @@ static Color colors[] = {
     {128, 128, 0, 255}  // Olive
 
 };
-static base_t *o;
+static void**o;
 static long tabs[1024][2];
 static long tc = 0;
 static float zoom = 4;
-static float off = 0;
+static Vector2 off = {};
+static void drAW(long t, long r) {
+  DrawRectangleLines(-10,-10,20,20,BLACK);
+}
 static void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
@@ -32,7 +36,7 @@ static void draw() {
     if (key == 'c')
       tc = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-      off += GetMouseDelta().x;
+      off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
     if (wheelMove > 0)
       zoom += 0.1;
@@ -40,17 +44,25 @@ static void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
-    Camera2D camera = {.target = {0 + off, 0}, .rotation = 0, .zoom = zoom};
+    Camera2D camera = {.target = off, .rotation = 0, .zoom = zoom};
     camera.offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f};
-    BeginMode2D(camera);
     Vector2 startPos = {0, 0};
     for (long i = 0; i < tc; i++) {
+      BeginMode2D(camera);
+      const char *text = TextFormat("%ld %s", tabs[i][1], o[tabs[i][0]]);
+      DrawTextEx(font, text, (Vector2){-100, i * 10 - 100}, 10, 0, BLACK);
       Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5};
-      DrawTextEx(font, o[tabs[i][0]].v, endPos, 10, 0, colors[tabs[i][1] + 5]);
+      DrawTextEx(font, text, endPos, 10, 0, colors[tabs[i][1] + 5]);
       DrawLineBezier(startPos, endPos, 2, colors[tabs[i][1] + 5]);
       startPos = endPos;
+      EndMode2D();
+
+      Camera2D local = camera;
+      local.offset = Vector2Add(camera.offset, endPos);
+      BeginMode2D(local);
+      drAW(tabs[i][0], tabs[i][1]);
+      EndMode2D();
     }
-    EndMode2D();
     EndDrawing();
   }
 }
@@ -58,12 +70,12 @@ void ti(Args, long ray) {
   tabs[tc][0] = τ;
   tabs[tc][1] = ray - τ;
   tc++;
-  draw(), ο[ray].c(τ, α, β, ο, σ);
+  draw(), ((n_t*)ο)[ray](τ, α, β, ο, σ);
 }
 void ti_init(Args) {
   o = ο;
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1800, 600, "aword");
+  InitWindow(1800, 900, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }

@@ -26,27 +26,30 @@ N(Olive   ) { ti(τ -11, α, β, ο, σ, τ - 6); } // τ    +5
 //Green                                          τ    +9
 //Blue                                           τ   +10
 //                                               ττττ+11
-//
+// assert width > 1
 #define TAB(Yellow, Purple, Red, Green, Blue, name, Navy, Lime, Maroon, Fuchsia, Olive) \
-  ο[α++].v = Yellow,                                                                    \
-  ο[α++].v = Purple,                                                                    \
-  ο[α++].v = Red,                                                                       \
-  ο[α++].v = Green,                                                                     \
-  ο[α++].v = Blue,                                                                      \
-  ο[τ = α++].v = name,                                                                  \
-  ο[α++].v = Navy,                                                                      \
-  ο[α++].v = Lime,                                                                      \
-  ο[α++].v = Maroon,                                                                    \
-  ο[α++].v = Fuchsia,                                                                   \
-  ο[α++].v = Olive
+  ο[α] = Yellow,  ο[α] = Yellow,  ο[α] = Yellow,  ο[α] = Yellow,  ο[α++] = Yellow,                                                                    \
+  ο[α] = Purple,  ο[α] = Purple,  ο[α] = Purple,  ο[α] = Purple,  ο[α++] = Purple,                                                                    \
+  ο[α] = Red,     ο[α] = Red,     ο[α] = Red,     ο[α] = Red,     ο[α++] = Red,                                                                       \
+  ο[α] = Green,   ο[α] = Green,   ο[α] = Green,   ο[α] = Green,   ο[α++] = Green,                                                                     \
+  ο[α] = Blue,    ο[α] = Blue,    ο[α] = Blue,    ο[α] = Blue,    ο[α++] = Blue,                                                                      \
+  ο[τ=α]=name,    ο[τ=α]=name,    ο[τ=α]=name,    ο[τ=α]=name,    ο[τ=α++]=name,                                                                  \
+  ο[α] = Navy,    ο[α] = Navy,    ο[α] = Navy,    ο[α] = Navy,    ο[α++] = Navy,                                                                      \
+  ο[α] = Lime,    ο[α] = Lime,    ο[α] = Lime,    ο[α] = Lime,    ο[α++] = Lime,                                                                      \
+  ο[α] = Maroon,  ο[α] = Maroon,  ο[α] = Maroon,  ο[α] = Maroon,  ο[α++] = Maroon,                                                                    \
+  ο[α] = Fuchsia, ο[α] = Fuchsia, ο[α] = Fuchsia, ο[α] = Fuchsia, ο[α++] = Fuchsia,                                                                   \
+  ο[α] = Olive,   ο[α] = Olive,   ο[α] = Olive,   ο[α] = Olive,   ο[α++] = Olive
 #define ST      TAB(Yellow, Purple,   Red,    Green,  Blue, "S",  Blue, Green,Red,    Yellow,  Purple)
 #define WORD(v) TAB(Yellow, Purple,   Red,    Green,  Blue, #v,   Navy, Lime, Maroon, Fuchsia, Olive)
 #define AND     TAB(Lime,   Purple,   Red,    Yellow, Blue, "and",Navy, Green,Maroon, Fuchsia, Olive)
-#define DOT     TAB(Lime,   Fuchsia,  Maroon, Olive,  Navy, "dot", 0,   0,    0,      0,       0)
+#define DOT     TAB(Lime,   Fuchsia,  Maroon, Olive,  Navy, "dot",0,    0,    0,      0,       0)
 void ti_init(Args);
+#define ALIGN(O, A) (((unsigned long)(((O) + ((A) - 1)) / (A))) * (A))
+// bnnnbooobooo
+// booo
 int main() {
   long τ = 0, α = 0, β = 1024;
-  base_t ο[β], *σ = 0;
+  void* ο[β], *σ = 0;
   ti_init(τ, α, β, ο, σ);
   ST;
   WORD("love");
