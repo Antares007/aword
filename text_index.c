@@ -22,7 +22,7 @@ static Color colors[] = {
 
 };
 static void**o;
-static long tabs[1024][2];
+static long tabs[1024][3];
 static long tc = 0;
 static float zoom = 4;
 static Vector2 off = {};
@@ -49,18 +49,13 @@ static void draw() {
     Vector2 startPos = {0, 0};
     for (long i = 0; i < tc; i++) {
       BeginMode2D(camera);
-      const char *text = TextFormat("%ld %s", tabs[i][1], o[tabs[i][0]]);
+      void*ptr = o[tabs[i][2]+tabs[i][0]];
+      const char *text = TextFormat("%ld %s", tabs[i][1], ptr<(void*)2048?"":ptr);
       DrawTextEx(font, text, (Vector2){-100, i * 10 - 100}, 10, 0, BLACK);
       Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5};
       DrawTextEx(font, text, endPos, 10, 0, colors[tabs[i][1] + 5]);
       DrawLineBezier(startPos, endPos, 2, colors[tabs[i][1] + 5]);
       startPos = endPos;
-      EndMode2D();
-
-      Camera2D local = camera;
-      local.offset = Vector2Add(camera.offset, endPos);
-      BeginMode2D(local);
-      drAW(tabs[i][0], tabs[i][1]);
       EndMode2D();
     }
     EndDrawing();
@@ -69,8 +64,9 @@ static void draw() {
 void ti(Args, long ray) {
   tabs[tc][0] = τ;
   tabs[tc][1] = ray - τ;
+  tabs[tc][2] = β;
   tc++;
-  draw(), ((n_t*)ο)[ray](τ, α, β, ο, σ);
+  draw(), ((n_t*)ο)[β + ray](τ, α, β, ο, σ);
 }
 void ti_init(Args) {
   o = ο;
