@@ -26,6 +26,11 @@ static long tabs[1024][3];
 static long tc = 0;
 static float zoom = 2;
 static Vector2 off = {};
+static Vector2 getTabPos(long i) {
+  long axis = tabs[i][2] / 512;
+  Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5 + 100 * axis};
+  return endPos;
+}
 static void drAW(long t, long r) {
   DrawRectangleLines(-10, -10, 20, 20, BLACK);
 }
@@ -44,17 +49,25 @@ static void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
-    Camera2D camera = {.target = off, .rotation = 0, .zoom = zoom};
-    camera.offset = (Vector2){GetScreenWidth() / 4.f, GetScreenHeight() / 8.f};
+    Camera2D camera = {
+        .target = getTabPos(tc - 1),
+        .rotation = 0,
+        .zoom = zoom,
+        .offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
     Vector2 startPos = {0, 0};
     for (long i = 0; i < tc; i++) {
       BeginMode2D(camera);
       void *ptr = o[tabs[i][2] + tabs[i][0]];
+      float fontSize = 20;
       const char *text =
           TextFormat("%ld %s", tabs[i][1], ptr < (void *)2048 ? "" : ptr);
-      long axis = tabs[i][2] / 512;
-      Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5 + 100 * axis};
-      DrawTextEx(font, text, endPos, 10, 0, colors[tabs[i][1] + 5]);
+      Vector2 endPos = getTabPos(i);
+      Vector2 m = MeasureTextEx(font, text, fontSize, 0);
+      Vector2 border = {4, 4};
+      DrawRectangleV(Vector2Subtract(endPos, border),
+                     Vector2Add(m, Vector2Scale(border, 2)),
+                     colors[tabs[i][1] + 5]);
+      DrawTextEx(font, text, endPos, fontSize, 0, BLACK);
       DrawLineBezier(startPos, endPos, 2, colors[tabs[i][1] + 5]);
       startPos = endPos;
       EndMode2D();
