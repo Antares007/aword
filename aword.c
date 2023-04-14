@@ -29,70 +29,63 @@ N(Olive   ) { ti(τ -11, α, β, ο, σ, τ - 6); } // τ    +5
 // assert width > 1
 #define Σ 512
 #define TAB(Yellow, Purple, Red, Green, Blue, name, Navy, Lime, Maroon, Fuchsia, Olive) \
-  ο[β+α+0] = Yellow,                                                                    \
-  ο[β+α+1] = Purple,                                                                    \
-  ο[β+α+2] = Red,                                                                       \
-  ο[β+α+3] = Green,                                                                     \
-  ο[β+α+4] = Blue,                                                                      \
-  ο[β+(τ=α+5)]=name,                                                                  \
-  ο[β+α+6] = Navy,                                                                      \
-  ο[β+α+7] = Lime,                                                                      \
-  ο[β+α+8] = Maroon,                                                                    \
-  ο[β+α+9] = Fuchsia,                                                                   \
-  ο[β+α+10] = Olive
+  ο[β+α++] = Yellow,                                                                    \
+  ο[β+α++] = Purple,                                                                    \
+  ο[β+α++] = Red,                                                                       \
+  ο[β+α++] = Green,                                                                     \
+  ο[β+α++] = Blue,                                                                      \
+  ο[β+(τ=α++)]=name,                                                                    \
+  ο[β+α++] = Navy,                                                                      \
+  ο[β+α++] = Lime,                                                                      \
+  ο[β+α++] = Maroon,                                                                    \
+  ο[β+α++] = Fuchsia,                                                                   \
+  ο[β+α++] = Olive
 #define ST      TAB(Yellow, Purple,   Red,    Green,  Blue, "S",  Blue, Green,Red,    Yellow,  Purple)
 #define WORD(v) TAB(Yellow, Purple,   Red,    Green,  Blue, #v,   Navy, Lime, Maroon, Fuchsia, Olive)
 #define AND     TAB(Lime,   Purple,   Red,    Yellow, Blue, "and",Navy, Green,Maroon, Fuchsia, Olive)
 #define DOT     TAB(Lime,   Fuchsia,  Maroon, Olive,  Navy, "dot",0,    0,    0,      0,       0)
-
-#define Tnxt TAB(Yellow, Purple, Stop, Stop, Stop, "nxt", Blue, Green, Red, nxt, Purple)
-N(nxt) { ((n_t*)ο)[τ - 5](τ, α, β+Σ, ο, σ);}
-#define Tcnt TAB(Lime, Yellowβ0,  Maroon, Olive,  Navy, "cnt", Stop, Stop, Stop, Stop, Stop)
-N(Yellowβ0) { Yellow(τ, α, 0, ο, σ);}
-#define Tend TAB(Yellow, Stop, Stop, Stop, Stop, "end", Blue, Green, Red, Stop, Purple)
-
-#define Ttop TAB(Yellow, Stop, Stop, Stop, Stop, "top", Blue, Green, Red, Fuchsiaβ0, Purple)
-N(Fuchsiaβ0) { Fuchsia(τ, α, 0, ο, σ);}
-
-#define Tbot TAB(Lime,  Purple,  Maroon, Olive,  Navy, 0, Stop, Stop, Stop, bot, Stop)
-N(bot) { β = (long)ο[τ]; ο[τ]=(void*)((β + 512) % 2048);Fuchsia(τ, α, β, ο, σ);}
-N(Stop) {printf("stop\n");}
-N(S) {
-  β=0,Tnxt,         β=512,Tnxt,         β=1024,Tnxt,     β=1536,Tend,     α+=11;
-  β=0,WORD(a),      β=512,WORD(b),      β=1024,WORD(c),  β=1536,WORD(d),  α+=11;
-  β=0,Tbot,         β=512,Tcnt,         β=1024,Tcnt,     β=1536,Tcnt,     α+=11;
-  β=0,Tnxt,         β=512,Tnxt,         β=1024,Tnxt,     β=1536,Ttop,     α+=11;
-  β=0,WORD(A),      β=512,WORD(B),      β=1024,WORD(C),  β=1536,WORD(D),  α+=11;
-  β=0,DOT,          β=512,DOT,          β=1024,DOT,      β=1536,DOT,      α+=11;
-  β=0;
-  Yellow(5, α, β, ο, σ);
-}
-N(term) {
-  ST, α+=11;
-  WORD("love"), α+=11;
-  AND, α+=11;
-  WORD("live"), α+=11;
-  DOT, α+=11;
+N(grow) { ((n_t *)ο)[σ](τ, α, β, ο, σ + 1); }
+// clang-format off
+N(T) {
+  TAB(Yellow,Purple, Red,   Green,Blue,"bT",Blue,Green,Red,   Yellow, grow);
+  TAB(Yellow,Purple, Red,   Green,Blue,"mT",Navy,Lime, Maroon,Fuchsia,Olive);
+  TAB(Lime,  Fuchsia,Maroon,Olive,Navy,"oT",0,   0,    0,     0,      0);
   Fuchsia(τ, α, β, ο, σ);
 }
+N(S) {
+  TAB(Yellow,Purple, Red,   Green,Blue,"bS",Blue,Green,Red,   Yellow, grow);
+  TAB(Yellow,Purple, Red,   Green,Blue,"mS",Navy,Lime, Maroon,Fuchsia,Olive);
+  TAB(Lime,  Fuchsia,Maroon,Olive,Navy,"oS",0,   0,    0,     0,      0);
+  Fuchsia(τ, α, β, ο, σ);
+}
+N(A) {
+  TAB(Yellow,Purple, Red,   Green,Blue,"bA",Blue,Green,Red,   Yellow, grow);
+  TAB(Yellow,Purple, Red,   Green,Blue,"mA",Navy,Lime, Maroon,Fuchsia,Olive);
+  TAB(Lime,  Fuchsia,Maroon,Olive,Navy,"oA",0,   0,    0,     0,      0);
+  Fuchsia(τ, α, β, ο, σ);
+}
+// clang-format on
 void ti_init(Args);
-#define ALIGN(O, A) (((unsigned long)(((O) + ((A) - 1)) / (A))) * (A))
-// ......b0......b1......b2......b3
-//                         o
+void ti_close();
+#define ALIGN(O, A) (((unsigned long)(((O) + ((A)-1)) / (A))) * (A))
+N(stop) {}
 int main() {
-  long τ = 0, α = 0, β = 512;
-  void* ο[4 * Σ];
-  long σ = 0;
+  long τ = 0, α = 0, β = Σ;
+  void *ο[Σ];
+  long σ = Σ;
   ti_init(τ, α, β, ο, σ);
-  S(τ, α, β, ο, σ);
-  //term(τ, α, β, ο, σ);
+  ο[--σ] = stop;
+  ο[--σ] = A;
+  ο[--σ] = S;
+  grow(τ, α, β, ο, σ);
+  ti_close();
   return 0;
 }
 /*Code point ↔ UTF-8 conversion
     First     Last
     code      code
-    point	    point	    Byte 1	  Byte 2	  Byte 3	  Byte 4
-    U+0000    U+007F	  0xxxxxxx	
-    U+0080    U+07FF	  110xxxxx	10xxxxxx	
-    U+0800    U+FFFF	  1110xxxx	10xxxxxx	10xxxxxx	
-    U+10000[b]U+10FFFF	11111xxx	10xxxxxx	10xxxxxx	10xxxxxx */
+    point	    point	    Byte 1	  Byte 2	  Byte 3
+   Byte 4 U+0000    U+007F	  0xxxxxxx U+0080    U+07FF	  110xxxxx
+   10xxxxxx U+0800    U+FFFF	  1110xxxx	10xxxxxx	10xxxxxx
+    U+10000[b]U+10FFFF	11111xxx	10xxxxxx	10xxxxxx	10xxxxxx
+ */

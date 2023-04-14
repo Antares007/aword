@@ -24,7 +24,7 @@ static Color colors[] = {
 static void **o;
 static long tabs[1024][3];
 static long tc = 0;
-static float zoom = 2;
+static float zoom = 1;
 static Vector2 off = {};
 static Vector2 getTabPos(long i) {
   long axis = tabs[i][2] / 512;
@@ -80,12 +80,16 @@ void ti(Args, long ray) {
   tabs[tc][1] = ray - τ;
   tabs[tc][2] = β;
   tc++;
-  draw(), ((n_t *)ο)[β + ray](τ, α, β, ο, σ);
+  draw();
+  ((n_t *)ο)[β + ray](τ, α, β, ο, σ);
+}
+void ti_close(){
+  CloseWindow();
 }
 void ti_init(Args) {
   o = ο;
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1800, 900, "aword");
+  InitWindow(800, 600, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
