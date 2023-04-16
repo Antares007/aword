@@ -21,19 +21,18 @@ static Color colors[] = {
     {128, 128, 000, 255}  // Olive
 
 };
-static void **o;
 static long tabs[1024][3];
 static long tc = 0;
-static float zoom = 2;
+static float zoom = 1;
 static Vector2 off = {};
 static Vector2 getTabPos(long i) {
-  long axis = tabs[i][2] / 512;
-  Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5 + 100 * axis};
+  Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5};
   return endPos;
 }
 static void drAW(long t, long r) {
   DrawRectangleLines(-10, -10, 20, 20, BLACK);
 }
+extern char*names[];
 static void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
@@ -48,28 +47,28 @@ static void draw() {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(WHITE);
+    ClearBackground(BLACK);
     Camera2D camera = {
         .target = getTabPos(tc - 1),
         .rotation = 0,
         .zoom = zoom,
         .offset = (Vector2){GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
+    camera.offset = Vector2Add(camera.offset, off);
     Vector2 startPos = {0, 0};
     for (long i = 0; i < tc; i++) {
       BeginMode2D(camera);
-      void *ptr = o[tabs[i][2] + tabs[i][0]];
-      float fontSize = 20;
-      const char *text =
-          TextFormat("%ld %s", tabs[i][1], ptr < (void *)2048 ? "" : ptr);
-      Vector2 endPos = getTabPos(i);
-      Vector2 m = MeasureTextEx(font, text, fontSize, 0);
-      Vector2 border = {4, 4};
-      DrawRectangleV(Vector2Subtract(endPos, border),
-                     Vector2Add(m, Vector2Scale(border, 2)),
-                     colors[tabs[i][1] + 5]);
-      DrawTextEx(font, text, endPos, fontSize, 0, BLACK);
+      Vector2 endPos = {tabs[i][0] * 5, tabs[i][1] * 5};
       DrawLineBezier(startPos, endPos, 2, colors[tabs[i][1] + 5]);
       startPos = endPos;
+      float fontSize = 20;
+      const char *text = names[tabs[i][0]];
+//      Vector2 m = MeasureTextEx(font, text, fontSize, 0);
+//      Vector2 border = {4, 4};
+//      DrawRectangleV(Vector2Subtract(endPos, border),
+//                     Vector2Add(m, Vector2Scale(border, 2)),
+//                     colors[tabs[i][1] + 5]);
+
+      DrawTextEx(font, text, (Vector2){endPos.x,40}, fontSize, 0, WHITE);
       EndMode2D();
     }
     EndDrawing();
@@ -78,14 +77,19 @@ static void draw() {
 void ti(Args, long ray) {
   tabs[tc][0] = τ;
   tabs[tc][1] = ray - τ;
-  tabs[tc][2] = β;
   tc++;
-  draw(), ((n_t *)ο)[β + ray](τ, α, β, ο, σ);
+  //((n_t*)σ)[ray](τ, α, β, ο, σ);
+  draw();
+  ((n_t*)ο)[ray](τ, α, β, ο, σ, δ);
+
+}
+void ti_stop(Args) {
+  draw();
+  printf("stop\n");
 }
 void ti_init(Args) {
-  o = ο;
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1800, 900, "aword");
+  InitWindow(1800, 400, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
