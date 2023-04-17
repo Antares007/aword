@@ -37,22 +37,18 @@ N(Olive   ) { ti(τ - 11, α, β, ο, σ, τ - 6); }  // τ    -5
   β[--ο] = Red,                                                                   \
   β[--ο] = Purple,                                                                \
   β[--ο] = Yellow
+#define GEN(Yellow)                                                               \
+  N(Yellow##_jmp ) {                  Yellow((long)β[τ]+τ, α,  β,ο,σ); }        \
+  N(Yellow##_call) { β[α] = (void*)τ, Yellow((long)β[τ],   α+1,β,ο,σ); }        \
+  N(Yellow##_ret ) {                  Yellow((long)β[α-1], α-1,β,ο,σ); } 
+GEN(Yellow)GEN(Purple )GEN(Red   )GEN(Green)GEN(Blue)
+GEN(Olive )GEN(Fuchsia)GEN(Maroon)GEN(Lime )GEN(Navy)
 char *names[0x1000];
 #ifdef NDEBUG
 #define NAME(ο, zero) (void)0
 #else
 #define NAME(ο, zero) names[ο] = zero
 #endif
-N(Yellow_jmp ) { Yellow (τ+(long)β[τ],α,β,ο,σ); }
-N(Purple_jmp ) { Purple (τ+(long)β[τ],α,β,ο,σ); }
-N(Red_jmp    ) { Red    (τ+(long)β[τ],α,β,ο,σ); }
-N(Green_jmp  ) { Green  (τ+(long)β[τ],α,β,ο,σ); }
-N(Blue_jmp   ) { Blue   (τ+(long)β[τ],α,β,ο,σ); }
-N(Navy_jmp   ) { Navy   (τ+(long)β[τ],α,β,ο,σ); }
-N(Lime_jmp   ) { Lime   (τ+(long)β[τ],α,β,ο,σ); }
-N(Maroon_jmp ) { Maroon (τ+(long)β[τ],α,β,ο,σ); }
-N(Fuchsia_jmp) { Fuchsia(τ+(long)β[τ],α,β,ο,σ); }         
-N(Olive_jmp  ) { Olive  (τ+(long)β[τ],α,β,ο,σ); }
 // Focus on walk, walk with cpu, into the words, step by step to understand,
 // and lay down perfect path, we have anything we need to do so, we have T
 // The unit of composition. lets make perfect parser, perfect multitasking
@@ -71,18 +67,27 @@ N(Olive_jmp  ) { Olive  (τ+(long)β[τ],α,β,ο,σ); }
 //  σ - size                        w
 N(grow) { ((n_t*)β)[α-1](τ, α-1, β, ο, σ); }
 N(b   ) {
-  T(Yellow, Purple, Red,    Green,  Blue, b,  Blue, Green,Red,    Purple, Yellow);
+  T(Yellow, Purple, Red, Green, Blue, b, Blue, Green ,Red, Purple, Yellow);
   Yellow(ο + 5, α, β, ο, σ);
 }
+N(u   ) {
+  T(Yellow, Purple, Red, Green, Blue, u, Navy, Lime, Maroon, Fuchsia, Olive);
+  grow(τ, α, β, ο, σ);
+}
 N(m   ) {
-  T(Yellow, Purple, Red,    Green,  Blue, m,  Navy, Lime, Maroon, Fuchsia,Olive);
+  T(Yellow, Purple, Red, Green, Blue, m, Navy, Lime, Maroon, Fuchsia, Olive);
   grow(τ, α, β, ο, σ);
 }
 N(o   ) {
-  T(Lime,   Fuchsia,Maroon, Olive,  Navy, o,  0,    0,    0,      0,      0);
+  T(Lime, Fuchsia, Maroon, Olive, Navy, o, 0, 0, 0, 0, 0);
+  grow(τ, α, β, ο, σ);
+}
+N(toti   ) {
+  T(Yellow_call, Purple_call, Red_call,  Green_call, Blue_call, β[--α], Navy, Lime, Maroon, Fuchsia, Olive);
   grow(τ, α, β, ο, σ);
 }
 void ti_init(Args);
+#define B(...) (__VA_ARGS__, (void*)(ο + 5))
 int main() {
   long τ = 0, α = 0;
   void *β[512];
@@ -90,6 +95,14 @@ int main() {
   ti_init(τ, α, β, ο, σ);
   β[α++] = b;
   β[α++] = m;
+  β[α++] =
+  B(T(Olive, Fuchsia,Maroon,Lime, Navy,"tb",0,       0,        0,      0,         0),
+    T(Yellow,Purple, Red,   Green,Blue,"t1",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+    T(Yellow,Purple, Red,   Green,Blue,"t2",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+    T(Yellow,Purple, Red,   Green,Blue,"t3",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+    T(0,     0,      0,     0,    0,   "tr",Blue_ret,Green_ret,Red_ret,Purple_ret,Yellow_ret));
+  β[α++] = toti;
+  β[α++] = u;
   β[α++] = o;
   grow(τ, α, β, ο, σ);
   return 0;
