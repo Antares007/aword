@@ -21,17 +21,12 @@ static Color colors[] = {
     {255, 255, 000, 255}, // Yellow
 
 };
-typedef struct step_t {
-  Vector2 enter, zero, exit;
-  const char *text;
-  Color color;
-} step_t;
-static step_t path[1024];
+long path[1024][2];
 static long path_length = 0;
-static float zoom = 2;
+static float zoom = 4;
 static Vector2 off = {};
 extern char *names[];
-static void draw() {
+void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
     key = GetCharPressed();
@@ -46,58 +41,43 @@ static void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(BLACK);
+    Vector2 uzero   = {0, 0};
+    Vector2 urayPos = {0, 0};
+    Vector2 dir = {1, 0};
     Camera2D camera = {
-        .target = path[path_length - 1].zero,
+        .target = {path_length*5,0},
         .rotation = 0,
         .zoom = zoom,
         .offset = {GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
     camera.offset = Vector2Add(camera.offset, off);
+    BeginMode2D(camera);
     for (long i = 0; i < path_length; i++) {
-      step_t *s = &path[i];
-      BeginMode2D(camera);
-      DrawLineBezierQuad(s->enter, s->exit, s->zero, 2, s->color);
-      DrawTextEx(font, s->text, s->zero, 10, 0, WHITE);
-      EndMode2D();
+      long τ = path[i][0];
+      long ray = path[i][1];
+      Color color = colors[ray + 5];
+      char *text = names[τ];
+      Vector2 odir = Vector2Rotate(dir, M_PI_2);
+      Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 5));
+      Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, ray * 5));
+      DrawLineV(urayPos, rayPos, color);
+      DrawTextEx(font, text, zero, 10, 0, text[0] == 'o' ? RED : WHITE);
+      uzero = zero;
+      urayPos = rayPos;
     }
+    EndMode2D();
     EndDrawing();
   }
 }
-#include <stdlib.h>
 void ti(Args, long rτ) {
-  const float width = 50;
-
-  static Vector2 enter = {0, 0};
-  static Vector2 zero = {0, 0};
-  static Vector2 dir = {1, 0};
-  static long lτ = 512;
-  static long ldelta = 1;
-
-  long ray = rτ - τ;
-  long delta = 0 < ray ? -1 : 1;
-
-  if (lτ - τ != 11 && lτ - τ != -11)
-    dir = Vector2Rotate(dir, M_PI_2);
-  else if (ldelta != delta)
-    ldelta = delta, dir = Vector2Rotate(dir, M_PI);
-
-  Vector2 exit =
-      Vector2Add(Vector2Add(zero, Vector2Scale(dir, width / 2)),
-                 Vector2Scale(Vector2Rotate(dir, M_PI_2), ray * width / 10));
-  path[path_length++] = (step_t){.zero = zero,
-                                 .enter = enter,
-                                 .exit = exit,
-                                 .text = names[τ],
-                                 .color = colors[ray + 5]};
-  lτ = τ;
-  zero = Vector2Add(zero, Vector2Scale(dir, width));
-  enter = exit;
-
+  path[path_length][0] = τ;
+  path[path_length][1] = rτ - τ;
+  path_length++;
   draw();
   ((n_t *)β)[rτ](τ, α, β, ο, σ);
 }
 void ti_init(Args) {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1700, 600, "aword");
+  InitWindow(1700, 900, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }

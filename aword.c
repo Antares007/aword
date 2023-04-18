@@ -38,9 +38,8 @@ N(Olive   ) { ti(τ - 11, α, β, ο, σ, τ - 6); }  // τ    -5
   β[--ο] = Purple,                                                                \
   β[--ο] = Yellow
 #define GEN(Yellow)                                                               \
-  N(Yellow##_jmp ) {                  Yellow((long)β[τ]+τ, α,  β,ο,σ); }        \
-  N(Yellow##_call) { β[α] = (void*)τ, Yellow((long)β[τ],   α+1,β,ο,σ); }        \
-  N(Yellow##_ret ) {                  Yellow((long)β[α-1], α-1,β,ο,σ); } 
+  N(Yellow##_call) { β[α] = (void*)τ, Yellow((long)β[τ  ], α+1,β,ο,σ); }   \
+  N(Yellow##_ret ) {                  Yellow((long)β[α-1], α-1,β,ο,σ); }          
 GEN(Yellow)GEN(Purple )GEN(Red   )GEN(Green)GEN(Blue)
 GEN(Olive )GEN(Fuchsia)GEN(Maroon)GEN(Lime )GEN(Navy)
 char *names[0x1000];
@@ -67,12 +66,8 @@ char *names[0x1000];
 //  σ - size                        w
 N(grow) { ((n_t*)β)[α-1](τ, α-1, β, ο, σ); }
 N(b   ) {
-  T(Yellow, Purple, Red, Green, Blue, b, Blue, Green ,Red, Purple, Yellow);
+  T(Yellow, Purple, Red, Green, Blue, b, Blue, Green, Red, Purple, Yellow);
   Yellow(ο + 5, α, β, ο, σ);
-}
-N(u   ) {
-  T(Yellow, Purple, Red, Green, Blue, u, Navy, Lime, Maroon, Fuchsia, Olive);
-  grow(τ, α, β, ο, σ);
 }
 N(m   ) {
   T(Yellow, Purple, Red, Green, Blue, m, Navy, Lime, Maroon, Fuchsia, Olive);
@@ -89,20 +84,20 @@ N(toti   ) {
 void ti_init(Args);
 #define B(...) (__VA_ARGS__, (void*)(ο + 5))
 int main() {
+  // TODO: define way to put stack for connecting branches into the pith with words.
   long τ = 0, α = 0;
   void *β[512];
   long ο = sizeof(β) / sizeof(*β), σ = ο;
   ti_init(τ, α, β, ο, σ);
   β[α++] = b;
   β[α++] = m;
-  β[α++] =
-  B(T(Olive, Fuchsia,Maroon,Lime, Navy,"tb",0,       0,        0,      0,         0),
-    T(Yellow,Purple, Red,   Green,Blue,"t1",Navy,    Lime,     Maroon, Fuchsia,   Olive),
-    T(Yellow,Purple, Red,   Green,Blue,"t2",Navy,    Lime,     Maroon, Fuchsia,   Olive),
-    T(Yellow,Purple, Red,   Green,Blue,"t3",Navy,    Lime,     Maroon, Fuchsia,   Olive),
-    T(0,     0,      0,     0,    0,   "tr",Blue_ret,Green_ret,Red_ret,Purple_ret,Yellow_ret));
-  β[α++] = toti;
-  β[α++] = u;
+//  β[α++] =
+//  B(T(Olive, Fuchsia,Maroon,Lime, Navy,"tb",0,       0,        0,      0,         0),
+//    T(Yellow,Purple, Red,   Green,Blue,"t1",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+//    T(Yellow,Purple, Red,   Green,Blue,"t2",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+//    T(Yellow,Purple, Red,   Green,Blue,"t3",Navy,    Lime,     Maroon, Fuchsia,   Olive),
+//    T(0,     0,      0,     0,    0,   "tr",Blue_ret,Green_ret,Red_ret,Purple_ret,Yellow_ret));
+//  β[α++] = toti;
   β[α++] = o;
   grow(τ, α, β, ο, σ);
   return 0;
