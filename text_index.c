@@ -59,7 +59,7 @@ void draw() {
       Vector2 odir = Vector2Rotate(dir, M_PI_2);
       Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 5));
       Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, ray * 5));
-      DrawLineV(urayPos, rayPos, color);
+      DrawLineBezier(urayPos, rayPos, 4, color);
       DrawTextEx(font, text, zero, 10, 0, text[0] == 'o' ? RED : WHITE);
       uzero = zero;
       urayPos = rayPos;
