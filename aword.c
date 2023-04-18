@@ -48,12 +48,13 @@ char *names[0x1000];
 #else
 #define NAME(ο, zero) names[ο] = zero
 #endif
-// Focus on walk, walk with cpu, into the words, step by step to understand,
-// and lay down perfect path, we have anything we need to do so, we have T
-// The unit of composition. lets make perfect parser, perfect multitasking
-// mechanism, perfect time machine, perfect i.e. lets understand pith of those
-// things. time works inside out, time moves in time and time defines itself.
-// it is recursive, some kind of perfect loop definig itself. well we have the
+// Focus on walk, walk with cpu, into the words, walk step by step,
+// walk to understand, and lay down perfect path, we have anything we need
+// to do so, we have T The unit of composition. lets make perfect parser,
+// perfect multitasking mechanism, perfect time machine, perfect i.e.
+// lets understand pith of those things. time works inside out,
+// time moves in time and time defines itself. it is recursive,
+// some kind of perfect loop definig itself. well we have the
 // loop we need to play, to experiment, to have fun and not worry.
 //
 //  tabos
