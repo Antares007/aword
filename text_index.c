@@ -73,7 +73,7 @@ void ti(Args, long rτ) {
   path[path_length][1] = rτ - τ;
   path_length++;
   draw();
-  ((n_t *)β)[rτ](τ, α, β, ο, σ);
+  ((n_t *)ο)[rτ](τ, α, β, ο, σ);
 }
 void ti_init(Args) {
   SetTraceLogLevel(LOG_ERROR);
