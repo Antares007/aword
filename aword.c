@@ -66,18 +66,17 @@ int main() {
   void *ο[α + β];
   long σ = α;
 
-  T(Lime,  Fuchsia,Maroon,Olive,Navy,"bo",0,       0,    0,      0,         0);
-  T(Yellow,Purple, Red,   Green,Blue,"t1",Navy,    Lime, Maroon, Fuchsia,   Olive);
-  T(Yellow,Purple, Red,   Green,Blue,"tr",Blue_ret,Lime, Red_ret,Purple_ret,Yellow_ret);
-  T(0,     0,      0,     0,    0,   "bb",Blue,    Green,Red,    Purple,    Yellow);
-  long bark = β + 5;
+  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Co",0,    0,    0,      0,           0);
+  T(Yellow,Purple, Red,   Green,Blue,"Cm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(0,     0,      0,     0,    0,   "Cb",Blue, Green,Red,    Purple,  Green_ret);
+  long C = β + 5;
 
   //ti_init(τ, α, β, ο, σ);
   
-  T(Lime,  Fuchsia,     Maroon,   Olive,     Navy,     "o", 0,   0,    0,     0,      0);
-  T(Yellow,Purple_call, Red_call, Green_call,Blue_call,bark,Navy,Lime, Maroon,Fuchsia,Olive);
-  T(Yellow,Purple,      Red,      Green,     Blue,     "m", Navy,Lime, Maroon,Fuchsia,Olive);
-  T(Yellow,Purple,      Red,      Green,     Blue,     "b", Blue,Green,Red,   Purple, Yellow);
+  T(Lime,   Fuchsia, Maroon, Olive,      Navy, "o",  0,    0,     0,      0,       0);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m",  Navy, Lime,  Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green_call, Blue,  C,   Navy, Lime,  Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "b",  Blue, Green, Red,    Purple,  Yellow);
   Yellow(β + 5, α, β, ο, σ);
   return 0;
 }
