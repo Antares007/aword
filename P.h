@@ -1,7 +1,6 @@
 #pragma once
 #include <stdio.h>
 #include <unistd.h>
-static char *names[0x1000];
 #ifdef NDEBUG
 #define NAME(ο, zero) (void)0
 #else

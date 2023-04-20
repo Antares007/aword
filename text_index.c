@@ -21,7 +21,13 @@ static Color colors[] = {
     {255, 255, 000, 255}, // Yellow
 
 };
-long path[1024][2];
+typedef struct step_t {
+  float dir;
+  long ray;
+  long delta;
+  const char *text;
+} step_t;
+static step_t path[1024];
 static long path_length = 0;
 static float zoom = 4;
 static Vector2 off = {};
@@ -41,26 +47,26 @@ void draw() {
       zoom -= 0.1;
     BeginDrawing();
     ClearBackground(BLACK);
-    Vector2 uzero   = {0, 0};
+
+    Vector2 uzero = {0, 0};
     Vector2 urayPos = {0, 0};
-    Vector2 dir = {1, 0};
+    const Vector2 text_dir = {1, 0};
     Camera2D camera = {
-        .target = {path_length*5,0},
+        .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
         .offset = {GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
     camera.offset = Vector2Add(camera.offset, off);
     BeginMode2D(camera);
     for (long i = 0; i < path_length; i++) {
-      long τ = path[i][0];
-      long ray = path[i][1];
-      Color color = colors[ray + 5];
-      char *text = names[τ];
+      step_t s = path[i];
+      Color color = colors[s.ray + 5];
+      Vector2 dir = Vector2Rotate(text_dir, s.dir);
       Vector2 odir = Vector2Rotate(dir, M_PI_2);
-      Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 5));
-      Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, ray * 5));
-      DrawLineBezier(urayPos, rayPos, 4, color);
-      DrawTextEx(font, text, zero, 10, 0, text[0] == 'o' ? RED : WHITE);
+      Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 50 * s.delta));
+      Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, s.ray * 5));
+      DrawLineBezier(urayPos, rayPos, 2, color);
+      DrawTextEx(font, s.text, rayPos, 10, 0, s.text[0] == 'o' ? RED : WHITE);
       uzero = zero;
       urayPos = rayPos;
     }
@@ -68,12 +74,25 @@ void draw() {
     EndDrawing();
   }
 }
-void ti(Args, long rτ) {
-  path[path_length][0] = τ;
-  path[path_length][1] = rτ - τ;
-  path_length++;
+static float dir_stack[1024] = {0};
+static long dirs = 1;
+void ti_left() {
+  dir_stack[dirs] = dir_stack[dirs - 1] - M_PI_2;
+  dirs++;
+}
+void ti_right() {
+  dir_stack[dirs] = dir_stack[dirs - 1] + M_PI_2;
+  dirs++;
+}
+void ti_ret() { dirs--; }
+void ti(long t, long ray, long delta) {
+  path[path_length++] = (step_t){
+      .dir = dir_stack[dirs - 1],
+      .delta = delta,
+      .text = names[t],
+      .ray = ray,
+  };
   draw();
-  ((n_t *)ο)[rτ](τ, α, β, ο, σ);
 }
 void ti_init(Args) {
   SetTraceLogLevel(LOG_ERROR);

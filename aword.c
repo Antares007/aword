@@ -1,47 +1,56 @@
 #include "aword.h"
+#include "text_index.h"
 #include "P.h"
+char *names[0x1000];
 // clang-format off
-//                                                                  ττττ+11
-//Navy                                                              τ   +10
-//Lime                                                              τ    +9
-//Maroon                                                            τ    +8
-//Fuchsia                                                           τ    +7
-//Olive                                                             τ    +6
-N(Yellow  ) { P(Yellow ),((n_t*)ο)[τ + 6](τ + 11, α, β, ο, σ); } // τ    +5
-N(Purple  ) { P(Purple ),((n_t*)ο)[τ + 7](τ + 11, α, β, ο, σ); } // τ    +4
-N(Red     ) { P(Red    ),((n_t*)ο)[τ + 8](τ + 11, α, β, ο, σ); } // τ    +3
-N(Green   ) { P(Green  ),((n_t*)ο)[τ + 9](τ + 11, α, β, ο, σ); } // τ    +2
-N(Blue    ) { P(Blue   ),((n_t*)ο)[τ +10](τ + 11, α, β, ο, σ); } // τ    +1
-                                                              // ττττ ±0
-N(Navy    ) { P(Navy   ),((n_t*)ο)[τ -10](τ - 11, α, β, ο, σ); } // τ    -1
-N(Lime    ) { P(Lime   ),((n_t*)ο)[τ - 9](τ - 11, α, β, ο, σ); } // τ    -2
-N(Maroon  ) { P(Maroon ),((n_t*)ο)[τ - 8](τ - 11, α, β, ο, σ); } // τ    -3
-N(Fuchsia ) { P(Fuchsia),((n_t*)ο)[τ - 7](τ - 11, α, β, ο, σ); } // τ    -4
-N(Olive   ) { P(Olive  ),((n_t*)ο)[τ - 6](τ - 11, α, β, ο, σ); } // τ    -5
-//Yellow                                                            τ    -6
-//Purple                                                            τ    -7
-//Red                                                               τ    -8
-//Green                                                             τ    -9
-//Blue                                                              τ   -10
-//                                                                  ττττ-11
+//                                                                   ττττ-13
+//                                                                   τ   -12
+//Navy                                                               τ   -11
+//Lime                                                               τ   -10
+//Maroon                                                             τ    -9
+//Fuchsia                                                            τ    -8
+//Olive                                                              τ    -7
+N(Yellow  ) { ti(τ+13,+5,+1),((n_t*)ο)[τ+ 7](τ+13, α, β, ο, σ); } // τ    -6
+N(Purple  ) { ti(τ+13,+4,+1),((n_t*)ο)[τ+ 8](τ+13, α, β, ο, σ); } // τ    -5
+N(Red     ) { ti(τ+13,+3,+1),((n_t*)ο)[τ+ 9](τ+13, α, β, ο, σ); } // τ    -4
+N(Green   ) { ti(τ+13,+2,+1),((n_t*)ο)[τ+10](τ+13, α, β, ο, σ); } // τ    -3
+N(Blue    ) { ti(τ+13,+1,+1),((n_t*)ο)[τ+11](τ+13, α, β, ο, σ); } // τ    -2
+//                                                                   τ    -1
+//                                                                   ττττ ±0
+//                                                                   τ    +1
+N(Navy    ) { ti(τ-13,-1,-1),((n_t*)ο)[τ-11](τ-13, α, β, ο, σ); } // τ    +2
+N(Lime    ) { ti(τ-13,-2,-1),((n_t*)ο)[τ-10](τ-13, α, β, ο, σ); } // τ    +3
+N(Maroon  ) { ti(τ-13,-3,-1),((n_t*)ο)[τ- 9](τ-13, α, β, ο, σ); } // τ    +4
+N(Fuchsia ) { ti(τ-13,-4,-1),((n_t*)ο)[τ- 8](τ-13, α, β, ο, σ); } // τ    +5
+N(Olive   ) { ti(τ-13,-5,-1),((n_t*)ο)[τ- 7](τ-13, α, β, ο, σ); } // τ    +6
+//Yellow                                                             τ    +7
+//Purple                                                             τ    +8
+//Red                                                                τ    +9
+//Green                                                              τ   +10
+//Blue                                                               τ   +11
+//                                                                   τ   +12
+//                                                                   ττττ+13
 // assert width > 1
 //
-#define T(Yellow,Purple,Red,Green,Blue, zero, Navy, Lime, Maroon, Fuchsia, Olive) \
-  ο[--β] = Olive,                                                                 \
-  ο[--β] = Fuchsia,                                                               \
-  ο[--β] = Maroon,                                                                \
-  ο[--β] = Lime,                                                                  \
-  ο[--β] = Navy,                                                                  \
-  ο[--β] = (void*)zero, NAME(β, #zero),                                           \
-  ο[--β] = Blue,                                                                  \
-  ο[--β] = Green,                                                                 \
-  ο[--β] = Red,                                                                   \
-  ο[--β] = Purple,                                                                \
+#define T(Yellow,Purple,Red,Green,Blue, left, zero, right, Navy, Lime, Maroon, Fuchsia, Olive)\
+  ο[--β] = Olive,                                                                             \
+  ο[--β] = Fuchsia,                                                                           \
+  ο[--β] = Maroon,                                                                            \
+  ο[--β] = Lime,                                                                              \
+  ο[--β] = Navy,                                                                              \
+  ο[--β] = (void*)right,NAME(β, #right),                                                      \
+  ο[--β] = (void*)zero, NAME(β, #zero),                                                       \
+  ο[--β] = (void*)left, NAME(β, #left),                                                       \
+  ο[--β] = Blue,                                                                              \
+  ο[--β] = Green,                                                                             \
+  ο[--β] = Red,                                                                               \
+  ο[--β] = Purple,                                                                            \
   ο[--β] = Yellow
-#define GEN(Yellow)                                                               \
-  N(Yellow##_goto) {                 P(goto),Yellow((long)ο[τ]+τ,α,β,ο,σ); }    \
-  N(Yellow##_call) { ο[σ] = (void*)τ,P(call),Yellow((long)ο[τ  ],α,β,ο,σ+1); }    \
-  N(Yellow##_ret ) {                 P(ret ),Yellow((long)ο[σ-1],α,β,ο,σ-1); }          
+#define GEN(Yellow)                                                                  \
+  N(Yellow##_goto)  {                              Yellow((long)ο[τ]+τ,α,β,ο,σ);   } \
+  N(Yellow##_left)  { ο[σ++]=(void*)τ, ti_left(),  Yellow((long)ο[τ-1],α,β,ο,σ);   } \
+  N(Yellow##_right) { ο[σ++]=(void*)τ, ti_right(), Yellow((long)ο[τ+1],α,β,ο,σ);   } \
+  N(Yellow##_ret )  {                  ti_ret(),   Yellow((long)ο[σ-1],α,β,ο,σ-1); }
 GEN(Yellow)GEN(Purple )GEN(Red   )GEN(Green)GEN(Blue)
 GEN(Olive )GEN(Fuchsia)GEN(Maroon)GEN(Lime )GEN(Navy)
 // Focus on walk, walk with cpu, into the words, walk step by step,
@@ -59,27 +68,42 @@ GEN(Olive )GEN(Fuchsia)GEN(Maroon)GEN(Lime )GEN(Navy)
 //                     |
 //                     |
 void ti_init(Args);
-
+typedef struct pith_t {
+  N((*Yellow));
+} pith_t;
+#define ALIGN(O, A) ((long)(((O) + ((A) - 1)) / (A))) * (A)
+N(show) {
+  pith_t*p = (pith_t*)(ο+α);
+  (void)p->Yellow;
+}
 int main() {
   // TODO: define way to put stack for connecting branches into the pith with words.
   long α = 512, β = α;
   void *ο[α + β];
   long σ = α;
-
-  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Co",0,    0,    0,      0,           0);
-  T(Yellow,Purple, Red,   Green,Blue,"Cm",Navy, Lime, Maroon, Fuchsia, Olive);
-  T(0,     0,      0,     0,    0,   "Cb",Blue, Green,Red,    Purple,  Green_ret);
-  long C = β + 5;
-
-  //ti_init(τ, α, β, ο, σ);
-  
-  T(Lime,   Fuchsia, Maroon, Olive,      Navy, "o",  0,    0,     0,      0,       0);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m",  Navy, Lime,  Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green_call, Blue,  C,   Navy, Lime,  Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "b",  Blue, Green, Red,    Purple,  Yellow);
-  Yellow(β + 5, α, β, ο, σ);
+  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Lo","Lo","Lo",0,    0,    0,      0,           0);
+  T(Yellow,Purple, Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(Yellow,Purple, Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(0,     0,      0,     0,    0,   "Lb","Lb","Lb",Blue, Green,Red,    Purple,  Green_ret);
+  long L = β + 6;
+  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Ro","Ro","Ro",0,    0,    0,      0,           0);
+  T(Yellow,Purple, Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(Yellow,Purple, Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(0,     0,      0,     0,    0,   "Rb","Rb","Rb",Blue, Green,Red,    Purple,  Lime_ret);
+  long R = β + 6;
+  ti_init(β + 6, α, β, ο, σ);
+  T(Lime,   Fuchsia, Maroon, Olive,      Navy, "o","o","o", 0,    0,           0,      0,       0);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Yellow_left,Blue,  L, "B", R,  Navy, Yellow_right,Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "b","b","b", Blue, Green,       Red,    Purple,  Yellow);
+  Yellow(β + 6, α, β, ο, σ);
   return 0;
 }
-/* 
-  _____awww.wwws_____
-  _____awww.wwws_____ */
