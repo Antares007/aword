@@ -53,20 +53,20 @@ N(Olive   ) { ti(τ-13,-5,-1),((n_t*)ο)[τ- 7](τ-13, α, β, ο, σ); } // τ 
   N(Yellow##_ret )  {                  ti_ret(),   Yellow((long)ο[σ-1],α,β,ο,σ-1); }
 GEN(Yellow)GEN(Purple )GEN(Red   )GEN(Green)GEN(Blue)
 GEN(Olive )GEN(Fuchsia)GEN(Maroon)GEN(Lime )GEN(Navy)
-// Focus on walk, walk with cpu, into the words, walk step by step,
-// walk to understand, and lay down perfect path, we have anything we need
-// to do so, we have T The unit of composition. lets make perfect parser,
-// perfect multitasking mechanism, perfect time machine, perfect i.e.
-// lets understand pith of those things. time works inside out,
-// time moves in time and time defines itself. it is recursive,
-// some kind of perfect loop definig itself. well we have the
-// loop we need to play, to experiment, to have fun and not worry.
-//
-//  α  β                                   ο   σ 
-//  ωωω₅₄₃₂₁s₁₂₃₄₅₅₄₃₂₁m₁₂₃₄₅₅₄₃₂₁d₁₂₃₄₅ωωω0www
-//                     |
-//                     |
-//                     |
+/* Focus on walk, walk with cpu, into the words, walk step by step,
+   walk to understand, and lay down perfect path, we have anything we need
+   to do so, we have T The unit of composition. lets make perfect parser,
+   perfect multitasking mechanism, perfect time machine, perfect i.e.
+   lets understand pith of those things. time works inside out,
+   time moves in time and time defines itself. it is recursive,
+   some kind of perfect loop definig itself. well we have the
+   loop we need to play, to experiment, to have fun and not worry.
+  
+    α  β                                   ο   σ 
+    ωωω₅₄₃₂₁s₁₂₃₄₅₅₄₃₂₁m₁₂₃₄₅₅₄₃₂₁d₁₂₃₄₅ωωω0www
+                       |
+                       |
+                       |                                                */
 void ti_init(Args);
 typedef struct pith_t {
   N((*Yellow));
@@ -81,29 +81,42 @@ int main() {
   long α = 512, β = α;
   void *ο[α + β];
   long σ = α;
-  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Lo","Lo","Lo",0,    0,    0,      0,           0);
-  T(Yellow,Purple, Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
-  T(Yellow,Purple, Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(Lime,   Fuchsia, Maroon,Olive,Navy,"Lo","Lo","Lo",0,    0,    0,      0,           0);
+  T(Yellow, Purple,  Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
+  //and
+  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
   T(0,     0,      0,     0,    0,   "Lb","Lb","Lb",Blue, Green,Red,    Purple,  Green_ret);
   long L = β + 6;
-  T(Lime,  Fuchsia,Maroon,Olive,Navy,"Ro","Ro","Ro",0,    0,    0,      0,           0);
-  T(Yellow,Purple, Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
-  T(Yellow,Purple, Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
+  T(Lime,   Fuchsia, Maroon, Olive,      Navy,"Ro","Ro","Ro",0,    0,    0,      0,           0);
+  T(Yellow, Purple,  Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
+  //and
+  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
   T(0,     0,      0,     0,    0,   "Rb","Rb","Rb",Blue, Green,Red,    Purple,  Lime_ret);
   long R = β + 6;
   ti_init(β + 6, α, β, ο, σ);
   T(Lime,   Fuchsia, Maroon, Olive,      Navy, "o","o","o", 0,    0,           0,      0,       0);
   T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  //and
+  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
   T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
   T(Yellow, Purple,  Red,    Yellow_left,Blue,  L, "B", R,  Navy, Yellow_right,Maroon, Fuchsia, Olive);
   T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  //and
+  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
   T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
+  //and
+  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
+  T(Yellow, Purple,  Red,    Green,      Blue, "b","b","b", Blue, Green,       Red,    Purple,  Yellow);
   T(Yellow, Purple,  Red,    Green,      Blue, "b","b","b", Blue, Green,       Red,    Purple,  Yellow);
   Yellow(β + 6, α, β, ο, σ);
+
+  //orand
+  T(Lime,   Purple,  Red,    Yellow,     Yellow, "O","R","A", Navy, Green,     Maroon, Fuchsia, Olive);
+  //or
+  T(Lime,   Purple,  Red,    Olive,      Yellow, " ","O","R", Navy, Green,     Maroon, Fuchsia, Olive);
+  //not
+  T(Lime,   Purple,  Yellow, Olive,      Blue,   "N","O","T", Navy, Green,     Maroon, Fuchsia, Olive);
   return 0;
 }
