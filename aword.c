@@ -76,47 +76,29 @@ N(show) {
   pith_t*p = (pith_t*)(ο+α);
   (void)p->Yellow;
 }
+#define To          T(Lime,   Fuchsia,Maroon, Olive,      Navy,   "o", "o", "o",  0,    0,            0,      0,       0)
+#define Tm          T(Yellow, Purple, Red,    Green,      Blue,   "m", "m", "m",  Navy, Lime,         Maroon, Fuchsia, Olive)
+#define T_Green_ret T(0,      0,      0,      0,          0,      "b", "b", "b",  Blue, Green,        Red,    Purple,  Green_ret)
+#define T_Lime_ret  T(0,      0,      0,      0,          0,      "b", "b", "b",  Blue, Green,        Red,    Purple,  Lime_ret)
+#define TDB(L, R)   T(Yellow, Purple, Red,    Yellow_left,Blue,   L,   "B",  R,   Navy, Yellow_right, Maroon, Fuchsia, Olive)
+#define Tb          T(Yellow, Purple, Red,    Green,      Blue,   "b", "b", "b",  Blue, Green,        Red,    Purple,  Yellow)
+#define Tnot        T(Lime,   Purple, Yellow, Olive,      Blue,   "N", "O", "T",  Navy, Green,        Maroon, Fuchsia, Olive)
+#define Tand        T(Lime,   Purple, Red,    Yellow,     Blue,   "A", "N", "D",  Navy, Green,        Maroon, Fuchsia, Olive)
+#define Tor         T(Lime,   Purple, Red,    Olive,      Yellow, " ", "O", "R",  Navy, Green,        Maroon, Fuchsia, Olive)
+#define Torand      T(Lime,   Purple, Red,    Yellow,     Yellow, "O", "R", "A",  Navy, Green,        Maroon, Fuchsia, Olive)
 int main() {
-  // TODO: define way to put stack for connecting branches into the pith with words.
   long α = 512, β = α;
   void *ο[α + β];
   long σ = α;
-  T(Lime,   Fuchsia, Maroon,Olive,Navy,"Lo","Lo","Lo",0,    0,    0,      0,           0);
-  T(Yellow, Purple,  Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
-  //and
-  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,   Green,Blue,"Lm","Lm","Lm",Navy, Lime, Maroon, Fuchsia, Olive);
-  T(0,     0,      0,     0,    0,   "Lb","Lb","Lb",Blue, Green,Red,    Purple,  Green_ret);
-  long L = β + 6;
-  T(Lime,   Fuchsia, Maroon, Olive,      Navy,"Ro","Ro","Ro",0,    0,    0,      0,           0);
-  T(Yellow, Purple,  Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
-  //and
-  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,   Green,Blue,"Rm","Rm","Rm",Navy, Lime, Maroon, Fuchsia, Olive);
-  T(0,     0,      0,     0,    0,   "Rb","Rb","Rb",Blue, Green,Red,    Purple,  Lime_ret);
-  long R = β + 6;
-  ti_init(β + 6, α, β, ο, σ);
-  T(Lime,   Fuchsia, Maroon, Olive,      Navy, "o","o","o", 0,    0,           0,      0,       0);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  //and
-  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Yellow_left,Blue,  L, "B", R,  Navy, Yellow_right,Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  //and
-  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "m","m","m", Navy, Lime,        Maroon, Fuchsia, Olive);
-  //and
-  T(Lime,   Purple,  Red,    Yellow,     Blue,   "A","N","D", Navy, Green,     Maroon, Fuchsia, Olive);
-  T(Yellow, Purple,  Red,    Green,      Blue, "b","b","b", Blue, Green,       Red,    Purple,  Yellow);
-  T(Yellow, Purple,  Red,    Green,      Blue, "b","b","b", Blue, Green,       Red,    Purple,  Yellow);
-  Yellow(β + 6, α, β, ο, σ);
 
-  //orand
-  T(Lime,   Purple,  Red,    Yellow,     Yellow, "O","R","A", Navy, Green,     Maroon, Fuchsia, Olive);
-  //or
-  T(Lime,   Purple,  Red,    Olive,      Yellow, " ","O","R", Navy, Green,     Maroon, Fuchsia, Olive);
-  //not
-  T(Lime,   Purple,  Yellow, Olive,      Blue,   "N","O","T", Navy, Green,     Maroon, Fuchsia, Olive);
+  To, Tm, Tand, Tm, T_Green_ret;
+  long L = β + 6;
+
+  To, Tm, Tand, Tm, T_Lime_ret;
+  long R = β + 6;
+
+  ti_init(β + 6, α, β, ο, σ);
+  To, Tm, Tand, Tm, TDB(L, R), Tm, Tand, Tm, Tand, Tm, Tb;
+  Yellow(β + 6, α, β, ο, σ); //not
   return 0;
 }
