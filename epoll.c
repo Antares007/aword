@@ -15,7 +15,7 @@ int setnonblocking(long fd) {
   flags |= O_NONBLOCK;
   return fcntl(fd, F_SETFL, flags);
 }
-
+ 
 int main() {
   int epollfd;
   if ((epollfd = epoll_create1(0)) == -1)
@@ -44,9 +44,9 @@ int main() {
           else
             printf("%ld\n", buflen);
 }
-/*          
-Where should we place the call to epoll_wait? How do we read data in a loop
-until EAGAIN or in a pull call from the consumer stream?
+/* read decode execute write.
+Where should we place the call to epoll_wait?
+Read data in a loop until EAGAIN?
 
 The epoll_wait function checks if there is data to read and returns an answer.
 If we don't read all of the data until EAGAIN, the epoll_wait function will
