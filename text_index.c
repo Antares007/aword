@@ -64,7 +64,7 @@ void draw() {
       Vector2 dir = Vector2Rotate(text_dir, s.dir);
       Vector2 odir = Vector2Rotate(dir, M_PI_2);
       Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 50 * s.delta));
-      Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, s.ray * 5));
+      Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, s.ray * -5));
       DrawLineBezier(urayPos, rayPos, 2, color);
       DrawTextEx(font, s.text, zero, 10, 0, s.text[0] == 'o' ? RED : WHITE);
       uzero = zero;
