@@ -1,4 +1,3 @@
-#include "aword.h"
 #include <assert.h>
 #include <math.h>
 #include <raylib.h>
@@ -29,7 +28,7 @@ typedef struct step_t {
 } step_t;
 static step_t path[1024];
 static long path_length = 0;
-static float zoom = 4;
+static float zoom = 1;
 static Vector2 off = {};
 extern char *names[];
 void draw() {
@@ -50,12 +49,12 @@ void draw() {
 
     Vector2 uzero = {0, 0};
     Vector2 urayPos = {0, 0};
-    const Vector2 text_dir = {1, 0};
+    const Vector2 text_dir = {0, 1};
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
-        .offset = {GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
+        .offset = {GetScreenWidth() / 2.f, GetScreenHeight()}};
     camera.offset = Vector2Add(camera.offset, off);
     BeginMode2D(camera);
     for (long i = 0; i < path_length; i++) {
@@ -94,7 +93,7 @@ void ti(long t, long ray, long delta) {
   };
   draw();
 }
-void ti_init(Args) {
+void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1700, 900, "aword");
   SetTargetFPS(60);
