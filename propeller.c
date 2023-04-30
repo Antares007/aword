@@ -42,12 +42,14 @@ N(s_Green) { ti_ret(), Green((long)o[s], a, o, s + 1); }
 #define Tb T(0, 0, "b", 0, 0), T(Blue, Green, Red, Yellow, Purple)
 #define Ts_Lime T(Lime, s_Lime, Maroon, Olive, Navy), T(0, 0, "o", 0, 0)
 #define Ts_Green T(Lime, s_Green, Maroon, Olive, Navy), T(0, 0, "o", 0, 0)
-#define Tadd T(Lime,Purple,Red,Yellow,Blue),T(0,0,"and",0,0),T(Navy,Green,Maroon,Fuchsia,Olive)
+#define Tand                                                                   \
+  T(Lime, Purple, Red, Yellow, Blue), T(0, 0, "and", 0, 0),                    \
+      T(Navy, Green, Maroon, Fuchsia, Olive)
 #define Tnoun(value)                                                           \
   T(Yellow, Purple, Red, Green, Blue), T(0, 0, #value, value, 0),              \
       T(Navy, noun_heart, Maroon, Fuchsia, Olive)
 N(noun_heart) {
-  o[--s] = o[t+1];
+  o[--s] = o[t + 1];
   Lime(t, a, o, s);
 }
 #define Tverb(nar)                                                             \
@@ -66,17 +68,67 @@ N(print) {
 int main() {
   long t = 0;
   long a = t;
-  void *o[ 1024];
+  void *o[1024];
   long s = 1024;
-  Tb, Tlabel("left"),   Tlabel("left"),   Tlabel("left"),   Tlabel("left"),   Ts_Lime;  long l0 = (long)(a - 3);
-  Tb, Tlabel("right"),  Tlabel("right"),  Tlabel("right"),  Tlabel("right"),  Ts_Green; long r0 = (long)(a - 3);
-  Tb, Tlabel("left"),   Tlabel("left"),   Tlabel("left"),   Ts_Lime;  long l1 = (long)(a - 3);
-  Tb, Tlabel("right"),  Tlabel("right"),  Tlabel("right"),  Ts_Green; long r1 = (long)(a - 3);
-  Tb, Tlabel("left"),   Tlabel("left"),   Ts_Lime;  long l2 = (long)(a - 3);
-  Tb, Tlabel("right"),  Tlabel("right"),  Ts_Green; long r2 = (long)(a - 3);
-  Tb, Toti(l0, r0),     Tlabel("w"),      Toti(l1, r1),     Tlabel("w"),      Toti(l2, r2),
-      Tlabel("w"),      Tdot;
+  Tb, Tlabel("left"), Tlabel("left"), Tlabel("left"), Tlabel("left"), Ts_Lime;
+  long l0 = (long)(a - 3);
+  Tb, Tlabel("right"), Tlabel("right"), Tlabel("right"), Tlabel("right"),
+      Ts_Green;
+  long r0 = (long)(a - 3);
+  Tb, Tlabel("left"), Tlabel("left"), Tlabel("left"), Ts_Lime;
+  long l1 = (long)(a - 3);
+  Tb, Tlabel("right"), Tlabel("right"), Tlabel("right"), Ts_Green;
+  long r1 = (long)(a - 3);
+  Tb, Tlabel("left"), Tlabel("left"), Ts_Lime;
+  long l2 = (long)(a - 3);
+  Tb, Tlabel("right"), Tlabel("right"), Ts_Green;
+  long r2 = (long)(a - 3);
+  Tb, Toti(l0, r0), Tlabel("w"), Toti(l1, r1), Tlabel("w"), Toti(l2, r2),
+      Tlabel("w"),  Tdot;
   ti_init();
-//  Tb, Tnoun(1), Tverb(add), Tnoun(1), Tadd, Tverb(print), Tdot;
+  Tb, Tnoun(1), Tverb(add), Tnoun(1), Tand, Tverb(print), Tand,
+      Tnoun(4), Tverb(add), Tnoun(5), Tand, Tverb(print), Tdot;
   Fuchsia(a - 3, a, o, s);
 }
+/*
+Here's my revised version of the text:
+
+This version of the protocol seems to be quite heavy, with each word taking up
+120 bits (5 * 3 * 8). We need to consider some key factors:
+
+Actionable words must be defined with precisely specified gates within a
+membrane. These words should be capable of division. It should be easy to write
+actionable sentences using the protocol. Our plan is to create the first word,
+which will serve as the creator of everything. To accomplish this, we must
+create a word within a membrane that has all the necessary tools to create
+things.
+
+Why do we need a membrane? It's necessary to have clearly defined boundaries and
+a mechanism for information flow between words. The connections between words
+must be indirectly defined so that the system can be scalable.
+
+The "aword" is an executable file that can be loaded into memory and executed
+from either the first byte or the last instruction, which must be a relative
+jump to the "aword." With the protocol's words, we can flow in both directions,
+with the instructions that define the "aword" indirectly sending us to the next
+"aword" by using a relative jump to the byte following the current "aword," or
+sending us to previous words from behind.
+
+enter from narrow gate
+what is my problem? i have experiance and know how to program but have 0 income
+how to convert my experiance into income. i want to have so i need to give.
+i think i have nothing to give. i think i need to make somesing to speak about
+and to build community around it. i have feith that i am on narrow road and my
+will is supported by God. but im already on this road more then 7 years. i have
+progress i can speak more about actionable word, but i dont have that inner
+satifaction that i have it i need to have that filling so i can share.
+what i'm dong wrong? suggest something.
+to solve problem of multitasking in super efficient way is only way we have. 
+
+
+
+becous it is the most valuable thing we can do in short period of time we have.
+what is the problem? In general, a preemptive multitasking operating system's
+kernel may switch tasks hundreds or even thousands of times per second on a
+typical desktop or server system. 
+*/

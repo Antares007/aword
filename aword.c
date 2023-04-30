@@ -126,7 +126,7 @@ int main() {
   long σ = α;
   ti_init(β + 7, α, β, ο, σ);
   wheel(β + 7, α, β, ο, σ);
-  //branches(β + 7, α, β, ο, σ);
+  branches(β + 7, α, β, ο, σ);
   return 0;
 }
 N(branches) {

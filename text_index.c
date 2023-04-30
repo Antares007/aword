@@ -28,7 +28,7 @@ typedef struct step_t {
 } step_t;
 static step_t path[1024];
 static long path_length = 0;
-static float zoom = 1;
+static float zoom = 4;
 static Vector2 off = {};
 extern char *names[];
 void draw() {
@@ -49,12 +49,12 @@ void draw() {
 
     Vector2 uzero = {0, 0};
     Vector2 urayPos = {0, 0};
-    const Vector2 text_dir = {0, 1};
+    const Vector2 text_dir = {-1, 0};
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
-        .offset = {GetScreenWidth() / 2.f, GetScreenHeight()}};
+        .offset = {GetScreenWidth() / 10.f, GetScreenHeight() / 2.f}};
     camera.offset = Vector2Add(camera.offset, off);
     BeginMode2D(camera);
     for (long i = 0; i < path_length; i++) {

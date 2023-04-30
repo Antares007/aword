@@ -15,7 +15,7 @@ int setnonblocking(long fd) {
   flags |= O_NONBLOCK;
   return fcntl(fd, F_SETFL, flags);
 }
- 
+
 int main() {
   int epollfd;
   if ((epollfd = epoll_create1(0)) == -1)
@@ -44,7 +44,131 @@ int main() {
           else
             printf("%ld\n", buflen);
 }
-/* read decode execute write.
+/*
+what does it means to multitask when we have ony one robot? it means to at some
+point our robot must stop execution instructions to put asaide current task and
+continue other or start new one.
+
+Exactly when must we stop?
+it depends on a aword he executing. aword can diside to give controll into other
+hand.
+now we need to do concrete example. we need to start process and follow with our
+robot(CPU). We need to prepare concrete example to show actionable word in
+action. I think best example will be to show how it can be used to controll and
+connect information flow. we need to show how we can describe information flow
+in a way that is simple and easy to understand.
+
+We can view whole actionable sentence as a pipe composed by acrionable words.
+basicly each word can be viewed as producer, consumer or transformer.
+Producer will produce information and it will cache it. so every time when
+execution flow will go true producer it will take current information. consumer
+will consume information in any way he wants and transformer will do bouth
+operations.
+
+Actionable sentence is very mutch like normal english.
+In particular in actinable word execution will flow from bouth directions. from
+left and from right.
+
+by convention we will recall actionable words with prefix a.
+Here is concrete example:
+read from "input" file and write to console.
+so we desided to implement this setence. question is which protocol we will use?
+
+we know that we need to assert width of actionable word.
+
+Actionabe word as a binary file:
+it has variable width.
+thay have clear defined boundaries.
+thay can be puted together in a ram to compose actionable text.
+we can say that actionable word has two forms as a binary which
+is whole meaning it does not need dinamic linking during loading
+by executor. it has its own method to satisfy dependencies.
+
+What is the method of dependecy injection?
+How do we inject dependecyes?
+How we structure actionable text?
+We can use idea of book papers grouped together. we can draw analogy to
+blockchain too. so paper i.e. block of actionable texts. there maybe headers
+with definition. or just text separated by dots.
+In any case it can be binary executable block?
+it must be aword. simply by protocol aword is asentence and asentence is a
+aword. so we have aword and by protocol connection between awords is indirect so
+we can say aword can be asentece which is distributed like blockchain. And it
+uses its own beginings to satisfy all dependencies it needs. We need to think
+about special aword which represents newline. we are using it to split header
+text from its definitions i.e. asenteces. below we will show what we are doing
+when we flow in it.
+
+so how exactly we can start exequiting this aword which is abook?
+suppose we have hash which represents this abook.
+we will get last page and will flow in in Fuchsia ray. now we are in the aword
+"dot". note execution of asentence is starting from dot. and we will flow down
+to begining of the sentence which is represented by special word abegin and this
+last sentence must be a program. it is the part definitons of some "aheader". So
+we have header text followed by anewline with one or more asentece.
+
+so we can start executiong it right away?
+what does in this context means branch?
+to define tree in mathematics we are using substitution. we can name group of
+asentences and use that aname in other place. so we have brunch.
+TOTI.
+NOW we can start implement this version of protocol to define it in C langugage.
+
+
+In actionable word when we are composing actionable text we need to take in
+consideration that it is well desctribed in human language.
+
+When we are defining the word in human langugage we are writing word and its
+definition from new line.
+We do not putting dot in the end of header text.
+Rather we continue definition from new line. Note we can put as many definitions
+as we header text requires.
+
+What does it mean in contect of substitution.
+We meand subtitution as a mechanism we are using in mathematics. In definition
+of other entity we can substitute header text we are using with its body. now
+question is how we are sustituting if we heave several definitions. I have
+intuition that we need to substitue one by one. substitution in this case looks
+like product operator.
+So we need some way to proppeler definitions of actionable word. in other words
+we need to produce as many executable brances as many definitions we have.
+
+Another question is we can have header as text composed with several awords what
+does it means?
+
+
+
+
+Actionable word as a narrative:
+we cant hold them as a bindary whole.
+we cant easely write actionable text in this version.
+
+
+now i have observed when i am reading i cant focus have other ideas floating in
+it. so i need to write all time to be in perfect focus state.
+
+So my writing will be trush at first but we will refine them latter. So dont
+worry be happy.
+
+this is awesome example to describe protocol and show all its beauty.
+we can start by implementing above text and then descibing it in plain words.
+ok lets do it now.
+
+what is actionable text?
+
+we have several protocols actionable word as
+an bindary file and as a group of narratives which together are defining
+actionable text.
+
+
+T stands for actionable text and we have actionable word and sentence lets
+define them.
+
+
+in actionable word execution can flow in from
+
+
+Read decode execute write.
 Where should we place the call to epoll_wait?
 Read data in a loop until EAGAIN?
 
