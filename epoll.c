@@ -76,7 +76,7 @@ so we desided to implement this setence. question is which protocol we will use?
 
 we know that we need to assert width of actionable word.
 
-Actionabe word as a binary file:
+# Actionabe word as a binary file:
 it has variable width.
 thay have clear defined boundaries.
 thay can be puted together in a ram to compose actionable text.
@@ -95,9 +95,9 @@ it must be aword. simply by protocol aword is asentence and asentence is a
 aword. so we have aword and by protocol connection between awords is indirect so
 we can say aword can be asentece which is distributed like blockchain. And it
 uses its own beginings to satisfy all dependencies it needs. We need to think
-about special aword which represents newline. we are using it to split header
-text from its definitions i.e. asenteces. below we will show what we are doing
-when we flow in it.
+about special awords which represents newline and space. we are using it to
+split header text from its definitions i.e. asenteces. below we will show what
+we are doing when we flow in it.
 
 so how exactly we can start exequiting this aword which is abook?
 suppose we have hash which represents this abook.
@@ -112,8 +112,6 @@ what does in this context means branch?
 to define tree in mathematics we are using substitution. we can name group of
 asentences and use that aname in other place. so we have brunch.
 TOTI.
-NOW we can start implement this version of protocol to define it in C langugage.
-
 
 In actionable word when we are composing actionable text we need to take in
 consideration that it is well desctribed in human language.
@@ -136,12 +134,39 @@ we need to produce as many executable brances as many definitions we have.
 Another question is we can have header as text composed with several awords what
 does it means?
 
-
-
-
-Actionable word as a narrative:
-we cant hold them as a bindary whole.
+# Actionable word as a narrative:
 we cant easely write actionable text in this version.
+this version is lightwait and easy to show main idea. we spoted how to dependecy
+injection can work. now lets extend idea and discuss roots i.e. root system.
+roots is just asentece which is there from begining. It is aword which has acess to
+hardware in other words it staticly linked with os.
+in this version we need to know width of the pith rest we can calculate as a result
+we will have variable length atext. we can also fix width 5+5+5 = 15 this we already
+have and to show concept it is mere then enought.
+
+# how dependecy injection will work?
+we need to have boundaries around aword. main reason is to avoid static linking. in sthis way aword can fully defined.
+
+# text index
+text index is number which we can use to reference aword, 
+
+how we define names?
+with help of specal "tab", "carige return", "space" and "dot" words.
+example:
+Τab T_Green(na) T_Green(me) Tcr T_Green(definition) Ts T_Green(one) To
+im switching from one version to another.
+
+think version forces us to solve any issue with colsed boundaries and without global O.
+it can have inner alocations to wite sentences which will projected on a global O in any way.
+now we need to start! i.e. start sharing! what we will share first? well i want to share
+somthing which i will be proud of. it must be usefull it must solve real problem in realy
+nice way. at least 10 times nicer easier and faster. bug free etc.
+real problem is todays communication complexity. in particular resfull API-s.
+HTTP/JSON communication. it involves parsing multitasking and complexity of defining task
+which involves time dimension.
+
+here we can observe that we have even more little composition units then word.
+we can compose words itself with prefix root sufix.
 
 
 now i have observed when i am reading i cant focus have other ideas floating in

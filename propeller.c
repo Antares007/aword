@@ -10,36 +10,37 @@ void ti_ret();
 void ti_init();
 void ti(long t, long ray, long delta);
 // clang-format off
-N(Yellow  ) { ti(t+15,+5,+1),((n_t*)o)[t + 8](t + 15, a, o, s); }
-N(Purple  ) { ti(t+15,+4,+1),((n_t*)o)[t + 9](t + 15, a, o, s); }
-N(Red     ) { ti(t+15,+3,+1),((n_t*)o)[t +10](t + 15, a, o, s); }
-N(Green   ) { ti(t+15,+2,+1),((n_t*)o)[t +11](t + 15, a, o, s); }
-N(Blue    ) { ti(t+15,+1,+1),((n_t*)o)[t +12](t + 15, a, o, s); }
-N(Navy    ) { ti(t-15,-1,-1),((n_t*)o)[t -12](t - 15, a, o, s); }
-N(Lime    ) { ti(t-15,-2,-1),((n_t*)o)[t -11](t - 15, a, o, s); }
-N(Maroon  ) { ti(t-15,-3,-1),((n_t*)o)[t -10](t - 15, a, o, s); }
-N(Fuchsia ) { ti(t-15,-4,-1),((n_t*)o)[t - 9](t - 15, a, o, s); }
-N(Olive   ) { ti(t-15,-5,-1),((n_t*)o)[t - 8](t - 15, a, o, s); }
+N(Yellow  ) { ti(t+15,+5,+1), ((n_t*)o)[t + 8](t + 15, a, o, s); }
+N(Purple  ) { ti(t+15,+4,+1), ((n_t*)o)[t + 9](t + 15, a, o, s); }
+N(Red     ) { ti(t+15,+3,+1), ((n_t*)o)[t +10](t + 15, a, o, s); }
+N(Green   ) { ti(t+15,+2,+1), ((n_t*)o)[t +11](t + 15, a, o, s); }
+N(Blue    ) { ti(t+15,+1,+1), ((n_t*)o)[t +12](t + 15, a, o, s); }
+
+
+
+
+
+N(Navy    ) { ti(t-15,-1,-1), ((n_t*)o)[t -12](t - 15, a, o, s); }
+N(Lime    ) { ti(t-15,-2,-1), ((n_t*)o)[t -11](t - 15, a, o, s); }
+N(Maroon  ) { ti(t-15,-3,-1), ((n_t*)o)[t -10](t - 15, a, o, s); }
+N(Fuchsia ) { ti(t-15,-4,-1), ((n_t*)o)[t - 9](t - 15, a, o, s); }
+N(Olive   ) { ti(t-15,-5,-1), ((n_t*)o)[t - 8](t - 15, a, o, s); }
 // clang-format on
 #define T(W, O, R, L, D)                                                       \
   o[a++] = (void *)W, o[a++] = (void *)O, names[a] = #R, o[a++] = (void *)R,   \
   o[a++] = (void *)L, o[a++] = (void *)D
-N(l_Fuchsia) {
-  o[--s] = (void *)t, ti_left(), Fuchsia((long)o[t - 1], a, o, s);
-}
-N(r_Fuchsia) {
-  o[--s] = (void *)t, ti_right(), Fuchsia((long)o[t + 1], a, o, s);
-}
+N(l_Fuchsia) { o[--s] = (void *)t, ti_left(), Fuchsia((long)o[t - 1], a, o, s); }
+N(r_Fuchsia) { o[--s] = (void *)t, ti_right(), Fuchsia((long)o[t + 1], a, o, s); }
 N(s_Lime) { ti_ret(), Lime((long)o[s], a, o, s + 1); }
 N(s_Green) { ti_ret(), Green((long)o[s], a, o, s + 1); }
-#define Tlabel(text)                                                           \
+#define Tw(text)                                                           \
   T(Yellow, Purple, Red, Green, Blue), T(0, 0, text, 0, 0),                    \
       T(Navy, Lime, Maroon, Fuchsia, Olive)
 #define Toti(left, right)                                                      \
   T(Yellow, Purple, Red, r_Fuchsia, Blue), T(0, left, "t", right, 0),          \
       T(Navy, l_Fuchsia, Maroon, Fuchsia, Olive)
 #define Tdot T(Lime, Fuchsia, Maroon, Olive, Navy), T(0, 0, "o", 0, 0)
-#define Tb T(0, 0, "b", 0, 0), T(Blue, Green, Red, Yellow, Purple)
+#define Tab T(0, 0, "b", 0, 0), T(Blue, Green, Red, Yellow, Purple)
 #define Ts_Lime T(Lime, s_Lime, Maroon, Olive, Navy), T(0, 0, "o", 0, 0)
 #define Ts_Green T(Lime, s_Green, Maroon, Olive, Navy), T(0, 0, "o", 0, 0)
 #define Tand                                                                   \
@@ -65,32 +66,51 @@ N(print) {
   printf("%ld\n", (long)o[s++]);
   Green(t, a, o, s);
 }
+N(toti_q) {
+  o[--s] = (void*)(t + 1), o[--s] = "R";
+  o[--s] = (void*)(t - 1), o[--s] = "L";
+  Fuchsia(t, a, o, s);
+}
+#include<string.h>
+N(export) {
+  const char*name = o[s++];
+  if (strcmp(name, o[t]) == 0)
+    o[(long)o[s++]] = (void*)t;
+  else
+    o[--s] = (void*)name;
+  Yellow(t,a,o,s);
+}
 int main() {
   long t = 0;
   long a = t;
   void *o[1024];
   long s = 1024;
-  Tb, Tlabel("left"), Tlabel("left"), Tlabel("left"), Tlabel("left"), Ts_Lime;
-  long l0 = (long)(a - 3);
-  Tb, Tlabel("right"), Tlabel("right"), Tlabel("right"), Tlabel("right"),
-      Ts_Green;
-  long r0 = (long)(a - 3);
-  Tb, Tlabel("left"), Tlabel("left"), Tlabel("left"), Ts_Lime;
-  long l1 = (long)(a - 3);
-  Tb, Tlabel("right"), Tlabel("right"), Tlabel("right"), Ts_Green;
-  long r1 = (long)(a - 3);
-  Tb, Tlabel("left"), Tlabel("left"), Ts_Lime;
-  long l2 = (long)(a - 3);
-  Tb, Tlabel("right"), Tlabel("right"), Ts_Green;
-  long r2 = (long)(a - 3);
-  Tb, Toti(l0, r0), Tlabel("w"), Toti(l1, r1), Tlabel("w"), Toti(l2, r2),
-      Tlabel("w"),  Tdot;
+                                /*begining*/T(0, 0, "B", 0, 0),T(Blue, Green,    Red,    Yellow, Purple);
+
+  T(export, Purple, Red,    Green,    Blue),T(0, 0, "L", 0, 0),T(Blue, Green,    Red,    Fuchsia,Purple);
+  T(Yellow, Purple, Red,    Green,    Blue),T(0, 0, "l", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+  T(Lime,   s_Lime, Maroon, Olive,    Navy),T(0, 0, "o", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+
+  T(export, Purple, Red,    Green,    Blue),T(0, 0, "R", 0, 0),T(Blue, Green,    Red,    Fuchsia,Purple);
+  T(Yellow, Purple, Red,    Green,    Blue),T(0, 0, "r", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+  T(Lime,   s_Green,Maroon, Olive,    Navy),T(0, 0, "o", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+
+  T(Yellow, Purple, Red,    Green,    Blue),T(0, 0, "b", 0, 0),T(Blue, Green,    Red,    Fuchsia,Purple);
+  T(Yellow, Purple, Red,    r_Fuchsia,Blue),T(0, 3, "t", 6, 0),T(Navy, l_Fuchsia,Maroon, toti_q, Olive);
+  T(Yellow, Purple, Red,    Green,    Blue),T(0, 0, "a", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+  T(Lime,   Fuchsia,Maroon, Olive,    Navy),T(0, 0, "o", 0, 0),T(Navy, Lime,     Maroon, Fuchsia,Olive);
+
   ti_init();
-  Tb, Tnoun(1), Tverb(add), Tnoun(1), Tand, Tverb(print), Tand,
-      Tnoun(4), Tverb(add), Tnoun(5), Tand, Tverb(print), Tdot;
-  Fuchsia(a - 3, a, o, s);
+  o[--s] = (void*)(a - 8);
+  Fuchsia(a - 8, a, o, s);
+  //Tab, Tnoun(1), Tverb(add), Tnoun(1), Tand, Tverb(print), Tand, Tnoun(4), Tverb(add), Tnoun(5), Tand, Tverb(print), Tdot;
 }
 /*
+lets describe how we will fill dependencies. we have roots represented by
+aword which is threre from begining. 
+We think how we solve isseues which will become visible after close aword.
+Boundaries around aword will force us to think inside out.
+
 Here's my revised version of the text:
 
 This version of the protocol seems to be quite heavy, with each word taking up

@@ -28,7 +28,7 @@ typedef struct step_t {
 } step_t;
 static step_t path[1024];
 static long path_length = 0;
-static float zoom = 4;
+static float zoom = 2;
 static Vector2 off = {};
 extern char *names[];
 void draw() {
@@ -47,14 +47,14 @@ void draw() {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    Vector2 uzero = {0, 0};
-    Vector2 urayPos = {0, 0};
-    const Vector2 text_dir = {-1, 0};
+    Vector2 azero = {0, 0};
+    Vector2 arayPos = {0, 0};
+    const Vector2 text_dir = {0, 1};
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
-        .offset = {GetScreenWidth() / 10.f, GetScreenHeight() / 2.f}};
+        .offset = {GetScreenWidth() / 2.f, GetScreenHeight() - 20.f}};
     camera.offset = Vector2Add(camera.offset, off);
     BeginMode2D(camera);
     for (long i = 0; i < path_length; i++) {
@@ -62,12 +62,12 @@ void draw() {
       Color color = colors[s.ray + 5];
       Vector2 dir = Vector2Rotate(text_dir, s.dir);
       Vector2 odir = Vector2Rotate(dir, M_PI_2);
-      Vector2 zero = Vector2Add(uzero, Vector2Scale(dir, 50 * s.delta));
+      Vector2 zero = Vector2Add(azero, Vector2Scale(dir, 50 * s.delta));
       Vector2 rayPos = Vector2Add(zero, Vector2Scale(odir, s.ray * -5));
-      DrawLineBezier(urayPos, rayPos, 2, color);
+      DrawLineBezier(arayPos, rayPos, 2, color);
       DrawTextEx(font, s.text, zero, 10, 0, s.text[0] == 'o' ? RED : WHITE);
-      uzero = zero;
-      urayPos = rayPos;
+      azero = zero;
+      arayPos = rayPos;
     }
     EndMode2D();
     EndDrawing();
