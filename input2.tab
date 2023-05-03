@@ -1,0 +1,18 @@
+one {
+  G(Lime) {
+    o[a++] = (void*)1;
+    Lime(o, a);
+  }
+}.
+plus {
+  G(Green) {
+    long r = ( long)o[--a];
+    long l = ( long)o[--a];
+    o[a++] = (void*)(l + r);
+    Green(o, a);
+  }
+}.
+two   Green   one plus one.
+              one one plus.
+four  Green   two plus two.
+
