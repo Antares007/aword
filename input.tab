@@ -49,6 +49,34 @@ plus {
     Green(o, a);
   }
 }.
+print {
+  void (*p)(const char *, ...);
+  G(Green) {
+    p = o[0];
+    long r = (long)o[--a];
+    p("%ld\n", r);
+    Green(o, a);
+  }
+}.
+tab {
+  G(Navy)   { P, Blue  (o, a); }
+  G(Lime)   { P, Green (o, a); }
+  G(Maroon) { P, Red   (o, a); }
+  G(Fuchsia){ P, Yellow(o, a); }
+  G(Olive)  { P, ((n_t*)o)[a-1](o, a-1); }
+}.
+showa {
+  typedef void (*n_t)(void**o,long a);
+  typedef n_t (*c_t)(const char*text);
+  G(Green) { P; o[a++] = Green; o[a++] = ((c_t*)o)[2]("tab one one plus and print"); }
+}.
+
+main {
+  typedef void (*n_t)(void**o,long a);
+  typedef n_t (*c_t)(const char*text);
+  G(Yellow) { P, ((c_t*)o)[2]("b m o")(o, a); }
+}.
+
 m {
   G(Yellow  ) { P, Yellow (o, a); }
   G(Purple  ) { P, Purple (o, a); }
@@ -60,12 +88,4 @@ m {
   G(Maroon  ) { P, Maroon (o, a); }
   G(Fuchsia ) { P, Fuchsia(o, a); }
   G(Olive   ) { P, Olive  (o, a); }
-}.
-main {
-  typedef void (*n_t)(void**o,long a);
-  typedef n_t (*c_t)(const char*text);
-  G(Yellow) {
-    P;
-    ((c_t*)o)[2]("b m o")(o, a);
-  }
 }.

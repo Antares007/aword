@@ -19,7 +19,7 @@
 Δ(Fuchsia);
 Δ(Olive);
 #undef Δ
-
+typedef void (*n_t)(void**o, long a);
 #define P                                                                      \
   ((void (*)(const char *, ...))o[0])("%s %s\n", __FILE__, __FUNCTION__),      \
       ((void (*)(long))o[1])(200000)
