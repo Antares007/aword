@@ -1,3 +1,17 @@
+o {
+  G(Yellow) { P, Lime   (o, a); }
+  G(Purple) { P, Fuchsia(o, a); }
+  G(Red)    { P, Maroon (o, a); }
+  G(Green)  { P, Olive  (o, a); }
+  G(Blue)   { P, Navy   (o, a); }
+}.
+b {
+  G(Navy)   { P, Blue  (o, a); }
+  G(Lime)   { P, Green (o, a); }
+  G(Maroon) { P, Red   (o, a); }
+  G(Fuchsia){ P, Yellow(o, a); }
+  G(Olive)  { P, Purple(o, a); }
+}.
 not {
   G(Yellow) { P, Lime  (o, a); }
   G(Red)    { P, Yellow(o, a); }
@@ -20,4 +34,38 @@ orand {
   G(Blue)   { P, Yellow(o, a); }
   G(Green)  { P, Yellow(o, a); }
   G(Lime)   { P, Green (o, a); }
+}.
+one {
+  G(Lime) {
+    o[a++] = (void*)1;
+    Lime(o, a);
+  }
+}.
+plus {
+  G(Green) {
+    long r = ( long)o[--a];
+    long l = ( long)o[--a];
+    o[a++] = (void*)(l + r);
+    Green(o, a);
+  }
+}.
+m {
+  G(Yellow  ) { P, Yellow (o, a); }
+  G(Purple  ) { P, Purple (o, a); }
+  G(Red     ) { P, Red    (o, a); }
+  G(Green   ) { P, Green  (o, a); }
+  G(Blue    ) { P, Blue   (o, a); }
+  G(Navy    ) { P, Navy   (o, a); }
+  G(Lime    ) { P, Lime   (o, a); }
+  G(Maroon  ) { P, Maroon (o, a); }
+  G(Fuchsia ) { P, Fuchsia(o, a); }
+  G(Olive   ) { P, Olive  (o, a); }
+}.
+main {
+  typedef void (*n_t)(void**o,long a);
+  typedef n_t (*c_t)(const char*text);
+  G(Yellow) {
+    P;
+    ((c_t*)o)[2]("b m o")(o, a);
+  }
 }.

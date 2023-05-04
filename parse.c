@@ -1,5 +1,5 @@
-#include "evalmap.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define NexT T = strtok(NULL, " \n\t"), S = strlen(T)
@@ -7,9 +7,17 @@
   if (colors[Y])                                                               \
   S = snprintf(str, 70, "\nG(%s) { %s(o, a); }", colors[Y], colors[Y]),        \
   fwrite(str, 1, S, o)
-int main() {
+void compile(const char *c) {
+  char std[70];
+  snprintf(std, 70, "gcc -std=gnu99 -Wall -ffreestanding -O3 -c %s.c -o %s.o", c, c),       system(std);
+  snprintf(std, 70, "ld -T rainbow.ld %s.o -o %s.elf >/dev/null 2>&1", c, c),               system(std);
+  snprintf(std, 70, "objcopy -O binary -j .text -j .data %s.elf %s.bin", c, c),             system(std);
+  snprintf(std, 70, "tail --bytes=+81 %s.bin | head --bytes=-84 > %s", c, c),               system(std);
+  snprintf(std, 70, "rm %s.elf %s.o %s.bin", c, c, c),                                      system(std);
+}
+int main(int argc, char**argv) {
   char s[2048];
-  FILE *fp = fopen("input.tab", "r");
+  FILE *fp = fopen(argv[1], "r");
   if (fp == NULL)
     return printf("Error: could not open file\n"), 1;
   long length = fread(s, sizeof(char), sizeof(s) / sizeof(*s), fp);
@@ -19,10 +27,13 @@ int main() {
   long S = strlen(T);
   char str[70];
   while (T != NULL) {
-    snprintf(str, 70, "%s.c", T);
-    FILE *o = fopen(str, "w");
+    char cname[70];
+    snprintf(cname, 70, "%s.c", T);
+    printf("%s\n", cname);
+    FILE *o = fopen(cname, "w");
     S = snprintf(str, 70, "#include \"aw.h\"\n");
     fwrite(str, 1, S, o);
+
     NexT;
     if ('{' == T[0]) {
       const char *colors['Z'] = {['Y'] = "Yellow",  //
@@ -58,8 +69,12 @@ int main() {
       Write('F');
       Write('O');
     } else
-      printf("wtf\n");
+      while(1) {
+        printf("%s\n", T);
+      }
     fclose(o);
+    cname[strlen(cname) - 2] = 0;
+    compile(cname);
     NexT;
   }
   return 0;
