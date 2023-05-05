@@ -49,24 +49,28 @@ plus {
     Green(o, a, s);
   }
 }.
-print {
+printl {
   void (*p)(const char *, ...);
-  G(Green) {
-    p = o[0];
-    long r = (long)o[--a];
-    p("%ld\n", r);
-    Green(o, a, s);
-  }
+  G(Green) { p = o[0]; long r = (long)o[--a]; p("%ld\n", r); Green(o, a, s); }
 }.
+prints {
+  void (*p)(const char *, ...);
+  G(Green) { p = o[0]; char* r = (char*)o[--a]; p("%s\n", r); Green(o, a, s); }
+}.
+tina { G(Lime) { o[a++] = "თინა "; Lime(o, a, s); } }.
+kargi { G(Lime) { o[a++] = "კარგი "; Lime(o, a, s); } }.
+gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(o, a, s); } }.
 tab {
-  G(Navy)   { Blue  (o, a, s); }
-  G(Lime)   { Green (o, a, s); }
-  G(Maroon) { Red   (o, a, s); }
-  G(Fuchsia){ Yellow(o, a, s); }
-  G(Olive)  { ((n_t*)o)[s](o, a, s + 1); }
+  G(Navy)   { P, Blue  (o, a, s); }
+  G(Lime)   { P, Green (o, a, s); }
+  G(Maroon) { P, Red   (o, a, s); }
+  G(Fuchsia){ P, Yellow(o, a, s); }
+  G(Olive)  { P, ((n_t*)o)[s](o, a, s + 1); }
 }.
 two   tab one one plus o.
 three tab one plus two o.
 four  tab plus three one o.
 five  tab plus two three o.
-main  b two print and five print o.
+main  b two printl and five printl o.
+main2 b tina prints kargi gogoa prints prints o.
+id {}.
