@@ -50,6 +50,6 @@ function add_missing_rays([n, b]) {
     delete rays[b[p + 2]];
     p = b.indexOf("G(", p + 2);
   }
-  for (let k in rays) b = b + `\nG(${rays[k]}) { ${rays[k]}(o,a); }`;
+  for (let k in rays) b = b + `\nG(${rays[k]}) { ${rays[k]}(o, a, s); }`;
   return [n, b];
 }

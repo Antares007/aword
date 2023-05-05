@@ -3,6 +3,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <stdio.h>
+#include <string.h>
 #define ALIGN(O, A) ((unsigned long)(((O) + ((A)-1)) / (A))) * (A)
 void *map_pith(const char *file_name) {
   int fd = open(file_name, O_RDONLY);
@@ -17,27 +19,39 @@ void *map_pith(const char *file_name) {
   if (loaded_at_addr == MAP_FAILED)
     return 0;
   static_start_address += ALIGN(sb.st_size, 16);
+  printf("loaded %s at %p.\n", file_name, loaded_at_addr);
   return loaded_at_addr;
 }
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
-
-typedef void (*n_t)(void**o, long a);
+typedef void (*n_t)(void**o, long a, long s);
+static n_t map_pith_cache(const char*text) {
+  static const char*names[1024] = {};
+  static void      *addrs[1024] = {};
+  static long       s           = 0;
+  for(long i = 0; i < s; i++)
+    if (strcmp(names[i], text) == 0)
+      return addrs[i];
+  n_t w = map_pith(text);
+  names[s] = text, addrs[s] = w, s++;
+  return w;
+}
 n_t compose(const char*text) {
   char cmd[4096];
   snprintf(cmd, 4096, "cat %s > '%s'\n", text, text), system(cmd);
-  return map_pith(text);
+  n_t w = map_pith_cache(text);
+  return w;
 }
 
 int main(int argc, char**argv) {
   void*o[1024];
-  long a  = 0;
-  o[a++]  = printf;
-  o[a++]  = usleep;
-  o[a++]  = compose;
-  n_t w = map_pith(argv[1]);
-  printf("%p\n", w);w(o, a);
+  long a = 0;
+  long s = 1024;
+  o[a++] = printf;
+  o[a++] = usleep;
+  o[a++] = compose;
+  n_t w  = map_pith(argv[1]);
+  w(o, a, s);
 }
 // 
