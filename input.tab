@@ -65,12 +65,25 @@ tab {
   G(Fuchsia){ Yellow(o, a, s); }
   G(Olive)  { ((n_t*)o)[s](o, a, s + 1); }
 }.
-two   { G(Lime) { o[--s] = Lime; ((c_t*)o)[2]("tab one  one   plus  o")(o, a, s); } }.
-three { G(Lime) { o[--s] = Lime; ((c_t*)o)[2]("tab one  plus  two   o")(o, a, s); } }.
-four  { G(Lime) { o[--s] = Lime; ((c_t*)o)[2]("tab plus three one   o")(o, a, s); } }.
-five  { G(Lime) { o[--s] = Lime; ((c_t*)o)[2]("tab plus two   three o")(o, a, s); } }.
+two   {
+  G(Lime) { o[--s] = Lime;
+  ((c_t*)o)[2]((char*[]){"tab", "one", "one",  "plus", "o"}, 5)(o, a, s); }
+}.
+three {
+  G(Lime) { o[--s] = Lime;
+  ((c_t*)o)[2]((char*[]){"tab", "one", "plus", "two",  "o"}, 5)(o, a, s); }
+}.
+four  {
+  G(Lime) { o[--s] = Lime;
+  ((c_t*)o)[2]((char*[]){"tab", "plus","three","one",  "o"}, 5)(o, a, s); }
+}.
+five  {
+  G(Lime) { o[--s] = Lime;
+  ((c_t*)o)[2]((char*[]){"tab", "plus","two",  "three","o"}, 5)(o, a, s); }
+}.
 main {
-  G(Yellow) { P, ((c_t*)o)[2]("b two print and five print o")(o, a, s); }
+  G(Yellow) { P,          
+  ((c_t*)o)[2]((char*[]){"b", "two","print","and","five","print","o"}, 7)(o, a, s); }
 }.
 m {
   G(Yellow ) { P, Yellow (o, a, s); }

@@ -2,7 +2,7 @@
 // clang-format off
 #define N(argo) void   argo(void**o, long a, long s)
 typedef         void (*n_t)(void**o, long a, long s);
-typedef          n_t (*c_t)(const char *text);
+typedef          n_t (*c_t)(const char **t, long s);
 
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \

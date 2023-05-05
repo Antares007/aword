@@ -15,7 +15,8 @@ async function parse(file = "input.tab") {
       .map(async ([n, b]) => {
         await writeFile(n + ".c", b);
         await exec(
-          `gcc -std=gnu99 -Wall -ffreestanding -O3 -c ${n}.c -o ${n}.o`
+          `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o \
+-ffreestanding -fno-stack-clash-protection -fno-stack-protector`
         );
         await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
         await exec(`objcopy -O binary -j .text -j .data ${n}.elf ${n}.bin`);
