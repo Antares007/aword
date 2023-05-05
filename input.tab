@@ -65,35 +65,8 @@ tab {
   G(Fuchsia){ Yellow(o, a, s); }
   G(Olive)  { ((n_t*)o)[s](o, a, s + 1); }
 }.
-two   {
-  G(Lime) { o[--s] = Lime;
-  ((c_t*)o)[2]((char*[]){"tab", "one", "one",  "plus", "o"}, 5)(o, a, s); }
-}.
-three {
-  G(Lime) { o[--s] = Lime;
-  ((c_t*)o)[2]((char*[]){"tab", "one", "plus", "two",  "o"}, 5)(o, a, s); }
-}.
-four  {
-  G(Lime) { o[--s] = Lime;
-  ((c_t*)o)[2]((char*[]){"tab", "plus","three","one",  "o"}, 5)(o, a, s); }
-}.
-five  {
-  G(Lime) { o[--s] = Lime;
-  ((c_t*)o)[2]((char*[]){"tab", "plus","two",  "three","o"}, 5)(o, a, s); }
-}.
-main {
-  G(Yellow) { P,          
-  ((c_t*)o)[2]((char*[]){"b", "two","print","and","five","print","o"}, 7)(o, a, s); }
-}.
-m {
-  G(Yellow ) { P, Yellow (o, a, s); }
-  G(Purple ) { P, Purple (o, a, s); }
-  G(Red    ) { P, Red    (o, a, s); }
-  G(Green  ) { P, Green  (o, a, s); }
-  G(Blue   ) { P, Blue   (o, a, s); }
-  G(Navy   ) { P, Navy   (o, a, s); }
-  G(Lime   ) { P, Lime   (o, a, s); }
-  G(Maroon ) { P, Maroon (o, a, s); }
-  G(Fuchsia) { P, Fuchsia(o, a, s); }
-  G(Olive  ) { P, Olive  (o, a, s); }
-}.
+two   tab one one plus o.
+three tab one plus two o.
+four  tab plus three one o.
+five  tab plus two three o.
+main  b two print and five print o.

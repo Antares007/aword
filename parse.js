@@ -7,7 +7,7 @@ async function parse(file = "input.tab") {
   const input = (await readFile(file)).toString();
   const rez = await Promise.all(
     input
-      .split("}.\n")
+      .split(".\n")
       .map((l) => l.trim())
       .filter(Boolean)
       .map(split_name_and_body)
@@ -26,15 +26,27 @@ async function parse(file = "input.tab") {
   );
 }
 function split_name_and_body(l) {
-  let p = l.indexOf(" ");
+  const p = l.indexOf(" ");
   const n = l.slice(0, p);
-  p = l.indexOf("{", p + 1);
-  const b = l.slice(p + 1);
-  return [n, b];
+  const p2 = l.indexOf("{", p + 1);
+  if (-1 < p2) {
+    const b = l.slice(p2 + 1, l.lastIndexOf("}"));
+    return [n, b];
+  } else {
+    const [n, ...b] = l
+      .split(/[ \n\t]/)
+      .map((l) => l.trim())
+      .filter(Boolean);
+    return [
+      n,
+      `G(Lime){o[--s]=Lime;((c_t*)o)[2]((char*[]){${b
+        .map((aw) => `"${aw}"`)
+        .join(",")}}, ${b.length})(o, a, s); }\n`,
+    ];
+  }
 }
 function add_missing_rays([n, b]) {
   b = '#include "../aw.h"\n' + b;
-  let p = b.indexOf("G(");
   const rays = {
     Y: "Yellow",
     P: "Purple",
@@ -47,10 +59,15 @@ function add_missing_rays([n, b]) {
     F: "Fuchsia",
     O: "Olive",
   };
-  while (-1 < p) {
-    delete rays[b[p + 2]];
-    p = b.indexOf("G(", p + 2);
-  }
-  for (let k in rays) b = b + `\nG(${rays[k]}) { ${rays[k]}(o, a, s); }`;
+  const deleteDefinedRays = (type) => {
+    let p = b.indexOf(type + "(");
+    while (-1 < p) {
+      delete rays[b[p + 2]];
+      p = b.indexOf(type + "(", p + 2);
+    }
+  };
+  deleteDefinedRays('G')
+  deleteDefinedRays('R')
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, a, s); }`;
   return [n, b];
 }
