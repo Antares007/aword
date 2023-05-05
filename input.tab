@@ -1,16 +1,16 @@
 o {
-  G(Yellow) { P, Lime   (o, a, s); }
-  G(Purple) { P, Fuchsia(o, a, s); }
-  G(Red   ) { P, Maroon (o, a, s); }
-  G(Green ) { P, Olive  (o, a, s); }
-  G(Blue  ) { P, Navy   (o, a, s); }
+  G(Yellow  ) { P, Lime   (o, a, s); }
+  G(Purple  ) {}
+  G(Red     ) { P, Maroon (o, a, s); }
+  G(Green   ) { P, Olive  (o, a, s); }
+  G(Blue    ) { P, Navy   (o, a, s); }
 }.
 b {
-  G(Navy  ) { P, Blue  (o, a, s); }
-  G(Lime  ) { P, Green (o, a, s); }
-  G(Maroon) { P, Red   (o, a, s); }
-  G(Fuchsia){ P, Yellow(o, a, s); }
-  G(Olive ) { P, Purple(o, a, s); }
+  G(Navy    ) { P, Blue  (o, a, s); }
+  G(Lime    ) { P, Green (o, a, s); }
+  G(Maroon  ) { P, Red   (o, a, s); }
+  G(Fuchsia ) {}
+  G(Olive   ) { P, Yellow(o, a, s); }
 }.
 not {
   G(Yellow) { Lime  (o, a, s); }
@@ -57,15 +57,15 @@ prints {
   void (*p)(const char *, ...);
   G(Green) { p = o[0]; char* r = (char*)o[--a]; p("%s\n", r); Green(o, a, s); }
 }.
-tina { G(Lime) { o[a++] = "თინა "; Lime(o, a, s); } }.
+tina  { G(Lime) { o[a++] = "თინა ";  Lime(o, a, s); } }.
 kargi { G(Lime) { o[a++] = "კარგი "; Lime(o, a, s); } }.
 gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(o, a, s); } }.
 tab {
-  G(Navy)   { P, Blue  (o, a, s); }
-  G(Lime)   { P, Green (o, a, s); }
-  G(Maroon) { P, Red   (o, a, s); }
-  G(Fuchsia){ P, Yellow(o, a, s); }
-  G(Olive)  { P, ((n_t*)o)[s](o, a, s + 1); }
+  G(Navy    ) { P, Blue  (o, a, s); }
+  G(Lime    ) { P, Green (o, a, s); }
+  G(Maroon  ) { P, Red   (o, a, s); }
+  G(Fuchsia ) {}
+  G(Olive   ) { P, ((n_t*)o)[s](o, a, s + 1); }
 }.
 two   tab one one plus o.
 three tab one plus two o.
@@ -73,4 +73,3 @@ four  tab plus three one o.
 five  tab plus two three o.
 main  b two printl and five printl o.
 main2 b tina prints kargi gogoa prints prints o.
-id {}.

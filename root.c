@@ -69,6 +69,7 @@ int main(int argc, char**argv) {
   o[a++] = usleep;
   o[a++] = compose_cache;
   n_t w  = compose_cache(argv+1, argc-1);
+  (w + 16)(o, a, s);
   w(o, a, s);
 }
 // 

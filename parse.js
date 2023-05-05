@@ -19,7 +19,9 @@ async function parse(file = "input.tab") {
 -ffreestanding -fno-stack-clash-protection -fno-stack-protector`
         );
         await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
-        await exec(`objcopy -O binary -j .text -j .data ${n}.elf ${n}.bin`);
+        await exec(
+          `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`
+        );
         await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
         await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
       })
@@ -37,11 +39,21 @@ function split_name_and_body(l) {
       .split(/[ \n\t]/)
       .map((l) => l.trim())
       .filter(Boolean);
+    const atext = b.map((aw) => `"${aw}"`).join(", ");
     return [
       n,
-      `G(Lime){o[--s]=Lime;((c_t*)o)[2]((char*[]){${b
-        .map((aw) => `"${aw}"`)
-        .join(",")}}, ${b.length})(o, a, s); }\n`,
+      `
+  n_t toti;
+  G(Purple) {
+    toti = ((c_t*)o)[2]((const char*[]){${atext}}, ${b.length});
+    (toti + 16)(o, a, s);
+    Purple(o, a, s);
+  }
+  G(Lime  ) {
+    o[--s]=Lime;
+    toti(o, a, s);
+  }
+`,
     ];
   }
 }
@@ -66,8 +78,8 @@ function add_missing_rays([n, b]) {
       p = b.indexOf(type + "(", p + 2);
     }
   };
-  deleteDefinedRays('G')
-  deleteDefinedRays('R')
+  deleteDefinedRays("G");
+  deleteDefinedRays("R");
   for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, a, s); }`;
   return [n, b];
 }
