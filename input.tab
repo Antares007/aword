@@ -67,9 +67,9 @@ tab {
   G(Fuchsia ) {}
   G(Olive   ) { P, ((n_t*)o)[s](o, a, s + 1); }
 }.
-two   tab one one plus o.
-three tab one plus two o.
-four  tab plus three one o.
-five  tab plus two three o.
-main  b two printl and five printl o.
-main2 b tina prints kargi gogoa prints prints o.
+two   tab one   one     plus  o.
+three tab one   plus    two   o.
+four  tab plus  three   one   o.
+five  tab plus  two     three o.
+main  b   two   printl  and   five  printl o.
+main2 b   tina  prints  kargi gogoa prints prints o.

@@ -49,8 +49,8 @@ function split_name_and_body(l) {
     (toti + 16)(o, a, s);
     Purple(o, a, s);
   }
-  G(Lime  ) {
-    o[--s]=Lime;
+  G(Lime) {
+    o[--s] = Lime;
     toti(o, a, s);
   }
 `,
