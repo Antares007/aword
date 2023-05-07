@@ -12,6 +12,13 @@ b {
   G(Fuchsia ) {}
   G(Olive   ) { P, Yellow(o, a, s); }
 }.
+tab {
+  G(Navy    ) { P, Blue  (o, a, s); }
+  G(Lime    ) { P, Green (o, a, s); }
+  G(Maroon  ) { P, Red   (o, a, s); }
+  G(Fuchsia ) {}
+  G(Olive   ) { P, ((n_t*)o)[s](o, a, s + 1); }
+}.
 not {
   G(Yellow) { Lime  (o, a, s); }
   G(Red   ) { Yellow(o, a, s); }
@@ -60,16 +67,12 @@ prints {
 tina  { G(Lime) { o[a++] = "თინა ";  Lime(o, a, s); } }.
 kargi { G(Lime) { o[a++] = "კარგი "; Lime(o, a, s); } }.
 gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(o, a, s); } }.
-tab {
-  G(Navy    ) { P, Blue  (o, a, s); }
-  G(Lime    ) { P, Green (o, a, s); }
-  G(Maroon  ) { P, Red   (o, a, s); }
-  G(Fuchsia ) {}
-  G(Olive   ) { P, ((n_t*)o)[s](o, a, s + 1); }
-}.
 two   tab one   one     plus  o.
 three tab one   plus    two   o.
 four  tab plus  three   one   o.
 five  tab plus  two     three o.
+
+
 main  b   two   printl  and   five  printl o.
 main2 b   tina  prints  kargi gogoa prints prints o.
+id {}.

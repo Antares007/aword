@@ -1,10 +1,8 @@
-two
-Green
-  tab one plus one.
-  tab one one plus.
-Lime
-  tab two plus three.
-  tab four five plus.
-four  Green
-  tab two plus two.
+E     tab   p0    p1    p2    p3    p4    p5    o.
 
+p0    tab   E     plus  E     o.
+p1    tab   E     minus E     o.
+p2    tab   E     mul   E     o.
+p3    tab   E     div   E     o.
+p4    tab   oprn  E     cprn  o.
+p5    tab   id    o.
