@@ -272,19 +272,13 @@ Tab(whitespace, God, [0x09] = whitespace_next, [0x0A] = whitespace_next,
   L, whitespace_tab[So[Pos]](a, b, o);
 }
 P(value);
-P(closing_box) {
-  L;
-  if (So[Pos] == ']')
-    Pos++, God(a, b, o);
-  else
-    Gor(a, b, o);
-}
-P(colon) {
-  L;
-  if (So[Pos] == ':')
-    Pos++, God(a, b, o);
-  else
-    Gor(a, b, o);
+P(colon);
+P(colon_end) { Pos++, God(a, b, o); }
+P(colon_ws) { Pos++, colon(a, b, o); }
+Tab(colon, Got, //
+    [':'] = colon_end, [0x09] = colon_ws, [0x0A] = colon_ws, [0x0D] = colon_ws,
+    [0x20] = colon_ws) {
+  L, colon_tab[So[Pos]](a, b, o);
 }
 P(object_end) { L, Pos++, God(a, b, o); }
 P(object_member);
@@ -377,8 +371,6 @@ P(Main) {
 int main() {
   char str[1 * 1024 * 1024];
   FILE *fp = fopen("../sample.json", "rb");
-  if (fp == NULL)
-    return printf("Error: could not open file\n"), 1;
   long length = fread(str, 1, sizeof(str) / sizeof(*str), fp);
   str[length] = 0;
   fclose(fp);
