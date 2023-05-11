@@ -370,7 +370,7 @@ P(Main) {
 
 int main() {
   char str[1 * 1024 * 1024];
-  FILE *fp = fopen("../sample.json", "rb");
+  FILE *fp = fopen("../twitter.json", "rb");
   long length = fread(str, 1, sizeof(str) / sizeof(*str), fp);
   str[length] = 0;
   fclose(fp);
@@ -397,8 +397,7 @@ int main() {
   o[2].q = 0, Main(a, b, o);
   o[2].q = 0, Main(a, b, o);
 }
-double getTime() {
-  struct timespec time;
+double getTime() { struct timespec time;
   clock_gettime(CLOCK_MONOTONIC, &time);
   return (double)time.tv_sec + (double)time.tv_nsec / 1000000000.0;
 }
