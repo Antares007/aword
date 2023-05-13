@@ -1,18 +1,4 @@
-#define P(arse) void arse(long a, long b, struct o_t *o)
-typedef struct o_t {
-  union {
-    long q;
-    unsigned long Q;
-    void *v;
-    const char *cs;
-    P((*c));
-  };
-} o_t;
-typedef P((*p_t));
-P(Got) { o[b + 2].c(a, b + 3, o); }
-P(God) { o[b + 1].c(a, b + 3, o); }
-P(Gor) { o[b + 0].c(a, b + 3, o); }
-
+#include "tab.h"
 P(codepoint) {
   o[a++].q = o[0].cs[o[2].q++];
   o[b + 1].c(a, b, o);
@@ -68,287 +54,22 @@ extern p_t starting_byte_cases[];
 #include <stdio.h>
 #define L (void)0 // printf("%ld %ld %s\n", o[1].q, Pos, __FUNCTION__)
 P(utf) { starting_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o); }
-#define T(i, n, a) o[--b].c = i, o[--b].c = n, o[--b].c = a
-#define Tab(name, nar, ...)                                                    \
-  P(name);                                                                     \
-  static p_t name##_tab[] = {                                                  \
-      [0] = nar,   [1] = nar,   [2] = nar,   [3] = nar,   [4] = nar,           \
-      [5] = nar,   [6] = nar,   [7] = nar,   [8] = nar,   [9] = nar,           \
-      [10] = nar,  [11] = nar,  [12] = nar,  [13] = nar,  [14] = nar,          \
-      [15] = nar,  [16] = nar,  [17] = nar,  [18] = nar,  [19] = nar,          \
-      [20] = nar,  [21] = nar,  [22] = nar,  [23] = nar,  [24] = nar,          \
-      [25] = nar,  [26] = nar,  [27] = nar,  [28] = nar,  [29] = nar,          \
-      [30] = nar,  [31] = nar,  [32] = nar,  [33] = nar,  [34] = nar,          \
-      [35] = nar,  [36] = nar,  [37] = nar,  [38] = nar,  [39] = nar,          \
-      [40] = nar,  [41] = nar,  [42] = nar,  [43] = nar,  [44] = nar,          \
-      [45] = nar,  [46] = nar,  [47] = nar,  [48] = nar,  [49] = nar,          \
-      [50] = nar,  [51] = nar,  [52] = nar,  [53] = nar,  [54] = nar,          \
-      [55] = nar,  [56] = nar,  [57] = nar,  [58] = nar,  [59] = nar,          \
-      [60] = nar,  [61] = nar,  [62] = nar,  [63] = nar,  [64] = nar,          \
-      [65] = nar,  [66] = nar,  [67] = nar,  [68] = nar,  [69] = nar,          \
-      [70] = nar,  [71] = nar,  [72] = nar,  [73] = nar,  [74] = nar,          \
-      [75] = nar,  [76] = nar,  [77] = nar,  [78] = nar,  [79] = nar,          \
-      [80] = nar,  [81] = nar,  [82] = nar,  [83] = nar,  [84] = nar,          \
-      [85] = nar,  [86] = nar,  [87] = nar,  [88] = nar,  [89] = nar,          \
-      [90] = nar,  [91] = nar,  [92] = nar,  [93] = nar,  [94] = nar,          \
-      [95] = nar,  [96] = nar,  [97] = nar,  [98] = nar,  [99] = nar,          \
-      [100] = nar, [101] = nar, [102] = nar, [103] = nar, [104] = nar,         \
-      [105] = nar, [106] = nar, [107] = nar, [108] = nar, [109] = nar,         \
-      [110] = nar, [111] = nar, [112] = nar, [113] = nar, [114] = nar,         \
-      [115] = nar, [116] = nar, [117] = nar, [118] = nar, [119] = nar,         \
-      [120] = nar, [121] = nar, [122] = nar, [123] = nar, [124] = nar,         \
-      [125] = nar, [126] = nar, [127] = nar, [128] = nar, [129] = nar,         \
-      [130] = nar, [131] = nar, [132] = nar, [133] = nar, [134] = nar,         \
-      [135] = nar, [136] = nar, [137] = nar, [138] = nar, [139] = nar,         \
-      [140] = nar, [141] = nar, [142] = nar, [143] = nar, [144] = nar,         \
-      [145] = nar, [146] = nar, [147] = nar, [148] = nar, [149] = nar,         \
-      [150] = nar, [151] = nar, [152] = nar, [153] = nar, [154] = nar,         \
-      [155] = nar, [156] = nar, [157] = nar, [158] = nar, [159] = nar,         \
-      [160] = nar, [161] = nar, [162] = nar, [163] = nar, [164] = nar,         \
-      [165] = nar, [166] = nar, [167] = nar, [168] = nar, [169] = nar,         \
-      [170] = nar, [171] = nar, [172] = nar, [173] = nar, [174] = nar,         \
-      [175] = nar, [176] = nar, [177] = nar, [178] = nar, [179] = nar,         \
-      [180] = nar, [181] = nar, [182] = nar, [183] = nar, [184] = nar,         \
-      [185] = nar, [186] = nar, [187] = nar, [188] = nar, [189] = nar,         \
-      [190] = nar, [191] = nar, [192] = nar, [193] = nar, [194] = nar,         \
-      [195] = nar, [196] = nar, [197] = nar, [198] = nar, [199] = nar,         \
-      [200] = nar, [201] = nar, [202] = nar, [203] = nar, [204] = nar,         \
-      [205] = nar, [206] = nar, [207] = nar, [208] = nar, [209] = nar,         \
-      [210] = nar, [211] = nar, [212] = nar, [213] = nar, [214] = nar,         \
-      [215] = nar, [216] = nar, [217] = nar, [218] = nar, [219] = nar,         \
-      [220] = nar, [221] = nar, [222] = nar, [223] = nar, [224] = nar,         \
-      [225] = nar, [226] = nar, [227] = nar, [228] = nar, [229] = nar,         \
-      [230] = nar, [231] = nar, [232] = nar, [233] = nar, [234] = nar,         \
-      [235] = nar, [236] = nar, [237] = nar, [238] = nar, [239] = nar,         \
-      [240] = nar, [241] = nar, [242] = nar, [243] = nar, [244] = nar,         \
-      [245] = nar, [246] = nar, [247] = nar, [248] = nar, [249] = nar,         \
-      [250] = nar, [251] = nar, [252] = nar, [253] = nar, [254] = nar,         \
-      [255] = nar, __VA_ARGS__};                                               \
-  P(name)
 
-#define So (unsigned char)o[0].cs
-#define Pos o[2].q
+static P(Tot) { o[b + 2].o[0].c(a, b + 3, o); }
+static P(Tod) { o[b + 1].o[0].c(a, b + 3, o); }
+static P(Tor) { o[b + 0].o[0].c(a, b + 3, o); }
+Tab(tab, Gor,
+    [0x20] = God,
+    [ 0xA] = God,
+    [ 0xD] = God,
+    [ 0x9] = God);
 
-P(string);
-P(string_ws) { L, Pos++, string(a, b, o); }
-P(string_heart);
-Tab(string, Gor, //
-    ['"'] = string_heart, [0x09] = string_ws, [0x0A] = string_ws,
-    [0x0D] = string_ws, [0x20] = string_ws) {
-  L, string_tab[So[Pos]](a, b, o);
-}
-P(hex_end) { L, string_heart(a, b, o); }
-P(bi_hex_end) { L, string_heart(a, b, o); }
-P(tri_hex_end) { L, string_heart(a, b, o); }
-P(quad_hex_end) { L, string_heart(a, b, o); }
-
-Tab(hex, tri_hex_end, //
-    ['0'] = quad_hex_end, ['1'] = quad_hex_end, ['2'] = quad_hex_end,
-    ['3'] = quad_hex_end, ['4'] = quad_hex_end, ['5'] = quad_hex_end,
-    ['6'] = quad_hex_end, ['7'] = quad_hex_end, ['8'] = quad_hex_end,
-    ['9'] = quad_hex_end, ['A'] = quad_hex_end, ['B'] = quad_hex_end,
-    ['C'] = quad_hex_end, ['D'] = quad_hex_end, ['E'] = quad_hex_end,
-    ['F'] = quad_hex_end, ['a'] = quad_hex_end, ['b'] = quad_hex_end,
-    ['c'] = quad_hex_end, ['d'] = quad_hex_end, ['e'] = quad_hex_end,
-    ['f'] = quad_hex_end) {
-  L, Pos++, hex_tab[So[Pos]](a, b, o);
-}
-Tab(bi_hex, bi_hex_end, //
-    ['0'] = hex, ['1'] = hex, ['2'] = hex, ['3'] = hex, ['4'] = hex,
-    ['5'] = hex, ['6'] = hex, ['7'] = hex, ['8'] = hex, ['9'] = hex,
-    ['A'] = hex, ['B'] = hex, ['C'] = hex, ['D'] = hex, ['E'] = hex,
-    ['F'] = hex, ['a'] = hex, ['b'] = hex, ['c'] = hex, ['d'] = hex,
-    ['e'] = hex, ['f'] = hex) {
-  L, Pos++, bi_hex_tab[So[Pos]](a, b, o);
-}
-Tab(tri_hex, hex_end, //
-    ['0'] = bi_hex, ['1'] = bi_hex, ['2'] = bi_hex, ['3'] = bi_hex,
-    ['4'] = bi_hex, ['5'] = bi_hex, ['6'] = bi_hex, ['7'] = bi_hex,
-    ['8'] = bi_hex, ['9'] = bi_hex, ['A'] = bi_hex, ['B'] = bi_hex,
-    ['C'] = bi_hex, ['D'] = bi_hex, ['E'] = bi_hex, ['F'] = bi_hex,
-    ['a'] = bi_hex, ['b'] = bi_hex, ['c'] = bi_hex, ['d'] = bi_hex,
-    ['e'] = bi_hex, ['f'] = bi_hex) {
-  L, Pos++, tri_hex_tab[So[Pos]](a, b, o);
-}
-Tab(escape_quad_hex, Got, //
-    ['0'] = tri_hex, ['1'] = tri_hex, ['2'] = tri_hex, ['3'] = tri_hex,
-    ['4'] = tri_hex, ['5'] = tri_hex, ['6'] = tri_hex, ['7'] = tri_hex,
-    ['8'] = tri_hex, ['9'] = tri_hex, ['A'] = tri_hex, ['B'] = tri_hex,
-    ['C'] = tri_hex, ['D'] = tri_hex, ['E'] = tri_hex, ['F'] = tri_hex,
-    ['a'] = tri_hex, ['b'] = tri_hex, ['c'] = tri_hex, ['d'] = tri_hex,
-    ['e'] = tri_hex, ['f'] = tri_hex) {
-  L, Pos++, escape_quad_hex_tab[So[Pos]](a, b, o);
-}
-P(escape_quot /*            */) { L, string_heart(a, b, o); }
-P(escape_reverse_solidus /* */) { L, string_heart(a, b, o); }
-P(escape_solidus /*         */) { L, string_heart(a, b, o); }
-P(escape_backspace /*       */) { L, string_heart(a, b, o); }
-P(escape_formfeed /*        */) { L, string_heart(a, b, o); }
-P(escape_linefeed /*        */) { L, string_heart(a, b, o); }
-P(escape_carriage_return /* */) { L, string_heart(a, b, o); }
-P(escape_horizontal_tab /*  */) { L, string_heart(a, b, o); }
-Tab(escape, Got, //
-    ['"'] = escape_quot, ['\\'] = escape_reverse_solidus,
-    ['/'] = escape_solidus, ['b'] = escape_backspace, ['f'] = escape_formfeed,
-    ['n'] = escape_linefeed, ['r'] = escape_carriage_return,
-    ['t'] = escape_horizontal_tab, ['u'] = escape_quad_hex, ) {
-  L, Pos++, escape_tab[So[Pos]](a, b, o);
-}
-P(string_end) { L, Pos++, God(a, b, o); }
-Tab(string_heart, string_heart, ['"'] = string_end, ['\\'] = escape) {
-  L, Pos++, string_heart_tab[So[Pos]](a, b, o);
-}
-Tab(number_digits, God,
-    ['0'] = number_digits, //
-    ['1'] = number_digits, //
-    ['2'] = number_digits, //
-    ['3'] = number_digits, //
-    ['4'] = number_digits, //
-    ['5'] = number_digits, //
-    ['6'] = number_digits, //
-    ['7'] = number_digits, //
-    ['8'] = number_digits, //
-    ['9'] = number_digits) {
-  L, Pos++, number_digits_tab[So[Pos]](a, b, o);
-}
-Tab(number_exponent_sign, Got,
-    ['0'] = number_digits, //
-    ['1'] = number_digits, //
-    ['2'] = number_digits, //
-    ['3'] = number_digits, //
-    ['4'] = number_digits, //
-    ['5'] = number_digits, //
-    ['6'] = number_digits, //
-    ['7'] = number_digits, //
-    ['8'] = number_digits, //
-    ['9'] = number_digits) {
-  L, Pos++, number_exponent_sign_tab[So[Pos]](a, b, o);
-}
-Tab(number_exponent, Got,         //
-    ['+'] = number_exponent_sign, //
-    ['-'] = number_exponent_sign, //
-    ['0'] = number_digits, ['1'] = number_digits, ['2'] = number_digits,
-    ['3'] = number_digits, ['4'] = number_digits, ['5'] = number_digits,
-    ['6'] = number_digits, ['7'] = number_digits, ['8'] = number_digits,
-    ['9'] = number_digits) {
-  L, Pos++, number_exponent_tab[So[Pos]](a, b, o);
-}
-
-Tab(number_dot, Got,         //
-    ['E'] = number_exponent, //
-    ['e'] = number_exponent, //
-    ['0'] = number_digits, ['1'] = number_digits, ['2'] = number_digits,
-    ['3'] = number_digits, ['4'] = number_digits, ['5'] = number_digits,
-    ['6'] = number_digits, ['7'] = number_digits, ['8'] = number_digits,
-    ['9'] = number_digits, ) {
-  L, Pos++, number_dot_tab[So[Pos]](a, b, o);
-}
-Tab(number_zero_start, God, ['.'] = number_dot) {
-  L, Pos++, number_zero_start_tab[So[Pos]](a, b, o);
-}
-Tab(number_1to9_start, God, //
-    ['.'] = number_dot,     //
-    ['0'] = number_1to9_start, ['1'] = number_1to9_start,
-    ['2'] = number_1to9_start, ['3'] = number_1to9_start,
-    ['4'] = number_1to9_start, ['5'] = number_1to9_start,
-    ['6'] = number_1to9_start, ['7'] = number_1to9_start,
-    ['8'] = number_1to9_start, ['9'] = number_1to9_start) {
-  L, Pos++, number_1to9_start_tab[So[Pos]](a, b, o);
-}
-Tab(number_minus_sign_start, Got, //
-    ['0'] = number_zero_start,    //
-    ['1'] = number_1to9_start, ['2'] = number_1to9_start,
-    ['3'] = number_1to9_start, ['4'] = number_1to9_start,
-    ['5'] = number_1to9_start, ['6'] = number_1to9_start,
-    ['7'] = number_1to9_start, ['8'] = number_1to9_start,
-    ['9'] = number_1to9_start) {
-  L, Pos++, number_minus_sign_start_tab[So[Pos]](a, b, o);
-}
-
-P(whitespace);
-P(whitespace_next) { L, Pos++, whitespace(a, b, o); }
-Tab(whitespace, God, [0x09] = whitespace_next, [0x0A] = whitespace_next,
-    [0x0D] = whitespace_next, [0x20] = whitespace_next) {
-  L, whitespace_tab[So[Pos]](a, b, o);
-}
-P(value);
-P(colon);
-P(colon_end) { Pos++, God(a, b, o); }
-P(colon_ws) { Pos++, colon(a, b, o); }
-Tab(colon, Got, //
-    [':'] = colon_end, [0x09] = colon_ws, [0x0A] = colon_ws, [0x0D] = colon_ws,
-    [0x20] = colon_ws) {
-  L, colon_tab[So[Pos]](a, b, o);
-}
-P(object_end) { L, Pos++, God(a, b, o); }
-P(object_member);
-P(object_comma) { L, Pos++, object_member(a, b, o); }
-Tab(object_cross, Got, //
-    [','] = object_comma, ['}'] = object_end, ) {
-  L, object_cross_tab[So[Pos]](a, b, o);
-}
-P(object_member) {
-  L;
-  T(Got, object_cross, Gor);
-  T(Got, value, Gor);
-  T(Got, colon, Gor);
-  T(Got, whitespace, Gor);
-  string(a, b, o);
-}
-Tab(object_heart, object_member, //
-    ['}'] = object_end,          //
-    [0x09] = object_heart,       //
-    [0x0A] = object_heart,       //
-    [0x0D] = object_heart,       //
-    [0x20] = object_heart) {
-  L, Pos++, object_heart_tab[So[Pos]](a, b, o);
-}
-P(array_end) { L, Pos++, God(a, b, o); }
-P(array_member);
-P(array_comma) { L, Pos++, array_member(a, b, o); }
-Tab(array_cross, Got, //
-    [','] = array_comma, [']'] = array_end, ) {
-  L, array_cross_tab[So[Pos]](a, b, o);
-}
-P(array_member) {
-  L;
-  T(Got, array_cross, Gor);
-  value(a, b, o);
-}
-Tab(array_heart, array_member, //
-    [']'] = array_end,         //
-    [0x09] = array_heart,      //
-    [0x0A] = array_heart,      //
-    [0x0D] = array_heart,      //
-    [0x20] = array_heart) {
-  L, Pos++, array_heart_tab[So[Pos]](a, b, o);
-}
-P(false) { L, Pos += 5, God(a, b, o); }
-P(null) { L, Pos += 4, God(a, b, o); }
-P(true) { L, Pos += 4, God(a, b, o); }
-P(ws_value) {
-  L;
-  Pos++, value(a, b, o);
-}
-Tab(value, Got,                      //
-    ['"'] = string_heart,            //
-    ['-'] = number_minus_sign_start, //
-    ['0'] = number_zero_start,       //
-    ['1'] = number_1to9_start, ['2'] = number_1to9_start,
-    ['3'] = number_1to9_start, ['4'] = number_1to9_start,
-    ['5'] = number_1to9_start, ['6'] = number_1to9_start,
-    ['7'] = number_1to9_start, ['8'] = number_1to9_start,
-    ['9'] = number_1to9_start, //
-    ['['] = array_heart,       //
-    ['f'] = false,             //
-    ['n'] = null,              //
-    ['t'] = true,              //
-    ['{'] = object_heart,      //
-    [0x09] = ws_value, [0x0A] = ws_value, [0x0D] = ws_value,
-    [0x20] = ws_value) {
-  L;
-  T(Got, whitespace, Gor);
-  value_tab[(unsigned)So[Pos]](a, b, o);
+P(nar) {
+  T(tab, tab, tab);
+  T(tab, tab, tab);
+  T(tab, tab, tab);
+  T(tab, tab, tab);
+  T(tab, tab, tab);
 }
 
 #include <stdio.h>
@@ -356,7 +77,7 @@ Tab(value, Got,                      //
 #include <string.h>
 #include <time.h>
 double getTime();
-
+P(value);
 P(not ) { printf("not\n"); }
 P(and) { printf("and %ld %ld\n", o[1].q, o[2].q); }
 P(oor) { printf("oor\n"); }
@@ -397,7 +118,8 @@ int main() {
   o[2].q = 0, Main(a, b, o);
   o[2].q = 0, Main(a, b, o);
 }
-double getTime() { struct timespec time;
+double getTime() {
+  struct timespec time;
   clock_gettime(CLOCK_MONOTONIC, &time);
   return (double)time.tv_sec + (double)time.tv_nsec / 1000000000.0;
 }

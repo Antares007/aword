@@ -7,6 +7,9 @@ p3    tab   E     div   E     o.
 p4    tab   oprn  E     cprn  o.
 p5    tab   id    o.
 
+name [[1 2]
+      [3 4]].
+
 k11	{ s:[2,2], d: [k₁₁, k₁₂, k₂₁, k₂₂]}.
 k12	{ s:[2,2], d: [k₁₁, k₁₂, k₂₁, k₂₂]}.
 k13	{ s:[2,2], d: [k₁₁, k₁₂, k₂₁, k₂₂]}.
