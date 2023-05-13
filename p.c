@@ -102,9 +102,6 @@ int main() {
   o[--b].c = not ;
   o[--b].c = and;
   o[--b].c = oor;
-  o[a++].cs = s;
-  o[a++].q = strlen(s);
-  o[a++].q = 0, Main(a, b, o, s, d);
   o[2].q = 0, Main(a, b, o, s, d);
   o[2].q = 0, Main(a, b, o, s, d);
   o[2].q = 0, Main(a, b, o, s, d);
