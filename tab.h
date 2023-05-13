@@ -1,6 +1,6 @@
 #pragma once
 #define T(i, n, a) o[--b].v = i, o[--b].v = n, o[--b].v = a
-#define P(arse) void arse(long a, long b, struct o_t *o)
+#define P(arse) void arse(long a, long b, struct o_t *o, const char*s, long d)
 typedef struct o_t {
   union {
     long q;
@@ -12,9 +12,9 @@ typedef struct o_t {
   };
 } o_t;
 typedef P((*p_t));
-static P(Got) { o[b + 2].c(a, b + 3, o); }
-static P(God) { o[b + 1].c(a, b + 3, o); }
-static P(Gor) { o[b + 0].c(a, b + 3, o); }
+static P(Got) { o[b + 2].c(a, b + 3, o, s, d); }
+static P(God) { o[b + 1].c(a, b + 3, o, s, d); }
+static P(Gor) { o[b + 0].c(a, b + 3, o, s, d); }
 #define Tp(name, n, ...)                                                       \
   P(name);                                                                     \
   Tab(name##_tab, n, __VA_ARGS__);                                             \

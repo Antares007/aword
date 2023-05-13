@@ -1,20 +1,20 @@
 #include "tab.h"
 P(codepoint) {
   o[a++].q = o[0].cs[o[2].q++];
-  o[b + 1].c(a, b, o);
+  o[b + 1].c(a, b, o, s, d);
 }
 P(biend) {
   unsigned long b2 = o[0].cs[o[2].q++] & 0b00111111;
   unsigned long b1 = o[--a].Q;
   o[a++].Q = b1 << 6 | b2;
-  o[b + 1].c(a, b, o);
+  o[b + 1].c(a, b, o, s, d);
 }
 P(triend) {
   unsigned long b3 = o[0].cs[o[2].q++] & 0b00111111;
   unsigned long b2 = o[--a].Q;
   unsigned long b1 = o[--a].Q;
   o[a++].Q = b1 << 12 | b2 << 6 | b3;
-  o[b + 1].c(a, b, o);
+  o[b + 1].c(a, b, o, s, d);
 }
 P(quadend) {
   unsigned long b4 = o[0].cs[o[2].q++] & 0b00111111;
@@ -22,42 +22,42 @@ P(quadend) {
   unsigned long b2 = o[--a].Q;
   unsigned long b1 = o[--a].Q;
   o[a++].Q = b1 << 18 | b2 << 12 | b3 << 6 | b4;
-  o[b + 1].c(a, b, o);
+  o[b + 1].c(a, b, o, s, d);
 }
 extern p_t next_byte_cases[];
-P(drop1) { a--, Gor(a, b, o); }
-P(drop2) { a--, a--, Gor(a, b, o); }
-P(drop3) { a--, a--, a--, Gor(a, b, o); }
+P(drop1) { a--, Gor(a, b, o, s, d); }
+P(drop2) { a--, a--, Gor(a, b, o, s, d); }
+P(drop3) { a--, a--, a--, Gor(a, b, o, s, d); }
 P(bichar) {
   o[--b].c = drop1, o[--b].c = biend, o[--b].c = Gor;
   o[a++].q = o[0].cs[o[2].q++] & 0b00011111;
-  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o);
+  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 P(nextchar) {
   o[a++].q = o[0].cs[o[2].q++] & 0b00111111;
-  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o);
+  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 P(trichar) {
   o[--b].c = drop2, o[--b].c = triend, o[--b].c = Gor;
   o[--b].c = drop1, o[--b].c = nextchar, o[--b].c = Gor;
   o[a++].q = o[0].cs[o[2].q++] & 0b00001111;
-  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o);
+  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 P(quadchar) {
   o[--b].c = drop3, o[--b].c = quadend, o[--b].c = Gor;
   o[--b].c = drop2, o[--b].c = nextchar, o[--b].c = Gor;
   o[--b].c = drop1, o[--b].c = nextchar, o[--b].c = Gor;
   o[a++].q = o[0].cs[o[2].q++] & 0b00000111;
-  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o);
+  next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 extern p_t starting_byte_cases[];
 #include <stdio.h>
 #define L (void)0 // printf("%ld %ld %s\n", o[1].q, Pos, __FUNCTION__)
-P(utf) { starting_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o); }
+P(utf) { starting_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d); }
 
-static P(Tot) { o[b + 2].o[0].c(a, b + 3, o); }
-static P(Tod) { o[b + 1].o[0].c(a, b + 3, o); }
-static P(Tor) { o[b + 0].o[0].c(a, b + 3, o); }
+static P(Tot) { o[b + 2].o[0].c(a, b + 3, o, s, d); }
+static P(Tod) { o[b + 1].o[0].c(a, b + 3, o, s, d); }
+static P(Tor) { o[b + 0].o[0].c(a, b + 3, o, s, d); }
 Tab(tab, Gor,
     [0x20] = God,
     [ 0xA] = God,
@@ -83,40 +83,40 @@ P(and) { printf("and %ld %ld\n", o[1].q, o[2].q); }
 P(oor) { printf("oor\n"); }
 P(Main) {
   double startTime = getTime();
-  value(a, b, o);
+  value(a, b, o, s, d);
   double endTime = getTime();
   double executionTime = endTime - startTime;
   printf("Execution time: %f seconds\n", executionTime);
 }
 
 int main() {
-  char str[1 * 1024 * 1024];
+  char s[1 * 1024 * 1024];
   FILE *fp = fopen("../twitter.json", "rb");
-  long length = fread(str, 1, sizeof(str) / sizeof(*str), fp);
-  str[length] = 0;
+  long length = fread(s, 1, sizeof(s) / sizeof(*s), fp);
+  s[length] = 0;
   fclose(fp);
   printf("%ld\n", length);
 
   o_t o[1024];
-  long a = 0, b = 1024;
+  long a = 0, b = 1024, d = 0;
   o[--b].c = not ;
   o[--b].c = and;
   o[--b].c = oor;
-  o[a++].cs = str;
-  o[a++].q = strlen(str);
-  o[a++].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
-  o[2].q = 0, Main(a, b, o);
+  o[a++].cs = s;
+  o[a++].q = strlen(s);
+  o[a++].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
+  o[2].q = 0, Main(a, b, o, s, d);
 }
 double getTime() {
   struct timespec time;
