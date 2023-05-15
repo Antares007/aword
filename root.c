@@ -59,7 +59,14 @@ static n_t compose_cache(char**t, long s) {
   hashs[length] = h, awords[length] = w, length++;
   return w;
 }
-
+void Gor(void**o, long a, long s) {
+}
+#define L __LINE__
+#define EN(Tail, Name, Value, Head)
+EN(Gor,
+  "print",      printf,         L)EN(L,
+  "usleep",     usleep,         L)EN(L,
+  "compose",    compose_cache,  L)
 int main(int argc, char**argv) {
   memory = map_file("../ram.ram");
   void*o[1024];
