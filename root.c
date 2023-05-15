@@ -19,7 +19,7 @@ static void *map_file(const char *file_name) {
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-typedef void (*n_t)(void**o, long a, long s);
+typedef void (*n_t)(long a, void**o, long s);
 
 static long load_aword(void*memory, char*aw_name) {
   FILE*f = fopen(aw_name, "r");
@@ -76,7 +76,7 @@ int main(int argc, char**argv) {
   o[a++] = usleep;
   o[a++] = compose_cache;
   n_t w  = compose_cache(argv+1, argc-1);
-  (w + 16)(o, a, s);
-  w(o, a, s);
+  (w + 16)(a, o, s);
+  w(a, o, s);
 }
 // 

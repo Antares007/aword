@@ -1,51 +1,51 @@
 o {
-  G(Yellow  ) { P, Lime   (o, a, s); }
-  G(Purple  ) {}
-  G(Red     ) { P, Maroon (o, a, s); }
-  G(Green   ) { P, Olive  (o, a, s); }
-  G(Blue    ) { P, Navy   (o, a, s); }
+  G(Yellow  ) { P, Lime   (a, o, s); }
+  G(Purple  ) {}              
+  G(Red     ) { P, Maroon (a, o, s); }
+  G(Green   ) { P, Olive  (a, o, s); }
+  G(Blue    ) { P, Navy   (a, o, s); }
 }.
 b {
-  G(Navy    ) { P, Blue  (o, a, s); }
-  G(Lime    ) { P, Green (o, a, s); }
-  G(Maroon  ) { P, Red   (o, a, s); }
+  G(Navy    ) { P, Blue  (a, o, s); }
+  G(Lime    ) { P, Green (a, o, s); }
+  G(Maroon  ) { P, Red   (a, o, s); }
   G(Fuchsia ) {}
-  G(Olive   ) { P, Yellow(o, a, s); }
+  G(Olive   ) { P, Yellow(a, o, s); }
 }.
-tab {
-  G(Navy    ) { P, Blue  (o, a, s); }
-  G(Lime    ) { P, Green (o, a, s); }
-  G(Maroon  ) { P, Red   (o, a, s); }
+tab {                        
+  G(Navy    ) { P, Blue  (a, o, s); }
+  G(Lime    ) { P, Green (a, o, s); }
+  G(Maroon  ) { P, Red   (a, o, s); }
   G(Fuchsia ) {}
-  G(Olive   ) { P, ((n_t*)o)[s](o, a, s + 1); }
+  G(Olive   ) { P, ((n_t*)o)[s](a, o, s + 1); }
 }.
 not {
-  G(Yellow) { Lime  (o, a, s); }
-  G(Red   ) { Yellow(o, a, s); }
-  G(Green ) { Olive (o, a, s); }
-  G(Lime  ) { Green (o, a, s); }
+  G(Yellow) { Lime  (a, o, s); }
+  G(Red   ) { Yellow(a, o, s); }
+  G(Green ) { Olive (a, o, s); }
+  G(Lime  ) { Green (a, o, s); }
 }.
 and {
-  G(Yellow) { Lime  (o, a, s); }
-  G(Green ) { Yellow(o, a, s); }
-  G(Lime  ) { Green (o, a, s); }
+  G(Yellow) { Lime  (a, o, s); }
+  G(Green ) { Yellow(a, o, s); }
+  G(Lime  ) { Green (a, o, s); }
 }.
 or {
-  G(Yellow) { Lime  (o, a, s); }
-  G(Blue  ) { Yellow(o, a, s); }
-  G(Green ) { Olive (o, a, s); }
-  G(Lime  ) { Green (o, a, s); }
+  G(Yellow) { Lime  (a, o, s); }
+  G(Blue  ) { Yellow(a, o, s); }
+  G(Green ) { Olive (a, o, s); }
+  G(Lime  ) { Green (a, o, s); }
 }.
 orand {
-  G(Yellow) { Lime  (o, a, s); }
-  G(Blue  ) { Yellow(o, a, s); }
-  G(Green ) { Yellow(o, a, s); }
-  G(Lime  ) { Green (o, a, s); }
+  G(Yellow) { Lime  (a, o, s); }
+  G(Blue  ) { Yellow(a, o, s); }
+  G(Green ) { Yellow(a, o, s); }
+  G(Lime  ) { Green (a, o, s); }
 }.
 one {
   G(Lime  ) {
     o[a++] = (void*)1;
-    Lime(o, a, s);
+    Lime(a, o, s);
   }
 }.
 plus {
@@ -53,20 +53,20 @@ plus {
     long r = (long)o[--a];
     long l = (long)o[--a];
     o[a++] = (void*)(l + r);
-    Green(o, a, s);
+    Green(a, o, s);
   }
 }.
 printl {
   void (*p)(const char *, ...);
-  G(Green) { p = o[0]; long r = (long)o[--a]; p("%ld\n", r); Green(o, a, s); }
+  G(Green) { p = o[0]; long r = (long)o[--a]; p("%ld\n", r); Green(a, o, s); }
 }.
 prints {
   void (*p)(const char *, ...);
-  G(Green) { p = o[0]; char* r = (char*)o[--a]; p("%s\n", r); Green(o, a, s); }
+  G(Green) { p = o[0]; char* r = (char*)o[--a]; p("%s\n", r); Green(a, o, s); }
 }.
-tina  { G(Lime) { o[a++] = "თინა "; Lime(o, a, s); } }.
-kargi { G(Lime) { o[a++] = "კარგი "; Lime(o, a, s); } }.
-gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(o, a, s); } }.
+tina  { G(Lime) { o[a++] = "თინა ";  Lime(a, o, s); } }.
+kargi { G(Lime) { o[a++] = "კარგი "; Lime(a, o, s); } }.
+gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(a, o, s); } }.
 two   tab one   one     plus  o.
 three tab one   plus    two   o.
 four  tab plus  three   one   o.

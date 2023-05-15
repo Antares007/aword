@@ -34,12 +34,12 @@ function split_name_and_body(l) {
   n_t toti;
   G(Purple) {
     toti = ((c_t*)o)[2]((const char*[]){${atext}}, ${b.length});
-    (toti + 16)(o, a, s);
-    Purple(o, a, s);
+    (toti + 16)(a, o, s);
+    Purple(a, o, s);
   }
   G(Lime) {
     o[--s] = Lime;
-    toti(o, a, s);
+    toti(a, o, s);
   }
 `,
     ];
@@ -68,7 +68,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, a, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {
