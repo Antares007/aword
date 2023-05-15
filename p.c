@@ -29,7 +29,7 @@ P(drop1) { a--, Gor(a, b, o, s, d); }
 P(drop2) { a--, a--, Gor(a, b, o, s, d); }
 P(drop3) { a--, a--, a--, Gor(a, b, o, s, d); }
 P(bichar) {
-  o[--b].c = drop1, o[--b].c = biend, o[--b].c = Gor;
+  T(drop1, biend, Gor);
   o[a++].q = o[0].cs[o[2].q++] & 0b00011111;
   next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
@@ -38,15 +38,15 @@ P(nextchar) {
   next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 P(trichar) {
-  o[--b].c = drop2, o[--b].c = triend, o[--b].c = Gor;
-  o[--b].c = drop1, o[--b].c = nextchar, o[--b].c = Gor;
+  T(drop2, triend, Gor);
+  T(drop1, nextchar, Gor);
   o[a++].q = o[0].cs[o[2].q++] & 0b00001111;
   next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
 P(quadchar) {
-  o[--b].c = drop3, o[--b].c = quadend, o[--b].c = Gor;
-  o[--b].c = drop2, o[--b].c = nextchar, o[--b].c = Gor;
-  o[--b].c = drop1, o[--b].c = nextchar, o[--b].c = Gor;
+  T(drop3, quadend, Gor);
+  T(drop2, nextchar, Gor);
+  T(drop1, nextchar, Gor);
   o[a++].q = o[0].cs[o[2].q++] & 0b00000111;
   next_byte_cases[(unsigned char)o[0].cs[o[2].q]](a, b, o, s, d);
 }
@@ -83,10 +83,15 @@ P(and) { printf("and %ld %ld\n", o[1].q, o[2].q); }
 P(oor) { printf("oor\n"); }
 P(Main) {
   double startTime = getTime();
+
+  T(Got, God, Gor);
   value(a, b, o, s, d);
+  
   double endTime = getTime();
   double executionTime = endTime - startTime;
   printf("Execution time: %f seconds\n", executionTime);
+}
+P(aread) {
 }
 
 int main() {
@@ -96,24 +101,15 @@ int main() {
   s[length] = 0;
   fclose(fp);
   printf("%ld\n", length);
-
+  // o...........................................
+  //            lllllllllllllllll
   o_t o[1024];
   long a = 0, b = 1024, d = 0;
-  o[--b].c = not ;
-  o[--b].c = and;
-  o[--b].c = oor;
+
+  T(not, and, oor);
+
   o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
-  o[2].q = 0, Main(a, b, o, s, d);
+
 }
 double getTime() {
   struct timespec time;

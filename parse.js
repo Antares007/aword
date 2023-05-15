@@ -12,19 +12,7 @@ async function parse(file = "input.tab") {
       .filter(Boolean)
       .map(split_name_and_body)
       .map(add_missing_rays)
-      .map(async ([n, b]) => {
-        await writeFile(n + ".c", b);
-        await exec(
-          `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o \
--ffreestanding -fno-stack-clash-protection -fno-stack-protector`
-        );
-        await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
-        await exec(
-          `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`
-        );
-        await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
-        await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
-      })
+      .map(compile)
   );
 }
 function split_name_and_body(l) {
@@ -82,4 +70,17 @@ function add_missing_rays([n, b]) {
   deleteDefinedRays("R");
   for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, a, s); }`;
   return [n, b];
+}
+async function compile([n, b]) {
+  await writeFile(n + ".c", b);
+  await exec(
+    `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o \
+-ffreestanding -fno-stack-clash-protection -fno-stack-protector`
+  );
+  await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
+  await exec(
+    `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`
+  );
+  await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
 }

@@ -64,8 +64,7 @@ prints {
   void (*p)(const char *, ...);
   G(Green) { p = o[0]; char* r = (char*)o[--a]; p("%s\n", r); Green(o, a, s); }
 }.
-tina
-{ G(Lime) { o[a++] = "თინა "; Lime(o, a, s); } }.
+tina  { G(Lime) { o[a++] = "თინა "; Lime(o, a, s); } }.
 kargi { G(Lime) { o[a++] = "კარგი "; Lime(o, a, s); } }.
 gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(o, a, s); } }.
 two   tab one   one     plus  o.

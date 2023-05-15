@@ -47,7 +47,7 @@ Tab(escape_quad_hex_tab, Got, //
     ['C'] = tri_hex, ['D'] = tri_hex, ['E'] = tri_hex, ['F'] = tri_hex,
     ['a'] = tri_hex, ['b'] = tri_hex, ['c'] = tri_hex, ['d'] = tri_hex,
     ['e'] = tri_hex, ['f'] = tri_hex);
-P(escape_quad_hex) { Pos++, escape_quad_hex_tab[So[Pos]](a, b, o, s, d); }
+P(escape_quad_hex /*        */) { Pos++, escape_quad_hex_tab[So[Pos]](a, b, o, s, d); }
 P(escape_quot /*            */) { string_heart(a, b, o, s, d); }
 P(escape_reverse_solidus /* */) { string_heart(a, b, o, s, d); }
 P(escape_solidus /*         */) { string_heart(a, b, o, s, d); }
@@ -65,7 +65,13 @@ Tab(escape_tab, Got, //
 P(escape) { Pos++, escape_tab[So[Pos]](a, b, o, s, d); }
 P(string_end) { Pos++, God(a, b, o, s, d); }
 Tab(string_heart_tab, string_heart, ['"'] = string_end, ['\\'] = escape);
-P(string_heart) { Pos++, string_heart_tab[So[Pos]](a, b, o, s, d); }
+P(string_heart) {
+  Pos++;
+  const char *str = o[--a].cs;
+  // str
+  string_heart_tab[So[Pos]](a, b, o, s, d);
+}
+
 P(number_digits);
 Tab(number_digits_tab, God,
     ['0'] = number_digits, //
@@ -151,16 +157,15 @@ P(object_comma) { Pos++, object_member(a, b, o, s, d); }
 Tab(object_cross_tab, Got, [','] = object_comma, ['}'] = object_end);
 P(object_cross) { object_cross_tab[So[Pos]](a, b, o, s, d); }
 P(object_member) {
-
-  T(Got, object_cross, Gor);
-  T(Got, value, Gor);
-  T(Got, colon, Gor);
-  T(Got, whitespace, Gor);
+  T(Got,  object_cross,  Gor);
+  T(Got,  value,         Gor);
+  T(Got,  colon,         Gor);
+  T(Got,  whitespace,    Gor);
   string(a, b, o, s, d);
 }
 P(object_heart);
 Tab(object_heart_tab, object_member, //
-    ['}'] = object_end,              //
+    [ '}'] = object_end,             //
     [0x09] = object_heart,           //
     [0x0A] = object_heart,           //
     [0x0D] = object_heart,           //
@@ -203,6 +208,8 @@ Tab(value_tab, Got,                  //
     ['{'] = object_heart,      //
     [0x09] = value_ws, [0x0A] = value_ws, [0x0D] = value_ws, [0x20] = value_ws);
 P(value) {
+  T(Got, whitespace, Gor);
+  T(Got, whitespace, Gor);
   T(Got, whitespace, Gor);
   value_tab[So[Pos]](a, b, o, s, d);
 }
