@@ -7,7 +7,7 @@ typedef struct o_t {
     double n;
     unsigned long Q;
     void *v;
-    const char *cs;
+    char *cs;
     struct o_t *o;
     P((*c));
   };
@@ -16,6 +16,9 @@ typedef P((*p_t));
 static P(Got) { o[b + 2].c(a, b + 3, o, s, d); }
 static P(God) { o[b + 1].c(a, b + 3, o, s, d); }
 static P(Gor) { o[b + 0].c(a, b + 3, o, s, d); }
+static P(Goot) { o[b + 5].c(a, b + 6, o, s, d); }
+static P(Good) { o[b + 4].c(a, b + 6, o, s, d); }
+static P(Goor) { o[b + 3].c(a, b + 6, o, s, d); }
 #define Tab(name, n, ...)                                                      \
   static p_t name[] = {                                                        \
       [0] = n,   [1] = n,   [2] = n,   [3] = n,   [4] = n,    [5] = n,         \

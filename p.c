@@ -82,7 +82,7 @@ P(not ) { printf("not\n"); }
 P(and) { printf("and %ld %ld\n", o[1].q, o[2].q); }
 P(oor) { printf("oor\n"); }
 P(print_value) {
-  printf("%lf %s(%ld)\n", o[a-1].n, s, d);
+  printf("%ld %ld %ld %s(%ld)\n", a, o[a-2].q, o[a-1].q, s, d);
 }
 P(Main) {
   double startTime = getTime();
@@ -107,7 +107,7 @@ int main() {
   o_t o[1024];
   long a = 0, b = 1024, d = 0;
   T(not, and, oor);
-  o[2].q = 0, Main(a, b, o, "-0.122e3", d);
+  Main(a, b, o, "\"\\u10d0\"", d);
 }
 
 double getTime() {

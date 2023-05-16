@@ -1,63 +1,104 @@
 #include "tab.h"
-P(string);
-P(string_ws) { d++, string(a, b, o, s, d); }
-P(string_heart);
+P(string_next);
+P(quad_hex_end_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++, string_next(a, b, o, s, d); }
+P(quad_hex_end_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++, string_next(a, b, o, s, d); }
+P(quad_hex_end_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++, string_next(a, b, o, s, d); }
+Tab(hex_tab, Got, //
+    ['0'] = quad_hex_end_n, ['1'] = quad_hex_end_n, ['2'] = quad_hex_end_n,
+    ['3'] = quad_hex_end_n, ['4'] = quad_hex_end_n, ['5'] = quad_hex_end_n,
+    ['6'] = quad_hex_end_n, ['7'] = quad_hex_end_n, ['8'] = quad_hex_end_n,
+    ['9'] = quad_hex_end_n, ['A'] = quad_hex_end_A, ['B'] = quad_hex_end_A,
+    ['C'] = quad_hex_end_A, ['D'] = quad_hex_end_A, ['E'] = quad_hex_end_A,
+    ['F'] = quad_hex_end_A, ['a'] = quad_hex_end_a, ['b'] = quad_hex_end_a,
+    ['c'] = quad_hex_end_a, ['d'] = quad_hex_end_a, ['e'] = quad_hex_end_a,
+    ['f'] = quad_hex_end_a);
+P(hex_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(hex_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(hex_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+Tab(bi_hex_tab, Got, //
+    ['0'] = hex_n, ['1'] = hex_n, ['2'] = hex_n, ['3'] = hex_n, ['4'] = hex_n,
+    ['5'] = hex_n, ['6'] = hex_n, ['7'] = hex_n, ['8'] = hex_n, ['9'] = hex_n,
+    ['A'] = hex_A, ['B'] = hex_A, ['C'] = hex_A, ['D'] = hex_A, ['E'] = hex_A,
+    ['F'] = hex_A, ['a'] = hex_a, ['b'] = hex_a, ['c'] = hex_a, ['d'] = hex_a,
+    ['e'] = hex_a, ['f'] = hex_a);
+P(bi_hex_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(bi_hex_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(bi_hex_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+Tab(tri_hex_tab, Got, //
+    ['0'] = bi_hex_n, ['1'] = bi_hex_n, ['2'] = bi_hex_n, ['3'] = bi_hex_n,
+    ['4'] = bi_hex_n, ['5'] = bi_hex_n, ['6'] = bi_hex_n, ['7'] = bi_hex_n,
+    ['8'] = bi_hex_n, ['9'] = bi_hex_n, ['A'] = bi_hex_A, ['B'] = bi_hex_A,
+    ['C'] = bi_hex_A, ['D'] = bi_hex_A, ['E'] = bi_hex_A, ['F'] = bi_hex_A,
+    ['a'] = bi_hex_a, ['b'] = bi_hex_a, ['c'] = bi_hex_a, ['d'] = bi_hex_a,
+    ['e'] = bi_hex_a, ['f'] = bi_hex_a);
+P(tri_hex_n) {
+  (o[b].cs[0] = (s[d] - '0' + 0x0));
+  o[b].cs++;
+  d++;
+  tri_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(tri_hex_A) {
+  (o[b].cs[0] = (s[d] - 'A' + 0xA));
+  o[b].cs++;
+  d++;
+  tri_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(tri_hex_a) {
+  (o[b].cs[0] = (s[d] - 'a' + 0xa));
+  o[b].cs++;
+  d++;
+  tri_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+Tab(escape_quad_hex_tab, Got, //
+    ['0'] = tri_hex_n, ['1'] = tri_hex_n, ['2'] = tri_hex_n, ['3'] = tri_hex_n,
+    ['4'] = tri_hex_n, ['5'] = tri_hex_n, ['6'] = tri_hex_n, ['7'] = tri_hex_n,
+    ['8'] = tri_hex_n, ['9'] = tri_hex_n, ['A'] = tri_hex_A, ['B'] = tri_hex_A,
+    ['C'] = tri_hex_A, ['D'] = tri_hex_A, ['E'] = tri_hex_A, ['F'] = tri_hex_A,
+    ['a'] = tri_hex_a, ['b'] = tri_hex_a, ['c'] = tri_hex_a, ['d'] = tri_hex_a,
+    ['e'] = tri_hex_a, ['f'] = tri_hex_a);
+P(escape_quad_hex       ) { d++, escape_quad_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(string_heart          );
+P(escape_quot           ) { (o[b].cs[0] = '"' ), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_reverse_solidus) { (o[b].cs[0] = '\\'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_solidus        ) { (o[b].cs[0] = '/' ), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_backspace      ) { (o[b].cs[0] = '\b'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_formfeed       ) { (o[b].cs[0] = '\f'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_linefeed       ) { (o[b].cs[0] = '\n'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_carriage_return) { (o[b].cs[0] = '\r'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_horizontal_tab ) { (o[b].cs[0] = '\t'), o[b].cs++, string_heart(a, b, o, s, d); }
+Tab(escape_tab, Got,                 //
+    ['"'] = escape_quot,             //
+    ['\\'] = escape_reverse_solidus, //
+    ['/'] = escape_solidus,          //
+    ['b'] = escape_backspace,        //
+    ['f'] = escape_formfeed,         //
+    ['n'] = escape_linefeed,         //
+    ['r'] = escape_carriage_return,  //
+    ['t'] = escape_horizontal_tab,   //
+    ['u'] = escape_quad_hex);
+P(escape) { d++, escape_tab[(unsigned char)s[d]](a, b, o, s, d); }
+#define ALIGN(O, A) ((unsigned long)(((O) + ((A)-1)) / (A))) * (A)
+P(string_end) {
+  o[b].cs[0] = 0;
+  long length = o[b++].cs - (char *)&o[a] - 1;
+  a += length / sizeof(void *) + 1;
+  o[a++].q = length;
+  o[a++].q = 5;
+  God(a, b, o, s, d + 1);
+}
+Tab(string_heart_tab, string_heart, //
+    ['"'] = string_end, ['\\'] = escape);
+
+P(string_next ) { d++, string_heart_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(string_heart) { (o[b].cs[0] = s[d]), o[b].cs++, string_next(a, b, o, s, d); }
+P(string      );
+P(string_ws   ) { d++, string(a, b, o, s, d); }
 Tab(string_tab, Gor, ['"'] = string_heart, [0x09] = string_ws,
     [0x0A] = string_ws, [0x0D] = string_ws, [0x20] = string_ws);
 P(string) { string_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(hex_end) { string_heart(a, b, o, s, d); }
-P(bi_hex_end) { string_heart(a, b, o, s, d); }
-P(tri_hex_end) { string_heart(a, b, o, s, d); }
-P(quad_hex_end) { string_heart(a, b, o, s, d); }
-Tab(hex_tab, tri_hex_end, ['0'] = quad_hex_end, ['1'] = quad_hex_end,
-    ['2'] = quad_hex_end, ['3'] = quad_hex_end, ['4'] = quad_hex_end,
-    ['5'] = quad_hex_end, ['6'] = quad_hex_end, ['7'] = quad_hex_end,
-    ['8'] = quad_hex_end, ['9'] = quad_hex_end, ['A'] = quad_hex_end,
-    ['B'] = quad_hex_end, ['C'] = quad_hex_end, ['D'] = quad_hex_end,
-    ['E'] = quad_hex_end, ['F'] = quad_hex_end, ['a'] = quad_hex_end,
-    ['b'] = quad_hex_end, ['c'] = quad_hex_end, ['d'] = quad_hex_end,
-    ['e'] = quad_hex_end, ['f'] = quad_hex_end);
-P(hex) { d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-Tab(bi_hex_tab, bi_hex_end, ['0'] = hex, ['1'] = hex, ['2'] = hex, ['3'] = hex,
-    ['4'] = hex, ['5'] = hex, ['6'] = hex, ['7'] = hex, ['8'] = hex,
-    ['9'] = hex, ['A'] = hex, ['B'] = hex, ['C'] = hex, ['D'] = hex,
-    ['E'] = hex, ['F'] = hex, ['a'] = hex, ['b'] = hex, ['c'] = hex,
-    ['d'] = hex, ['e'] = hex, ['f'] = hex);
-P(bi_hex) { d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-Tab(tri_hex_tab, hex_end, ['0'] = bi_hex, ['1'] = bi_hex, ['2'] = bi_hex,
-    ['3'] = bi_hex, ['4'] = bi_hex, ['5'] = bi_hex, ['6'] = bi_hex,
-    ['7'] = bi_hex, ['8'] = bi_hex, ['9'] = bi_hex, ['A'] = bi_hex,
-    ['B'] = bi_hex, ['C'] = bi_hex, ['D'] = bi_hex, ['E'] = bi_hex,
-    ['F'] = bi_hex, ['a'] = bi_hex, ['b'] = bi_hex, ['c'] = bi_hex,
-    ['d'] = bi_hex, ['e'] = bi_hex, ['f'] = bi_hex);
-P(tri_hex) { d++, tri_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-Tab(escape_quad_hex_tab, Got, ['0'] = tri_hex, ['1'] = tri_hex, ['2'] = tri_hex,
-    ['3'] = tri_hex, ['4'] = tri_hex, ['5'] = tri_hex, ['6'] = tri_hex,
-    ['7'] = tri_hex, ['8'] = tri_hex, ['9'] = tri_hex, ['A'] = tri_hex,
-    ['B'] = tri_hex, ['C'] = tri_hex, ['D'] = tri_hex, ['E'] = tri_hex,
-    ['F'] = tri_hex, ['a'] = tri_hex, ['b'] = tri_hex, ['c'] = tri_hex,
-    ['d'] = tri_hex, ['e'] = tri_hex, ['f'] = tri_hex);
-P(escape_quad_hex) {
-  d++, escape_quad_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
-}
-P(escape_quot) { string_heart(a, b, o, s, d); }
-P(escape_reverse_solidus) { string_heart(a, b, o, s, d); }
-P(escape_solidus) { string_heart(a, b, o, s, d); }
-P(escape_backspace) { string_heart(a, b, o, s, d); }
-P(escape_formfeed) { string_heart(a, b, o, s, d); }
-P(escape_linefeed) { string_heart(a, b, o, s, d); }
-P(escape_carriage_return) { string_heart(a, b, o, s, d); }
-P(escape_horizontal_tab) { string_heart(a, b, o, s, d); }
-Tab(escape_tab, Got, ['"'] = escape_quot, ['\\'] = escape_reverse_solidus,
-    ['/'] = escape_solidus, ['b'] = escape_backspace, ['f'] = escape_formfeed,
-    ['n'] = escape_linefeed, ['r'] = escape_carriage_return,
-    ['t'] = escape_horizontal_tab, ['u'] = escape_quad_hex, );
-P(escape) { d++, escape_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(string_end) { d++, God(a, b, o, s, d); }
-Tab(string_heart_tab, string_heart, ['"'] = string_end, ['\\'] = escape);
-P(string_heart) {
-  d++;
-  string_heart_tab[(unsigned char)s[d]](a, b, o, s, d);
+P(string_start) {
+  o[--b].cs = (void *)&o[a];
+  string_heart(a, b, o, s, d);
 }
 P(number_fraction_exp_end) {
   long exp = o[--a].q;
@@ -223,7 +264,7 @@ P(null) { d += 4, God(a, b, o, s, d); }
 P(true) { d += 4, God(a, b, o, s, d); }
 P(value_ws) { d++, value(a, b, o, s, d); }
 Tab(value_tab, Got,            //
-    ['"'] = string_heart,      //
+    ['"'] = string_start,      //
     ['-'] = number_minus_sign, //
     ['0'] = number_0,          //
     ['1'] = number_19, ['2'] = number_19, ['3'] = number_19, ['4'] = number_19,
