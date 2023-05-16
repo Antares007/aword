@@ -81,15 +81,16 @@ P(value);
 P(not ) { printf("not\n"); }
 P(and) { printf("and %ld %ld\n", o[1].q, o[2].q); }
 P(oor) { printf("oor\n"); }
+P(print_value) {
+  printf("%lf %s(%ld)\n", o[a-1].n, s, d);
+}
 P(Main) {
   double startTime = getTime();
-
-  T(Got, God, Gor);
+  T(Got, print_value, Gor);
   value(a, b, o, s, d);
-  
   double endTime = getTime();
   double executionTime = endTime - startTime;
-  printf("Execution time: %f seconds\n", executionTime);
+  printf("Execution time: %.15lf seconds\n", executionTime);
 }
 P(aread) {
 }
@@ -105,12 +106,10 @@ int main() {
   //            lllllllllllllllll
   o_t o[1024];
   long a = 0, b = 1024, d = 0;
-
   T(not, and, oor);
-
-  o[2].q = 0, Main(a, b, o, s, d);
-
+  o[2].q = 0, Main(a, b, o, "-0.122e3", d);
 }
+
 double getTime() {
   struct timespec time;
   clock_gettime(CLOCK_MONOTONIC, &time);

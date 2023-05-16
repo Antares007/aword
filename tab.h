@@ -1,9 +1,10 @@
 #pragma once
 #define T(i, n, a) o[--b].v = i, o[--b].v = n, o[--b].v = a
-#define P(arse) void arse(long a, long b, struct o_t *o, const char*s, long d)
+#define P(arse) void arse(long a, long b, struct o_t *o, const char *s, long d)
 typedef struct o_t {
   union {
     long q;
+    double n;
     unsigned long Q;
     void *v;
     const char *cs;
@@ -15,10 +16,6 @@ typedef P((*p_t));
 static P(Got) { o[b + 2].c(a, b + 3, o, s, d); }
 static P(God) { o[b + 1].c(a, b + 3, o, s, d); }
 static P(Gor) { o[b + 0].c(a, b + 3, o, s, d); }
-#define Tp(name, n, ...)                                                       \
-  P(name);                                                                     \
-  Tab(name##_tab, n, __VA_ARGS__);                                             \
-  P(name)
 #define Tab(name, n, ...)                                                      \
   static p_t name[] = {                                                        \
       [0] = n,   [1] = n,   [2] = n,   [3] = n,   [4] = n,    [5] = n,         \
