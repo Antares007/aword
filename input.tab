@@ -1,6 +1,6 @@
 o {
   G(Yellow  ) { P, Lime   (a, o, s); }
-  G(Purple  ) {}              
+  G(Purple  ) {}
   G(Red     ) { P, Maroon (a, o, s); }
   G(Green   ) { P, Olive  (a, o, s); }
   G(Blue    ) { P, Navy   (a, o, s); }
@@ -12,7 +12,7 @@ b {
   G(Fuchsia ) {}
   G(Olive   ) { P, Yellow(a, o, s); }
 }.
-tab {                        
+tab {
   G(Navy    ) { P, Blue  (a, o, s); }
   G(Lime    ) { P, Green (a, o, s); }
   G(Maroon  ) { P, Red   (a, o, s); }

@@ -59,7 +59,7 @@ static n_t compose_cache(char**t, long s) {
   hashs[length] = h, awords[length] = w, length++;
   return w;
 }
-void Gor(void**o, long a, long s) {
+void Gor(long a, void**o, long s) {
 }
 #define L __LINE__
 #define EN(Tail, Name, Value, Head)
