@@ -84,6 +84,14 @@ P(oor) { printf("oor\n"); }
 P(print_value) {
   printf("%ld %ld %ld %s(%ld)\n", a, o[a-2].q, o[a-1].q, s, d);
 }
+
+P(aies_next);
+Tab(aies_tab, God, ['a'] = aies_next);
+P(aies_next) { d++, aies_tab[(unsigned char)s[d]](a, b, o, s, d); }
+
+Tab(S_tab, Got, ['b'] = aies_next);
+P(S) { S_tab[(unsigned char)s[d]](a, b, o, s, d); }
+
 P(Main) {
   double startTime = getTime();
   T(Got, print_value, Gor);

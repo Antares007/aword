@@ -1,8 +1,14 @@
 #include "tab.h"
 P(string_next);
-P(quad_hex_end_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++, string_next(a, b, o, s, d); }
-P(quad_hex_end_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++, string_next(a, b, o, s, d); }
-P(quad_hex_end_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++, string_next(a, b, o, s, d); }
+P(quad_hex_end_n) {
+  (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++, string_next(a, b, o, s, d);
+}
+P(quad_hex_end_A) {
+  (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++, string_next(a, b, o, s, d);
+}
+P(quad_hex_end_a) {
+  (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++, string_next(a, b, o, s, d);
+}
 Tab(hex_tab, Got, //
     ['0'] = quad_hex_end_n, ['1'] = quad_hex_end_n, ['2'] = quad_hex_end_n,
     ['3'] = quad_hex_end_n, ['4'] = quad_hex_end_n, ['5'] = quad_hex_end_n,
@@ -12,18 +18,36 @@ Tab(hex_tab, Got, //
     ['F'] = quad_hex_end_A, ['a'] = quad_hex_end_a, ['b'] = quad_hex_end_a,
     ['c'] = quad_hex_end_a, ['d'] = quad_hex_end_a, ['e'] = quad_hex_end_a,
     ['f'] = quad_hex_end_a);
-P(hex_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(hex_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(hex_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++; d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(hex_n) {
+  (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++;
+  d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(hex_A) {
+  (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++;
+  d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(hex_a) {
+  (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++;
+  d++, hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
 Tab(bi_hex_tab, Got, //
     ['0'] = hex_n, ['1'] = hex_n, ['2'] = hex_n, ['3'] = hex_n, ['4'] = hex_n,
     ['5'] = hex_n, ['6'] = hex_n, ['7'] = hex_n, ['8'] = hex_n, ['9'] = hex_n,
     ['A'] = hex_A, ['B'] = hex_A, ['C'] = hex_A, ['D'] = hex_A, ['E'] = hex_A,
     ['F'] = hex_A, ['a'] = hex_a, ['b'] = hex_a, ['c'] = hex_a, ['d'] = hex_a,
     ['e'] = hex_a, ['f'] = hex_a);
-P(bi_hex_n) { (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(bi_hex_A) { (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(bi_hex_a) { (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++; d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(bi_hex_n) {
+  (o[b].cs[0] = (s[d] - '0' + 0x0)), o[b].cs++;
+  d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(bi_hex_A) {
+  (o[b].cs[0] = (s[d] - 'A' + 0xA)), o[b].cs++;
+  d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(bi_hex_a) {
+  (o[b].cs[0] = (s[d] - 'a' + 0xa)), o[b].cs++;
+  d++, bi_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
 Tab(tri_hex_tab, Got, //
     ['0'] = bi_hex_n, ['1'] = bi_hex_n, ['2'] = bi_hex_n, ['3'] = bi_hex_n,
     ['4'] = bi_hex_n, ['5'] = bi_hex_n, ['6'] = bi_hex_n, ['7'] = bi_hex_n,
@@ -56,16 +80,32 @@ Tab(escape_quad_hex_tab, Got, //
     ['C'] = tri_hex_A, ['D'] = tri_hex_A, ['E'] = tri_hex_A, ['F'] = tri_hex_A,
     ['a'] = tri_hex_a, ['b'] = tri_hex_a, ['c'] = tri_hex_a, ['d'] = tri_hex_a,
     ['e'] = tri_hex_a, ['f'] = tri_hex_a);
-P(escape_quad_hex       ) { d++, escape_quad_hex_tab[(unsigned char)s[d]](a, b, o, s, d); }
-P(string_heart          );
-P(escape_quot           ) { (o[b].cs[0] = '"' ), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_reverse_solidus) { (o[b].cs[0] = '\\'), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_solidus        ) { (o[b].cs[0] = '/' ), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_backspace      ) { (o[b].cs[0] = '\b'), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_formfeed       ) { (o[b].cs[0] = '\f'), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_linefeed       ) { (o[b].cs[0] = '\n'), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_carriage_return) { (o[b].cs[0] = '\r'), o[b].cs++, string_heart(a, b, o, s, d); }
-P(escape_horizontal_tab ) { (o[b].cs[0] = '\t'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_quad_hex) {
+  d++, escape_quad_hex_tab[(unsigned char)s[d]](a, b, o, s, d);
+}
+P(string_heart);
+P(escape_quot) { (o[b].cs[0] = '"'), o[b].cs++, string_heart(a, b, o, s, d); }
+P(escape_reverse_solidus) {
+  (o[b].cs[0] = '\\'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_solidus) {
+  (o[b].cs[0] = '/'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_backspace) {
+  (o[b].cs[0] = '\b'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_formfeed) {
+  (o[b].cs[0] = '\f'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_linefeed) {
+  (o[b].cs[0] = '\n'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_carriage_return) {
+  (o[b].cs[0] = '\r'), o[b].cs++, string_heart(a, b, o, s, d);
+}
+P(escape_horizontal_tab) {
+  (o[b].cs[0] = '\t'), o[b].cs++, string_heart(a, b, o, s, d);
+}
 Tab(escape_tab, Got,                 //
     ['"'] = escape_quot,             //
     ['\\'] = escape_reverse_solidus, //
@@ -89,10 +129,10 @@ P(string_end) {
 Tab(string_heart_tab, string_heart, //
     ['"'] = string_end, ['\\'] = escape);
 
-P(string_next ) { d++, string_heart_tab[(unsigned char)s[d]](a, b, o, s, d); }
+P(string_next) { d++, string_heart_tab[(unsigned char)s[d]](a, b, o, s, d); }
 P(string_heart) { (o[b].cs[0] = s[d]), o[b].cs++, string_next(a, b, o, s, d); }
-P(string      );
-P(string_ws   ) { d++, string(a, b, o, s, d); }
+P(string);
+P(string_ws) { d++, string(a, b, o, s, d); }
 Tab(string_tab, Gor, ['"'] = string_heart, [0x09] = string_ws,
     [0x0A] = string_ws, [0x0D] = string_ws, [0x20] = string_ws);
 P(string) { string_tab[(unsigned char)s[d]](a, b, o, s, d); }
@@ -256,8 +296,9 @@ P(array_member) {
 }
 P(array_heart);
 Tab(array_heart_tab, array_member, //
-    [']'] = array_end, [0x09] = array_heart, [0x0A] = array_heart,
-    [0x0D] = array_heart, [0x20] = array_heart);
+    [']'] = array_end,             //
+    [0x09] = array_heart, [0x0A] = array_heart, [0x0D] = array_heart,
+    [0x20] = array_heart);
 P(array_heart) { d++, array_heart_tab[(unsigned char)s[d]](a, b, o, s, d); }
 P(false) { d += 5, God(a, b, o, s, d); }
 P(null) { d += 4, God(a, b, o, s, d); }
