@@ -48,15 +48,15 @@ static int hash(char**t, long s) {
   return h;
 }
 static n_t compose_cache(char**t, long s) {
-  static int   hashs[1024] = {};
-  static n_t   awords[1024] = {};
+  static int   keys[1024] = {};
+  static n_t   values[1024] = {};
   static long  length      = 0;
   int h = hash(t, s);
   for(long i = 0; i < length; i++)
-    if (hashs[i] == h)
-      return awords[i];
+    if (keys[i] == h)
+      return values[i];
   n_t w = compose(t, s);
-  hashs[length] = h, awords[length] = w, length++;
+  keys[length] = h, values[length] = w, length++;
   return w;
 }
 void Gor(long a, void**o, long s) {
