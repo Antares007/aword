@@ -9,7 +9,7 @@ async function parse(file = "input.tab") {
     input
       .split(".\n")
       .map((l) => l.trim())
-      .filter(Boolean)
+      .filter(l => l.length && !l.startsWith('//'))
       .map(split_name_and_body)
       .map(add_missing_rays)
       .map(compile)
@@ -23,23 +23,42 @@ function split_name_and_body(l) {
     const b = l.slice(p2 + 1, l.lastIndexOf("}"));
     return [n, b];
   } else {
-    const [n, ...b] = l
-      .split(/[ \n\t]/)
-      .map((l) => l.trim())
-      .filter(Boolean);
-    const atext = b.map((aw) => `"${aw}"`).join(", ");
+    const p = l.indexOf("\n");
+    const n = l.slice(0, p).trim();
+    const b = l
+      .slice(p + 1)
+      .split(";")
+      .map((x) =>
+        x
+          .split(" ")
+          .map((x) => x.trim())
+          .filter(Boolean)
+          .map((x) => `"${x}"`)
+      );
     return [
       n,
       `
-  n_t toti;
+  n_t branches[${b.length}];
+  long branches_length;
   G(Purple) {
-    toti = ((c_t*)o)[2]((const char*[]){${atext}}, ${b.length});
-    (toti + 16)(a, o, s);
+    if (!branches_length) {
+      P;
+      c_t compose = o[2];
+${b
+  .map((atext, i) => {
+    return `      branches[${i}] = compose((const char*[]){${atext.join(
+      ","
+    )}}, ${atext.length});
+      (branches[${i}] + 16)(a, o, s);`;
+  })
+  .join("\n")}
+      branches_length = ${b.length};
+    }
     Purple(a, o, s);
   }
   G(Lime) {
     o[--s] = Lime;
-    toti(a, o, s);
+    branches[0](a, o, s);
   }
 `,
     ];

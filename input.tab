@@ -67,11 +67,26 @@ prints {
 tina  { G(Lime) { o[a++] = "თინა ";  Lime(a, o, s); } }.
 kargi { G(Lime) { o[a++] = "კარგი "; Lime(a, o, s); } }.
 gogoa { G(Lime) { o[a++] = "გოგოა "; Lime(a, o, s); } }.
-two   tab one   one     plus  o.
-three tab one   plus    two   o.
-four  tab plus  three   one   o.
-five  tab plus  two     three o.
 
-main  b   two   printl  and   five  printl o.
-main2 b   tina  prints  kargi gogoa prints prints o.
-id {}.
+//  S
+//    "b" term;
+//    S "a" term.
+//  SS
+//    S S.
+
+two
+  tab one one plus o.
+three
+  tab one plus two o.
+four
+  tab plus three one o.
+five
+  tab plus two three o.
+
+b_t { G(Lime) { Lime(a, o, s); } }.
+a_t { G(Lime) { Lime(a, o, s); } }.
+
+main
+  b two printl and five printl o.
+main2
+  b tina prints kargi gogoa prints prints o.
