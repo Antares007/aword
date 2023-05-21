@@ -80,9 +80,9 @@ five
 nine
   tab five plus four o.
 two_three_or_four
+  tab two o;
   tab three o;
-  tab two o;
-  tab two o;
+  tab three o;
   tab four o.
 show
   tab one one two_three_or_four printlll o.

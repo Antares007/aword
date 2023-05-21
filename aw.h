@@ -17,6 +17,6 @@ typedef          n_t (*c_t)(const char **t, long s);
 Δ(Yellow);Δ(Purple); Δ(Red);   Δ(Green);Δ(Blue);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
-#define P \
- ((void (*)(const char *, ...))ο[0])("%s %s\n", __FILE__, __FUNCTION__), \
- ((void (*)(long))ο[1])(200000)
+#define P (void)0
+// ((void (*)(const char *, ...))ο[0])("%s %s\n", __FILE__, __FUNCTION__), \
+// ((void (*)(long))ο[1])(200000)

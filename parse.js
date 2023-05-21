@@ -14,8 +14,9 @@ async function parse(file = "input.tab") {
       .map(add_missing_rays)
       .map(compile)
   );
+  console.log(rez)
 }
-async function split_name_and_body(l) {
+function split_name_and_body(l) {
   const p = l.indexOf(" ");
   const n = l.slice(0, p);
   const p2 = l.indexOf("{", p + 1);
@@ -25,21 +26,16 @@ async function split_name_and_body(l) {
   } else {
     const p = l.indexOf("\n");
     const n = l.slice(0, p).trim();
-    const b = await Promise.all(
-      l
-        .slice(p + 1)
-        .split(";")
-        .map(
-          async (x) =>
-            await Promise.all(
-              x
-                .split(" ")
-                .map((x) => x.trim())
-                .filter(Boolean)
-                .map(wrap_nouns)
-            )
-        )
-    );
+    const b = l
+      .slice(p + 1)
+      .split(";")
+      .map((x) =>
+        x
+          .split(" ")
+          .map((x) => x.trim())
+          .filter(Boolean)
+          .map(wrap_nouns)
+      );
     return [
       n,
       `
@@ -53,10 +49,7 @@ async function split_name_and_body(l) {
       branches_length = ${b.length};
 ${b
   .map((atext, i) => {
-    return `      branches[${i}] = compose((const char*[]){${atext.join(
-      ","
-    )}}, ${atext.length});
-      P;
+    return `      branches[${i}] = compose((const char*[]){${atext.join(",")}}, ${atext.length});
       (branches[${i}] + 16)(ο, σ, α, ρ);
 `;
   })
@@ -76,8 +69,7 @@ ${b
     ];
   }
 }
-async function add_missing_rays(pro) {
-  let [n, b] = await pro;
+function add_missing_rays([n, b]) {
   b = '#include "../aw.h"\n' + b;
   const rays = {
     Y: "Yellow",
@@ -103,12 +95,13 @@ async function add_missing_rays(pro) {
   for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(ο, σ, α, ρ); }`;
   return [n, b];
 }
-async function compile(pro) {
-  let [n, b] = await pro;
+async function compile([n, b]) {
   await writeFile(n + ".c", b);
   await exec(
     `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o \
--ffreestanding -fno-stack-clash-protection -fno-stack-protector`
+-ffreestanding \
+-fno-stack-clash-protection \
+-fno-stack-protector`
   );
   await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
   await exec(
@@ -116,7 +109,8 @@ async function compile(pro) {
   );
   await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
   await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
+  return n
 }
-async function wrap_nouns(x) {
+function wrap_nouns(x) {
   return `"${x}"`;
 }
