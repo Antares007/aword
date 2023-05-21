@@ -43,22 +43,26 @@ function split_name_and_body(l) {
   G(Purple) {
     if (!branches_length) {
       P;
-      c_t compose = o[2];
+      c_t compose = ο[2];
 ${b
   .map((atext, i) => {
     return `      branches[${i}] = compose((const char*[]){${atext.join(
       ","
     )}}, ${atext.length});
-      (branches[${i}] + 16)(a, o, s);`;
+      (branches[${i}] + 16)(ο, σ, α, ρ);`;
   })
   .join("\n")}
       branches_length = ${b.length};
     }
-    Purple(a, o, s);
+    Purple(ο, σ, α, ρ);
   }
   G(Lime) {
-    o[--s] = Lime;
-    branches[0](a, o, s);
+    ο[σ++] = Lime;
+    branches[0](ο, σ, α, ρ);
+    ${b.slice(1).map((l,i) => {
+      i++;
+      return i+';'
+    }).join(';\n')}
   }
 `,
     ];
@@ -87,7 +91,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(ο, σ, α, ρ); }`;
   return [n, b];
 }
 async function compile([n, b]) {

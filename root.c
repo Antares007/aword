@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-typedef void (*n_t)(long a, void**o, long s);
+typedef void (*n_t)(void**ο, long σ, long α, long ρ);
 static long load_aword(void*memory, char*aw_name);
 void *map_file(const char *file_name);
 
@@ -19,15 +19,16 @@ static int hash(char**t, long s);
 static n_t compose_cache(char**t, long s);
 int main(int argc, char**argv) {
   memory = map_file("../ram.ram");
-  void*o[1024];
-  long a = 0;
-  long s = 1024;
-  o[a++] = printf;
-  o[a++] = usleep;
-  o[a++] = compose_cache;
+  void*ο[512 + 512 + 512];
+  long σ = 512;
+  long α = 0;
+  long ρ = 1024;
+  ο[α++] = printf;
+  ο[α++] = usleep;
+  ο[α++] = compose_cache;
   n_t w  = compose_cache(argv+1, argc-1);
-  (w + 16)(a, o, s);
-  w(a, o, s);
+  (w + 16)(ο, σ, α, ρ);
+  w(ο, σ, α, ρ);
 }
 
 
