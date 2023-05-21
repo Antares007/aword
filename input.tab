@@ -42,7 +42,8 @@ orand {
   G(Green ) { Yellow(ο, σ, α, ρ); }
   G(Lime  ) { Green (ο, σ, α, ρ); }
 }.
-one { G(Lime  ) {
+one {
+  G(Lime  ) {
     ο[α++] = (void*)1;
     Lime(ο, σ, α, ρ);
   }
@@ -80,8 +81,10 @@ nine
   tab five plus four o.
 two_three_or_four
   tab three o;
+  tab two o;
+  tab two o;
   tab four o.
 show
-  tab two_three_or_four two_three_or_four two_three_or_four printlll o.
+  tab one one two_three_or_four printlll o.
 main
   b show o.

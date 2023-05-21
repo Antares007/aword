@@ -15,8 +15,6 @@ static n_t compose(char**t, long s) {
   printf("%ld\n", (void*)aw-memory);
   return aw;
 }
-static int hash(char**t, long s);
-static n_t compose_cache(char**t, long s);
 int main(int argc, char**argv) {
   memory = map_file("../ram.ram");
   void*ο[512 + 512 + 512];
@@ -27,14 +25,17 @@ int main(int argc, char**argv) {
   ο[α++] = usleep;
   ο[α++] = compose;
   n_t w  = compose(argv+1, argc-1);
+  printf("\ncompose done\n");
   (w + 16)(ο, σ, α, ρ);
+  printf("\ninit done\n");
   w(ο, σ, α, ρ);
 }
 
 
-
+#include<assert.h>
 static long load_aword(void*memory, char*aw_name) {
   FILE*f = fopen(aw_name, "r");
+  assert(f);
   fseek(f, 0, SEEK_END);
   long s = ftell(f);
   fseek(f, 0, SEEK_SET);
@@ -42,23 +43,23 @@ static long load_aword(void*memory, char*aw_name) {
   fclose(f);
   return r;
 }
-static int hash(char**t, long s) {
-  int h = 29;
-  for(long i = 0; i < s; i++) {
-    char *a = t[i];
-    while(*a) (h = 31 * h + *a), a++; 
-  }
-  return h;
-}
-static n_t compose_cache(char**t, long s) {
-  static int   keys[1024] = {};
-  static n_t   values[1024] = {};
-  static long  length      = 0;
-  int h = hash(t, s);
-  for(long i = 0; i < length; i++)
-    if (keys[i] == h)
-      return values[i];
-  n_t w = compose(t, s);
-  keys[length] = h, values[length] = w, length++;
-  return w;
-}
+//static int hash(char**t, long s) {
+//  int h = 29;
+//  for(long i = 0; i < s; i++) {
+//    char *a = t[i];
+//    while(*a) (h = 31 * h + *a), a++; 
+//  }
+//  return h;
+//}
+//static n_t compose_cache(char**t, long s) {
+//  static int   keys[1024] = {};
+//  static n_t   values[1024] = {};
+//  static long  length      = 0;
+//  int h = hash(t, s);
+//  for(long i = 0; i < length; i++)
+//    if (keys[i] == h)
+//      return values[i];
+//  n_t w = compose(t, s);
+//  keys[length] = h, values[length] = w, length++;
+//  return w;
+//}

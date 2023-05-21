@@ -50,17 +50,18 @@ async function split_name_and_body(l) {
     if (!branches_length) {
       c_t compose = ο[2];
       cb = 0;
+      branches_length = ${b.length};
 ${b
   .map((atext, i) => {
     return `      branches[${i}] = compose((const char*[]){${atext.join(
       ","
     )}}, ${atext.length});
-      (branches[${i}] + 16)(ο, σ, α, ρ);`;
+      P;
+      (branches[${i}] + 16)(ο, σ, α, ρ);
+`;
   })
   .join("\n")}
-      branches_length = ${b.length};
     }
-    ((void (*)(const char *, ...))ο[0])("%s %s\\n", __FILE__, __FUNCTION__);
     Purple(ο, σ, α, ρ);
   }
   G(Lime) {
