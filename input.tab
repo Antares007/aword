@@ -1,5 +1,5 @@
 o {
-  G(Yellow  ) { P, Lime   (ο, σ, α, ρ); }
+  G(Yellow  ) { P, Lime   (ο, σ, α, 1); }
   G(Purple  ) {}
   G(Red     ) { P, Maroon (ο, σ, α, ρ); }
   G(Green   ) { P, Olive  (ο, σ, α, ρ); }
@@ -67,23 +67,37 @@ tina  { G(Lime) { ο[α++] = "თინა ";  Lime(ο, σ, α, ρ); } }.
 kargi { G(Lime) { ο[α++] = "კარგი "; Lime(ο, σ, α, ρ); } }.
 gogoa { G(Lime) { ο[α++] = "გოგოა "; Lime(ο, σ, α, ρ); } }.
 
+b_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
+a_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
+
 S
   tab b_t;
   tab S a_t.
+
+// term {
+//   G(Green) {
+//     char* str = ο[--α];
+//   }
+// }.
+//  S
+//    "b" term;
+//    S "a" term.
+//  show
+//    "baaa" S.
+//
 //  SS
 //    S S.
 
 two
   tab one one plus o.
 three
-  tab one plus two o.
+  tab one plus two o;
+  tab two plus two o.
 four
   tab plus three one o.
 five
+  tab plus two two o;
   tab plus two three o.
-
-b_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
-a_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
 
 main
   b two printl and five printl o.

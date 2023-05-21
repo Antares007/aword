@@ -40,10 +40,11 @@ function split_name_and_body(l) {
       `
   n_t branches[${b.length}];
   long branches_length;
+  long cb;
   G(Purple) {
     if (!branches_length) {
-      P;
       c_t compose = ο[2];
+      cb = 0;
 ${b
   .map((atext, i) => {
     return `      branches[${i}] = compose((const char*[]){${atext.join(
@@ -57,12 +58,12 @@ ${b
     Purple(ο, σ, α, ρ);
   }
   G(Lime) {
-    ο[σ++] = Lime;
-    branches[0](ο, σ, α, ρ);
-    ${b.slice(1).map((l,i) => {
-      i++;
-      return i+';'
-    }).join(';\n')}
+    ο[σ++]  = Lime;
+    long nb = cb;
+    cb     += ρ;
+    long lb = cb / branches_length;
+    cb      = cb - lb * branches_length;
+    branches[nb](ο, σ, α, ρ);
   }
 `,
     ];
