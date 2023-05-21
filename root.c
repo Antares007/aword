@@ -25,8 +25,8 @@ int main(int argc, char**argv) {
   long ρ = 1024;
   ο[α++] = printf;
   ο[α++] = usleep;
-  ο[α++] = compose_cache;
-  n_t w  = compose_cache(argv+1, argc-1);
+  ο[α++] = compose;
+  n_t w  = compose(argv+1, argc-1);
   (w + 16)(ο, σ, α, ρ);
   w(ο, σ, α, ρ);
 }

@@ -1,6 +1,6 @@
 o {
-  G(Yellow  ) { P, Lime   (ο, σ, α, 1); }
-  G(Purple  ) {}
+  G(Yellow  ) { P, Lime   (ο, σ, α, ρ); }
+  G(Purple  ) { P; }
   G(Red     ) { P, Maroon (ο, σ, α, ρ); }
   G(Green   ) { P, Olive  (ο, σ, α, ρ); }
   G(Blue    ) { P, Navy   (ο, σ, α, ρ); }
@@ -10,7 +10,7 @@ b {
   G(Lime    ) { P, Green (ο, σ, α, ρ); }
   G(Maroon  ) { P, Red   (ο, σ, α, ρ); }
   G(Fuchsia ) {}
-  G(Olive   ) { P, Yellow(ο, σ, α, ρ); }
+  G(Olive   ) { P, Yellow(ο, σ, α, 1); }
 }.
 tab {
   G(Navy    ) { P, Blue  (ο, σ, α, ρ); }
@@ -55,51 +55,33 @@ plus {
     Green(ο, σ, α, ρ);
   }
 }.
-printl {
+printlll {
   void (*p)(const char *, ...);
-  G(Green) { p = ο[0]; long str = (long)ο[--α]; p("%ld\n", str); Green(ο, σ, α, ρ); }
+  G(Green) {
+    p = ο[0];
+    long v1 = (long)ο[--α];
+    long v2 = (long)ο[--α];
+    long v3 = (long)ο[--α];
+    p("%ld %ld %ld\n", v1, v2, v3);
+    ((void (*)(long))ο[1])(200000);
+    Green(ο, σ, α, ρ);
+  }
 }.
-prints {
-  void (*p)(const char *, ...);
-  G(Green) { p = ο[0]; char* str = (char*)ο[--α]; p("%s\n", str); Green(ο, σ, α, ρ); }
-}.
-tina  { G(Lime) { ο[α++] = "თინა ";  Lime(ο, σ, α, ρ); } }.
-kargi { G(Lime) { ο[α++] = "კარგი "; Lime(ο, σ, α, ρ); } }.
-gogoa { G(Lime) { ο[α++] = "გოგოა "; Lime(ο, σ, α, ρ); } }.
-
-b_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
-a_t { G(Lime) { Lime(ο, σ, α, ρ); } }.
-
-S
-  tab b_t;
-  tab S a_t.
-
-// term {
-//   G(Green) {
-//     char* str = ο[--α];
-//   }
-// }.
-//  S
-//    "b" term;
-//    S "a" term.
-//  show
-//    "baaa" S.
-//
-//  SS
-//    S S.
 
 two
   tab one one plus o.
 three
-  tab one plus two o;
-  tab two plus two o.
+  tab one plus two o.
 four
   tab plus three one o.
 five
-  tab plus two two o;
   tab plus two three o.
-
+nine
+  tab five plus four o.
+two_three_or_four
+  tab three o;
+  tab four o.
+show
+  tab two_three_or_four two_three_or_four two_three_or_four printlll o.
 main
-  b two printl and five printl o.
-main2
-  b tina prints kargi gogoa prints prints o.
+  b show o.

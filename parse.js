@@ -60,6 +60,7 @@ ${b
   .join("\n")}
       branches_length = ${b.length};
     }
+    ((void (*)(const char *, ...))ο[0])("%s %s\\n", __FILE__, __FUNCTION__);
     Purple(ο, σ, α, ρ);
   }
   G(Lime) {
