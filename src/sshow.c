@@ -15,18 +15,31 @@ void stop(aword) {
     m(a, w, o, r, d);
 }
 S(toti, {
-  T(b) Tp("Blue") LastArm;
-  T(b) Tp("DarkBlue") RightArm;
+  T(b) Tp("}") LastArm;
+  T(b) Tp("{") RightArm;
 });
+S(toti2, {
+  T(b) Tp(")") LastArm;
+  T(b) Tp("(") RightArm;
+});
+// (({a}s)t)
+// (({a}s)t)
+// (({a}s)t)
 int main() {
   long a = 512;
   void *memory[2 * a];
   void **o = memory + a;
   long r = 3, d = 3;
-  o[0] = (void*)a;
-  T(b)                  //
-  Ta(print, ".\n")      //
-  T(dot)                //
-  m(a, a + 1, o, r, d); //
+  o[0] = (void *)a;
+  T(b)
+  Ta(print, "a")
+  T(toti)
+  Ta(print, "s")
+  T(toti2)
+  Ta(print, "t")
+  T(toti2)
+  Ta(print, "\n")
+  T(dot)
+  m(a, a + 1, o, r, d);
   return 0;
 }
