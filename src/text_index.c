@@ -11,12 +11,12 @@ static void move        (aword) {
   ((void (**)(long, long, void *, long, long))o)[w + d](a, w + d, o, r, d);
 }
 void text_index(aword) {
-  (o-512)[w+1] = r, (o-512)[w] = move, (o-512)[w-1] = d;
+  (o-512)[w+1] = (void*)r, (o-512)[w] = move, (o-512)[w-1] = (void*)d;
   if (Yellow(!=) || Black(!=)) {
     BeginDrawing();
     ClearBackground(BLACK);
     o[w] = stop,
-    move(a, w, o-512, r, d);
+    move(a, w, o-512, r, d, s);
     o[w] = move,
     EndDrawing();
   }
