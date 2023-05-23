@@ -1,6 +1,8 @@
 CC|=clang
 LD=ld -melf_x86_64
 CFLAGS+=-std=gnu17 -Wall
+sshow.out: sshow.c text_index.o
+	${CC} $^ -o $@ ${CFLAGS} -lm -lraylib
 root.out: root.c map_file.o
 p.out: p.c json.o
 %.out: %.c
