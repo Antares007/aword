@@ -1,7 +1,7 @@
 CC|=gcc
 CFLAGS+=-std=gnu17 -Wall
 
-src/sshow.out: src/sshow.c src/aword.o src/aradani.o src/text_index.o
+src/sshow.out: src/sshow.c src/aword.o
 	${CC}    $^ -o $@ ${CFLAGS} -lraylib -lm
 %.out: %.c
 	${CC}    $^ -o $@ ${CFLAGS} -luv
