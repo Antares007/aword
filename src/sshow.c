@@ -43,15 +43,8 @@ N(print) {
   m(t, a, w, o, r, d, s);
 }
 N(tab);
-N(term) {
-  Log;
-  if (Green(==) && White(==) && o[t - 1].cs[0] == o[w + 1].cs[0])
-    o[t - 1].cs++, m(t, a, w, o, r, d, s);
-  else
-    m(t, a, w, o, r, d, s);
-}
 N(tab) {
-  if (Yellow(==))
+  if (Yellow(==) || Blue(==))
     m(t, a, o[s + 0].q, o, o[s + 2].q, o[s + 1].q, s + 3);
   else
     m(t, a, w, o, r, +3, s);
@@ -72,37 +65,30 @@ N(var_heart) {
   } else
     m(t, a, w, o, r, d, s);
 }
-N(S) {
-  Log;
-  long p0 = (a + 1);
-  T(tab), T(_0), T(dot);
-  long p1 = (a + 1);
-  T(tab), T(_1), T(dot);
-  long p2 = (a + 1);
-  T(tab), T(_2), T(dot);
-  long p3 = (a + 1);
-  T(tab), T(_3), T(dot);
-  long p4 = (a + 1);
-  T(tab), T(_4), T(dot);
-  long p5 = (a + 1);
-  T(tab), T(_5), T(dot);
-  long p6 = (a + 1);
-  T(tab), T(_6), T(dot);
-  long p7 = (a + 1);
-  T(tab), T(_7), T(dot);
-  o[w - 1].v = (long[]){8, 0, p0, p1, p2, p3, p4, p5, p6, p7} + 2;
-  o[w].c = var_heart;
-  var_heart(t, a, w, o, r, d, s);
-}
 N(noun) {
   if (r == 1 && d == -3)
     o[t++].v = o[w + 1].v;
   m(t, a, w, o, r, d, s);
 }
 N(print_s) {
-  if (r == 1 && d == +3)
+  if (Green(==) && White(==))
     printf("%s\n", o[--t].cs);
   m(t, a, w, o, r, d, s);
+}
+N(term) {
+  printf("%s ", o[w+1].cs);
+  if (Green(==) && White(==) && o[t - 1].cs[0] == o[w + 1].cs[0])
+    o[t - 1].cs++, m(t, a, w, o, r, d, s);
+  else
+    m(t, a, w, o, 0, d, s);
+}
+N(S) {
+  Log;
+  long p0 = (a + 1); T(tab),       Ta(term, "b"), T(dot);
+  long p1 = (a + 1); T(tab), T(S), Ta(term, "a"), T(dot);
+  o[w - 1].v = (long[]){2, 0, p0, p1} + 2;
+  o[w].c = var_heart;
+  var_heart(t, a, w, o, r, d, s);
 }
 int main() {
   long a = 0;
@@ -111,7 +97,7 @@ int main() {
   long r = 3, d = 3, s = 512;
   long w = a + 1;
   long t = 256;
-  T(b), Ta(noun, " baaa"), T(S), T(S), T(S), T(S), T(print_s), T(dot),
+  T(b), Ta(noun, "baaa"), T(S), T(print_s), T(dot),
       m(t, a, w, o, r, d, s);
   return 0;
 }
