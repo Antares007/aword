@@ -1,42 +1,13 @@
-#define TW 5
-#define White(  op) (d op + TW)
-#define Black(  op) (d op - TW)
-#define Yellow( op) (r op 3)
-#define Red(    op) (r op 2)
-#define Green(  op) (r op 1)
-#define Blue(   op) (r op 0)
-#define aword long t, long a, long w, struct o_t *o, long r, long d, long s
-#define N(argo) void argo(aword)
-#define T(aw)       a++,a++, o[a++].c = aw, a++,                   a++
-#define Ta(aw, arg) a++,a++, o[a++].c = aw, o[a++].v = (void *)arg,a++
-typedef struct o_t {
-  union {
-    void *v;
-    long q;
-    N((*c));
-    struct o_t *o;
-    char *cs;
-  };
-} o_t;
-typedef N((*aword_t));
+#include "aword.h"
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
-#define Log printf("%s", __FUNCTION__), usleep(30000)
-N(m) { ((aword_t *)o)[w + d](t, a, w + d, o, r, d, s); }
+N(m);
 N(b) { (o[0].q = 1), m(t, a, w, o, r, +TW, s); }
 N(dot) { m(t, a, w, o, r == 3 ? 1 : r == 1 ? 3 : r, Black(=), s); }
-N(A) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(B) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(O) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_0) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_1) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_2) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_3) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_4) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_5) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_6) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
-N(_7) { if (Green(==) && White(==)) Log; m(t, a, w, o, r, d, s); }
+N(A ) {  m(t, a, w, o, r, d, s); }
+N(B ) {  m(t, a, w, o, r, d, s); }
+N(O ) {  m(t, a, w, o, r, d, s); }
 
 N(print) {
   if (Green(==) && White(==))
@@ -45,8 +16,10 @@ N(print) {
 }
 N(tab);
 N(tab) {
-  if (Yellow(==) || Blue(==))
+  if (Yellow(==))
     m(t, a, o[s + 0].q, o, o[s + 2].q, o[s + 1].q, s + 3);
+  else if (Red(==) || Blue(==))
+    m(t, a, o[s + 0].q, o,          r, o[s + 1].q, s + 3);
   else
     m(t, a, w, o, r, White(=), s);
 }
@@ -90,13 +63,14 @@ N(term) {
     m(t, a, w, o, r, d, s);
 }
 N(S) {
-  Log;
-  long p0 = (a + 2); T(tab),       Ta(term, "b"), T(dot);
-  long p1 = (a + 2); T(tab), T(S), Ta(term, "a"), T(dot);
+  long p0 = (a + 2); T(tab), T(B),       Ta(term, "b"), T(dot);
+  long p1 = (a + 2); T(tab), T(A), T(S), Ta(term, "a"), T(dot);
   o[w - 1].v = (long[]){2, 0, p0, p1} + 2;
   o[w].c = var_heart;
   var_heart(t, a, w, o, r, d, s);
 }
+
+void text_index_init();
 int main() {
   long a = 0;
   o_t o[512];
@@ -104,7 +78,8 @@ int main() {
   long r = Yellow(=), d = White(=), s = 512;
   long w = a + 2;
   long t = 256;
-  T(b), Ta(noun, "baaaaaaa"), T(S), T(print_s), T(dot),
+  text_index_init();
+  T(b), Ta(noun, "baaa"), T(S), T(print_s), T(dot),
       m(t, a, w, o, r, d, s);
   return 0;
 }
