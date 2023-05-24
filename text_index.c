@@ -3,7 +3,7 @@
 #include <raymath.h>
 Vector2 off;
 float zoom = 2;
-o_t path[1024][3];
+o_t path[4096][3];
 long length = 0;
 Font font;
 static Color colors[] = {
@@ -64,7 +64,7 @@ N(m) {
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1700, 900, "aword");
+  InitWindow(1900, 300, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }

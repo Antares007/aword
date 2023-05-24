@@ -20,4 +20,4 @@ typedef struct o_t {
   };
 } o_t;
 typedef N((*aword_t));
-
+N(m);

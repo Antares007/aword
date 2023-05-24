@@ -5,6 +5,8 @@ const { join } = require("node:path");
 parse(process.argv[2]);
 async function parse(file = "input.tab") {
   const input = (await readFile(file)).toString();
+  await exec(`rm -rf abin`);
+  await exec(`mkdir abin`);
   const rez = await Promise.all(
     input
       .split(".\n")
@@ -24,7 +26,7 @@ function split_name_and_body(l) {
   return [n, b];
 }
 function add_missing_rays([n, b]) {
-  b = '#include "../aw.h"\n' + b;
+  b = '#include "aw.h"\n' + b;
   const rays = {
     Y: "Yellow",
     P: "Purple",
@@ -52,16 +54,13 @@ function add_missing_rays([n, b]) {
 async function compile([n, b]) {
   await writeFile(n + ".c", b);
   await exec(
-    `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o \
--ffreestanding \
--fno-stack-clash-protection \
--fno-stack-protector`
+    `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o -ffreestanding -fno-stack-clash-protection -fno-stack-protector`
   );
-  await exec(`ld -T ../rainbow.ld ${n}.o -o ${n}.elf`);
+  await exec(`ld -T rainbow.ld ${n}.o -o ${n}.elf`);
   await exec(
     `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`
   );
-  await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
+  await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > abin/${n}`);
   await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
   return n;
 }
