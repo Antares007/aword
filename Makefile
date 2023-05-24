@@ -4,6 +4,10 @@ CFLAGS+=-std=gnu17 -Wall
 sshow.out: sshow.c text_index.o
 	${CC} $^ -o $@ ${CFLAGS} -lm -lraylib
 root.out: root.c map_file.o
+awords:
+	rm -rf awords
+	mkdir awords
+	node parse.js awords.tab
 p.out: p.c json.o
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}

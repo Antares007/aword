@@ -15,6 +15,8 @@ static n_t compose(char**names, long count) {
   printf("%ld\n", (void*)aw-memory);
   return aw;
 }
+// at level of kernel i.e. in roots we have predefined awords for composition.
+// everything else is built by composing i.e. from prue atext definitions.
 int main(int argc, char**argv) {
   memory = map_file("../ram.ram");
   void*ο[512 + 512 + 512];

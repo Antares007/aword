@@ -14,60 +14,14 @@ async function parse(file = "input.tab") {
       .map(add_missing_rays)
       .map(compile)
   );
-  console.log(rez)
+  console.log(rez);
 }
 function split_name_and_body(l) {
   const p = l.indexOf(" ");
   const n = l.slice(0, p);
   const p2 = l.indexOf("{", p + 1);
-  if (-1 < p2) {
-    const b = l.slice(p2 + 1, l.lastIndexOf("}"));
-    return [n, b];
-  } else {
-    const p = l.indexOf("\n");
-    const n = l.slice(0, p).trim();
-    const b = l
-      .slice(p + 1)
-      .split(";")
-      .map((x) =>
-        x
-          .split(" ")
-          .map((x) => x.trim())
-          .filter(Boolean)
-          .map(wrap_nouns)
-      );
-    return [
-      n,
-      `
-  n_t branches[${b.length}];
-  long branches_length;
-  long cb;
-  G(Purple) {
-    if (!branches_length) {
-      c_t compose = ο[2];
-      cb = 0;
-      branches_length = ${b.length};
-${b
-  .map((atext, i) => {
-    return `      branches[${i}] = compose((const char*[]){${atext.join(",")}}, ${atext.length});
-      (branches[${i}] + 16)(ο, σ, α, ρ);
-`;
-  })
-  .join("\n")}
-    }
-    Purple(ο, σ, α, ρ);
-  }
-  G(Lime) {
-    ο[σ++]  = Lime;
-    long nb = cb;
-    cb     += ρ;
-    long lb = cb / branches_length;
-    cb      = cb - lb * branches_length;
-    branches[nb](ο, σ, α, ρ);
-  }
-`,
-    ];
-  }
+  const b = l.slice(p2 + 1, l.lastIndexOf("}"));
+  return [n, b];
 }
 function add_missing_rays([n, b]) {
   b = '#include "../aw.h"\n' + b;
@@ -109,8 +63,5 @@ async function compile([n, b]) {
   );
   await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > ${n}`);
   await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
-  return n
-}
-function wrap_nouns(x) {
-  return `"${x}"`;
+  return n;
 }

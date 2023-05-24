@@ -68,23 +68,3 @@ printlll {
     Green(ο, σ, α, ρ);
   }
 }.
-
-two
-  tab one one plus o.
-three
-  tab one plus two o.
-four
-  tab plus three one o.
-five
-  tab plus two three o.
-nine
-  tab five plus four o.
-two_three_or_four
-  tab two o;
-  tab three o;
-  tab three o;
-  tab four o.
-show
-  tab one one two_three_or_four printlll o.
-main
-  b show o.
