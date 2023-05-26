@@ -48,19 +48,15 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(ο, σ, α, ρ); }`;
+  for (let k in rays) b = b + `\nG(${rays[k]}) { P; ${rays[k]}(a, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {
   await writeFile(n + ".c", b);
-  await exec(
-    `gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o -ffreestanding -fno-stack-clash-protection -fno-stack-protector`
-  );
+  await exec(`gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o -ffreestanding -fno-stack-clash-protection -fno-stack-protector`);
   await exec(`ld -T rainbow.ld ${n}.o -o ${n}.elf`);
-  await exec(
-    `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`
-  );
+  await exec(`objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`);
   await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > abin/${n}`);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
   return n;
 }
