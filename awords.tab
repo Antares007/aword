@@ -1,23 +1,23 @@
 o {
-  G(Yellow  ) { P, Lime    (a, o, s); }
+  G(Yellow  ) { P, Lime   (a, o, s); }
   G(Purple  ) { P; }
-  G(Red     ) { P, Maroon  (a, o, s); }
-  G(Green   ) { P, Olive   (a, o, s); }
-  G(Blue    ) { P, Navy    (a, o, s); }
+  G(Red     ) { P, Maroon (a, o, s); }
+  G(Green   ) { P, Olive  (a, o, s); }
+  G(Blue    ) { P, Navy   (a, o, s); }
 }.
 b {
-  G(Navy    ) { P, Blue    (a, o, s); }
-  G(Lime    ) { P, Green   (a, o, s); }
-  G(Maroon  ) { P, Red     (a, o, s); }
+  G(Navy    ) { P, Blue   (a, o, s); }
+  G(Lime    ) { P, Green  (a, o, s); }
+  G(Maroon  ) { P, Red    (a, o, s); }
   G(Fuchsia ) { P; }
-  G(Olive   ) { P, Yellow  (a, o, s); }
+  G(Olive   ) { P, Yellow (a, o, s); }
 }.
 id2 { }.
 id  { }.
 tab {
-  G(Navy    ) { P, Blue    (a, o, s); }
-  G(Lime    ) { P, Green   (a, o, s); }
-  G(Maroon  ) { P, Red     (a, o, s); }
+  G(Navy    ) { P, Blue   (a, o, s); }
+  G(Lime    ) { P, Green  (a, o, s); }
+  G(Maroon  ) { P, Red    (a, o, s); }
   G(Fuchsia ) {}
   G(Olive   ) { P, ((n_t*)o)[s](a, o, s + 1); }
 }.
@@ -61,26 +61,9 @@ two {
   }
   G(Lime) {
     o[--s] = Lime;
-    ((n_t)b+00)(a, o, s); 
+    ((n_t)b + 00)(a, o, s); 
   }
 }.
-//  plus {
-//    G(Green) {
-//      long r = (long)ο[--α];
-//      long l = (long)ο[--α];
-//      ο[α++] = (void*)(l + r);
-//      Green(ο, σ, α, ρ);
-//    }
-//  }.
-//  printlll {
-//    void (*p)(const char *, ...);
-//    G(Green) {
-//      p = ο[0];
-//      long v1 = (long)ο[--α];
-//      long v2 = (long)ο[--α];
-//      long v3 = (long)ο[--α];
-//      p("%ld %ld %ld\n", v1, v2, v3);
-//      ((void (*)(long))ο[1])(200000);
-//      Green(ο, σ, α, ρ);
-//    }
-//  }.
+//three
+//  one one plus one plus.
+//  one one plus.
