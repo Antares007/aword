@@ -44,7 +44,7 @@ void text_index_init();
 int main() {
   long a = 0;
   long w = 0;
-  o_t o[2048];
+  o_t  o[2048];
   long r = 1;
   long d = 0;
   long s = sizeof(o) / sizeof(*o) - 2;

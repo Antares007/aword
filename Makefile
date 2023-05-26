@@ -1,7 +1,7 @@
 CC|=clang
 LD=ld -melf_x86_64
 CFLAGS+=-std=gnu17 -Wall
-sshow.out: sshow.c text_index.o aradani.o
+light/sshow.out: light/sshow.c light/text_index.o light/aradani.o
 	${CC} $^ -o $@ ${CFLAGS} -lm -lraylib
 root.out: root.c map_file.o
 awords:
