@@ -2,8 +2,8 @@
 #include <raylib.h>
 #include <raymath.h>
 Vector2 off;
-float zoom = 2;
-o_t path[4096][3];
+float zoom = 1.5;
+o_t path[4096][4];
 long length = 0;
 Font font;
 static Color colors[] = {
@@ -35,18 +35,18 @@ void draw() {
         .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
-        .offset = {GetScreenWidth() / 2.f, GetScreenHeight() / 2.f}};
+        .offset = {GetScreenWidth() / 20.f, GetScreenHeight() / 4.f}};
     camera.offset = Vector2Add(camera.offset, off);
     BeginMode2D(camera);
     Vector2 pray_pos = {0, 0};
     for (long i = 0; i < length; i++) {
       float fontSize = 25;
       long ray = path[i][2].q;
-      const char *text = path[i][1].cs;
+      const char *text = TextFormat("%s %s", path[i][1].cs, path[i][3].cs);
       Color color = colors[ray];
       Vector2 zero = {path[i][0].q * 10, 0};
-      Vector2 ray_pos =
-          Vector2Add(zero, Vector2Scale((Vector2){0, 1}, ray * 5));
+      Vector2 ray_pos = Vector2Add(zero, Vector2Scale((Vector2){0, 1}, ray * 5));
+      DrawRectangleV(Vector2Add(zero, (Vector2){-20, 50}), (Vector2){20,100}, BLACK);
       DrawTextPro(font, text, Vector2Add(zero, (Vector2){0, 50}),
                   (Vector2){0, 0}, 90, fontSize, 0, color);
       DrawLineBezier(pray_pos, ray_pos, 2, color);
@@ -60,13 +60,14 @@ N(m) {
   path[length][0].q = w;
   path[length][1].cs = o[w + 2].cs;
   path[length][2].q = (o[s + 1].q + 1) * o[s].q / TW + 4;
+  path[length][3].cs = (void*)d;
   length++;
   draw();
   o[w + o[s].q].c(a, w + o[s].q, o, r, d, s);
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1900, 300, "aword");
+  InitWindow(1900, 400, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
