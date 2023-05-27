@@ -51,12 +51,12 @@ one {
   }
 }.
 two {
-  char* b[512];
+  void* b[512];
   long  t = 0;
   G(Purple) {
-    n_t w = b;
     long (*T)(void*m, char*n) = o[2];
-    t += T(w + t, "tab"); t += T(w + t, "id2"); t += T(w + t, "o"); (w + 16)(a, o, s);
+    t += T(b + t, "tab")/8; t += T(b + t, "id2")/8; t += T(b + t, "o")/8;
+    ((n_t)b + 16)(a, o, s);
     Purple(a, o, s);
   }
   G(Lime) {
@@ -64,6 +64,3 @@ two {
     ((n_t)b + 00)(a, o, s); 
   }
 }.
-//three
-//  one one plus one plus.
-//  one one plus.

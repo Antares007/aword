@@ -9,12 +9,12 @@ async function parse(file = "input.tab") {
   await exec(`mkdir abin`);
   const rez = await Promise.all(
     input
-      .split(".\n")
-      .map((l) => l.trim())
-      .filter((l) => l.length && !l.startsWith("//"))
-      .map(split_name_and_body)
-      .map(add_missing_rays)
-      .map(compile)
+      .split  (/\.[\n ]/)
+      .map    (l => l.trim())
+      .filter (l => l.length && !l.startsWith("//"))
+      .map    (split_name_and_body)
+      .map    (add_missing_rays)
+      .map    (compile)
   );
   console.log(rez);
 }
