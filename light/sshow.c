@@ -32,23 +32,42 @@ N(def_heart) {
   long *defs = o[w - 1].v;
   long ray = defs[(r + 1) * d / TW + 4];
   if (ray) {
-    o[--s].q = d;
-    o[--s].q = r;
-    o[--s].q = w;
+    o[ray + 1].q = w;
+    o[ray - 1].q = r;
+    o[ray - 2].q = d;
     m(a, ray, o, Yellow(=), White(=), s);
   } else
     m(a, w, o, r, d, s);
 }
 N(tab) {
   if (Yellow(==))
-    m(a, o[s + 0].q, o, o[s + 1].q, o[s + 2].q, s + 3);
+    m(a, o[w + 1].q, o, o[w - 1].q, o[w - 2].q, s);
   else
     m(a, w, o, r, White(=), s);
 }
-
+N(b_term) { if (Green(==) && White(==)) { if (s[0] == 'b') s++; else Blue(=); } m(a, w, o, r, d, s); }
+N(a_term) { if (Green(==) && White(==)) { if (s[0] == 'a') s++; else Blue(=); } m(a, w, o, r, d, s); }
+N(orand) {
+  if (White(==)) {
+    if      (Yellow (==)) Green (=), Black(=),  (o[w - 1].cs = s);
+    else if (Blue   (==)) Yellow(=),            (s = o[w - 1].cs);
+    else if (Green  (==)) Yellow(=),            (s = o[w - 1].cs);
+  } else if (Green  (==)) White (=);
+  m(a, w, o, r, d, s);
+}
+N(baaa) {
+  if (Green(==) && Black(==))
+    s = "baaa";
+  m(a, w, o, r, d, s);
+}
+N(S);
+D(S0,   B(Green, T(b_term)))
+D(S1,   B(Green, T(S),    T(a_term)))
+D(S,    B(Green, T(S0),   T(orand), T(S1)))
+D(show, B(Green, T(baaa), T(S)))
 D(E,                 //
   B(Green, T(tina))  //
-  B(Lime, T(kargi))  //
+  B(Lime,  T(kargi)) //
   B(Olive, T(gogoa)) //
 );
 
@@ -59,9 +78,9 @@ int main() {
   o_t o[2048];
   long r;
   long d;
-  long s = sizeof(o) / sizeof(*o);
+  const char *s = "";
   text_index_init();
-  (w = a + TW / 2), T(b), T(id), T(E), T(id), T(dot);
+  (w = a + TW / 2), T(b), T(id), T(show), T(id), T(dot);
   m(a, w, o, Yellow(=), White(=), s);
   return 0;
 }
