@@ -42,7 +42,7 @@ void draw() {
     for (long i = 0; i < length; i++) {
       float fontSize = 25;
       long ray = path[i][2].q;
-      const char *text = TextFormat("%s %s", path[i][1].cs, path[i][3].cs);
+      const char *text = TextFormat("%s", path[i][1].cs);
       Color color = colors[ray];
       Vector2 zero = {path[i][0].q * 10, 0};
       Vector2 ray_pos = Vector2Add(zero, Vector2Scale((Vector2){0, 1}, ray * 5));
@@ -59,11 +59,10 @@ void draw() {
 N(m) {
   path[length][0].q = w;
   path[length][1].cs = o[w + 2].cs;
-  path[length][2].q = (o[s + 1].q + 1) * o[s].q / TW + 4;
-  path[length][3].cs = (void*)d;
+  path[length][2].q = (r + 1) * d / TW + 4;
   length++;
   draw();
-  o[w + o[s].q].c(a, w + o[s].q, o, r, d, s);
+  o[w + d].c(a, w + d, o, r, d, s);
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
