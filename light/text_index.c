@@ -3,7 +3,13 @@
 #include <raymath.h>
 Vector2 off;
 float zoom = 1.5;
-o_t path[4096][4];
+typedef struct step_t {
+  const char *text, *s;
+  Vector2 zero, dir;
+  Color color;
+  long ray;
+} step_t;
+step_t path[4096];
 long length = 0;
 Font font;
 static Color colors[] = {
@@ -22,6 +28,7 @@ void draw() {
   int key = GetCharPressed();
   while (key != 'n') {
     key = GetCharPressed();
+    if(key == 'c') length = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
@@ -35,39 +42,46 @@ void draw() {
         .target = {0, 0},
         .rotation = 0,
         .zoom = zoom,
-        .offset = {GetScreenWidth() / 20.f, GetScreenHeight() / 4.f}};
+        .offset = {GetScreenWidth() / 20.f, GetScreenHeight() / 2.f}};
     camera.offset = Vector2Add(camera.offset, off);
+    Vector2 uraypos = {0, 0};
     BeginMode2D(camera);
-    Vector2 pray_pos = {0, 0};
     for (long i = 0; i < length; i++) {
-      float fontSize = 25;
-      long ray = path[i][2].q;
-      const char *text = TextFormat("%s %s", path[i][1].cs, path[i][3].cs);
-      Color color = colors[ray];
-      Vector2 zero = {path[i][0].q * 10, 0};
-      Vector2 ray_pos = Vector2Add(zero, Vector2Scale((Vector2){0, 1}, ray * 5));
-      DrawRectangleV(Vector2Add(zero, (Vector2){-20, 50}), (Vector2){20,100}, BLACK);
-      DrawTextPro(font, text, Vector2Add(zero, (Vector2){0, 50}),
-                  (Vector2){0, 0}, 90, fontSize, 0, color);
-      DrawLineBezier(pray_pos, ray_pos, 2, color);
-      pray_pos = ray_pos;
+      float fontSize = 20;
+      const char *text = TextFormat("%s %s", path[i].text, path[i].s);
+      Vector2 raypos = Vector2Add(
+          path[i].zero,
+          Vector2Scale(Vector2Rotate(path[i].dir, 1.5707), path[i].ray * -10));
+      Vector2 size = MeasureTextEx(font, text, fontSize,0);
+      DrawRectangleV(path[i].zero, size, BLACK);
+      DrawTextPro(font, text, path[i].zero, (Vector2){0, 0}, 0, fontSize, 0,
+                  path[i].color);
+      DrawLineBezier(uraypos, raypos, 2, path[i].color);
+      uraypos = raypos;
     }
     EndMode2D();
     EndDrawing();
   }
 }
+
+static Vector2 zero = {0, 0}, dir = {1, 0};
+void turn(float angle) { dir = Vector2Rotate(dir, angle); }
 N(m) {
-  path[length][0].q = w;
-  path[length][1].cs = o[w + 2].cs;
-  path[length][2].q = (r + 1) * d / TW + 4;
-  path[length][3].cs = s;
+  long ray = (r + 1) * d / TW + 4;
+  path[length].text = o[w + 2].cs;
+  path[length].s = s;
+  path[length].zero = zero;
+  path[length].dir = dir;
+  path[length].ray = ray;
+  path[length].color = colors[ray];
   length++;
+  zero = Vector2Add(zero, Vector2Scale(dir, d * 20));
   draw();
   o[w + d].c(a, w + d, o, r, d, s);
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1900, 400, "aword");
+  InitWindow(1900, 800, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }

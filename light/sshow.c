@@ -2,20 +2,11 @@
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
-N(m);
-N(b) { (o[0].q = 1), m(a, w, o, r, White(=), s); }
-N(dot) { (o[0].q = 1), m(a, w, o, r == 3 ? 1 : r == 1 ? 3 : r, Black(=), s); }
-N(tina) { m(a, w, o, r, d, s); }
-N(kargi) { m(a, w, o, r, d, s); }
-N(gogoa) { m(a, w, o, r, d, s); }
-N(id) { m(a, w, o, r, d, s); }
-#define V(erb, ...)                                                            \
-  N(erb) {                                                                     \
-    if (Green(==) && White(==)) {                                              \
-      __VA_ARGS__;                                                             \
-    }                                                                          \
-    m(a, w, o, r, d, s);                                                       \
-  }
+// clang-format off
+N(m   );
+N(b   ) { (o[0].q = 1), m(a, w, o, r, White(=), s); }
+N(dot ) { (o[0].q = 1), m(a, w, o, r == 3 ? 1 : r == 1 ? 3 : r, Black(=), s); }
+N(id  ) { m(a, w, o, r, d, s); }
 #define B(ark, ...)                                                            \
   (o[ark + o[ark + 6].q++].q = a + 2), T(tab), __VA_ARGS__, T(dot);
 #define D(ef, ...)                                                             \
@@ -42,9 +33,11 @@ N(id) { m(a, w, o, r, d, s); }
     o[w].c = def_heart;                                                        \
     def_heart(a, w, o, r, d, s);                                               \
   }
+void turn(float);
 N(def_heart) {
   long Olive = o[w - 1].q + ((r + 1) * d / TW + 4) * 7;
   if (o[Olive + 6].q) {
+    turn(-1.5707*d/TW);
     long bti        = o[Olive + o[Olive + 5].q].q;
     o[Olive + 5].q += o[0].q;
     o[0].q          = o[Olive + 5].q / o[Olive + 6].q;
@@ -58,7 +51,7 @@ N(def_heart) {
 }
 N(tab) {
   if (Yellow(==))
-    m(a, o[w + 1].q, o, o[w - 1].q, o[w - 2].q, s);
+    turn(+1.5707*o[w - 2].q/TW), m(a, o[w + 1].q, o, o[w - 1].q, o[w - 2].q, s);
   else
     m(a, w, o, r, White(=), s);
 }
@@ -70,15 +63,24 @@ N(baaa) {
   m(a, w, o, r, d, s);
 }
 N(prints) { if(Green(==) && White(==)) printf("%s", o[w+1].cs); m(a,w,o,r,d,s); }
+D(S,
+  B(Green, T(b_term),T(a_term))
+  B(Green, T(b_term),T(a_term),T(a_term))
+  B(Green, T(b_term),T(a_term),T(a_term),T(a_term))
+);
+N(show) {
+  w = a + 2;
+  T(b),T(baaa), T(S), T(dot);
+  m(a,w,o,r,d,s);
+}
 D(E,                 //
-  B(Lime,  Ta(prints, "{") )B(Green, Ta(prints, "}") ) //
-  B(Lime,  Ta(prints, "(") )B(Green, Ta(prints, ")") ) //
+  B(Lime,  Ta(prints, "{")) B(Green, Ta(prints, "}")) //
+  B(Lime,  Ta(prints, "(")) B(Green, Ta(prints, ")")) //
 );
 D(F,                 //
-  B(Lime,  Ta(prints, "(") )B(Green, Ta(prints, ")") ) //
-  B(Lime,  Ta(prints, "{") )B(Green, Ta(prints, "}") ) //
+  B(Lime,  Ta(prints, "(")) B(Green, Ta(prints, ")")) //
+  B(Lime,  Ta(prints, "{")) B(Green, Ta(prints, "}")) //
 );
-
 void text_index_init();
 int main() {
   long a = 0;
@@ -89,8 +91,9 @@ int main() {
   const char *s = "";
   o[a++].q = 1;
   text_index_init();
-  (w = a + TW / 2),
-                    T(b), Ta(prints,"s"), T(E), Ta(prints,"m"), T(F), T(id), Ta(prints,"e\n"), T(dot);
-  m(a, w, o, Yellow(=), White(=), s);
+  show(a,w,o,Yellow(=), White(=),s);
+  //(w = a + TW / 2),
+  //T(b), Ta(prints,"s"), T(E), T(E), T(E), Ta(prints,"m"), T(F), T(id), Ta(prints,"e\n"), T(dot);
+  //m(a, w, o, Yellow(=), White(=), s);
   return 0;
 }
