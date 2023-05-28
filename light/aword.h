@@ -17,6 +17,7 @@ typedef struct o_t {
     N((*c));
     struct o_t *o;
     const char *cs;
+    struct {float x,y;} v2;
   };
 } o_t;
 typedef N((*aword_t));

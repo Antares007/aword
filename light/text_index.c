@@ -51,7 +51,7 @@ void draw() {
       const char *text = TextFormat("%s %s", path[i].text, path[i].s);
       Vector2 raypos = Vector2Add(
           path[i].zero,
-          Vector2Scale(Vector2Rotate(path[i].dir, 1.5707), path[i].ray * -10));
+          Vector2Scale(Vector2Rotate(path[i].dir, 1.5707), path[i].ray * -8));
       Vector2 size = MeasureTextEx(font, text, fontSize,0);
       DrawRectangleV(path[i].zero, size, BLACK);
       DrawTextPro(font, text, path[i].zero, (Vector2){0, 0}, 0, fontSize, 0,
