@@ -24,11 +24,10 @@ static Color colors[] = {
     {255, 255, 000, 255}, // Yellow
 
 };
+static int debug = 0;
 void draw() {
-  int key = GetCharPressed();
-  while (key != 'n') {
-    key = GetCharPressed();
-    if(key == 'c') length = 0;
+  int key;
+  do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
@@ -52,16 +51,21 @@ void draw() {
       Vector2 raypos = Vector2Add(
           path[i].zero,
           Vector2Scale(Vector2Rotate(path[i].dir, 1.5707), path[i].ray * -8));
-      Vector2 size = MeasureTextEx(font, text, fontSize,0);
-      DrawRectangleV(path[i].zero, size, BLACK);
       DrawTextPro(font, text, path[i].zero, (Vector2){0, 0}, 0, fontSize, 0,
                   path[i].color);
-      DrawLineBezier(uraypos, raypos, 2, path[i].color);
+      DrawLineEx(uraypos, raypos, 2, path[i].color);
       uraypos = raypos;
     }
     EndMode2D();
     EndDrawing();
-  }
+    key = GetCharPressed();
+    if (key == 'n')
+      debug = true;
+    else if (key == 's')
+      debug = false;
+    else if (key == 'c')
+      length = 0;
+  } while (debug && key != 'n');
 }
 
 static Vector2 zero = {0, 0}, dir = {1, 0};
@@ -81,7 +85,7 @@ N(m) {
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1900, 800, "aword");
+  InitWindow(1900, 900, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 45, 0, 0);
 }
