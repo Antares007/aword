@@ -24,7 +24,7 @@ static Color colors[] = {
     {255, 255, 000, 255}, // Yellow
 
 };
-static int debug = 0;
+static int debug = 1;
 void draw() {
   int key;
   do {
