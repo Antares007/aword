@@ -7,7 +7,7 @@ typedef struct step_t {
   const char *text, *s;
   Vector2 zero, dir;
   Color color;
-  long ray;
+  long ray, a;
 } step_t;
 step_t path[4096];
 long length = 0;
@@ -36,7 +36,7 @@ void draw() {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(WHITE);
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,
@@ -54,6 +54,8 @@ void draw() {
       DrawTextPro(font, text, path[i].zero, (Vector2){0, 0}, 0, fontSize, 0,
                   path[i].color);
       DrawLineEx(uraypos, raypos, 2, path[i].color);
+      DrawRectangle(300, -300, 300, 40, WHITE);
+      DrawTextEx(font, TextFormat("%s %s %ld", path[i].text, path[i].s, path[i].a), (Vector2){300, -300}, fontSize * 2, 0, BLACK);
       uraypos = raypos;
     }
     EndMode2D();
@@ -70,6 +72,7 @@ void draw() {
 
 static Vector2 zero = {0, 0}, dir = {1, 0};
 void turn(float angle) { dir = Vector2Rotate(dir, angle); }
+#include<stdio.h>
 N(m) {
   long ray = (r + 1) * d / TW + 4;
   path[length].text = o[w + 2].cs;
@@ -78,6 +81,7 @@ N(m) {
   path[length].dir = dir;
   path[length].ray = ray;
   path[length].color = colors[ray];
+  path[length].a = a;
   length++;
   zero = Vector2Add(zero, Vector2Scale(dir, d * 20));
   draw();
