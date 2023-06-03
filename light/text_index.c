@@ -74,18 +74,18 @@ static Vector2 zero = {0, 0}, dir = {1, 0};
 void turn(float angle) { dir = Vector2Rotate(dir, angle); }
 #include<stdio.h>
 N(m) {
-  long ray = (r + 1) * d / TW + 4;
+  long ray = (o[s+1].q + 1) * o[s+0].q / TW + 4;
   path[length].text = o[w + 2].cs;
-  path[length].s = s;
+  path[length].s = "...";
   path[length].zero = zero;
   path[length].dir = dir;
   path[length].ray = ray;
   path[length].color = colors[ray];
   path[length].a = a;
   length++;
-  zero = Vector2Add(zero, Vector2Scale(dir, d * 20));
+  zero = Vector2Add(zero, Vector2Scale(dir, o[s].q * 20));
   draw();
-  o[w + d].c(a, w + d, o, r, d, s);
+  o[w + o[s].q].c(a, w + o[s].q, o, r, d, s);
 }
 void text_index_init() {
   SetTraceLogLevel(LOG_ERROR);
