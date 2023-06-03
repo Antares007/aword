@@ -1,25 +1,23 @@
+
 two
-Lime one one plus one plus.
-Green one one plus.
+one one plus one plus.
+one one plus.
 
 three
-Lime one one plus one plus. Green one one plus.
+one one plus one plus. one one plus.
+
 four
-Lime three one plus.
+three one plus.
 
-p1 Green E   "+" E.   Olive plus.
-p2 Green E   "*" E.   Olive mul.
-p3 Green "(" E   ")". Olive mid.
-p4 Green 1.           Olive one.
-E  Green p1 orand p2 orand p3 orand p4.
+E
+ E  "+"  E  plus.
+ E  "*"  E  mul.
+"("  E  ")" mid.
+ 1.
 
-S  Green "b" orand S "a".
+S
+"b" orand S "a".
 
 show
-  Green "(1+1)*(1+1)+1" E.
-color {
-}.
-definitions
-  color words dot.
-name_definition
-  Green name definitions.
+  "(1+1)*(1+1)+1" E.
+

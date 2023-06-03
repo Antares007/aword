@@ -36,7 +36,7 @@ void draw() {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(WHITE);
+    ClearBackground(BLACK);
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,

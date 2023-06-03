@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include<assert.h>
+#include <assert.h>
 typedef void (*n_t)(long a, void**o, long s);
 static long load_aword(void*memory, char*aw_name);
 void *map_file(const char *file_name);
