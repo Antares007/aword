@@ -8,8 +8,8 @@
 #define Blue(   op) (o[s + 1].q op 0)
 #define aword long a, long w, struct o_t *o, long r, long d, long s
 #define N(argo) void argo(aword)
-#define T(aw)       a++, a++, o[a++].c = aw, a++                   , o[a++].cs = #aw
-#define Ta(aw, arg) a++, a++, o[a++].c = aw, o[a++].v = (void *)arg, o[a++].cs = #aw
+#define T(aw)       r++, r++, o[r++].c = aw, r++                   , o[r++].cs = #aw
+#define Ta(aw, arg) r++, r++, o[r++].c = aw, o[r++].v = (void *)arg, o[r++].cs = #aw
 typedef struct o_t {
   union {
     void *v;

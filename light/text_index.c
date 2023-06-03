@@ -7,7 +7,7 @@ typedef struct step_t {
   const char *text, *s;
   Vector2 zero, dir;
   Color color;
-  long ray, a;
+  long ray, r;
 } step_t;
 step_t path[4096];
 long length = 0;
@@ -55,7 +55,7 @@ void draw() {
                   path[i].color);
       DrawLineEx(uraypos, raypos, 2, path[i].color);
       DrawRectangle(300, -300, 300, 40, WHITE);
-      DrawTextEx(font, TextFormat("%s %s %ld", path[i].text, path[i].s, path[i].a), (Vector2){300, -300}, fontSize * 2, 0, BLACK);
+      DrawTextEx(font, TextFormat("%s %s %ld", path[i].text, path[i].s, path[i].r), (Vector2){300, -300}, fontSize * 2, 0, BLACK);
       uraypos = raypos;
     }
     EndMode2D();
@@ -81,7 +81,7 @@ N(m) {
   path[length].dir = dir;
   path[length].ray = ray;
   path[length].color = colors[ray];
-  path[length].a = a;
+  path[length].r = r;
   length++;
   zero = Vector2Add(zero, Vector2Scale(dir, o[s].q * 20));
   draw();

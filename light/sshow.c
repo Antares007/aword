@@ -37,7 +37,7 @@ D(S,
   B(T(S), T(a_term))
 );
 N(show) {
-  w = a + 2;  T(b), T(id), T(dot);
+  w = r + 2;  T(b), T(id), T(dot);
   m(a, w, o, r, d, s);
 }
 void text_index_init();
