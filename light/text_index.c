@@ -74,8 +74,8 @@ static Vector2 zero = {0, 0}, dir = {1, 0};
 void turn(float angle) { dir = Vector2Rotate(dir, angle); }
 #include<stdio.h>
 N(m) {
-  long ray = (o[s+1].q + 1) * o[s+0].q / TW + 4;
-  path[length].text = o[w + 2].cs;
+  long ray = (o[s + 1].q + 1) * o[s + 0].q / TW + 4;
+  path[length].text = o[w - 2].cs;
   path[length].s = "...";
   path[length].zero = zero;
   path[length].dir = dir;
