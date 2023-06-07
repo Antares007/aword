@@ -7,7 +7,7 @@ typedef struct step_t {
   const char *text, *s;
   Vector2 zero, dir;
   Color color;
-  long ray, r;
+  long ray, r, w;
 } step_t;
 step_t path[4096];
 long length = 0;
@@ -36,11 +36,11 @@ void draw() {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(WHITE);
     Camera2D camera = {
         .target = {0, 0},
         .rotation = 0,
-        .zoom = zoom,
+        .zoom = zoom,  
         .offset = {GetScreenWidth() / 20.f, GetScreenHeight() / 2.f}};
     camera.offset = Vector2Add(camera.offset, off);
     Vector2 uraypos = {0, 0};
@@ -55,7 +55,13 @@ void draw() {
                   path[i].color);
       DrawLineEx(uraypos, raypos, 2, path[i].color);
       DrawRectangle(300, -300, 300, 40, WHITE);
-      DrawTextEx(font, TextFormat("%s %s %ld", path[i].text, path[i].s, path[i].r), (Vector2){300, -300}, fontSize * 2, 0, BLACK);
+      text = TextFormat("%3ld %3ld %s %10s", path[i].w, path[i].r, path[i].text, path[i].s);
+
+      Vector2 m = MeasureTextEx(font, text, fontSize * 2, 0);
+      m.x+=100;
+      Vector2 labelPos = (Vector2){300, -300};
+      DrawRectangleV(labelPos, m, WHITE);
+      DrawTextEx(font, text, labelPos, fontSize * 2, 0, BLACK);
       uraypos = raypos;
     }
     EndMode2D();
@@ -75,8 +81,9 @@ void turn(float angle) { dir = Vector2Rotate(dir, angle); }
 #include<stdio.h>
 N(m) {
   long ray = (o[s + 1].q + 1) * o[s + 0].q / TW + 4;
+  path[length].w = w;
   path[length].text = o[w - 2].cs;
-  path[length].s = "...";
+  path[length].s = o[a-1].cs;
   path[length].zero = zero;
   path[length].dir = dir;
   path[length].ray = ray;
