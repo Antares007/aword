@@ -18,6 +18,7 @@ int main(int argc, char**argv) {
   o[a++] = printf;
   o[a++] = usleep;
   o[a++] = load_aword;
+  o[a++] = (void*)1;
 
   o[--s] = (void*)1;
 
@@ -26,9 +27,10 @@ int main(int argc, char**argv) {
     t += load_aword(b + t, argv[i]);
   t += load_aword(b + t, "o");
   (b + 16)(a, o, s);
+  o[--s] = (void*)1;
   b(a, o, s);
 }
-static long load_aword(void*memory, char*aw_name) {
+static long load_aword_(void*memory, char*aw_name) {
   char str[707];
   snprintf(str, 707, "abin/%s", aw_name);
   FILE*f = fopen(str, "r");
@@ -40,4 +42,19 @@ static long load_aword(void*memory, char*aw_name) {
   assert(size == r);
   fclose(f);
   return r;
+}
+static long load_aword(void*memory, char*asentence) {
+  const char *b = asentence;
+  char aword[707];
+  long t = 0;
+  while(*asentence) {
+    if (*asentence == ' ') {
+      snprintf(aword, asentence - b + 1, "%s", b);
+      t += load_aword_(memory+t, aword);
+      b = ++asentence;
+    } else ++asentence;
+  }
+  snprintf(aword, asentence - b + 1, "%s", b);
+  t += load_aword_(memory+t, aword);
+  return t;
 }

@@ -48,7 +48,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nG(${rays[k]}) { P; ${rays[k]}(a, o, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {

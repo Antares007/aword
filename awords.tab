@@ -10,57 +10,88 @@ b {
   G(Lime    ) { P, Green  (a, o, s); }
   G(Maroon  ) { P, Red    (a, o, s); }
   G(Fuchsia ) { P; }
-  G(Olive   ) { P, Yellow (a, o, s); }
+  G(Olive   ) { o[3] = (void*)1; P, Yellow (a, o, s); }
 }.
 id2 { }.
 id  { }.
-tab {
-  G(Navy    ) { P, Blue   (a, o, s); }
-  G(Lime    ) { P, Green  (a, o, s); }
-  G(Maroon  ) { P, Red    (a, o, s); }
-  G(Fuchsia ) {}
-  G(Olive   ) { P, ((n_t*)o)[s](a, o, s + 1); }
-}.
-not {
+NOT {
   G(Yellow) { Lime  (a, o, s); }
   G(Red   ) { Yellow(a, o, s); }
   G(Green ) { Olive (a, o, s); }
   G(Lime  ) { Green (a, o, s); }
 }.
-and {
+AND {
   G(Yellow) { Lime  (a, o, s); }
   G(Green ) { Yellow(a, o, s); }
   G(Lime  ) { Green (a, o, s); }
 }.
-or {
+OR {
   G(Yellow) { Lime  (a, o, s); }
   G(Blue  ) { Yellow(a, o, s); }
   G(Green ) { Olive (a, o, s); }
   G(Lime  ) { Green (a, o, s); }
 }.
-orand {
+ORAND {
   G(Yellow) { Lime  (a, o, s); }
   G(Blue  ) { Yellow(a, o, s); }
   G(Green ) { Yellow(a, o, s); }
   G(Lime  ) { Green (a, o, s); }
 }.
 one {
-  G(Lime  ) { P;
+  G(Lime  ) { 
     o[a++] = (void*)1;
     Lime(a, o, s);
   }
 }.
+tab {
+  G(Lime    ) { Green  (a, o, s); }
+  G(Maroon  ) { Red    (a, o, s); }
+  G(Fuchsia ) {}
+  G(Navy    ) { ((n_t*)o)[s + 0](a, o, s + 3); }
+  G(Olive   ) { ((n_t*)o)[s + 1](a, o, s + 3); }
+}.
 two {
-  void* b[512];
-  long  t = 0;
-  G(Purple) {
-    long (*T)(void*m, char*n) = o[2];
-    t += T(b + t, "tab")/8; t += T(b + t, "id2")/8; t += T(b + t, "o")/8;
-    ((n_t)b + 16)(a, o, s);
-    Purple(a, o, s);
+  void       *b[512];
+  const char *piths[3];
+  long        count, Blue_s, current, change;
+  N(Yellow_switch ) {
+    long (*T)(void*, char*) = o[2];
+    n_t w = b; T(w, piths[current]); (w + 16)(a, o, s);
+    current = (current + change) % count;
+    Yellow(a, o, s);
   }
-  G(Lime) {
-    o[--s] = Lime;
-    ((n_t)b + 00)(a, o, s); 
+  G(Yellow        ) {
+    change = (long)o[3];
+    o[3]   = (void*)(current + change == count);
+    Blue_s = 0;
+    Yellow_switch(a, o, s);
+  }
+  N(Yellow_next   ) { Blue_s++; Yellow_switch((long)o[-1 + s], o, s); }
+  G(Purple) { 
+    piths[0]  = "tab one one plus one plus o";
+    piths[1]  = "tab one plus one o";
+    piths[2]  = "tab one one plus one plus one plus o";
+    count     = sizeof(piths) / sizeof(*piths);
+    current   = 0;
+    Purple(a, o, s); }
+  G(Lime          ) {
+    o[--s]    = a;
+    o[--s]    = Lime;
+    o[--s]    = count == Blue_s ? Navy : Yellow_next;
+    ((n_t)b)(a, o, s); }
+}.
+plus {
+  G(Green) { 
+    long r    = (long)o[--a];
+    long l    = (long)o[--a];
+    o[a++]    = (void*)(l+r);
+    Green(a, o, s);
+  }
+}.
+print_ld {
+  G(Green) {
+    void (*print)(const char *, ...) = o[0];
+    print("%ld\n", (long)o[--a]);
+    Green(a, o, s);
   }
 }.

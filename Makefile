@@ -4,8 +4,8 @@ CFLAGS+=-std=gnu17 -Wall
 light/sshow.out: light/sshow.c light/text_index.o light/aradani.o
 	${CC} $^ -o $@ ${CFLAGS} -lm -lraylib
 root.out: root.c map_file.o
-awords:
-	node parse.js awords.tab
+awords: parse.js awords.tab
+	node $^
 p.out: p.c json.o
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
