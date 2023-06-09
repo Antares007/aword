@@ -17,5 +17,6 @@ typedef         void (*n_t)(long t, long a, void*b, void**o, long s);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
 #define P                                                                \
- ((void (*)(const char *, ...))o[0])("%s %s\n", __FILE__, __FUNCTION__), \
- ((void (*)(long))o[1])(20000)
+ ((void (*)(const char *, ...))o[0])(                                    \
+   "%5ld %3ld %3ld %s %s\n", t, a, s, __FILE__, __FUNCTION__),           \
+                                ((void (*)(long))o[1])(20000)
