@@ -1,16 +1,16 @@
 o {
-  G(Yellow  ) { P, Lime   (t, a, b, o, s); }
-  G(Purple  ) { P;        o[a] = (void*)t; }
-  G(Red     ) { P, Maroon (t, a, b, o, s); }
-  G(Green   ) { P, Olive  (t, a, b, o, s); }
-  G(Blue    ) { P, Navy   (t, a, b, o, s); }
+  G(Yellow  ) { Lime   (t, a, b, o, s); }
+  G(Purple  ) {        o[a] = (void*)t; }
+  G(Red     ) { Maroon (t, a, b, o, s); }
+  G(Green   ) { Olive  (t, a, b, o, s); }
+  G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 b {
-  G(Navy    ) { P, Blue   (t, a, b, o, s); }
-  G(Lime    ) { P, Green  (t, a, b, o, s); }
-  G(Maroon  ) { P, Red    (t, a, b, o, s); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { o[3] = (void*)1; P, Yellow (t, a, b, o, s); }
+  G(Navy    ) { Blue   (t, a, b, o, s); }
+  G(Lime    ) { Green  (t, a, b, o, s); }
+  G(Maroon  ) { Red    (t, a, b, o, s); }
+  G(Fuchsia ) { }
+  G(Olive   ) { o[3] = (void*)1; Yellow (t, a, b, o, s); }
 }.
 id2 { }.
 id { }.
@@ -58,16 +58,39 @@ plus {
     Green(t, a, b, o, s);
   }
 }.
-print_ld {
-  G(Green) {
-    void (*print)(const char *, ...) = o[0];
-    print("%ld\n", (long)o[--a]);
-    Green(t, a, b, o, s);
-  }
-}.
+astr { G(Lime) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
+bstr { G(Lime) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
+cstr { G(Lime) { o[a++] = "c"; Lime(t, a, b, o, s); } }.
+
+sstr { G(Lime) { o[a++] = "s"; Lime(t, a, b, o, s);  } }.
+tstr { G(Lime) { o[a++] = "t"; Lime(t, a, b, o, s);  } }.
+ustr { G(Lime) { o[a++] = "u"; Lime(t, a, b, o, s);  } }.
+
+xstr { G(Lime) { o[a++] = "x"; Lime(t, a, b, o, s);  } }.
+ystr { G(Lime) { o[a++] = "y"; Lime(t, a, b, o, s);  } }.
+zstr { G(Lime) { o[a++] = "z"; Lime(t, a, b, o, s);  } }.
+newline { G(Lime) { o[a++] = "\n"; Lime(t, a, b, o, s); } }.
+abc
+  astr;
+  bstr;
+  cstr.
+stu
+  sstr;
+  tstr;
+  ustr.
+xyz
+  xstr;
+  ystr;
+  zstr.
 two
   one one plus one plus;
   one plus one;
   one one plus one plus one plus.
+show2
+  two two plus two plus two plus AND print_ld.
 show
-  two two plus AND print_ld.
+  abc stu xyz print_sss.
+
+print_ld { G(Green) { void (*print)(const char *, ...) = o[0]; print("%ld\n", (long)o[--a]); Green(t, a, b, o, s); } }.
+print_ss { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s %s\n", (char*)o[a-1], (char*)o[a-2]); Green(t, a-2, b, o, s); } }.
+print_sss { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s %s %s\n", (char*)o[a-1], (char*)o[a-2], (char*)o[a-3]); Green(t, a-3, b, o, s); } }.
