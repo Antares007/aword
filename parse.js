@@ -3,7 +3,7 @@ const exec = util.promisify(require("node:child_process").exec);
 const { writeFile, readFile } = require("node:fs/promises");
 const { join } = require("node:path");
 parse(process.argv[2]);
-async function parse(file = "input.tab") {
+async function parse(file = "awords.tab") {
   const input = (await readFile(file)).toString();
   await exec(`rm -rf abin`);
   await exec(`mkdir abin`);
@@ -21,9 +21,46 @@ async function parse(file = "input.tab") {
 function split_name_and_body(l) {
   const p = l.indexOf(" ");
   const n = l.slice(0, p);
-  const p2 = l.indexOf("{", p + 1);
-  const b = l.slice(p2 + 1, l.lastIndexOf("}"));
-  return [n, b];
+  if (l[p + 1] === "{") {
+    const b = l.slice(p + 2, l.lastIndexOf("}"));
+    return [n, b];
+  } else {
+    const [n, ...rest] = l.split(/[\n;]/).map(l => l.trim()).filter(Boolean)
+
+    const b = `
+n_t  aw;
+n_t  piths[${rest.length}];
+long Blue_s, current, change;
+N(Yellow_switch ) {
+  aw      = piths[current];
+  current = (current + change) % ${rest.length};
+  Yellow(t, a, b, o, s);
+}
+G(Yellow        ) { 
+  change = (long)o[3];
+  o[3]   = (void*)(long)(current + change == ${rest.length});
+  Blue_s = 0;
+  Yellow_switch(t, a, b, o, s);
+}
+N(Yellow_next   ) { Blue_s++; Yellow_switch(t, (long)o[s - 1], b, o, s); }
+G(Purple) {
+  long (*T)(void*, const char*) = o[2];
+${rest.map((l,i) => `
+  piths[${i}] = b + t;
+  t          += T(b + t, "tab ${l} o");
+  (piths[${i}] + 16)(t, a, b, o, s);
+  t           = (long)o[a];
+`).join('')}
+  current     = 0;
+  Purple(t, a, b, o, s); }
+G(Lime          ) {
+  o[--s]    = (void*)a;
+  o[--s]    = Lime;
+  o[--s]    = ${rest.length} == Blue_s ? Navy : Yellow_next;
+  aw(t, a, b, o, s); }
+`;
+    return [n, b];
+  }
 }
 function add_missing_rays([n, b]) {
   b = '#include "aw.h"\n' + b;
@@ -48,7 +85,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {
@@ -57,6 +94,6 @@ async function compile([n, b]) {
   await exec(`ld -T rainbow.ld ${n}.o -o ${n}.elf`);
   await exec(`objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`);
   await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > abin/${n}`);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
   return n;
 }
