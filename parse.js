@@ -28,18 +28,18 @@ function split_name_and_body(l) {
     const [n, ...rest] = l.split(/[\n;]/).map(l => l.trim()).filter(Boolean)
 
     const b = `
-n_t  aw;
+n_t  aword;
 n_t  piths[${rest.length}];
 long Blue_s, current, change;
 N(Yellow_switch ) {
-  aw      = piths[current];
-  current = (current + change) % ${rest.length};
+  aword       = piths[current];
+  current     = (current + change) % ${rest.length};
   Yellow(t, a, b, o, s);
 }
 G(Yellow        ) { 
-  change = (long)o[3];
-  o[3]   = (void*)(long)(current + change == ${rest.length});
-  Blue_s = 0;
+  change      = (long)o[3];
+  o[3]        = (void*)(long)(current + change == ${rest.length});
+  Blue_s      = 0;
   Yellow_switch(t, a, b, o, s);
 }
 N(Yellow_next   ) { Blue_s++; Yellow_switch(t, (long)o[s - 1], b, o, s); }
@@ -57,7 +57,7 @@ G(Lime          ) {
   o[--s]    = (void*)a;
   o[--s]    = Lime;
   o[--s]    = ${rest.length} == Blue_s ? Navy : Yellow_next;
-  aw(t, a, b, o, s); }
+  aword(t, a, b, o, s); }
 `;
     return [n, b];
   }
@@ -94,6 +94,6 @@ async function compile([n, b]) {
   await exec(`ld -T rainbow.ld ${n}.o -o ${n}.elf`);
   await exec(`objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`);
   await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > abin/${n}`);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin`);
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
   return n;
 }

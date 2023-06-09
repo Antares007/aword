@@ -90,7 +90,15 @@ show2
   two two plus two plus two plus AND print_ld.
 show
   abc stu xyz print_sss.
+baaa {
+  G(Lime) { o[a++] = "baaa"; Lime(t, a, b, o, s); }
+}.
+b_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'b') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
+a_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'a') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
+show3
+  baaa b_term a_term a_term a_term print_s.
 
-print_ld { G(Green) { void (*print)(const char *, ...) = o[0]; print("%ld\n", (long)o[--a]); Green(t, a, b, o, s); } }.
+print_ld { G(Green) { void (*print)(const char *, ...) = o[0]; print("%ld\n", (long)o[--a]); Green(t, a,   b, o, s); } }.
+print_s { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s\n", (char*)o[a-1]); Green(t, a-1, b, o, s); } }.
 print_ss { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s %s\n", (char*)o[a-1], (char*)o[a-2]); Green(t, a-2, b, o, s); } }.
-print_sss { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s %s %s\n", (char*)o[a-1], (char*)o[a-2], (char*)o[a-3]); Green(t, a-3, b, o, s); } }.
+print_sss { G(Green) {((void (*)(long))o[1])(200000); void (*print)(const char *, ...) = o[0]; print("%s %s %s\n", (char*)o[a-1], (char*)o[a-2], (char*)o[a-3]);  Green(t, a-3, b, o, s); } }.
