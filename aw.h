@@ -1,13 +1,13 @@
 #pragma once
 // clang-format off
-#define N(argo) void   argo(long t, long a, n_t  b, void**o, long s)
-typedef         void (*n_t)(long t, long a, void*b, void**o, long s);
+#define N(argo) void   argo(long a, void**o, long s)
+typedef         void (*n_t)(long a, void**o, long s);
 #define R(Olive)                                                               \
-  N(Olive      ) { asm("nop" : : "a"(t+a+(long)b+(long)o+s)); };               \
+  N(Olive      ) { asm("nop" : : "a"(a+(long)o+s)); };                         \
   N(Olive##_ray)
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
-  R(Olive) { Olive##_nar(t, a, b, o, s); }                                     \
+  R(Olive) { Olive##_nar(a, o, s); }                                           \
   N(Olive##_nar)
 #define Δ(Olive)                                                               \
   N(Olive##_ray) __attribute__((section(".text." #Olive "_ray")));             \
@@ -16,7 +16,7 @@ typedef         void (*n_t)(long t, long a, void*b, void**o, long s);
 Δ(Yellow);Δ(Purple); Δ(Red);   Δ(Green);Δ(Blue);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
-#define P                                                                \
- ((void (*)(const char *, ...))o[0])(                                    \
-   "%5ld %3ld %3ld %s %s\n", t, a, s, __FILE__, __FUNCTION__),           \
-                                ((void (*)(long))o[1])(20000)
+
+#define Usleep(v) ((void (*)(long))o[1])(v)
+#define Printf(...) ((void (*)(const char *, ...))o[0])(__VA_ARGS__)
+#define P Printf("%3ld %3ld %s %s\n", a, s, __FILE__, __FUNCTION__), Usleep(20000)

@@ -27,34 +27,29 @@ function split_name_and_body(l) {
   } else {
     const [n, ...rest] = l.split(/[\n;]/).map(l => l.trim()).filter(Boolean)
     const b = `
-const char *piths[${rest.length}];
-long        Blue_s, current, charge;
-G(Purple     ) {
-${rest.map((l, i) => `  piths[${i}] = "tab ${l} o";`).join('\n')}
-  current   = 0;
-  Purple(t, a, b, o, s);
+const char*asentences[${rest.length}];
+long current, charge, Blue_s;
+G(Purple) {
+${rest.map((l,i) => `  asentences[${i}] = "tab ${l} o";`).join('\n')}
+  current = 0;
+  Purple(a, o, s);
 }
 N(Lime_switch);
-N(Lime_next  ) { Blue_s++; Lime_switch(t, (long)o[s - 1], b, o, s); }
+N(Lime_next  ) { Blue_s++; Lime_switch((long)o[s - 1], o, s); }
 N(Lime_switch) {
-  long (*T)(void*, const char*) = o[2];
-  long tb   = t;
-  n_t aword = b + t;
-  t        += T(b + t, piths[current]);
-  (aword + 16)(t, a, b, o, s);
-  t         = (long)o[a];
+  void (*T)(long, void*, long, const char*) = o[2];
+  const char*asen = asentences[current];
   current   = (current + charge) % ${rest.length};
   o[--s]    = (void*)a;
-  o[--s]    = (void*)tb;
   o[--s]    = Lime;
   o[--s]    = ${rest.length} == Blue_s ? Navy : Lime_next;
-  aword(t, a, b, o, s);
+  T(a, o, s, asen);
 }
 G(Lime       ) {
   charge    = (long)o[3];
   o[3]      = (void*)(long)(current + charge == ${rest.length});
   Blue_s    = 0;
-  Lime_switch(t, a, b, o, s);
+  Lime_switch(a, o, s);
 }
 `;
     return [n, b];
@@ -83,7 +78,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {

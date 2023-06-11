@@ -3,13 +3,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
-typedef void (*n_t)(long t, long a, void*b, void**o, long s);
-static long load_aword(void*b,char*aw_name);
+typedef void (*n_t)(long a, void**o, long s);
+static void load_aword(long a, void**o, long s, const char*aw_name);
 void *map_file(const char *file_name);
+long t;
+n_t  b;
 int main(int argc, char**argv) {
-  long t = 0;
+       t = 0;
   long a = 0;
-  n_t  b = map_file("ram.ram");
+       b = map_file("ram.ram");
   void*o   [512];
   long s = sizeof(o) / sizeof(*o);
 
@@ -20,12 +22,7 @@ int main(int argc, char**argv) {
   o[a++] = load_aword;
   o[a++] = (void*)1;
 
-  t += load_aword(b + t, "b");
-  for(long i = 1; i < argc; i++)
-    t += load_aword(b + t, argv[i]);
-  t += load_aword(b + t, "o");
-  (b + 16)(t, a, b, o, s);
-  b((long)o[a], a, b, o, s);
+  load_aword(a, o, s, "b show o");
 }
 static long load_aword_(void*memory, char*aw_name) {
   char str[707];
@@ -40,10 +37,10 @@ static long load_aword_(void*memory, char*aw_name) {
   fclose(f);
   return r;
 }
-static long load_aword(void *b, char *asentence) {
+static n_t load_aword_core(const char *asentence) {
   const char *start = asentence;
   char aword[707];
-  long t = 0;
+  n_t aw = b + t;
   while(*asentence) {
     if (*asentence == ' ') {
       snprintf(aword, asentence - start + 1, "%s", start);
@@ -53,5 +50,23 @@ static long load_aword(void *b, char *asentence) {
   }
   snprintf(aword, asentence - start + 1, "%s", start);
   t += load_aword_(b + t, aword);
-  return t;
+  return aw;
+}
+static int hash(const char*a) {
+  int h = 29;
+  while(*a) (h = 31 * h + *a), a++; 
+  return h;
+}
+static void load_aword(long a, void**o, long s, const char*asentence) {
+  static int   keys[1024] = {};
+  static n_t   values[1024] = {};
+  static long  length      = 0;
+  int h = hash(asentence);
+  for(long i = 0; i < length; i++)
+    if (keys[i] == h)
+      return values[i](a, o, s);
+  n_t w = load_aword_core(asentence);
+  keys[length] = h, values[length] = w, length++;
+  (w+16)(a, o, s);
+  w(a, o, s);
 }
