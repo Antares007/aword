@@ -2,6 +2,16 @@ const util = require("node:util");
 const exec = util.promisify(require("node:child_process").exec);
 const { writeFile, readFile } = require("node:fs/promises");
 const { join } = require("node:path");
+const colors = {Olive:  0, 
+                Fuchsia:1,
+                Maroon: 2,
+                Lime:   3,
+                Navy:   4,
+                Blue:   5,
+                Green:  6,
+                Red:    7,
+                Purple: 8,
+                Yellow: 9};
 parse(process.argv[2]);
 async function parse(file = "awords.tab") {
   const input = (await readFile(file)).toString();
@@ -26,31 +36,35 @@ function split_name_and_body(l) {
     return [n, b];
   } else {
     const [n, ...rest] = l.split(/[\n;]/).map(l => l.trim()).filter(Boolean)
-    const b = `
-const char*asentences[${rest.length}];
-long current, charge, Blue_s;
-G(Purple) {
-${rest.map((l,i) => `  asentences[${i}] = "tab ${l} o";`).join('\n')}
-  current = 0;
+    const sc = rest.reduce((d, l) => {
+      const p = l.indexOf(' ');
+      const maybecname = l.slice(0, p);
+      const cname = colors[maybecname] ? maybecname : 'Lime';
+      const asent = colors[maybecname] ? l.slice(p+1): l
+      if (d[cname]) d[cname].push(asent)
+      else d[cname] = [asent]
+      return d;
+    }, {});
+    const b = `${Object.keys(sc).map(c => `
+const char*${c}_asentences[${sc[c].length}];
+long ${c}_current;`).join('\n')}
+G(Purple) { P;
+${Object.keys(sc).map(c => `
+${sc[c].map((l,i) => `  ${c}_asentences[${i}] = "tab ${l} o";`).join('\n')}
+  ${c}_current = 0;`).join('\n')}
   Purple(a, o, s);
 }
-N(Lime_switch);
-N(Lime_next  ) { Blue_s++; Lime_switch((long)o[s - 1], o, s); }
-N(Lime_switch) {
+${Object.keys(sc).map(c => `
+G(${c}) { P;
   void (*T)(long, void*, long, const char*) = o[2];
-  const char*asen = asentences[current];
-  current   = (current + charge) % ${rest.length};
-  o[--s]    = (void*)a;
-  o[--s]    = Lime;
-  o[--s]    = ${rest.length} == Blue_s ? Navy : Lime_next;
+  const char*asen = ${c}_asentences[${c}_current];
+  long charge     = (long)o[3];
+  o[3]            = (void*)(long)(${c}_current + charge == ${sc[c].length});
+  ${c}_current    = (${c}_current + charge) % ${sc[c].length};
+  o[--s]          = ${c};
   T(a, o, s, asen);
 }
-G(Lime       ) {
-  charge    = (long)o[3];
-  o[3]      = (void*)(long)(current + charge == ${rest.length});
-  Blue_s    = 0;
-  Lime_switch(a, o, s);
-}
+`).join('\n')}
 `;
     return [n, b];
   }
@@ -78,7 +92,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(a, o, s); }`;
+  for (let k in rays) b = b + `\nG(${rays[k]}) { P; ${rays[k]}(a, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {
