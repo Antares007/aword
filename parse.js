@@ -48,21 +48,21 @@ function split_name_and_body(l) {
     const b = `${Object.keys(sc).map(c => `
 const char*${c}_asentences[${sc[c].length}];
 long ${c}_current;`).join('\n')}
-G(Purple) { P;
+G(Purple) {
 ${Object.keys(sc).map(c => `
-${sc[c].map((l,i) => `  ${c}_asentences[${i}] = "tab ${l} o";`).join('\n')}
+${sc[c].map((l,i) => `  ${c}_asentences[${i}] = "${l}";`).join('\n')}
   ${c}_current = 0;`).join('\n')}
-  Purple(a, o, s);
+  Purple(o, s, a);
 }
 ${Object.keys(sc).map(c => `
-G(${c}) { P;
+G(${c}) {
   void (*T)(long, void*, long, const char*) = o[2];
   const char*asen = ${c}_asentences[${c}_current];
   long charge     = (long)o[3];
   o[3]            = (void*)(long)(${c}_current + charge == ${sc[c].length});
   ${c}_current    = (${c}_current + charge) % ${sc[c].length};
   o[--s]          = ${c};
-  T(a, o, s, asen);
+  T(o, s, a, asen);
 }
 `).join('\n')}
 `;
@@ -92,7 +92,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nG(${rays[k]}) { P; ${rays[k]}(a, o, s); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, s, a); }`;
   return [n, b];
 }
 async function compile([n, b]) {
@@ -100,7 +100,10 @@ async function compile([n, b]) {
   await exec(`gcc -std=gnu17 -Wall -O3 -c ${n}.c -o ${n}.o -ffreestanding -fno-stack-clash-protection -fno-stack-protector`);
   await exec(`ld -T rainbow.ld ${n}.o -o ${n}.elf`);
   await exec(`objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`);
-  await exec(`tail --bytes=+81 ${n}.bin | head --bytes=-84 > abin/${n}`);
+  let abin = (await readFile(`${n}.bin`));
+  abin = abin.slice(5*16)
+  abin = abin.slice(0, abin.length - 5*16 - 4);
+  await writeFile(`abin/${n}`, abin);
   await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
   return n;
 }

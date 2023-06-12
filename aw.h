@@ -1,13 +1,13 @@
 #pragma once
 // clang-format off
-#define N(argo) void   argo(long a, void**o, long s)
-typedef         void (*n_t)(long a, void**o, long s);
+#define N(argo) void   argo(void**o, long s, long a)
+typedef         void (*n_t)(void**o, long s, long a);
 #define R(Olive)                                                               \
-  N(Olive      ) { asm("nop" : : "a"(a+(long)o+s)); };                         \
+  N(Olive      ) { asm("nop" : : "a"(o + s + a)); };                           \
   N(Olive##_ray)
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
-  R(Olive) { Olive##_nar(a, o, s); }                                           \
+  R(Olive) { Olive##_nar(o, s, a); }                                           \
   N(Olive##_nar)
 #define Δ(Olive)                                                               \
   N(Olive##_ray) __attribute__((section(".text." #Olive "_ray")));             \
