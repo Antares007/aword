@@ -1,7 +1,6 @@
 #pragma once
 // clang-format off
-#define N(argo) void   argo(void**o, long s, long a)
-typedef         void (*n_t)(void**o, long s, long a);
+#include "aword.h"
 #define R(Olive)                                                               \
   N(Olive      ) { asm("nop" : : "a"(o + s + a)); };                           \
   N(Olive##_ray)
@@ -17,6 +16,3 @@ typedef         void (*n_t)(void**o, long s, long a);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
 
-#define Usleep(v) ((void (*)(long))o[1])(v)
-#define Printf(...) ((void (*)(const char *, ...))o[0])(__VA_ARGS__)
-#define P Printf("%3ld %3ld %s %s\n", a, s, __FILE__, __FUNCTION__), Usleep(20000)

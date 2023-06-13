@@ -14,16 +14,16 @@ b {
 }.
 T {
   n_t jmps[12];
-  G(Yellow  ) { o[--s]=Yellow_ray;o[--s]=Yellow; jmps[9](o,s,a); }
-  G(Purple  ) { o[--s]=Yellow_ray;o[--s]=Purple; jmps[8](o,s,a); }
-  G(Red     ) { o[--s]=Yellow_ray;o[--s]=Red;    jmps[7](o,s,a); }
-  G(Green   ) { o[--s]=Yellow_ray;o[--s]=Green;  jmps[6](o,s,a); }
-  G(Blue    ) { o[--s]=Yellow_ray;o[--s]=Blue;   jmps[5](o,s,a); }
-  G(Navy    ) { o[--s]=Yellow_ray;o[--s]=Navy;   jmps[4](o,s,a); }
-  G(Lime    ) { o[--s]=Yellow_ray;o[--s]=Lime;   jmps[3](o,s,a); }
-  G(Maroon  ) { o[--s]=Yellow_ray;o[--s]=Maroon; jmps[2](o,s,a); }
-  G(Fuchsia ) { o[--s]=Yellow_ray;o[--s]=Fuchsia;jmps[1](o,s,a); }
-  G(Olive   ) { o[--s]=Yellow_ray;o[--s]=Olive;  jmps[0](o,s,a); }
+  G(Yellow  ) { o[--s]=Yellow; o[--s]=Yellow_ray;jmps[9](o,s,a); }
+  G(Purple  ) { o[--s]=Purple; o[--s]=Yellow_ray;jmps[8](o,s,a); }
+  G(Red     ) { o[--s]=Red;    o[--s]=Yellow_ray;jmps[7](o,s,a); }
+  G(Green   ) { o[--s]=Green;  o[--s]=Yellow_ray;jmps[6](o,s,a); }
+  G(Blue    ) { o[--s]=Blue;   o[--s]=Yellow_ray;jmps[5](o,s,a); }
+  G(Navy    ) { o[--s]=Navy;   o[--s]=Yellow_ray;jmps[4](o,s,a); }
+  G(Lime    ) { o[--s]=Lime;   o[--s]=Yellow_ray;jmps[3](o,s,a); }
+  G(Maroon  ) { o[--s]=Maroon; o[--s]=Yellow_ray;jmps[2](o,s,a); }
+  G(Fuchsia ) { o[--s]=Fuchsia;o[--s]=Yellow_ray;jmps[1](o,s,a); }
+  G(Olive   ) { o[--s]=Olive;  o[--s]=Yellow_ray;jmps[0](o,s,a); }
 }.
 NOT {
   G(Yellow) { Lime  (o, s, a); }
