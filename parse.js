@@ -46,23 +46,34 @@ function split_name_and_body(l) {
       return d;
     }, {});
     const b = `${Object.keys(sc).map(c => `
-const char*${c}_asentences[${sc[c].length}];
+n_t  ${c}_asentences[${sc[c].length}];
 long ${c}_current;`).join('\n')}
 G(Purple) {
-${Object.keys(sc).map(c => `
-${sc[c].map((l,i) => `  ${c}_asentences[${i}] = "${l}";`).join('\n')}
+  o[a++] = Purple;
+${
+  Object
+    .keys(sc)
+    .map(c => sc[c].map((l, i) => {
+      const awords = l.split(' ');
+      return `
+  o[a++] = "tab";
+${awords.map((aword) => `  o[a++] = "${aword}";`).join('\n')}
+  o[a++] = "o";
+  o[a++] = (void*)${awords.length + 2};
+  o[a++] = (void*)&${c}_asentences[${i}];
+`;
+}).join('  o[a++] = o[2];\n') + `
   ${c}_current = 0;`).join('\n')}
-  Purple(o, s, a);
+  ((n_t*)o)[2](o, s, a);
 }
+
 ${Object.keys(sc).map(c => `
 G(${c}) {
-  void (*T)(long, void*, long, const char*) = o[2];
-  const char*asen = ${c}_asentences[${c}_current];
-  long charge     = (long)o[3];
-  o[3]            = (void*)(long)(${c}_current + charge == ${sc[c].length});
-  ${c}_current    = (${c}_current + charge) % ${sc[c].length};
-  o[--s]          = ${c};
-  T(o, s, a, asen);
+  n_t aword     = ${c}_asentences[${c}_current];
+  ${c}_current  = ${c}_current + (long)o[3];
+  o[3]          = (void*)(${c}_current / ${sc[c].length});
+  ${c}_current  = ${c}_current - (long)o[3] * ${sc[c].length};
+  (o[--s] = ${c}), aword(o, s, a);
 }
 `).join('\n')}
 `;
@@ -104,6 +115,6 @@ async function compile([n, b]) {
   abin = abin.slice(5*16)
   abin = abin.slice(0, abin.length - 5*16 - 4);
   await writeFile(`abin/${n}`, abin);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);//
   return n;
 }

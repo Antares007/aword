@@ -55,7 +55,7 @@ one {
   }
 }.
 tab {
-  G(Lime    ) { Green       (o, s, a); }
+  G(Lime    ) { Green    (o, s, a); }
   G(Maroon  ) { Red      (o, s, a); }
   G(Fuchsia ) { }
   G(Navy    ) { Blue     (o, s, a); }
@@ -94,26 +94,29 @@ xyz
   ystr;
   zstr.
 two
-  id one one plus one plus;
-  id one plus one;
-  id one one plus one plus one plus.
+  one one plus;
+  one one plus one plus.
+three
+  two plus one;
+  one plus one plus one.
+four
+  two plus two;
+  one plus three.
 id {}.
-
-show2
-  id two two plus two plus two plus AND print_ld.
 show
+  four four AND print_2ld.
+show2
   abc stu xyz print_sss.
-baaa {
-  G(Lime) { o[a++] = "baaaaaaaa"; Lime(o, s, a); }
-}.
-ssss {
-  G(Lime) { o[a++] = "ssss"; Lime(o, s, a); }
-}.
+
+baaa { G(Lime) { o[a++] = "baaaaaaaa"; Lime(o, s, a); } }.
+ssss { G(Lime) { o[a++] = "ssss"; Lime(o, s, a); } }.
+
 t_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 't') (o[a++] = str+1), Green(o, s, a); else Blue(o, s, a); } }.
 a_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'a') (o[a++] = str+1), Green(o, s, a); else Blue(o, s, a); } }.
 b_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'b') (o[a++] = str+1), Green(o, s, a); else Blue(o, s, a); } }.
 s_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 's') (o[a++] = str+1), Green(o, s, a); else Blue(o, s, a); } }.
 empty {}.
+
 sS
   Green s_term sS sS;
   Green empty.
@@ -127,13 +130,21 @@ show4
 
 print_ld { G(Green) { void (*print)(const char *, ...) = o[0];
                       print("%ld\n", (long)o[--a]);
+                      Usleep(2000000); 
                       Green(o, s, a); } }.
-print_s { G(Green) {Usleep(200000); void (*print)(const char *, ...) = o[0];
-                    print("%s\n", (char*)o[a-1]);
-                    Green(o, s, a-1); } }.
-print_ss { G(Green) {Usleep(200000); void (*print)(const char *, ...) = o[0];
-                     print("%s %s\n", (char*)o[a-1], (char*)o[a-2]);
-                     Green(o, s, a-2); } }.
-print_sss { G(Green) {Usleep(200000); void (*print)(const char *, ...) = o[0];
+print_2ld { G(Green) { void (*print)(const char *, ...) = o[0];
+                      print("%ld %ld\n", (long)o[a-2], (long)o[a-1]);
+                      Usleep(2000000); 
+                      Green(o, s, a-2); } }.
+print_s { G(Green) {  void (*print)(const char *, ...) = o[0];
+                      print("%s\n", (char*)o[a-1]);
+                      Usleep(200000);
+                      Green(o, s, a-1); } }.
+print_ss { G(Green) { void (*print)(const char *, ...) = o[0];
+                      print("%s %s\n", (char*)o[a-1], (char*)o[a-2]);
+                      Usleep(200000);
+                      Green(o, s, a-2); } }.
+print_sss { G(Green) {void (*print)(const char *, ...) = o[0];
                       print("%s %s %s\n", (char*)o[a-1], (char*)o[a-2], (char*)o[a-3]);
+                      Usleep(200000);
                       Green(o, s, a-3); } }.
