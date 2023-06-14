@@ -136,6 +136,6 @@ async function compile([n, b]) {
   abin = abin.slice(5 * 16);
   abin = abin.slice(0, abin.length - 5 * 16 - 4);
   await writeFile(`abin/${n}`, abin);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`); //
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`);
   return n;
 }

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-typedef void (*n_t)(void **o, long s, long a);
-static void T(void **o, long s, long a);
+#include "aword.h"
+static N(T);
 void *map_file(const char *file_name);
 long t;
 n_t b;
@@ -45,17 +45,17 @@ static long T__(void *memory, const char *aw_name) {
   return r;
 }
 // clang-format off
-void monitor_it(void**o, long s, long a);
-static void ti0(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)0;  monitor_it(o, s, a); }
-static void ti1(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)1;  monitor_it(o, s, a); }
-static void ti2(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)2;  monitor_it(o, s, a); }
-static void ti3(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)3;  monitor_it(o, s, a); }
-static void ti4(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)4;  monitor_it(o, s, a); }
-static void ti5(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)5;  monitor_it(o, s, a); }
-static void ti6(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)6;  monitor_it(o, s, a); }
-static void ti7(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)7;  monitor_it(o, s, a); }
-static void ti8(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)8;  monitor_it(o, s, a); }
-static void ti9(void**o, long s, long a) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)9;  monitor_it(o, s, a); }
+N(monitor_it);
+static N(ti0) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)0;  monitor_it(o, s, a); }
+static N(ti1) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)1;  monitor_it(o, s, a); }
+static N(ti2) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)2;  monitor_it(o, s, a); }
+static N(ti3) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)3;  monitor_it(o, s, a); }
+static N(ti4) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)4;  monitor_it(o, s, a); }
+static N(ti5) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)5;  monitor_it(o, s, a); }
+static N(ti6) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)6;  monitor_it(o, s, a); }
+static N(ti7) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)7;  monitor_it(o, s, a); }
+static N(ti8) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)8;  monitor_it(o, s, a); }
+static N(ti9) { void**d=(void*)o[s++]+0x230; o[--s]=d[10]; o[--s]=d[11]; o[--s]=(void*)9;  monitor_it(o, s, a); }
 static long T_(void *memory, const char *aw_name) {
   long t = T__(memory, aw_name);
   long size = t;
@@ -82,7 +82,7 @@ static int hash(const char **asentence, long count) {
   }
   return h;
 }
-static void T(void **o, long s, long a) {
+static N(T) {
   n_t *aword = (n_t *)o[--a];
   long count = (long)o[--a];
   const char **asentence = (const char **)&o[a -= count];

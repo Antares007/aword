@@ -130,11 +130,11 @@ show4
 
 print_ld { G(Green) { void (*print)(const char *, ...) = o[0];
                       print("%ld\n", (long)o[--a]);
-                      Usleep(2000000); 
+                      Usleep(200000);
                       Green(o, s, a); } }.
-print_2ld { G(Green) { void (*print)(const char *, ...) = o[0];
+print_2ld { G(Green) {void (*print)(const char *, ...) = o[0];
                       print("%ld %ld\n", (long)o[a-2], (long)o[a-1]);
-                      Usleep(2000000); 
+                      Usleep(200000);
                       Green(o, s, a-2); } }.
 print_s { G(Green) {  void (*print)(const char *, ...) = o[0];
                       print("%s\n", (char*)o[a-1]);
