@@ -45,7 +45,7 @@ function split_name_and_body(l) {
       const p = l.indexOf(" ");
       const maybecname = l.slice(0, p);
       const cname = colors[maybecname] ? maybecname : "Lime";
-      const asent = colors[maybecname] ? l.slice(p + 1) : l;
+      const asent = (colors[maybecname] ? l.slice(p + 1) : l).split(" ");
       if (d[cname]) d[cname].push(asent);
       else d[cname] = [asent];
       return d;
@@ -57,37 +57,49 @@ n_t  ${c}_asentences[${sc[c].length}];
 long ${c}_current;`
       )
       .join("\n")}
-G(Purple) {
-  o[a++] = Purple;
 ${Object.keys(sc)
-  .map(
-    (c) => `${sc[c]
-      .map((l, i) => {
-        const awords = l.split(" ");
-        return `
-  o[a++] = "tab";
+  .map((c) =>
+    sc[c]
+      .map(
+        (awords, i) => `
+N(${c}_asentence_${i}) {
 ${awords.map((aword) => `  o[a++] = "${aword}";`).join("\n")}
-  o[a++] = "o";
-  o[a++] = (void*)${awords.length + 2};
-  o[a++] = (void*)&${c}_asentences[${i}];
-`;
-      })
-      .join("  o[a++] = o[2];\n")}
-  ${c}_current = 0;`
+  o[a++] = (void*)${awords.length};
+  ((n_t*)o)[2](t, a, b, o, s);
+}`
+      )
+      .join("\n")
   )
   .join("\n")}
-  ((n_t*)o)[2](o, s, a);
-}
 
+G(Purple) {
+${Object.keys(sc)
+  .map((c) =>
+    sc[c]
+      .map((awords, i) => `  ${c}_asentences[${i}] = ${c}_asentence_${i};`)
+      .join("\n")
+  )
+  .join("\n")}
+  Purple(t, a, b, o, s);
+}
+long charge;
+long turns;
 ${Object.keys(sc)
   .map(
     (c) => `
-G(${c}) {
+N(${c}_turn) {
   n_t aword     = ${c}_asentences[${c}_current];
-  ${c}_current  = ${c}_current + (long)o[3];
+  ${c}_current  = ${c}_current + charge;
   o[3]          = (void*)(${c}_current / ${sc[c].length});
   ${c}_current  = ${c}_current - (long)o[3] * ${sc[c].length};
-  (o[--s] = ${c}), aword(o, s, a);
+  o[--s] = ${c};
+  o[--s] = ++turns == ${sc[c].length} ? Navy : ${c}_turn;
+  aword(t, a, b, o, s);
+}
+G(${c}) {
+  charge  = (long)o[3];
+  turns   = 0;
+  ${c}_turn(t, a, b, o, s);
 }
 `
   )
@@ -119,7 +131,7 @@ function add_missing_rays([n, b]) {
   };
   deleteDefinedRays("G");
   deleteDefinedRays("R");
-  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(o, s, a); }`;
+  for (let k in rays) b = b + `\nR(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
   return [n, b];
 }
 async function compile([n, b]) {

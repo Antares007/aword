@@ -53,12 +53,12 @@ static void draw() {
       ; // length = 0;
   } while (debug && key != 'n');
 }
-void monitor_it(void **o, long s, long a) {
+N(monitor_it) {
   color = colors[(long)o[s++]];
   size = (long)o[s++];
   name = o[s++];
   draw();
-  ((n_t *)o)[s](o, s + 1, a);
+  ((n_t *)o)[s](t, a, b, o, s + 1);
 }
 void monitor_init() {
   SetTraceLogLevel(LOG_ERROR);

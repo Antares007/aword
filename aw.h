@@ -2,11 +2,11 @@
 // clang-format off
 #include "aword.h"
 #define R(Olive)                                                               \
-  N(Olive      ) { asm("nop" : : "a"(o + s + a)); };                           \
+  N(Olive      ) { asm("nop" : : "a"(t + a + (long)b + (long)o + s)); };       \
   N(Olive##_ray)
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
-  R(Olive) { Olive##_nar(o, s, a); }                                           \
+  R(Olive) { Olive##_nar(t, a, b, o, s); }                                     \
   N(Olive##_nar)
 #define Δ(Olive)                                                               \
   N(Olive##_ray) __attribute__((section(".text." #Olive "_ray")));             \

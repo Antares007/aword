@@ -15,4 +15,18 @@ void *map_file(const char *file_name) {
     return 0;
   return loaded_at_addr;
 }
-
+#include <stdio.h>
+#include <assert.h>
+long load_file(void *memory, const char *aw_name) {
+  char str[707];
+  snprintf(str, 707, "abin/%s", aw_name);
+  FILE *f = fopen(str, "r");
+  assert(f);
+  fseek(f, 0, SEEK_END);
+  long size = ftell(f);
+  fseek(f, 0, SEEK_SET);
+  long r = fread(memory, 1, size, f);
+  assert(size == r);
+  fclose(f);
+  return r;
+}
