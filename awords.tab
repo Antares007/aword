@@ -56,10 +56,10 @@ one {
 }.
 tab {
   G(Lime    ) { P; Green    (t, a, b, o, s); }
-  G(Maroon  ) { P; Red      (t, a, b, o, s); }
   G(Fuchsia ) { P; }
-  G(Navy    ) { P; ((n_t*)o)[s+1]((long)o[s], a, b, o, s + 3); }
-  G(Olive   ) { P; ((n_t*)o)[s+2]((long)o[s], a, b, o, s + 3); }
+  G(Maroon  ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
+  G(Olive   ) { P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
+  G(Navy    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); }
 }.
 plus {
   G(Green) {
@@ -69,30 +69,7 @@ plus {
     Green(t, a, b, o, s);
   }
 }.
-astr { G(Lime) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
-bstr { G(Lime) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
-cstr { G(Lime) { o[a++] = "c"; Lime(t, a, b, o, s); } }.
-
-sstr { G(Lime) { o[a++] = "s"; Lime(t, a, b, o, s); } }.
-tstr { G(Lime) { o[a++] = "t"; Lime(t, a, b, o, s); } }.
-ustr { G(Lime) { o[a++] = "u"; Lime(t, a, b, o, s); } }.
-
-xstr { G(Lime) { o[a++] = "x"; Lime(t, a, b, o, s); } }.
-ystr { G(Lime) { o[a++] = "y"; Lime(t, a, b, o, s); } }.
-zstr { G(Lime) { o[a++] = "z"; Lime(t, a, b, o, s); } }.
-newline { G(Lime) { o[a++] = "\n"; Lime(t, a, b, o, s); } }.
-abc
-  astr;
-  bstr;
-  cstr.
-stu
-  sstr;
-  tstr;
-  ustr.
-xyz
-  Green xstr;
-  Green ystr;
-  Green zstr.
+id {}.
 two
   one one plus;
   one one plus one plus.
@@ -102,11 +79,8 @@ three
 four
   two plus two;
   one plus three.
-id {}.
-show2
-  four four AND print_2ld.
 show
-  Green abc stu xyz print_sss.
+  four four AND print_2ld.
 
 baaa { G(Lime) { o[a++] = "baaaaaaaa"; Lime(t, a, b, o, s); } }.
 ssss { G(Lime) { o[a++] = "ssss"; Lime(t, a, b, o, s); } }.
