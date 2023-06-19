@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <fcntl.h>
+#include <netinet/if_ether.h> // for ethernet header
 #include <netinet/in.h>
+#include <netinet/ip.h> // for ip header
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/epoll.h>
@@ -9,14 +11,90 @@
 
 #define MAX_EVENTS 10
 int setnonblocking(long fd) {
-  // F_GETFL  Value of file status flags and access modes.
-  //          The return value is not negative.
+  // F_GETFL  Value of file status flags and access modes. The return value is not negative.
   int flags = fcntl(fd, F_GETFL, 0);
-  if (flags < 0)
-    return flags;
+  if (flags < 0) return flags;
   flags |= O_NONBLOCK;
   // F_SETFL  Value other than -1.
   return fcntl(fd, F_SETFL, flags);
+}
+
+void data_process(unsigned char *buffer, int buflen);
+
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
+#include <stdio.h>
+
+//#include <linux/if_ether.h>
+//#include <arpa/inet.h> // to avoid warning at inet_ntoa
+//
+//void print_ip_header(struct iphdr *ip) {
+//  printf("IP Header\n");
+//  printf("----------------------------\n");
+//  printf("Version: %u\n", ip->version);
+//  printf("Internet Header Length: %u bytes\n", ip->ihl * 4);
+//  printf("Type of Service: %u\n", ip->tos);
+//  printf("Total Length: %u bytes\n", ntohs(ip->tot_len));
+//  printf("Identification: %u\n", ntohs(ip->id));
+//  printf("Flags: 0x%02X\n", (ntohs(ip->frag_off) >> 13) & 0x07);
+//  printf("Fragment Offset: %u\n", (ntohs(ip->frag_off) & 0x1FFF) * 8);
+//  printf("Time to Live: %u\n", ip->ttl);
+//  printf("Protocol: %u\n", ip->protocol);
+//  printf("Header Checksum: 0x%04X\n", ntohs(ip->check));
+//  printf("Source IP Address: %s\n", inet_ntoa(*(struct in_addr*)&ip->saddr));
+//  printf("Destination IP Address: %s\n", inet_ntoa(*(struct in_addr *)&ip->daddr));
+//  printf("----------------------------\n");
+//}
+void print_tcp_header(struct tcphdr *tcp) {
+  printf("TCP Header\n");
+  printf("----------------------------\n");
+  printf("Source Port: %u\n", ntohs(tcp->source));
+  printf("Destination Port: %u\n", ntohs(tcp->dest));
+  printf("Sequence Number: %u\n", ntohl(tcp->seq));
+  printf("Acknowledgment Number: %u\n", ntohl(tcp->ack_seq));
+  printf("Data Offset: %u bytes\n", tcp->doff * 4);
+  printf("Flags: 0x%02X\n", tcp->th_flags);
+  printf("Window Size: %u\n", ntohs(tcp->window));
+  printf("Checksum: 0x%04X\n", ntohs(tcp->check));
+  printf("Urgent Pointer: %u\n", ntohs(tcp->urg_ptr));
+  printf("----------------------------\n");
+}
+
+void print_udp_header(struct udphdr *udp) {
+  printf("UDP Header\n");
+  printf("----------------------------\n");
+  printf("Source Port: %u\n", ntohs(udp->source));
+  printf("Destination Port: %u\n", ntohs(udp->dest));
+  printf("Length: %u bytes\n", ntohs(udp->len));
+  printf("Checksum: 0x%04X\n", ntohs(udp->check));
+  printf("----------------------------\n");
+}
+
+void process_packet(unsigned char *buffer, int packet_size) {
+  struct ip *ip = (struct ip *)buffer;
+
+  if (ip->ip_p == IPPROTO_TCP) {
+    printf("Packet is a TCP packet.\n");
+
+    struct tcphdr *tcp = (struct tcphdr *)(buffer + ip->ip_hl * 4);
+    print_tcp_header(tcp);
+
+    // Additional processing for TCP packet
+    // ...
+
+  } else if (ip->ip_p == IPPROTO_UDP) {
+    printf("Packet is a UDP packet.\n");
+
+    struct udphdr *udp = (struct udphdr *)(buffer + ip->ip_hl * 4);
+    print_udp_header(udp);
+
+    // Additional processing for UDP packet
+    // ...
+
+  } else {
+    printf("Packet is neither a TCP nor UDP packet.\n");
+  }
 }
 
 int main() {
@@ -24,7 +102,13 @@ int main() {
   if ((epollfd = epoll_create1(0)) == -1)
     perror("epoll_create1"), exit(EXIT_FAILURE);
 
-  struct epoll_event ev = {.events = EPOLLIN, .data.fd = STDIN_FILENO};
+  int sock_r = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+  if (sock_r < 0) {
+    printf("error in socket\n");
+    return -1;
+  }
+  // STDIN_FILENO
+  struct epoll_event ev = {.events = EPOLLIN, .data.fd = sock_r};
   if (setnonblocking(ev.data.fd) == -1)
     perror("cant set O_NONBLOCK"), exit(EXIT_FAILURE);
 
@@ -45,9 +129,48 @@ int main() {
             else
               perror("read"), exit(EXIT_FAILURE);
           else
-            printf("%ld\n", buflen);
+            process_packet(buffer + sizeof(struct ethhdr),
+                           buflen - sizeof(struct ethhdr));
 }
+//  void print_eth_header(struct ethhdr *eth) {
+//    printf("Ethernet Header\n");
+//    printf("----------------------------\n");
+//    printf("Destination MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+//            eth->h_dest[0], eth->h_dest[1], eth->h_dest[2],
+//            eth->h_dest[3], eth->h_dest[4], eth->h_dest[5]);
+//    printf("Source MAC: %02X:%02X:%02X:%02X:%02X:%02X\n",
+//            eth->h_source[0], eth->h_source[1], eth->h_source[2],
+//            eth->h_source[3], eth->h_source[4], eth->h_source[5]);
+//    printf("EtherType: 0x%04X\n", ntohs(eth->h_proto));
+//    printf("----------------------------\n");
+//  }
+//  #include <netinet/udp.h> // Include the necessary header file
+//  void print_udp_header(struct udphdr *udp) {
+//    printf("UDP Header\n");
+//    printf("----------------------------\n");
+//    printf("Source Port: %u\n", ntohs(udp->source));
+//    printf("Destination Port: %u\n", ntohs(udp->dest));
+//    printf("Length: %u bytes\n", ntohs(udp->len));
+//    printf("Checksum: 0x%04X\n", ntohs(udp->check));
+//    printf("----------------------------\n");
+//  }
+//  void data_process(unsigned char *buffer, int buflen) {
+//    struct ethhdr *eth = (struct ethhdr *)(buffer);
+//    struct iphdr *ip = (struct iphdr *)(buffer + sizeof(struct ethhdr));
+//    struct udphdr *udp = (struct udphdr *)(buffer + sizeof(struct
+//    ethhdr)); if(ip->protocol == 17) {
+//      print_eth_header(eth);
+//      print_udp_header(udp);
+//    }
+//  }
+//  
 /*
+ The primary objective is to prioritize words as the main method of
+ communication. Instead of exchanging information through fragmented
+ streams, the aim is to convey it through complete sentences. However,
+ if it becomes necessary to transmit fragmented streams, words can be
+ used to indicate that intention. For example, to prepare the listeners
+ to receive such fragmented streams.
 
 Where should we place the call to epoll_wait? How do we read data in a loop
 until EAGAIN or in a pull call from the consumer stream?
