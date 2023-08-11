@@ -1,124 +1,65 @@
-o {
-  G(Yellow  ) { P; Lime   (t, a, b, o, s); }
-  G(Purple  ) { P;                   }
-  G(Red     ) { P; Maroon (t, a, b, o, s); }
-  G(Green   ) { P; Olive  (t, a, b, o, s); }
-  G(Blue    ) { P; Navy   (t, a, b, o, s); }
-}.
 b {
-  G(Navy    ) { P; Blue   (t, a, b, o, s); }
-  G(Lime    ) { P; Green  (t, a, b, o, s); }
-  G(Maroon  ) { P; Red    (t, a, b, o, s); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; o[3] = (void*)1; Yellow (t, a, b, o, s); }
+  G(Navy    ) { P; Blue    (t, a, b, o, s); }
+  G(Lime    ) { P; Green   (t, a, b, o, s); }
+  G(Maroon  ) { P; Red     (t, a, b, o, s); }
+  G(Fuchsia ) { P; Yellow  (t, a, b, o, s); }
+  G(Olive   ) { P; Purple  (t, a, b, o, s); }
 }.
-T {
-  n_t jmps[12];
-  G(Yellow  ) { o[--s]=Yellow; o[--s]=Yellow_ray;jmps[9](t, a, b, o, s); }
-  G(Purple  ) { o[--s]=Purple; o[--s]=Yellow_ray;jmps[8](t, a, b, o, s); }
-  G(Red     ) { o[--s]=Red;    o[--s]=Yellow_ray;jmps[7](t, a, b, o, s); }
-  G(Green   ) { o[--s]=Green;  o[--s]=Yellow_ray;jmps[6](t, a, b, o, s); }
-  G(Blue    ) { o[--s]=Blue;   o[--s]=Yellow_ray;jmps[5](t, a, b, o, s); }
-  G(Navy    ) { o[--s]=Navy;   o[--s]=Yellow_ray;jmps[4](t, a, b, o, s); }
-  G(Lime    ) { o[--s]=Lime;   o[--s]=Yellow_ray;jmps[3](t, a, b, o, s); }
-  G(Maroon  ) { o[--s]=Maroon; o[--s]=Yellow_ray;jmps[2](t, a, b, o, s); }
-  G(Fuchsia ) { o[--s]=Fuchsia;o[--s]=Yellow_ray;jmps[1](t, a, b, o, s); }
-  G(Olive   ) { o[--s]=Olive;  o[--s]=Yellow_ray;jmps[0](t, a, b, o, s); }
+m {
+  N(dot) { ((n_t*)o)[a - 1](t, a - 1, b, o, s); }
+  G(Lime ) { P; 
+    n_t T = o[2];
+    o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
+    o[--s] = Maroon; o[--s] = dot;  o[--s] = Navy;
+    o[a++] = "B"; o[a++] = "aw"; o[a++] = "O"; o[a++] = (void*)3; T(t, a, b, o, s);
+  }
+}.
+aw {
+  G(Green) { Printf("a"); Green (t, a, b, o, s); }
+}.
+bw {
+  G(Green) { Printf("b"); Green (t, a, b, o, s); }
+}.
+o {
+  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
+  G(Purple  ) { P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
+  G(Red     ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
+  G(Green   ) { P; Olive   (t, a, b, o, s); }
+  G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); } }.
+B {
+  G(Navy    ) { P; Blue    (t, a, b, o, s); }
+  G(Lime    ) { P; Green   (t, a, b, o, s); }
+  G(Maroon  ) { P; Red     (t, a, b, o, s); }
+  G(Fuchsia ) { P; Yellow  (t, a, b, o, s); }
+  G(Olive   ) { P; Purple  (t, a, b, o, s); }
+}.
+O {
+  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
+  G(Purple  ) { P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
+  G(Red     ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
+  G(Green   ) { P; Olive   (t, a, b, o, s); }
+  G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); }
 }.
 NOT {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Red   ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Olive (t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); }
+  G(Yellow) { P; Lime  (t, a, b, o, s); }
+  G(Red   ) { P; Yellow(t, a, b, o, s); }
+  G(Green ) { P; Olive (t, a, b, o, s); }
+  G(Lime  ) { P; Green (t, a, b, o, s); }
 }.
 AND {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Green ) { Yellow(t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); }
+  G(Yellow) { P; Lime  (t, a, b, o, s); }
+  G(Green ) { P; Yellow(t, a, b, o, s); }
+  G(Lime  ) { P; Green (t, a, b, o, s); }
 }.
 OR {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Blue  ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Olive (t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); }
+  G(Yellow) { P; Lime  (t, a, b, o, s); }
+  G(Blue  ) { P; Yellow(t, a, b, o, s); }
+  G(Green ) { P; Olive (t, a, b, o, s); }
+  G(Lime  ) { P; Green (t, a, b, o, s); }
 }.
 ORAND {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Blue  ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Yellow(t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); }
+  G(Yellow) { P; Lime  (t, a, b, o, s); }
+  G(Blue  ) { P; Yellow(t, a, b, o, s); }
+  G(Green ) { P; Yellow(t, a, b, o, s); }
+  G(Lime  ) { P; Green (t, a, b, o, s); }
 }.
-one {
-  G(Lime  ) { 
-    o[a++] = (void*)1;
-    Lime(t, a, b, o, s);
-  }
-}.
-tab {
-  G(Lime    ) { P; Green    (t, a, b, o, s); }
-  G(Fuchsia ) { P; }
-  G(Maroon  ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
-  G(Olive   ) { P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
-  G(Navy    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); }
-}.
-plus {
-  G(Green) {
-    long r    = (long)o[--a];
-    long l    = (long)o[--a];
-    o[a++]    = (void*)(l+r);
-    Green(t, a, b, o, s);
-  }
-}.
-id {}.
-two
-  one one plus;
-  one one plus one plus.
-three
-  two plus one;
-  one plus one plus one.
-four
-  two plus two;
-  one plus three.
-show
-  four four AND print_2ld.
-
-baaa { G(Lime) { o[a++] = "baaaaaaaa"; Lime(t, a, b, o, s); } }.
-ssss { G(Lime) { o[a++] = "ssss"; Lime(t, a, b, o, s); } }.
-
-t_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 't') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
-a_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'a') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
-b_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 'b') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
-s_term { G(Green) { const char*str = (const char*)o[a-1]; if (str[0] == 's') (o[a++] = str+1), Green(t, a, b, o, s); else Blue(t, a, b, o, s); } }.
-empty {}.
-
-sS
-  Green s_term sS sS;
-  Green empty.
-S
-  Green b_term;
-  Green S a_term.
-show3
-  ssss sS print_s.
-show4
-  baaa S print_s.
-
-print_ld { G(Green) { void (*print)(const char *, ...) = o[0];
-                      print("%ld\n", (long)o[--a]);
-                      Usleep(200000);
-                      Green(t, a, b, o, s); } }.
-print_2ld { G(Green) {void (*print)(const char *, ...) = o[0];
-                      print("%ld %ld\n", (long)o[a-2], (long)o[a-1]);
-                      Usleep(200000);
-                      Green(t, a-2, b, o, s); } }.
-print_s { G(Green) {  void (*print)(const char *, ...) = o[0];
-                      print("%s\n", (char*)o[a-1]);
-                      Usleep(200000);
-                      Green(t, a-1, b, o, s); } }.
-print_ss { G(Green) { void (*print)(const char *, ...) = o[0];
-                      print("%s %s\n", (char*)o[a-1], (char*)o[a-2]);
-                      Usleep(200000);
-                      Green(t, a-2, b, o, s); } }.
-print_sss { G(Green) {void (*print)(const char *, ...) = o[0];
-                      print("%s %s %s\n", (char*)o[a-1], (char*)o[a-2], (char*)o[a-3]);
-                      Usleep(200000);
-                      Green(t, a-3, b, o, s); } }.
