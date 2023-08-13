@@ -11,11 +11,25 @@ void monitor_init();
 N(Maroon_end) { P; }
 N(Olive_end ) { P; }
 N(Navy_end  ) { P; }
+N(TI) {
+  long ray = (long)o[s++];
+  const char* name = (char*)o[s++];
+  n_t Yellow = (void*)o[s++];
+  static const char*cnames[] = { "Yellow", "Purple", "Red", "Green", "Blue", "Navy", "Lime", "Maroon", "Fuchsia", "Olive" };
+  Printf("%10s %s\n", cnames[ray], name);
+  Yellow(t, a, b, o, s);
+}
 N(T) {
   long wc = (long)o[--a];
   const char**atext = (void*)&o[a -= wc];
-  for (long i = 0; i < wc; i++) 
+  for (long i = 0; i < wc; i++) {
     t += load_file(b + t, atext[i]);
+    char** name = b + t + 0x2d0;
+    n_t*  tip  = b + t + 0x2d8;
+    t += load_file(b + t, "TI");
+    *name = (void*)atext[i];
+    *tip = TI;
+  }
   o[a++] = b + t - 32;
   ((n_t*)o)[s + 1](t, a, b, o, s + 3);
 }
@@ -30,10 +44,15 @@ int main(int argc, const char **argv) {
   long s = sizeof(o) / sizeof(*o);
 
   assert(b);
-
-  o[--s] = Maroon_end;
-  o[--s] = Olive_end;
-  o[--s] = Navy_end;
+  void*ob[] = {
+    Navy_end,
+    Olive_end,
+    Maroon_end,
+  };
+  o[--s] = ob;
+  o[--s] =  Maroon_end;
+  o[--s] =  Olive_end;
+  o[--s] =  Navy_end;
 
   o[a++] = printf;
   o[a++] = usleep;
