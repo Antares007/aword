@@ -39,6 +39,9 @@ int main(int argc, const char **argv) {
   o[a++] = usleep;
   o[a++] = T;
 
+  o[a++] = "baaa";
+  o[a++] = (void*)4;
+  o[a++] = (void*)0;
   o[--s] = Maroon_end;
   o[--s] = dot;
   o[--s] = Navy_end;

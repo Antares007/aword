@@ -11,14 +11,16 @@ m {
     n_t T = o[2];
     o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
     o[--s] = Maroon; o[--s] = dot;  o[--s] = Navy;
-    o[a++] = "B"; o[a++] = "aw"; o[a++] = "O"; o[a++] = (void*)3; T(t, a, b, o, s);
+    o[a++] = "B";
+    o[a++] = "b_";
+    o[a++] = "term";
+    o[a++] = "AND";
+    o[a++] = "a_";
+    o[a++] = "term";
+    o[a++] = "O";
+    o[a++] = (void*)7;
+    T(t, a, b, o, s);
   }
-}.
-aw {
-  G(Green) { Printf("a"); Green (t, a, b, o, s); }
-}.
-bw {
-  G(Green) { Printf("b"); Green (t, a, b, o, s); }
 }.
 o {
   G(Yellow  ) { P; Lime    (t, a, b, o, s); }
@@ -26,20 +28,44 @@ o {
   G(Red     ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
   G(Green   ) { P; Olive   (t, a, b, o, s); }
   G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); } }.
+term {
+  G(Green   ) { P; 
+    char*pst = (char*)o[--a];
+    long pos = (long)o[--a];
+    long len = (long)o[--a];
+    char*str = (char*)o[--a];
+    if (pos < len && str[pos] == pst[0]) {
+      o[a++] = (void*)str;
+      o[a++] = (void*)len;
+      o[a++] = (void*)pos + 1;
+      Green(t, a, b, o, s);
+    } else {
+      o[a++] = (void*)str;
+      o[a++] = (void*)len;
+      o[a++] = (void*)pos;
+      Blue(t, a, b, o, s);
+    }
+  } }.
+a_ {
+  G(Lime) { P; o[a++] = "a"; Lime(t, a, b, o, s); } }.
+b_ {
+  G(Lime) { P; o[a++] = "b"; Lime(t, a, b, o, s); } }.
+aw {
+  G(Green) { Printf("a"); Green (t, a, b, o, s); } }.
+bw {
+  G(Green) { Printf("b"); Green (t, a, b, o, s); } }.
 B {
   G(Navy    ) { P; Blue    (t, a, b, o, s); }
   G(Lime    ) { P; Green   (t, a, b, o, s); }
   G(Maroon  ) { P; Red     (t, a, b, o, s); }
   G(Fuchsia ) { P; Yellow  (t, a, b, o, s); }
-  G(Olive   ) { P; Purple  (t, a, b, o, s); }
-}.
+  G(Olive   ) { P; Purple  (t, a, b, o, s); } }.
 O {
   G(Yellow  ) { P; Lime    (t, a, b, o, s); }
   G(Purple  ) { P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
   G(Red     ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
   G(Green   ) { P; Olive   (t, a, b, o, s); }
-  G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); }
-}.
+  G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); } }.
 NOT {
   G(Yellow) { P; Lime  (t, a, b, o, s); }
   G(Red   ) { P; Yellow(t, a, b, o, s); }

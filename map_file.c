@@ -21,6 +21,7 @@ long load_file(void *memory, const char *aw_name) {
   char str[707];
   snprintf(str, 707, "abin/%s", aw_name);
   FILE *f = fopen(str, "r");
+  if (!f) printf("%s\n", aw_name);
   assert(f);
   fseek(f, 0, SEEK_END);
   long size = ftell(f);
