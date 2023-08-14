@@ -15,8 +15,9 @@ N(TI) {
   long ray = (long)o[s++];
   const char* name = (char*)o[s++];
   n_t Yellow = (void*)o[s++];
-  static const char*cnames[] = { "Yellow", "Purple", "Red", "Green", "Blue", "Navy", "Lime", "Maroon", "Fuchsia", "Olive" };
-  Printf("%10s %s\n", cnames[ray], name);
+  static const char*cnames[] = {  "Yellow", "Purple", "Red",    "Green",    "Blue",
+                                  "Navy",   "Lime",   "Maroon", "Fuchsia",  "Olive" };
+  Printf("%10s %2ld %ld %s\n", cnames[ray], a, s, name);
   Yellow(t, a, b, o, s);
 }
 N(T) {
@@ -50,9 +51,9 @@ int main(int argc, const char **argv) {
     Maroon_end,
   };
   o[--s] = ob;
-  o[--s] =  Maroon_end;
-  o[--s] =  Olive_end;
-  o[--s] =  Navy_end;
+  o[--s] = Maroon_end;
+  o[--s] = Olive_end;
+  o[--s] = Navy_end;
 
   o[a++] = printf;
   o[a++] = usleep;
