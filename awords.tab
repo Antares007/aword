@@ -1,38 +1,32 @@
 b {
-  G(Navy    ) { P; Blue    (t, a, b, o, s); }
-  G(Lime    ) { P; Green   (t, a, b, o, s); }
-  G(Maroon  ) { P; Red     (t, a, b, o, s); }
-  G(Fuchsia ) { P; Yellow  (t, a, b, o, s); }
-  G(Olive   ) { P; Purple  (t, a, b, o, s); }
-}.
+  G(Navy    ) { Blue    (t, a, b, o, s); }
+  G(Lime    ) { Green   (t, a, b, o, s); }
+  G(Maroon  ) { Red     (t, a, b, o, s); }
+  G(Fuchsia ) { Yellow  (t, a, b, o, s); }
+  G(Olive   ) { Purple  (t, a, b, o, s); } }.
 m {
   N(doit    ) { ((n_t*)o)[a - 1](t, a - 1, b, o, s); }
-  G(Lime    ) { P; 
+  G(Lime    ) {
     n_t T = o[2];
     o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
     o[--s] = Maroon; o[--s] = doit; o[--s] = Navy;
     o[a++] = "b";
-    o[a++] = "b_";
-    o[a++] = "term";
-    o[a++] = "AND";
-    o[a++] = "a_";
-    o[a++] = "term";
+    o[a++] = "b_"; o[a++] = "term"; o[a++] = "AND"; o[a++] = "a_"; o[a++] = "term";
     o[a++] = "o";
     o[a++] = (void*)7;
     T(t, a, b, o, s);
-  }
-}.
+  } }.
 o {
-  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
+  G(Yellow  ) { Lime    (t, a, b, o, s); }
   G(Purple  ) { Printf(">\n");
-                P; ((n_t*)o)[s+1](t, a, b, o, s + 3); }
-  G(Red     ) { P; ((n_t*)o)[s+2](t, a, b, o, s + 3); }
-  G(Green   ) { P; Olive   (t, a, b, o, s); }
-  G(Blue    ) { P; ((n_t*)o)[s+0](t, a, b, o, s + 3); }
+                ((n_t*)o)[s+1](t, a, b, o, s + 3); }
+  G(Red     ) { ((n_t*)o)[s+2](t, a, b, o, s + 3); }
+  G(Green   ) { Olive   (t, a, b, o, s); }
+  G(Blue    ) { ((n_t*)o)[s+0](t, a, b, o, s + 3); }
   G(Fuchsia ) { Printf("<\n");
-                P; Fuchsia(t, a, b, o, s); } }.
+                Fuchsia(t, a, b, o, s); } }.
 term {
-  G(Green   ) { P; 
+  G(Green   ) {
     char*pst = (char*)o[--a];
     long pos = (long)o[--a];
     long len = (long)o[--a];
@@ -49,44 +43,39 @@ term {
       Blue(t, a, b, o, s);
     }
   } }.
-a_ { G(Lime) { P; o[a++] = "a"; Lime(t, a, b, o, s); } }.
-b_ { G(Lime) { P; o[a++] = "b"; Lime(t, a, b, o, s); } }.
+a_ { G(Lime) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
+b_ { G(Lime) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
 S {
   N(doit) { ((n_t*)o)[a - 1](t, a - 1, b, o, s); }
-  G(Lime ) { P; 
+  G(Lime ) {
     n_t T = o[2];
     o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
 
-    o[--s] = Maroon; o[--s] = doit;  o[--s] = Navy;
+    o[--s] = Maroon; o[--s] = doit; o[--s] = Navy;
     o[a++] = "b";
     o[a++] = "o";
     o[a++] = (void*)2;
     T(t, a, b, o, s);
-  }
-}.
+  } }.
 NOT {
-  G(Yellow) { P; Lime  (t, a, b, o, s); }
-  G(Red   ) { P; Yellow(t, a, b, o, s); }
-  G(Green ) { P; Olive (t, a, b, o, s); }
-  G(Lime  ) { P; Green (t, a, b, o, s); }
-}.
+  G(Yellow) { Lime  (t, a, b, o, s); }
+  G(Red   ) { Yellow(t, a, b, o, s); }
+  G(Green ) { Olive (t, a, b, o, s); }
+  G(Lime  ) { Green (t, a, b, o, s); } }.
 AND {
-  G(Yellow) { P; Lime  (t, a, b, o, s); }
-  G(Green ) { P; Yellow(t, a, b, o, s); }
-  G(Lime  ) { P; Green (t, a, b, o, s); }
-}.
+  G(Yellow) { Lime  (t, a, b, o, s); }
+  G(Green ) { Yellow(t, a, b, o, s); }
+  G(Lime  ) { Green (t, a, b, o, s); } }.
 OR {
-  G(Yellow) { P; Lime  (t, a, b, o, s); }
-  G(Blue  ) { P; Yellow(t, a, b, o, s); }
-  G(Green ) { P; Olive (t, a, b, o, s); }
-  G(Lime  ) { P; Green (t, a, b, o, s); }
-}.
+  G(Yellow) { Lime  (t, a, b, o, s); }
+  G(Blue  ) { Yellow(t, a, b, o, s); }
+  G(Green ) { Olive (t, a, b, o, s); }
+  G(Lime  ) { Green (t, a, b, o, s); } }.
 ORAND {
-  G(Yellow) { P; Lime  (t, a, b, o, s); }
-  G(Blue  ) { P; Yellow(t, a, b, o, s); }
-  G(Green ) { P; Yellow(t, a, b, o, s); }
-  G(Lime  ) { P; Green (t, a, b, o, s); }
-}.
+  G(Yellow) { Lime  (t, a, b, o, s); }
+  G(Blue  ) { Yellow(t, a, b, o, s); }
+  G(Green ) { Yellow(t, a, b, o, s); }
+  G(Lime  ) { Green (t, a, b, o, s); } }.
 TI {
   n_t ti;
   const char*name;
@@ -99,5 +88,4 @@ TI {
   G(Lime    ) { o[--s] = Lime   ; o[--s] = name;  o[--s] = 6;  ti(t, a, b, o, s); }
   G(Maroon  ) { o[--s] = Maroon ; o[--s] = name;  o[--s] = 7;  ti(t, a, b, o, s); }
   G(Fuchsia ) { o[--s] = Fuchsia; o[--s] = name;  o[--s] = 8;  ti(t, a, b, o, s); }
-  G(Olive   ) { o[--s] = Olive  ; o[--s] = name;  o[--s] = 9;  ti(t, a, b, o, s); }
-}.
+  G(Olive   ) { o[--s] = Olive  ; o[--s] = name;  o[--s] = 9;  ti(t, a, b, o, s); } }.
