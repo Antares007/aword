@@ -1,0 +1,55 @@
+term { G(Green) {                  Green(t, a, b, o, s); } }.
+baaa { G(Lime ) { o[a++] = "baaa"; Lime (t, a, b, o, s); } }.
+b {    G(Lime ) { o[a++] = "b";    Lime (t, a, b, o, s); } }.
+a {    G(Lime ) { o[a++] = "a";    Lime (t, a, b, o, s); } }.
+S {
+  
+}.
+Show {
+  G(Lime) {
+    
+    Lime(t, a, b, o, s);
+  }
+}.
+S
+  b term.
+  S AND a term.
+Show
+  baaa S AND print.
+
+S
+  S + S.
+  S - S.
+  S * S.
+  S / S.
+  ( S ).
+  Nat.
+Nat
+  0.
+  Nat 1 OR 2 OR 3.
+Show
+  "(1+2)*3" S AND print.
+a
+  "a" term.
+b
+  "b" term.
++
+  "+" term.
+-
+  "-" term.
+*
+  "*" term.
+/
+  "/" term.
+(
+  "(" term.
+)
+  ")" term.
+0
+  "0" term.
+1
+  "1" term.
+2
+  "2" term.
+3
+  "3" term.
