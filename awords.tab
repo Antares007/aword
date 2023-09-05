@@ -5,26 +5,45 @@ b {
   G(Fuchsia ) { Yellow  (t, a, b, o, s); }
   G(Olive   ) { Purple  (t, a, b, o, s); } }.
 m {
-  N(doit    ) { ((n_t*)o)[a - 1](t, a - 1, b, o, s); }
-  G(Lime    ) {
-    n_t T = o[2];
+  N(doit) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
+  N(s0) {
+    o[a++] = "b";
+    o[a++] = "b_";
+    o[a++] = "term";
+    o[a++] = "o";
+    o[a++] = (void *)4;
+    ((n_t *)o)[2](t, a, b, o, s);
+  }
+  N(s1) {
+    o[a++] = "b";
+    o[a++] = "b_";
+    o[a++] = "term";
+    o[a++] = "AND";
+    o[a++] = "a_";
+    o[a++] = "term";
+    o[a++] = "o";
+    o[a++] = (void *)7;
+    ((n_t *)o)[2](t, a, b, o, s);
+  }
+  n_t sentences[2];
+  long pindex;
+  G(Fuchsia) {
+    sentences[0] = s0;
+    sentences[1] = s1;
+    Fuchsia(t, a, b, o, s);
+  }
+  G(Lime) {
     o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
     o[--s] = Maroon; o[--s] = doit; o[--s] = Navy;
-    o[a++] = "b";
-    o[a++] = "b_"; o[a++] = "term"; o[a++] = "AND"; o[a++] = "a_"; o[a++] = "term";
-    o[a++] = "o";
-    o[a++] = (void*)7;
-    T(t, a, b, o, s);
+    sentences[0](t, a, b, o, s);
   } }.
 o {
   G(Yellow  ) { Lime    (t, a, b, o, s); }
-  G(Purple  ) { Printf(">\n");
-                ((n_t*)o)[s+1](t, a, b, o, s + 3); }
-  G(Red     ) { ((n_t*)o)[s+2](t, a, b, o, s + 3); }
+  G(Purple  ) { Printf(">\n");  ((n_t*)o)[s+1](t, a, b, o, s + 3); }
+  G(Red     ) {                 ((n_t*)o)[s+2](t, a, b, o, s + 3); }
   G(Green   ) { Olive   (t, a, b, o, s); }
-  G(Blue    ) { ((n_t*)o)[s+0](t, a, b, o, s + 3); }
-  G(Fuchsia ) { Printf("<\n");
-                Fuchsia(t, a, b, o, s); } }.
+  G(Blue    ) {                 ((n_t*)o)[s+0](t, a, b, o, s + 3); }
+  G(Fuchsia ) { Printf("<\n"); Fuchsia(t, a, b, o, s); } }.
 term {
   G(Green   ) {
     char*pst = (char*)o[--a];

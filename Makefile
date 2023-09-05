@@ -6,6 +6,8 @@ run: root.out ram.ram awords
 root.out: root.c map_file.o
 awords: parse.js awords.tab
 	node $^
+hash.out: hash.c
+	${CC} $^ -o $@ ${CFLAGS} -lssl -lcrypto
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
 %.o: %.c

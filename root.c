@@ -9,9 +9,9 @@ void *map_file(const char *file_name);
 long load_file(void *memory, const char *aw_name);
 
 N(Maroon_end) { printf("%s\n", __FUNCTION__); }
-N(Olive_end) { printf("%s\n", __FUNCTION__); }
-N(Navy_end) { printf("%s\n", __FUNCTION__); }
-N(TI) {
+N(Olive_end ) { printf("%s\n", __FUNCTION__); }
+N(Navy_end  ) { printf("%s\n", __FUNCTION__); }
+N(TI        ) {
   long ray = (long)o[s++];
   const char *name = (char *)o[s++];
   n_t Yellow = (void *)o[s++];
@@ -21,7 +21,7 @@ N(TI) {
   printf("%10s %2ld %ld %s\n", cnames[ray], a, s, name);
   Yellow(t, a, b, o, s);
 }
-N(T) {
+N(T         ) {
   long wc = (long)o[--a];
   const char **atext = (void *)&o[a -= wc];
   for (long i = 0; i < wc; i++) {
@@ -35,7 +35,7 @@ N(T) {
   o[a++] = b + t - 32;
   ((n_t *)o)[s + 1](t, a, b, o, s + 3);
 }
-N(dot) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
+N(dot       ) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
 int main(int argc, const char **argv) {
   long t = 0;
   long a = 0;
@@ -44,12 +44,6 @@ int main(int argc, const char **argv) {
   long s = sizeof(o) / sizeof(*o);
 
   assert(b);
-  void *ob[] = {
-      Navy_end,
-      Olive_end,
-      Maroon_end,
-  };
-  o[--s] = ob;
   o[--s] = Maroon_end;
   o[--s] = Olive_end;
   o[--s] = Navy_end;
@@ -61,6 +55,7 @@ int main(int argc, const char **argv) {
   o[a++] = "baaa";
   o[a++] = (void *)4;
   o[a++] = (void *)0;
+
   o[--s] = Maroon_end;
   o[--s] = dot;
   o[--s] = Navy_end;

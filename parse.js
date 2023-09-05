@@ -7,6 +7,7 @@ async function parse(file = "awords.tab") {
   const input = (await readFile(file)).toString();
   await exec(`rm -rf abin`);
   await exec(`mkdir abin`);
+  await exec(`cp aword.h aw.h abin/`);
   const rez =
       await Promise.all(input.split(/\.[\n ]/)
                             .map((l) => l.trim())
@@ -14,20 +15,21 @@ async function parse(file = "awords.tab") {
                             .map(split_name_and_body)
                             .map(add_missing_rays)
                             .map(compile));
-  console.log(rez);
+  console.log("awords:", rez);
 }
-function split_name_and_body(l) {
-  const p = l.indexOf(" ");
-  const n = l.slice(0, p);
-  if (l[p + 1] === "{") {
-    const b = l.slice(p + 2, l.lastIndexOf("}"));
-    return [ n, b ];
-  } else {
-    throw new Error("n/i")
-  }
+function split_name_and_body(def) {
+  const p = def.indexOf("{");
+  if (p === -1)
+    throw new Error("cant find {");
+  const n = def.slice(0, p);
+  const l = def.lastIndexOf("}");
+  if (l === -1)
+    throw new Error("cant find }");
+  const b = def.slice(p + 1, def.lastIndexOf("}"));
+  return [ n.trim(), b.trim() ];
 }
 function add_missing_rays([ n, b ]) {
-  b = '#include "aw.h"\n' + b;
+  b = '#include "aw.h"\n\n' + b;
   const rays = {
     Y : "Yellow",
     P : "Purple",
@@ -67,6 +69,7 @@ async function compile([ n, b ]) {
   abin = abin.slice(5 * 16);
   abin = abin.slice(0, abin.length - 5 * 16 - 4);
   await writeFile(`abin/${n}`, abin);
-  await exec(`rm ${n}.elf ${n}.o ${n}.bin ${n}.c`); //
+  await exec(`mv ${n}.c abin`);              //
+  await exec(`rm ${n}.elf ${n}.o ${n}.bin`); //
   return n;
 }
