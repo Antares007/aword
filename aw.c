@@ -13,25 +13,20 @@ typedef N((*n_t));
 #define BW ((n_t *)ο)[σ](ο, α, σ + 1, ρ)
 N(o_Fuchsia);
 N(o_Purple ) {Λ; (ο[--σ] = o_Fuchsia), BW; }
-N(o_Olive  ) {L, (ο[--σ] = o_Purple), FW; }
-N(o_Green  ) {L, (ο[--σ] = o_Olive ), BW; }
-N(o_Lime   ) {L, (ο[--σ] = o_Green ), FW; }
-N(o_Yellow ) {L, (ο[--σ] = o_Lime  ), BW; }
-N(o_Fuchsia) {L, (ο[--σ] = o_Yellow), FW; }
+N(o_Green  ) {L, (ο[--ρ] = o_Purple ), BW; }
+N(o_Yellow ) {L, (ο[--ρ] = o_Green  ), BW; }
+N(o_Fuchsia) {L, (ο[--σ] = o_Yellow ), FW; }
 N(m_Fuchsia);
 N(m_Purple ) {L, (ο[--σ] = m_Fuchsia), FW; }
-N(m_Olive  ) {L, (ο[--σ] = m_Purple), FW; }
-N(m_Green  ) {L, (ο[--σ] = m_Olive ), FW; }
-N(m_Lime   ) {L, (ο[--σ] = m_Green ), FW; }
-N(m_Yellow ) {L, (ο[--σ] = m_Lime  ), FW; }
-N(m_Fuchsia) {L, (ο[--σ] = m_Yellow), FW; }
+N(m_Olive  ) {L, (ο[--σ] = m_Purple ), FW; }
+N(m_Green  ) {L, (ο[--σ] = m_Olive  ), FW; }
+N(m_Lime   ) {L, (ο[--σ] = m_Green  ), FW; }
+N(m_Yellow ) {L, (ο[--σ] = m_Lime   ), FW; }
+N(m_Fuchsia) {L, (ο[--σ] = m_Yellow ), FW; }
 N(b_Fuchsia);
-N(b_Purple ) {L, (ο[--σ] = b_Fuchsia), FW; }
-N(b_Olive  ) {L, (ο[--σ] = b_Purple), BW; }
-N(b_Green  ) {L, (ο[--σ] = b_Olive ), FW; }
-N(b_Lime   ) {L, (ο[--σ] = b_Green ), BW; }
-N(b_Yellow ) {L, (ο[--σ] = b_Lime  ), FW; }
-N(b_Fuchsia) {L, (ο[--σ] = b_Yellow), BW; }
+N(b_Olive  ) {L, (ο[--ρ] = b_Fuchsia), BW; }
+N(b_Lime   ) {L, (ο[--ρ] = b_Olive  ), BW; }
+N(b_Fuchsia) {L, (ο[--ρ] = b_Lime   ), BW; }
 int main() {
   void *ο[1024];
   long α = 0;
