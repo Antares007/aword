@@ -4,6 +4,18 @@ b {
   G(Maroon  ) { Red     (t, a, b, o, s); }
   G(Fuchsia ) { Yellow  (t, a, b, o, s); }
   G(Olive   ) { Purple  (t, a, b, o, s); } }.
+M {
+  G(Yellow  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Yellow    (t, a, b, o, s); }
+  G(Purple  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Purple    (t, a, b, o, s); }
+  G(Red     ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Red       (t, a, b, o, s); }
+  G(Green   ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Green     (t, a, b, o, s); }
+  G(Blue    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Blue      (t, a, b, o, s); }
+  G(Navy    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Navy      (t, a, b, o, s); }
+  G(Lime    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Lime      (t, a, b, o, s); }
+  G(Maroon  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Maroon    (t, a, b, o, s); }
+  G(Fuchsia ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Fuchsia   (t, a, b, o, s); }
+  G(Olive   ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Olive     (t, a, b, o, s); }
+  }.
 m {
   N(doit) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
   N(s0) {
