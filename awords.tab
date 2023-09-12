@@ -1,61 +1,29 @@
 b {
-  G(Navy    ) { Blue    (t, a, b, o, s); }
-  G(Lime    ) { Green   (t, a, b, o, s); }
-  G(Maroon  ) { Red     (t, a, b, o, s); }
-  G(Fuchsia ) { Yellow  (t, a, b, o, s); }
-  G(Olive   ) { Purple  (t, a, b, o, s); } }.
-M {
-  G(Yellow  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Yellow    (t, a, b, o, s); }
-  G(Purple  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Purple    (t, a, b, o, s); }
-  G(Red     ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Red       (t, a, b, o, s); }
-  G(Green   ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Green     (t, a, b, o, s); }
-  G(Blue    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Blue      (t, a, b, o, s); }
-  G(Navy    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Navy      (t, a, b, o, s); }
-  G(Lime    ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Lime      (t, a, b, o, s); }
-  G(Maroon  ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Maroon    (t, a, b, o, s); }
-  G(Fuchsia ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Fuchsia   (t, a, b, o, s); }
-  G(Olive   ) { Printf("%s:%s\n", __FILE__, __FUNCTION__); Olive     (t, a, b, o, s); }
-  }.
+  G(Navy    ) { P; Blue   (t, a, b, o, s); }
+  G(Lime    ) { P; Green  (t, a, b, o, s); }
+  G(Maroon  ) { P; Red    (t, a, b, o, s); }
+  G(Fuchsia ) { P; }
+  G(Olive   ) { P; Printf("\n"); Yellow (t, a, b, o, s); }
+}.
 m {
-  N(doit) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
-  N(s0) {
-    o[a++] = "b";
-    o[a++] = "b_";
-    o[a++] = "term";
-    o[a++] = "o";
-    o[a++] = (void *)4;
-    ((n_t *)o)[2](t, a, b, o, s);
-  }
-  N(s1) {
-    o[a++] = "b";
-    o[a++] = "b_";
-    o[a++] = "term";
-    o[a++] = "AND";
-    o[a++] = "a_";
-    o[a++] = "term";
-    o[a++] = "o";
-    o[a++] = (void *)7;
-    ((n_t *)o)[2](t, a, b, o, s);
-  }
-  n_t sentences[2];
-  long pindex;
-  G(Fuchsia) {
-    sentences[0] = s0;
-    sentences[1] = s1;
-    Fuchsia(t, a, b, o, s);
-  }
-  G(Lime) {
-    o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
-    o[--s] = Maroon; o[--s] = doit; o[--s] = Navy;
-    sentences[0](t, a, b, o, s);
-  } }.
+  G(Yellow  ) { P; Yellow (t, a, b, o, s); }
+  G(Purple  ) { P; Purple (t, a, b, o, s); }
+  G(Red     ) { P; Red    (t, a, b, o, s); }
+  G(Green   ) { P; Green  (t, a, b, o, s); }
+  G(Blue    ) { P; Blue   (t, a, b, o, s); }
+  G(Navy    ) { P; Navy   (t, a, b, o, s); }
+  G(Lime    ) { P; Lime   (t, a, b, o, s); }
+  G(Maroon  ) { P; Maroon (t, a, b, o, s); }
+  G(Fuchsia ) { P; Fuchsia(t, a, b, o, s); }
+  G(Olive   ) { P; Olive  (t, a, b, o, s); }
+}.
 o {
-  G(Yellow  ) { Lime    (t, a, b, o, s); }
-  G(Purple  ) { Printf(">\n");  ((n_t*)o)[s+1](t, a, b, o, s + 3); }
-  G(Red     ) {                 ((n_t*)o)[s+2](t, a, b, o, s + 3); }
-  G(Green   ) { Olive   (t, a, b, o, s); }
-  G(Blue    ) {                 ((n_t*)o)[s+0](t, a, b, o, s + 3); }
-  G(Fuchsia ) { Printf("<\n"); Fuchsia(t, a, b, o, s); } }.
+  G(Yellow  ) { P; Lime   (t, a, b, o, s); }
+  G(Purple  ) { P; Fuchsia(t, a, b, o, s); }
+  G(Red     ) { P; Maroon (t, a, b, o, s); }
+  G(Green   ) { P; Olive  (t, a, b, o, s); }
+  G(Blue    ) { P; Navy   (t, a, b, o, s); }
+}.
 term {
   G(Green   ) {
     char*pst = (char*)o[--a];
@@ -76,18 +44,7 @@ term {
   } }.
 a_ { G(Lime) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
 b_ { G(Lime) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
-S {
-  N(doit) { ((n_t*)o)[a - 1](t, a - 1, b, o, s); }
-  G(Lime ) {
-    n_t T = o[2];
-    o[--s] = Maroon; o[--s] = Lime; o[--s] = Navy;
-
-    o[--s] = Maroon; o[--s] = doit; o[--s] = Navy;
-    o[a++] = "b";
-    o[a++] = "o";
-    o[a++] = (void*)2;
-    T(t, a, b, o, s);
-  } }.
+S { G(Lime ) { } }.
 NOT {
   G(Yellow) { Lime  (t, a, b, o, s); }
   G(Red   ) { Yellow(t, a, b, o, s); }
@@ -107,16 +64,3 @@ ORAND {
   G(Blue  ) { Yellow(t, a, b, o, s); }
   G(Green ) { Yellow(t, a, b, o, s); }
   G(Lime  ) { Green (t, a, b, o, s); } }.
-TI {
-  n_t ti;
-  const char*name;
-  G(Yellow  ) { o[--s] = Yellow ; o[--s] = name;  o[--s] = 0;  ti(t, a, b, o, s); }
-  G(Purple  ) { o[--s] = Purple ; o[--s] = name;  o[--s] = 1;  ti(t, a, b, o, s); }
-  G(Red     ) { o[--s] = Red    ; o[--s] = name;  o[--s] = 2;  ti(t, a, b, o, s); }
-  G(Green   ) { o[--s] = Green  ; o[--s] = name;  o[--s] = 3;  ti(t, a, b, o, s); }
-  G(Blue    ) { o[--s] = Blue   ; o[--s] = name;  o[--s] = 4;  ti(t, a, b, o, s); }
-  G(Navy    ) { o[--s] = Navy   ; o[--s] = name;  o[--s] = 5;  ti(t, a, b, o, s); }
-  G(Lime    ) { o[--s] = Lime   ; o[--s] = name;  o[--s] = 6;  ti(t, a, b, o, s); }
-  G(Maroon  ) { o[--s] = Maroon ; o[--s] = name;  o[--s] = 7;  ti(t, a, b, o, s); }
-  G(Fuchsia ) { o[--s] = Fuchsia; o[--s] = name;  o[--s] = 8;  ti(t, a, b, o, s); }
-  G(Olive   ) { o[--s] = Olive  ; o[--s] = name;  o[--s] = 9;  ti(t, a, b, o, s); } }.

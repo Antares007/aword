@@ -43,8 +43,9 @@ N(ls) {
   for (long i = 0; i < size; i++)
     if (strcmp(store[i][0], atext) == 0)
       return (o[a++] = store[i][1]), ((n_t *)o)[s + 1](0, a, 0, o, s + 3);
-  void *addr = ls_(atext);
+  n_t addr = ls_(atext);
   if (addr) {
+    (addr + 16)(0, a, 0, o, s);
     store[size][0] = (void *)atext;
     store[size][1] = addr;
     size++;
@@ -58,32 +59,6 @@ N(Maroon_end) { L; }
 N(Olive_end) { L; }
 N(Navy_end) { L; }
 N(Dot) { L, ((n_t *)o)[a - 1](0, a - 1, 0, o, s); }
-
-N(stop    ) { L; }
-N(space   ) { L; }
-N(newline ) { L; }
-N(dot     ) { L; }
-N(name    ) { L; }
-void Main(long a, void**o, long s) {
-  const char *in =
-      "Name as sentence\n"
-      "First definition as sentence. Second definition as sentence.\n"
-      "\n"
-      "Name1\n"
-      "Word1 word2 word3.\n";
-  long len = 0;
-  while (in[len]) {
-    if (       ' '  == in[len]) { printf("\\s\n"); len++;
-    } else if ('\n' == in[len]) { printf("\\n\n"); len++;
-    } else if ('.'  == in[len]) { printf("\\.\n"); len++;
-    } else {
-      long start = len;
-      while (in[len] != ' ' && in[len] != '\n' && in[len] != '.') { printf("%c", in[len++]); }
-      printf(" %ld\n", len - start);
-    }
-  }
-  printf("%ld", len);
-}
 int main(int argc, const char **argv) {
   long a = 0;
   void *o[512];
@@ -93,14 +68,11 @@ int main(int argc, const char **argv) {
   o[--s] = Olive_end;
   o[--s] = Navy_end;
 
-  Main(a, o, s);
-  return 0;
-
   o[a++] = printf;
   o[a++] = usleep;
   o[--s] = Maroon_end;
   o[--s] = Dot;
   o[--s] = Navy_end;
-  o[a++] = "b M M M M o";
+  o[a++] = "b m o";
   ls(0, a, 0, o, s);
 }
