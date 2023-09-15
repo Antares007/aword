@@ -52,7 +52,7 @@ function add_missing_rays([ n, b ]) {
   deleteDefinedRays("G");
   deleteDefinedRays("R");
   for (let k in rays)
-    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
+    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { P; ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
   return [ n, b ];
 }

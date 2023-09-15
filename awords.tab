@@ -1,22 +1,21 @@
 b {
-  G(Navy    ) { P; Blue   (t, a, b, o, s); }
-  G(Lime    ) { P; Green  (t, a, b, o, s); }
-  G(Maroon  ) { P; Red    (t, a, b, o, s); }
+  G(Yellow  ) { Printf("\n");
+                P; Yellow           (t, a, b, o, s); }
+  G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
+  G(Lime    ) { P; Green            (t, a, b, o, s); }
+  G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
   G(Fuchsia ) { P; }
-  G(Olive   ) { P; Printf("\n"); Yellow (t, a, b, o, s); }
+  G(Olive   ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
 }.
 m {
-  G(Yellow  ) { P; Yellow (t, a, b, o, s); }
-  G(Purple  ) { P; Purple (t, a, b, o, s); }
-  G(Red     ) { P; Red    (t, a, b, o, s); }
-  G(Green   ) { P; Green  (t, a, b, o, s); }
-  G(Blue    ) { P; Blue   (t, a, b, o, s); }
-  G(Navy    ) { P; Navy   (t, a, b, o, s); }
-  G(Lime    ) { P; Lime   (t, a, b, o, s); }
-  G(Maroon  ) { P; Maroon (t, a, b, o, s); }
-  G(Fuchsia ) { P; Fuchsia(t, a, b, o, s); }
-  G(Olive   ) { P; Olive  (t, a, b, o, s); }
+  G(Yellow  ) {
+    o[--s] = Red; o[--s] = Yellow;  o[--s] = Blue;
+    o[--s] = Red; o[--s] = o[3];    o[--s] = Red;
+    o[a++] = "b n o";
+    ((n_t*)o)[2](t, a, b, o, s);
+  }
 }.
+n { }.
 o {
   G(Yellow  ) { P; Lime   (t, a, b, o, s); }
   G(Purple  ) { P; Fuchsia(t, a, b, o, s); }
@@ -42,25 +41,45 @@ term {
       Blue(t, a, b, o, s);
     }
   } }.
-a_ { G(Lime) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
-b_ { G(Lime) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
-S { G(Lime ) { } }.
+a_ { G(Lime ) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
+b_ { G(Lime ) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
+sS {
+#define SC 2
+  unsigned long T_index;
+  unsigned long T_configs[1024];
+  const char*sentences[SC];
+  G(Purple  ) { P;
+    T_index       = t;
+    sentences[0]  = "b s sS sS o";
+    sentences[1]  = "b o";
+    Purple(t + 1, a, b, o, s);
+  }
+  G(Yellow  ) { P;
+//    unsigned long sc  = 2
+//    unsigned long bs  = index * sc
+//    unsigned long n   = (T_configs[b] >> bs) & 7;
+//    long nc           = n + charge;
+//    charge            = nc / sc;
+//    nc                = nc - charge * sc;
+//    T_configs[b]       &= (~((unsigned long)1 << bs) | (nc << bs));
+  }
+}.
 NOT {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Red   ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Olive (t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); } }.
+  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
+  G(Red     ) { P; Yellow(t, a, b, o, s); }
+  G(Green   ) { P; Olive (t, a, b, o, s); }
+  G(Lime    ) { P; Green (t, a, b, o, s); } }.
 AND {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Green ) { Yellow(t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); } }.
+  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
+  G(Green   ) { P; Yellow(t, a, b, o, s); }
+  G(Lime    ) { P; Green (t, a, b, o, s); } }.
 OR {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Blue  ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Olive (t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); } }.
+  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
+  G(Blue    ) { P; Yellow(t, a, b, o, s); }
+  G(Green   ) { P; Olive (t, a, b, o, s); }
+  G(Lime    ) { P; Green (t, a, b, o, s); } }.
 ORAND {
-  G(Yellow) { Lime  (t, a, b, o, s); }
-  G(Blue  ) { Yellow(t, a, b, o, s); }
-  G(Green ) { Yellow(t, a, b, o, s); }
-  G(Lime  ) { Green (t, a, b, o, s); } }.
+  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
+  G(Blue    ) { P; Yellow(t, a, b, o, s); }
+  G(Green   ) { P; Yellow(t, a, b, o, s); }
+  G(Lime    ) { P; Green (t, a, b, o, s); } }.

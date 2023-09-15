@@ -2,16 +2,15 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <assert.h>
 void *map_file(const char *file_name) {
   int fd = open(file_name, O_RDONLY);
   struct stat sb;
-  if (fd == -1 || fstat(fd, &sb) == -1)
-    return 0;
+  assert(fd != -1 && fstat(fd, &sb) != -1);
   char *addr = mmap((void *)0x0000070700000000, sb.st_size,
                     PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE, fd, 0);
   close(fd);
-  if (addr == MAP_FAILED)
-    return 0;
+  assert(addr != MAP_FAILED);
   return addr;
 }
 #ifndef NDEBUG
@@ -28,10 +27,8 @@ void *map_file(const char *file_name) {
 #include <stdlib.h>
 void *ls_(const char *atext) {
   char str[777] = {0};
-  if (777 == snprintf(str, 777, "cd abin&&cat %s > \"%s\"", atext, atext))
-    return 0;
-  if (system(str))
-    return 0;
+  assert(777 != snprintf(str, 777, "cd abin&&cat %s > \"%s\"", atext, atext));
+  assert(system(str) == 0);
   snprintf(str, 777, "abin/%s", atext);
   return map_file(str);
 }
@@ -70,6 +67,9 @@ int main(int argc, const char **argv) {
 
   o[a++] = printf;
   o[a++] = usleep;
+  o[a++] = ls;
+  o[a++] = Dot;
+
   o[--s] = Maroon_end;
   o[--s] = Dot;
   o[--s] = Navy_end;
