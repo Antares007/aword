@@ -42,15 +42,21 @@ function add_missing_rays([ n, b ]) {
     F : "Fuchsia",
     O : "Olive",
   };
-  const deleteDefinedRays = (type) => {
-    let p = b.indexOf(type + "(");
-    while (-1 < p) {
-      delete rays[b[p + 2]];
-      p = b.indexOf(type + "(", p + 2);
-    }
-  };
-  deleteDefinedRays("G");
-  deleteDefinedRays("R");
+  if (b.indexOf("Tword") != -1) {
+    delete rays["G"];
+    delete rays["O"];
+    delete rays["P"];
+  } else {
+    const deleteDefinedRays = (type) => {
+      let p = b.indexOf(type + "(");
+      while (-1 < p) {
+        delete rays[b[p + 2]];
+        p = b.indexOf(type + "(", p + 2);
+      }
+    };
+    deleteDefinedRays("G");
+    deleteDefinedRays("R");
+  }
   for (let k in rays)
     b = b + `\nG(${rays[k].padEnd(8, ' ')}) { P; ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
