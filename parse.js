@@ -43,8 +43,7 @@ function add_missing_rays([ n, b ]) {
     O : "Olive",
   };
   if (b.indexOf("Tword") != -1) {
-    delete rays["G"];
-    delete rays["O"];
+    delete rays["Y"];
     delete rays["P"];
   } else {
     const deleteDefinedRays = (type) => {

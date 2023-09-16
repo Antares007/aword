@@ -15,34 +15,58 @@
 Δ(Yellow);Δ(Purple); Δ(Red);   Δ(Green);Δ(Blue);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
+
 // clang-format on
 #define Tword(...)                                                             \
-  long PC;                                                                     \
   long SC;                                                                     \
-  long i;                                                                      \
+  long arm;                                                                    \
   const char *sentences[7];                                                    \
+  N(dot_Yellow) { (((n_t *)o)[a - 1] + 00)(0, a - 1, b, o, s); }               \
+  N(dot_Purple) { (((n_t *)o)[a - 1] + 16)(0, a - 1, b, o, s); }               \
+  N(connect_Fuchsia) {                                                         \
+    Fuchsia(t, a, b, o, s);                                                    \
+  }                                                                            \
+  N(connect_Olive) {                                                           \
+    if (SC == arm + 1) {                                                       \
+      arm = 0;                                                                 \
+      Yellow(t, a, b, o, s);                                                   \
+    } else {                                                                   \
+      arm++;                                                                   \
+      Purple(t, a, b, o, s);                                                  \
+    }                                                                          \
+  }                                                                            \
+  N(connect_Arm) {                                                             \
+    n_t dot = o[--a];                                                          \
+    o[--s] = connect_Fuchsia;                                                  \
+    o[--s] = connect_Olive;                                                    \
+    T(0, dot, 0);                                                              \
+    o[a++] = sentences[arm];                                                   \
+    ((n_t *)o)[2](t, a, b, o, s);                                              \
+  }                                                                            \
+  G(Yellow) {                                                                  \
+    o[a++] = dot_Yellow;                                                       \
+    connect_Arm(t, a, b, o, s);                                                \
+  }                                                                            \
   G(Purple) {                                                                  \
-    char *ss[] = {__VA_ARGS__};                                                \
-    PC = t;                                                                    \
-    SC = sizeof(ss) / sizeof(*ss);                                             \
-    i = 0;                                                                     \
-    for (long j = 0; j < SC; j++)                                              \
-      sentences[j] = ss[j];                                                    \
-    Purple(SC, a, b, o, s);                                                    \
-  }                                                                            \
-  N(Olive_connect) { Green(t, a, b, o, s); }                                  \
-  N(Navy_connect) { Blue(t, a, b, o, s); }                                     \
-  N(switch_arm) {                                                              \
-    o[--s] = (void *)t;                                                        \
-    T(Red, Olive_connect, Navy_connect);                                       \
-    T(Red, o[3], Red);                                                         \
-    o[a++] = (void *)sentences[t];                                             \
-    ((n_t *)o)[2](0, a, b, o, s);                                              \
-  }                                                                            \
-  G(Olive) {                                                                   \
-    if (t == SC - 1)                                                           \
-      Olive(i++ % PC, a, b, o, s);                                             \
-    else /*Fuchsia*/                                                                      \
-      switch_arm((t + 1) % SC, a, b, o, s);                                    \
-  }                                                                            \
-  G(Green) { switch_arm(0, a, b, o, s); }
+    if (t == 1) {                                                              \
+      const char *ss[] = {__VA_ARGS__};                                        \
+      SC = sizeof(ss) / sizeof(*ss);                                           \
+      arm = 0;                                                                 \
+      for (long i = 0; i < SC; i++)                                            \
+        sentences[i] = ss[i];                                                  \
+      Purple(t, a, sentences, o, s);                                           \
+    } else {                                                                   \
+      o[a++] = dot_Purple;                                                     \
+      connect_Arm(t, a, b, o, s);                                              \
+    }                                                                          \
+  }
+/*
+
+Yellow    0   Purple    0   Purple
+Yellow    1   Yellow    0   Purple
+Yellow    0   Purple    1   Purple
+Yellow    1   Yellow    1   Yellow
+          0             0
+
+
+*/

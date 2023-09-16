@@ -1,42 +1,48 @@
-b {
-  G(Yellow  ) { Printf("\n");
-                P; Yellow(t, a, b, o, s); }
-  G(Navy    ) { P; Blue  (t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); }
-  G(Maroon  ) { P; }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; Yellow(t, a, b, o, s); }
+b { G(Fuchsia ) {  Yellow(t, a, b, o, s); }
+    G(Olive   ) {  } }.
+print {
+  G(Purple) {
+    if(t!=1) {
+     for(long i = 4; i < a; i++)
+       Printf("%s", o[i]);
+     Printf("\n");
+    }
+    Purple(t,a,b,o,s);
+  }
+  G(Yellow) {
+    for(long i = 4; i < a; i++)
+      Printf("%s", o[i]);
+    Printf("\n");
+    Yellow(t,a,b,o,s);
+  }
 }.
-m  {Tword(
-  "tab A o",
-  "tab B o",
-  "tab C o");}.
+show {Tword("tab m print o"); }.
+m  { Tword("tab A o", "tab B o", "tab C o"); }.
 m2 { Tword("tab D o", "tab E o", "tab F m3 o"); }.
 m3 { Tword("tab G o", "tab H o", "tab I o"); }.
-A { G(Green) { P_; Green(t,a,b,o,s); } }.
-B { G(Green) { P_; Green(t,a,b,o,s); } }.
-C { G(Green) { P_; Green(t,a,b,o,s); } }.
-D { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-E { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-F { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-G { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
-H { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
-I { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
 o {
-  G(Yellow  ) { P; Lime   (t, a, b, o, s); }
-  G(Purple  ) { P; Fuchsia(t, a, b, o, s); }
-  G(Red     ) { P; Maroon (t, a, b, o, s); }
-  G(Green   ) { P; Olive  (t, a, b, o, s); }
-  G(Blue    ) { P; Navy   (t, a, b, o, s); }
+  G(Yellow  ) {            Olive  (t, a, b, o, s); }
+  G(Purple  ) { if(t != 1) Fuchsia(t, a, b, o, s); }
 }.
 tab {
-  G(Yellow  ) { P; Yellow           (t,               a, b, o, s); }
-  G(Navy    ) { P; ((n_t *)o)[s + 0](t,               a, b, o, s + 4); }
-  G(Lime    ) { P; Green            (t,               a, b, o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[s + 2](t,               a, b, o, s + 4); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; ((n_t *)o)[s + 1]((long)o[s + 3],  a, b, o, s + 4); }
+  G(Fuchsia ) { P; ((n_t *)o)[s + 1](t,  a, b, o, s + 2); }
+  G(Olive   ) { P; ((n_t *)o)[s + 0](t,  a, b, o, s + 2); }
 }.
+A { G(Yellow) {o[a++] = ("A");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("a");Purple(t,a,b,o,s);}}.
+B { G(Yellow) {o[a++] = ("B");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("b");Purple(t,a,b,o,s);}}.
+C { G(Yellow) {o[a++] = ("C");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("c");Purple(t,a,b,o,s);}}.
+D { G(Yellow) {o[a++] = ("D");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("d");Purple(t,a,b,o,s);}}.
+E { G(Yellow) {o[a++] = ("E");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("e");Purple(t,a,b,o,s);}}.
+F { G(Yellow) {o[a++] = ("F");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("f");Purple(t,a,b,o,s);}}.
+G { G(Yellow) {o[a++] = ("G");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("g");Purple(t,a,b,o,s);}}.
+H { G(Yellow) {o[a++] = ("H");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("h");Purple(t,a,b,o,s);}}.
+I { G(Yellow) {o[a++] = ("I");Yellow(t,a,b,o,s);}G(Purple) {if(t!=1)o[a++] = ("i");Purple(t,a,b,o,s);}}.
+
+
+
+
+
+
 term {
   G(Green   ) {
     char*pst = (char*)o[--a];
@@ -58,6 +64,10 @@ term {
 a_ { G(Lime ) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
 b_ { G(Lime ) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
 sS { }.
+
+
+
+
 NOT {
   G(Yellow  ) { P; Lime  (t, a, b, o, s); }
   G(Red     ) { P; Yellow(t, a, b, o, s); }
