@@ -44,7 +44,6 @@ function add_missing_rays([ n, b ]) {
   };
   if (b.indexOf("Tword") != -1) {
     delete rays["G"];
-    delete rays["O"];
     delete rays["P"];
   } else {
     const deleteDefinedRays = (type) => {
@@ -58,7 +57,7 @@ function add_missing_rays([ n, b ]) {
     deleteDefinedRays("R");
   }
   for (let k in rays)
-    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { P; ${
+    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
   return [ n, b ];
 }

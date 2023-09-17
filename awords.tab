@@ -1,42 +1,50 @@
 b {
-  G(Yellow  ) { Printf("\n");
-                P; Yellow(t, a, b, o, s); }
-  G(Navy    ) { P; Blue  (t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); }
-  G(Maroon  ) { P; }
+  G(Navy    ) { P; Blue    (t, a, b, o, s); }
+  G(Lime    ) { P; Green   (t, a, b, o, s); }
+  G(Maroon  ) { P; Red     (t, a, b, o, s); }
   G(Fuchsia ) { P; }
-  G(Olive   ) { P; Yellow(t, a, b, o, s); }
+  G(Olive   ) { P; if(!t) Yellow(1, a, b, o, s); }
 }.
-m  {Tword(
-  "tab A o",
-  "tab B o",
-  "tab C o");}.
-m2 { Tword("tab D o", "tab E o", "tab F m3 o"); }.
-m3 { Tword("tab G o", "tab H o", "tab I o"); }.
-A { G(Green) { P_; Green(t,a,b,o,s); } }.
-B { G(Green) { P_; Green(t,a,b,o,s); } }.
-C { G(Green) { P_; Green(t,a,b,o,s); } }.
-D { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-E { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-F { G(Green) { Printf("  "); P_; Green(t,a,b,o,s); } }.
-G { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
-H { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
-I { G(Green) { Printf("    "); P_; Green(t,a,b,o,s); } }.
 o {
-  G(Yellow  ) { P; Lime   (t, a, b, o, s); }
-  G(Purple  ) { P; Fuchsia(t, a, b, o, s); }
-  G(Red     ) { P; Maroon (t, a, b, o, s); }
-  G(Green   ) { P; Olive  (t, a, b, o, s); }
-  G(Blue    ) { P; Navy   (t, a, b, o, s); }
+  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
+  G(Purple  ) { P; Fuchsia (t, a, b, o, s); }
+  G(Red     ) { P; Maroon  (t, a, b, o, s); }
+  G(Green   ) { P; Olive   (t, a, b, o, s); }
+  G(Blue    ) { P; Navy    (t, a, b, o, s); }
 }.
 tab {
-  G(Yellow  ) { P; Yellow           (t,               a, b, o, s); }
-  G(Navy    ) { P; ((n_t *)o)[s + 0](t,               a, b, o, s + 4); }
-  G(Lime    ) { P; Green            (t,               a, b, o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[s + 2](t,               a, b, o, s + 4); }
+  G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
+  G(Lime    ) { P; Green            (t, a, b, o, s); }
+  G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
   G(Fuchsia ) { P; }
-  G(Olive   ) { P; ((n_t *)o)[s + 1]((long)o[s + 3],  a, b, o, s + 4); }
+  G(Olive   ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
 }.
+print {
+  G(Green) {
+    for(long i = 3; i < a; i++)
+      Printf("%s", o[i]);
+    Printf("\n");
+    a = 3;
+    Green(t,a,b,o,s);
+  }
+}.
+m  { Tword("tab m1 m2 m3 print o"); }.
+m1 { Tword("tab sopo o", "tab kargi o", "tab gogoa o");}.
+m2 { Tword("tab tina o", "tab mamas o", "tab angelozia o"); }.
+m3 { Tword("tab andrias o", "tab ukvars m4 o", "tab tamashi o"); }.
+m4 { Tword("tab nikas o", "tab esmis o", "tab musika o"); }.
+sopo      { G(Green) { P; o[a++] = "სოფო "      ; Green(t,a,b,o,s); } }.
+kargi     { G(Green) { P; o[a++] = "კარგი "     ; Green(t,a,b,o,s); } }.
+gogoa     { G(Green) { P; o[a++] = "გოგოა "     ; Green(t,a,b,o,s); } }.
+tina      { G(Green) { P; o[a++] = "თინა "      ; Green(t,a,b,o,s); } }.
+mamas     { G(Green) { P; o[a++] = "მამას "     ; Green(t,a,b,o,s); } }.
+angelozia { G(Green) { P; o[a++] = "ანგელოზია " ; Green(t,a,b,o,s); } }.
+andrias   { G(Green) { P; o[a++] = "ანდრიას "   ; Green(t,a,b,o,s); } }.
+ukvars    { G(Green) { P; o[a++] = "უყვარს "    ; Green(t,a,b,o,s); } }.
+tamashi   { G(Green) { P; o[a++] = "თამაში "    ; Green(t,a,b,o,s); } }.
+nikas     { G(Green) { P; o[a++] = "ნიკას "     ; Green(t,a,b,o,s); } }.
+esmis     { G(Green) { P; o[a++] = "ესმის "     ; Green(t,a,b,o,s); } }.
+musika    { G(Green) { P; o[a++] = "მუსიკა "    ; Green(t,a,b,o,s); } }.
 term {
   G(Green   ) {
     char*pst = (char*)o[--a];

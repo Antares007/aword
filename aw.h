@@ -17,32 +17,31 @@
 #undef Δ
 // clang-format on
 #define Tword(...)                                                             \
-  long PC;                                                                     \
   long SC;                                                                     \
-  long i;                                                                      \
-  const char *sentences[7];                                                    \
-  G(Purple) {                                                                  \
+  long arm;                                                                    \
+  n_t atext[7];                                                                \
+  G(Purple) { P;                                                                         \
     char *ss[] = {__VA_ARGS__};                                                \
-    PC = t;                                                                    \
     SC = sizeof(ss) / sizeof(*ss);                                             \
-    i = 0;                                                                     \
-    for (long j = 0; j < SC; j++)                                              \
-      sentences[j] = ss[j];                                                    \
-    Purple(SC, a, b, o, s);                                                    \
+    arm = 0;                                                                   \
+    for (long i = 0; i < SC; i++) {                                            \
+      atext[i] = W(ss[i]);                                                     \
+      (atext[i] + 16)(t, a, b, o, s);                                          \
+    }                                                                          \
+    Purple(t, a, b, o, s);                                                     \
   }                                                                            \
-  N(Olive_connect) { Green(t, a, b, o, s); }                                  \
-  N(Navy_connect) { Blue(t, a, b, o, s); }                                     \
-  N(switch_arm) {                                                              \
-    o[--s] = (void *)t;                                                        \
-    T(Red, Olive_connect, Navy_connect);                                       \
-    T(Red, o[3], Red);                                                         \
-    o[a++] = (void *)sentences[t];                                             \
-    ((n_t *)o)[2](0, a, b, o, s);                                              \
+  N(Olive_connect) {                                                           \
+    long narm = arm + t;                                                       \
+    t = narm / SC;                                                             \
+    arm = narm - t * SC;                                                       \
+    Green(t, a, b, o, s);                                                      \
   }                                                                            \
-  G(Olive) {                                                                   \
-    if (t == SC - 1)                                                           \
-      Olive(i++ % PC, a, b, o, s);                                             \
-    else /*Fuchsia*/                                                                      \
-      switch_arm((t + 1) % SC, a, b, o, s);                                    \
+  N(Navy_connect) {                                                            \
+    Blue(t, a, b, o, s);                                                       \
   }                                                                            \
-  G(Green) { switch_arm(0, a, b, o, s); }
+  G(Green) { P;                                                                   \
+    o[--s] = Red;                                                              \
+    o[--s] = Olive_connect;                                                    \
+    o[--s] = Navy_connect;                                                     \
+    atext[arm](t, a, b, o, s);                                                 \
+  }
