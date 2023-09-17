@@ -25,17 +25,35 @@ async function parse_awords(cwords) {
     d[s] = s
     return d;
   }, {})
-  return Promise.all(dkeys.map(n => {
-    const atexts = d[n].map(s => s.split(/[\n ]/)
-                                     .map(w => w.trim())
-                                     .filter(Boolean)
-                                     .map(w => {
-                                       if (!awords[w])
-                                         throw new Error(`not a word '${w}.'`);
-                                       return w;
-                                     })
-                                     .join(' '));
-    const b = `
+  const anon = {};
+  const getNumberName = (s) => {
+    const n = `N${hashCode(s)}`;
+    if (anon[n])
+      return n
+      anon[n] = `G(Green) { P; o[a++] = "${s}"; Green(t,a,b,o,s); }`
+      return n;
+  };
+  const getStringName = (s) => {
+    const n = `S${hashCode(s)}`;
+    if (anon[n])
+      return n
+      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t,a,b,o,s); }`
+      return n;
+  };
+  const ensureId = w => {
+    if (!awords[w])
+      throw new Error(`not a word '${w}.'`);
+    return w;
+  };
+  const turnToAWords = makeToAWordsFun(getNumberName, getStringName, ensureId);
+  const new_awords = dkeys.map(n => ([ n, addBodyForTWord(d[n].map(turnToAWords)) ]))
+  return Promise.all([
+    ...Object.keys(anon).map(n => ([ n, anon[n] ])),
+    ...new_awords
+  ].map(add_missing_rays).map(compile))
+}
+function addBodyForTWord(atexts) {
+  return `
 N(Got) { ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
 N(God) { ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
 N(Gor) { ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
@@ -46,10 +64,10 @@ G(Purple) { P;
 ${atexts.map((atext, i) => `  atext[${i}] = W("tab ${atext} o");`).join('\n')}
   T(Maroon, Purple, Navy);
 ${
-        atexts
-            .map((atext, i) =>
-                     `  T(Got, atext[${atexts.length - i - 1}] + 16, Gor);`)
-            .join('\n')}
+      atexts
+          .map((atext, i) =>
+                   `  T(Got, atext[${atexts.length - i - 1}] + 16, Gor);`)
+          .join('\n')}
   God(t, a, b, o, s);
 }
 N(Olive_connect) {
@@ -68,8 +86,6 @@ G(Green) { P;
   atext[arm](t, a, b, o, s);
 }
 `
-    return compile(add_missing_rays([ n, b ]))
-  }))
 }
 async function parse() {
   await exec(`rm -rf abin`);
@@ -147,4 +163,40 @@ async function compile([ n, b ]) {
   await exec(`mv ${n}.c abin`);              //
   await exec(`rm ${n}.elf ${n}.o ${n}.bin`); //
   return n;
+}
+function makeToAWordsFun(getNumberName, getStringName, ensureId) {
+  return function parseAText(input) {
+    input = input.trim()
+    if (!input.length) return ""
+    const num = parseNumber(input)
+    if (num) return getNumberName(num) + " " +
+        parseAText(input.slice(num.length))
+    const str = parseQuotedString(input)
+    if (str) return getStringName(str) + " " +
+        parseAText(input.slice(str.length))
+    const id = parseNonWhitespace(input)
+    if (id) return ensureId(id) + " " + parseAText(input.slice(id.length))
+    else throw new Error();
+  };
+  function parseQuotedString(input) {
+    const regex = /^"([^"]*)"/;
+    const match = input.match(regex);
+    return match && match[0];
+  }
+  function parseNumber(input) {
+    const regex = /^[-+]?(\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?/;
+    const match = input.match(regex);
+    return match && match[0];
+  }
+  function parseNonWhitespace(input) {
+    const regex = /^[^\s]+/;
+    const match = input.match(regex);
+    return match && match[0];
+  }
+}
+function hashCode(s) {
+  let h = 0|0;
+  for (let i = 0; i < s.length; i++)
+    h = 31 * h + s.charCodeAt(i) | 0;
+  return h;
 }

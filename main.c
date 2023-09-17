@@ -14,15 +14,6 @@ void *map_file(const char *file) {
     return 0;
   return addr;
 }
-#ifndef NDEBUG
-#include <stdio.h>
-#include <unistd.h>
-#define L printf("%10s %4ld %4ld\n", __FUNCTION__, a, s), usleep(20000)
-#define Λ L, printf("\n")
-#else
-#define L (void)0
-#define Λ (void)0
-#endif
 #include "aword.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,9 +36,9 @@ n_t ls(const char *atext) {
   assert(w);
   return w;
 }
-N(Maroon_end) { L; }
-N(Olive_end) { L; }
-N(Navy_end) { L; }
+N(Maroon_end) { P; }
+N(Olive_end) { P; }
+N(Navy_end) { P; }
 N(Dot) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
 int main(int argc, const char **argv) {
   long a = 0;

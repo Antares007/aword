@@ -1,11 +1,19 @@
 s
-s1 s2 s3 s4 print.
-s1
-sopo. kargi. gogoa.
-s2
-tina. mamas. angelozia.
-s3
-andrias. ukvars. tamashi.
-s4
-nikas. esmis. musika.
+  n123 n123 n123 print.
 
+n123
+  1.
+  2.
+  3 n345.
+
+n345
+  3. 4. 5.
+
+s1
+"სოფო ". "კარგი ". "გოგოა ".
+s2
+"თინა ". "მამას ". "ანგელოზია ".
+s3
+"ანდრიას ". "უყვარს ". "თამაში ".
+s4
+"ნიკას ". "ესმის ". "მუსიკა ".
