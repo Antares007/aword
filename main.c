@@ -79,7 +79,7 @@ int main(int argc, const char **argv) {
   o[a++] = printf;
   o[a++] = usleep;
   o[a++] = ls;
-  n_t w = W("b m o");
+  n_t w = W("b s o");
   (w + 16)(0, a, 0, o, s);
   w(1, a, 0, o, s);
 }

@@ -1,87 +1,11 @@
-b {
-  G(Navy    ) { P; Blue    (t, a, b, o, s); }
-  G(Lime    ) { P; Green   (t, a, b, o, s); }
-  G(Maroon  ) { P; Red     (t, a, b, o, s); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; if(!t) Yellow(1, a, b, o, s); }
-}.
-o {
-  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
-  G(Purple  ) { P; Fuchsia (t, a, b, o, s); }
-  G(Red     ) { P; Maroon  (t, a, b, o, s); }
-  G(Green   ) { P; Olive   (t, a, b, o, s); }
-  G(Blue    ) { P; Navy    (t, a, b, o, s); }
-}.
-tab {
-  G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
-  G(Lime    ) { P; Green            (t, a, b, o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
-}.
-print {
-  G(Green) {
-    for(long i = 3; i < a; i++)
-      Printf("%s", o[i]);
-    Printf("\n");
-    a = 3;
-    Green(t,a,b,o,s);
-  }
-}.
-m  { Tword("tab m1 m2 m3 print o"); }.
-m1 { Tword("tab sopo o", "tab kargi o", "tab gogoa o");}.
-m2 { Tword("tab tina o", "tab mamas o", "tab angelozia o"); }.
-m3 { Tword("tab andrias o", "tab ukvars m4 o", "tab tamashi o"); }.
-m4 { Tword("tab nikas o", "tab esmis o", "tab musika o"); }.
-sopo      { G(Green) { P; o[a++] = "სოფო "      ; Green(t,a,b,o,s); } }.
-kargi     { G(Green) { P; o[a++] = "კარგი "     ; Green(t,a,b,o,s); } }.
-gogoa     { G(Green) { P; o[a++] = "გოგოა "     ; Green(t,a,b,o,s); } }.
-tina      { G(Green) { P; o[a++] = "თინა "      ; Green(t,a,b,o,s); } }.
-mamas     { G(Green) { P; o[a++] = "მამას "     ; Green(t,a,b,o,s); } }.
-angelozia { G(Green) { P; o[a++] = "ანგელოზია " ; Green(t,a,b,o,s); } }.
-andrias   { G(Green) { P; o[a++] = "ანდრიას "   ; Green(t,a,b,o,s); } }.
-ukvars    { G(Green) { P; o[a++] = "უყვარს "    ; Green(t,a,b,o,s); } }.
-tamashi   { G(Green) { P; o[a++] = "თამაში "    ; Green(t,a,b,o,s); } }.
-nikas     { G(Green) { P; o[a++] = "ნიკას "     ; Green(t,a,b,o,s); } }.
-esmis     { G(Green) { P; o[a++] = "ესმის "     ; Green(t,a,b,o,s); } }.
-musika    { G(Green) { P; o[a++] = "მუსიკა "    ; Green(t,a,b,o,s); } }.
-term {
-  G(Green   ) {
-    char*pst = (char*)o[--a];
-    long pos = (long)o[--a];
-    long len = (long)o[--a];
-    char*str = (char*)o[--a];
-    if (pos < len && str[pos] == pst[0]) {
-      o[a++] = (void*)str;
-      o[a++] = (void*)len;
-      o[a++] = (void*)pos + 1;
-      Green(t, a, b, o, s);
-    } else {
-      o[a++] = (void*)str;
-      o[a++] = (void*)len;
-      o[a++] = (void*)pos;
-      Blue(t, a, b, o, s);
-    }
-  } }.
-a_ { G(Lime ) { o[a++] = "a"; Lime(t, a, b, o, s); } }.
-b_ { G(Lime ) { o[a++] = "b"; Lime(t, a, b, o, s); } }.
-sS { }.
-NOT {
-  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
-  G(Red     ) { P; Yellow(t, a, b, o, s); }
-  G(Green   ) { P; Olive (t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); } }.
-AND {
-  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
-  G(Green   ) { P; Yellow(t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); } }.
-OR {
-  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
-  G(Blue    ) { P; Yellow(t, a, b, o, s); }
-  G(Green   ) { P; Olive (t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); } }.
-ORAND {
-  G(Yellow  ) { P; Lime  (t, a, b, o, s); }
-  G(Blue    ) { P; Yellow(t, a, b, o, s); }
-  G(Green   ) { P; Yellow(t, a, b, o, s); }
-  G(Lime    ) { P; Green (t, a, b, o, s); } }.
+s
+s1 s2 s3 print.
+s1
+sopo. kargi. gogoa.
+s2
+tina. mamas. angelozia.
+s3
+andrias. ukvars s4. tamashi.
+s4
+nikas. esmis. musika.
+
