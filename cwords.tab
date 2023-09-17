@@ -1,9 +1,9 @@
 b {
-  G(Navy    ) { P; Blue    (t, a, b, o, s); }
-  G(Lime    ) { P; Green   (t, a, b, o, s); }
-  G(Maroon  ) { P; Red     (t, a, b, o, s); }
-  G(Fuchsia ) { P; }
-  G(Olive   ) { P; if(!t) Yellow(1, a, b, o, s); }
+  G(Navy    ) { P; Blue                 ( t, a, b, o, s); }
+  G(Lime    ) { P; Green                ( t, a, b, o, s); }
+  G(Maroon  ) { P; Red                  ( t, a, b, o, s); }
+  G(Fuchsia ) { P; if (t) Yellow        ( t, a, b, o, s); }
+  G(Olive   ) { P; (Yellow_ray + t * 16)(!t, a, b, o, s); }
 }.
 o {
   G(Yellow  ) { P; Lime    (t, a, b, o, s); }
@@ -16,7 +16,7 @@ tab {
   G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
   G(Lime    ) { P; Green            (t, a, b, o, s); }
   G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
-  G(Fuchsia ) { P; }
+  G(Fuchsia ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
   G(Olive   ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
 }.
 print {

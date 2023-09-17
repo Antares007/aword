@@ -15,33 +15,3 @@
 Δ(Yellow);Δ(Purple); Δ(Red);   Δ(Green);Δ(Blue);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
 #undef Δ
-// clang-format on
-#define Tword(...)                                                             \
-  long SC;                                                                     \
-  long arm;                                                                    \
-  n_t atext[7];                                                                \
-  G(Purple) { P;                                                                         \
-    char *ss[] = {__VA_ARGS__};                                                \
-    SC = sizeof(ss) / sizeof(*ss);                                             \
-    arm = 0;                                                                   \
-    for (long i = 0; i < SC; i++) {                                            \
-      atext[i] = W(ss[i]);                                                     \
-      (atext[i] + 16)(t, a, b, o, s);                                          \
-    }                                                                          \
-    Purple(t, a, b, o, s);                                                     \
-  }                                                                            \
-  N(Olive_connect) {                                                           \
-    long narm = arm + t;                                                       \
-    t = narm / SC;                                                             \
-    arm = narm - t * SC;                                                       \
-    Green(t, a, b, o, s);                                                      \
-  }                                                                            \
-  N(Navy_connect) {                                                            \
-    Blue(t, a, b, o, s);                                                       \
-  }                                                                            \
-  G(Green) { P;                                                                   \
-    o[--s] = Red;                                                              \
-    o[--s] = Olive_connect;                                                    \
-    o[--s] = Navy_connect;                                                     \
-    atext[arm](t, a, b, o, s);                                                 \
-  }
