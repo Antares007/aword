@@ -2,8 +2,8 @@ const util = require("node:util");
 const exec = util.promisify(require("node:child_process").exec);
 const {writeFile, readFile} = require("node:fs/promises");
 const {join} = require("node:path");
-
 parse()
+
 async function parse_awords(cwords) {
   const input = (await readFile("awords.tab")).toString();
   const rez =
@@ -35,16 +35,15 @@ async function parse_awords(cwords) {
                                        return w;
                                      })
                                      .join(' '));
+    const initatexts = (atext, i) => `  atext[${i}] = W("tab ${
+        atext} o");\n  (atext[${i}] + 16)(t, a, b, o, s);`
+
     const b = `
 long arm;
 n_t atext[${atexts.length}];
 G(Purple) { P;
   arm = 0;
-${
-        atexts
-            .map((atext, i) => `  atext[${i}] = W("tab ${
-                     atext} o");\n  (atext[${i}] + 16)(t, a, b, o, s);`)
-            .join('\n')}
+${atexts.map(initatexts).join('\n')}
   Purple(t, a, b, o, s);
 }
 N(Olive_connect) {

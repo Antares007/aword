@@ -45,26 +45,6 @@ n_t ls(const char *atext) {
   assert(w);
   return w;
 }
-#include <string.h>
-// N(ls) {
-//   const char *atext = o[--a];
-//   //static void *store[1024][2];
-//   //static long size = 0;
-//   //for (long i = 0; i < size; i++)
-//   //  if (strcmp(store[i][0], atext) == 0)
-//   //    return (o[a++] = store[i][1]), ((n_t *)o)[s + 1](t, a, b, o, s + 3);
-//   n_t addr = ls_(atext);
-//   if (addr) {
-//     (addr + 16)(1, a, b, o, s);
-//     //store[size][0] = (void *)atext;
-//     //store[size][1] = addr;
-//     //size++;
-//     o[a++] = addr;
-//     ((n_t *)o)[s + 1](t, a, b, o, s + 3);
-//   } else {
-//     ((n_t *)o)[s + 0](t, a, b, o, s + 3);
-//   }
-// }
 N(Maroon_end) { L; }
 N(Olive_end) { L; }
 N(Navy_end) { L; }
