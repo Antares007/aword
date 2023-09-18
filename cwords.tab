@@ -13,17 +13,18 @@ o {
   G(Blue    ) { P; Navy    (t, a, b, o, s); }
 }.
 tab {
-  G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
-  G(Lime    ) { P; Green            (t, a, b, o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
-  G(Fuchsia ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
-  G(Olive   ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
+  G(Navy    ) { P; ((n_t *)o)[s + 0](t,               a, b, o, s + 3); }
+  G(Lime    ) { P; Green            (t,               a, b, o, s); }
+  G(Maroon  ) { P; ((n_t *)o)[s + 2](t,               a, b, o, s + 3); }
+  G(Fuchsia ) { P; ((n_t *)o)[s + 1]((long)o[s + 3],  a, b, o, s + 4); }
+  G(Olive   ) { P; ((n_t *)o)[s + 1](t,               a, b, o, s + 3); }
 }.
 print {
   G(Green) {
     for(long i = 3; i < a; i++)
       Printf("%s", o[i]);
     Printf("\n");
+    USleep(20000);
     a = 3;
     Green(t,a,b,o,s);
   }

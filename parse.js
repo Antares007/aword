@@ -46,44 +46,41 @@ async function parse_awords(cwords) {
     return w;
   };
   const turnToAWords = makeToAWordsFun(getNumberName, getStringName, ensureId);
-  const new_awords = dkeys.map(n => ([ n, addBodyForTWord(d[n].map(turnToAWords)) ]))
+  const new_awords =
+      dkeys.map(n => ([ n, addBodyForTWord(d[n].map(turnToAWords)) ]))
   return Promise.all([
-    ...Object.keys(anon).map(n => ([ n, anon[n] ])),
-    ...new_awords
+    ...Object.keys(anon).map(n => ([ n, anon[n] ])), ...new_awords
   ].map(add_missing_rays).map(compile))
 }
 function addBodyForTWord(atexts) {
   return `
-N(Got) { ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
-N(God) { ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
-N(Gor) { ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
-long arm;
-n_t atext[${atexts.length}];
-G(Purple) { P;
-  arm = 0;
-${atexts.map((atext, i) => `  atext[${i}] = W("tab ${atext} o");`).join('\n')}
-  T(Maroon, Purple, Navy);
-${
-      atexts
-          .map((atext, i) =>
-                   `  T(Got, atext[${atexts.length - i - 1}] + 16, Gor);`)
-          .join('\n')}
-  God(t, a, b, o, s);
+long arm_index;
+n_t arm;
+const char*atext[${atexts.length}];
+n_t t_switch_in_Green[2];
+n_t t_switch_in_Olive_connect[2];
+N(init_new_arm) {
+  arm = W(atext[arm_index]);
+  (o[--s] = (void*)t), T(Red, Green, Blue), (arm + 16)(1, a, b, o, s);
 }
-N(Olive_connect) {
-  long narm = arm + t;
+N(select_next_arm) {
+  long narm = arm_index + t;
   t = narm / ${atexts.length};
-  arm = narm - t * ${atexts.length};
-  Green(t, a, b, o, s);
+  arm_index = narm - t * ${atexts.length};
+  (o[--s] = (void*)t), T(Maroon, init_new_arm, Navy), (arm + 16)(0, a, b, o, s);
 }
-N(Navy_connect) {
-  Blue(t, a, b, o, s);
-}
-G(Green) { P;
-  o[--s] = Red;
-  o[--s] = Olive_connect;
-  o[--s] = Navy_connect;
-  atext[arm](t, a, b, o, s);
+N(Olive_connect) { t_switch_in_Olive_connect[t](t, a, b, o, s); }
+N(Navy_connect) { Blue(t, a, b, o, s); }
+G(Green) { P, T(Maroon, t_switch_in_Green[t], Navy_connect), arm(t, a, b, o, s); }
+G(Purple) { P;
+  t_switch_in_Green[0] = Green;
+  t_switch_in_Green[1] = Olive_connect;
+  t_switch_in_Olive_connect[0] = Green;
+  t_switch_in_Olive_connect[1] = select_next_arm;
+  arm_index = 0;
+${atexts.map((atext, i) => `  atext[${i}] = "tab ${atext}o";`).join('\n')}
+  arm = W(atext[0]);
+  (o[--s] = (void*)t), T(Maroon, Purple, Navy), (arm + 16)(t, a, b, o, s);
 }
 `
 }
@@ -195,7 +192,7 @@ function makeToAWordsFun(getNumberName, getStringName, ensureId) {
   }
 }
 function hashCode(s) {
-  let h = 0|0;
+  let h = 0 | 0;
   for (let i = 0; i < s.length; i++)
     h = 31 * h + s.charCodeAt(i) | 0;
   return h;
