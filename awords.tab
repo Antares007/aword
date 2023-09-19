@@ -1,12 +1,24 @@
+ABOS
+  ABO.
+  ABO ABO.
 s
-  n123 n123 n123 print.
+  "bo." 3 0 ABOS "." term print.
+ABO
+  "a" term.
+  "b" term.
+  "o" term.
+
+sS
+  empty.
+  "s" term sS sS.
 S
-  "b".
-  S "a".
+  "b" term.
+  S "a" term OR "c" term.
+
 n123
   1.
   2.
-  3 n345.
+  3.
 
 n345
   3. 4. 5.

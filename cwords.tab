@@ -1,5 +1,5 @@
 b {
-  G(Navy    ) { P; Blue                 ( t, a, b, o, s); }
+  G(Navy    ) { P; Purple               ( 0, a, b, o, s); }
   G(Lime    ) { P; Green                ( t, a, b, o, s); }
   G(Maroon  ) { P; Red                  ( t, a, b, o, s); }
   G(Fuchsia ) { P; if (t) Yellow        ( t, a, b, o, s); }
@@ -13,20 +13,47 @@ o {
   G(Blue    ) { P; Navy    (t, a, b, o, s); }
 }.
 tab {
-  G(Navy    ) { P; ((n_t *)o)[s + 0](t,               a, b, o, s + 3); }
-  G(Lime    ) { P; Green            (t,               a, b, o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[s + 2](t,               a, b, o, s + 3); }
-  G(Fuchsia ) { P; ((n_t *)o)[s + 1]((long)o[s + 3],  a, b, o, s + 4); }
-  G(Olive   ) { P; ((n_t *)o)[s + 1](t,               a, b, o, s + 3); }
+  G(Yellow  ) {P_; Yellow           (t, a, b, o, s); }
+  G(Navy    ) { P; ((n_t *)o)[s + 0](t, a, b, o, s + 3); }
+  G(Lime    ) { P; Green            (t, a, b, o, s); }
+  G(Maroon  ) { P; ((n_t *)o)[s + 2](t, a, b, o, s + 3); }
+  G(Fuchsia ) { P; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
+  G(Olive   ) {P_; ((n_t *)o)[s + 1](t, a, b, o, s + 3); }
+}.
+empty {
+  G(Green) { P_; Printf("\n"); Green(t,a,b,o,s); }
 }.
 print {
-  G(Green) {
+  G(Green) { P;
     for(long i = 3; i < a; i++)
-      Printf("%s", o[i]);
+      if((long)o[i] < 1000)
+        Printf("%ld ", (long)o[i]);
+      else
+        Printf("%s ", o[i]);
     Printf("\n");
     USleep(20000);
     a = 3;
     Green(t,a,b,o,s);
+  }
+}.
+term {
+  G(Green) { P_;
+    char*str[2];
+    const char* match = o[--a];
+    long        pos   = o[--a];
+    long        len   = o[--a];
+    const char* input = o[--a];
+    if(pos < len && input[pos] == match[0]) {
+      (o[a++] = input           ),
+      (o[a++] = (void*)len      ),
+      (o[a++] = (void*)(pos + 1)),
+      Green(t,a,b,o,s);
+    } else {
+      (o[a++] = input           ),
+      (o[a++] = (void*)len      ),
+      (o[a++] = (void*)pos      ),
+      Blue (t,a,b,o,s);
+    }
   }
 }.
 NOT {

@@ -30,14 +30,14 @@ async function parse_awords(cwords) {
     const n = `N${hashCode(s)}`;
     if (anon[n])
       return n
-      anon[n] = `G(Green) { P; o[a++] = "${s}"; Green(t,a,b,o,s); }`
+      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t, a, b, o, s); }`
       return n;
   };
   const getStringName = (s) => {
     const n = `S${hashCode(s)}`;
     if (anon[n])
       return n
-      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t,a,b,o,s); }`
+      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t, a, b, o, s); }`
       return n;
   };
   const ensureId = w => {
@@ -53,34 +53,34 @@ async function parse_awords(cwords) {
   ].map(add_missing_rays).map(compile))
 }
 function addBodyForTWord(atexts) {
-  return `
-long arm_index;
-n_t arm;
-const char*atext[${atexts.length}];
-n_t t_switch_in_Green[2];
-n_t t_switch_in_Olive_connect[2];
-N(init_new_arm) {
-  arm = W(atext[arm_index]);
-  (o[--s] = (void*)t), T(Red, Green, Blue), (arm + 16)(1, a, b, o, s);
+  return `long        aword_index;
+n_t         aword;
+const char *atexts[${atexts.length}];
+N(Olive_connect) { 
+  if (t) {
+    long narm = aword_index + t;
+    t = narm / ${atexts.length};
+    aword_index = narm - t * ${atexts.length};
+    aword = W(atexts[aword_index]);
+    T(Maroon, Green, Maroon), (aword + 16)(t, a, b, o, s);
+  } else {
+    Green(t, a, b, o, s);
+  }
 }
-N(select_next_arm) {
-  long narm = arm_index + t;
-  t = narm / ${atexts.length};
-  arm_index = narm - t * ${atexts.length};
-  (o[--s] = (void*)t), T(Maroon, init_new_arm, Navy), (arm + 16)(0, a, b, o, s);
+N(Navy_connect) { P_;
+  aword_index++;
+  aword = W(atexts[aword_index]);
+  T(Maroon, Green_ray,  Maroon);
+  (aword + 16)(t, a, b, o, s);
 }
-N(Olive_connect) { t_switch_in_Olive_connect[t](t, a, b, o, s); }
-N(Navy_connect) { Blue(t, a, b, o, s); }
-G(Green) { P, T(Maroon, t_switch_in_Green[t], Navy_connect), arm(t, a, b, o, s); }
-G(Purple) { P;
-  t_switch_in_Green[0] = Green;
-  t_switch_in_Green[1] = Olive_connect;
-  t_switch_in_Olive_connect[0] = Green;
-  t_switch_in_Olive_connect[1] = select_next_arm;
-  arm_index = 0;
-${atexts.map((atext, i) => `  atext[${i}] = "tab ${atext}o";`).join('\n')}
-  arm = W(atext[0]);
-  (o[--s] = (void*)t), T(Maroon, Purple, Navy), (arm + 16)(t, a, b, o, s);
+G(Green) { P_;
+  T(Maroon, t ? Olive_connect:Green,  aword_index < ${atexts.length - 1}? Navy_connect:Navy);
+  aword(t, a, b, o, s);
+}
+G(Purple) { P_;
+${atexts.map((atext, i) => `  atexts[${i}] = "tab ${atext}o";`).join('\n')}
+  aword = W(atexts[0]);
+  T(Maroon, Purple, Maroon), (aword + 16)(t, a, b, o, s);
 }
 `
 }
