@@ -43,7 +43,7 @@ N(Dot) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
 int main(int argc, const char **argv) {
   long a = 0;
   void *o[512];
-  long s = sizeof(o) / sizeof(*o);
+  long b = sizeof(o) / sizeof(*o);
 
   T(Maroon_end, Olive_end, Navy_end);
 
@@ -51,5 +51,5 @@ int main(int argc, const char **argv) {
   o[a++] = usleep;
   o[a++] = ls;
   n_t w = W("b s o");
-  (w + 16)(1, a, 0, o, s);
+  (w + 16)(1, a, b, o, 0);
 }

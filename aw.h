@@ -2,7 +2,7 @@
 // clang-format off
 #include "aword.h"
 #define R(Olive)                                                               \
-  N(Olive      ) { asm("nop" : : "a"(t + a + (long)b + (long)o + s)); };       \
+  N(Olive      ) { asm("nop" : : "a"(t + a + b + (long)o + (long)s)); };       \
   N(Olive##_ray)
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \

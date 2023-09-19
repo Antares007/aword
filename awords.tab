@@ -2,7 +2,7 @@ ABOS
   ABO.
   ABO ABO.
 s
-  "bo." 3 0 ABOS "." term print.
+  "bo." 3 0 ABO ABO "." term print.
 ABO
   "a" term.
   "b" term.
