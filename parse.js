@@ -30,7 +30,9 @@ async function parse_awords(cwords) {
     const n = `N${hashCode(s)}`;
     if (anon[n])
       return n
-      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t, a, b, o, s); }`
+    anon[n] = `
+G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
+G(Red   ) { o[a++] = ${s}; Red(t, a, b, o, s); }`
       return n;
   };
   const getStringName = (s) => {
@@ -42,8 +44,16 @@ async function parse_awords(cwords) {
     let pred = "1";
     for (let i = 0; i < b.length; i++)
       pred = pred + ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
-    anon[n] = `G(Green) { Printf("%s\\n", ${s}); if (${pred}) (o[a++] = ${
-        s}), Green(t, a, b, o, s + ${b.length}); else Blue(t, a, b, o, s); }`
+    anon[n] = `
+G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
+G(Red   ) { o[a++] = ${s}; Red(t, a, b, o, s); }
+G(Green) {
+  Printf("%s\\n", ${s});
+  if (${pred})
+    (o[a++] = ${s}), Green(t, a, b, o, s + ${b.length});
+  else
+    Blue(t, a, b, o, s);
+}`
     return n;
   };
   const ensureId = w => {
@@ -59,53 +69,36 @@ async function parse_awords(cwords) {
   ].map(add_missing_rays).map(compile))
 }
 function addBodyForTWord(atexts) {
-  return `long        arm_index;
+  return `
+const char *arm_texts[${atexts.length}];
+long        arm_index;
 n_t         arm;
-const char *atexts[${atexts.length}];
-N(Olive_connect) {
-  if (t) {
-    long narm = arm_index + t;
-    t = narm / ${atexts.length};
-    arm_index = narm - t * ${atexts.length};
-    arm = W(atexts[arm_index]);
-    T(Maroon, Green, Maroon), (arm + 16)(t, a, b, o, s);
-  } else {
-    Green(t, a, b, o, s);
-  }
+#define C_Yellow(arm) (arm+00)
+#define C_Purple(arm) (arm+16)
+#define C_Red(arm)    (arm+32)
+N(Red_connect ) {
+  long narm = arm_index + t;
+  long charge = narm / ${atexts.length};
+  arm_index = narm - charge * ${atexts.length};
+  arm = W(arm_texts[arm_index]);
+  o[--b] = Yellow + charge * 2 * 16;
+  C_Purple(arm)(t, a, b, o, s);
 }
-const char*saved_s;
-long saved_a;
-N(Navy_connect ) {
-  if (t) {
-    // this arm is fully rotated lets try next arm with
-    // saved state or conitinue with charged Blue
-    if (arm_index < ${atexts.length - 1}) {
-      arm = W(atexts[++arm_index]);
-      T(Maroon, Green_ray, Maroon);
-      (arm + 16)(t, saved_a, b, o, saved_s);
-    } else {
-      Blue(t, saved_a, b, o, saved_s);
-    }
-  } else {
-    // we need to go in on next T charge or do
-    // somthing else after OR junction recharges T
-    Blue(t, saved_a, b, o, saved_s);
-  }
+G(Yellow        ) { P;
+  o[--b]  = Red;
+  o[--b]  = Yellow;
+  C_Yellow(arm)(t, a, b, o, s);
 }
-G(Green        ) { P_;
-  if (t) {
-    saved_a = a;
-    saved_s = s;
-    T(Red, Olive_connect, Navy_connect);
-  } else {
-    T(Red, Green, Blue);
-  }
-  arm(t, a, b, o, s);
+G(Red           ) { P;
+  o[--b]  = Red_connect;
+  o[--b]  = Yellow;
+  C_Red(arm)(t, a, b, o, s);
 }
-G(Purple      ) { P;
-${atexts.map((atext, i) => `  atexts[${i}] = "tab ${atext}o";`).join('\n')}
-  arm = W(atexts[0]);
-  T(Maroon, Purple, Maroon), (arm + 16)(t, a, b, o, s);
+G(Purple        ) { P;
+${atexts.map((atext, i) => `  arm_texts[${i}] = "tab ${atext}o";`).join('\n')}
+  arm     = W(arm_texts[0]);
+  o[--b]  = Purple;
+  C_Purple(arm)(t, a, b, o, s);
 }
 `
 }
@@ -160,7 +153,7 @@ function add_missing_rays([ n, b ]) {
   deleteDefinedRays("G");
   deleteDefinedRays("R");
   for (let k in rays)
-    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
+    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { P; ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
   return [ n, b ];
 }

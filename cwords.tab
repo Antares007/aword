@@ -1,42 +1,43 @@
 b {
-  G(Navy    ) { P_; (Yellow_ray + t * 16)(!t, a, b, o, s); }
-  G(Lime    ) { P; Green                ( t, a, b, o, s); }
-  G(Maroon  ) { P; Red                  ( t, a, b, o, s); }
-  G(Fuchsia ) { P; if (t) Yellow        ( t, a, b, o, s); }
-  G(Olive   ) { P_; (Yellow_ray + t * 16)(!t, a, b, o, s); }
+  G(Navy    ) { P; }
+  G(Lime    ) { P; }
+  G(Maroon  ) { P; }
+  G(Fuchsia ) { P; Red(t,a,b,o,s); }
+  G(Olive   ) { P; Red(t,a,b,o,s); }
 }.
 o {
-  G(Yellow  ) { P; Lime    (t, a, b, o, s); }
-  G(Purple  ) { P; Fuchsia (t, a, b, o, s); }
-  G(Red     ) { P; Maroon  (t, a, b, o, s); }
-  G(Green   ) { P; Olive   (t, a, b, o, s); }
-  G(Blue    ) { P; Navy    (t, a, b, o, s); }
+  G(Yellow) { P; Olive  (t,a,b,o,s); }
+  G(Purple) { P; Fuchsia(t,a,b,o,s); }
+  G(Red   ) { P; Maroon (t,a,b,o,s); }
+  G(Green ) { P; Lime   (t,a,b,o,s); }
+  G(Blue  ) { P; Navy   (t,a,b,o,s); }
 }.
-tab {
-  G(Yellow  ) { P; Yellow           (t, a, b,     o, s); }
-  G(Navy    ) { P; ((n_t *)o)[b + 0](t, a, b + 3, o, s); }
-  G(Lime    ) { P; Green            (t, a, b,     o, s); }
-  G(Maroon  ) { P; ((n_t *)o)[b + 2](t, a, b + 3, o, s); }
-  G(Fuchsia ) { P; ((n_t *)o)[b + 1](t, a, b + 3, o, s); }
-  G(Olive   ) { P; ((n_t *)o)[b + 1](t, a, b + 3, o, s); }
+tab { 
+  G(Navy    ) { P; }
+  G(Lime    ) { P; }
+  G(Maroon  ) { P; ((n_t*)o)[b+1](t,a,b+2,o,s); }
+  G(Fuchsia ) { P; ((n_t*)o)[b+0](t,a,b+1,o,s); }
+  G(Olive   ) { P; ((n_t*)o)[b+0](t,a,b+2,o,s); }
 }.
 
 set_bo { G(Green) { Green(t, 3, b, o, "bo."  ); } }.
 set_ba { G(Green) { Green(t, 3, b, o, "ba"); } }.
 
 print {
-  G(Green) { P;
-    Printf(">G>");
+  N(printit) {
+    n_t color = o[--a];
     for(long i = 3; i < a; i++)
       if((long)o[i] < 1000)
-        Printf("%ld ", (long)o[i]);
+        Printf("%ld", (long)o[i]);
       else
-        Printf("%s ", o[i]);
-    Printf("<G<\n");
-    USleep(20000);
+        Printf("%s", o[i]);
+    Printf("\n");
     a = 3;
-    Green(t,a,b,o,s);
+    color(t, a, b, o, s);
   }
+  G(Yellow  ) { o[a++] = Yellow; printit(t, a, b, o, s); }
+  G(Red     ) { o[a++] = Red;    printit(t, a, b, o, s); }
+  G(Green   ) { o[a++] = Green;  printit(t, a, b, o, s); }
 }.
 NOT {
   G(Yellow  ) { P; Lime  (t, a, b, o, s); }

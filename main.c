@@ -45,8 +45,6 @@ int main(int argc, const char **argv) {
   void *o[512];
   long b = sizeof(o) / sizeof(*o);
 
-  T(Maroon_end, Olive_end, Navy_end);
-
   o[a++] = printf;
   o[a++] = usleep;
   o[a++] = ls;
