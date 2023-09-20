@@ -1,33 +1,19 @@
-ABOS
-  ABO.
+ABOs
   ABO ABO.
+aOc
+  "a" OR "c".
 s
-  "bo." 3 0 ABO ABO "." term print.
+  id.
+s_
+  set_ba S print.
 ABO
-  "a" term.
-  "b" term.
-  "o" term.
+  "a".
+  "b".
+  "o".
 
 sS
-  empty.
-  "s" term sS sS.
+  "".
+  "s" sS sS.
 S
-  "b" term.
-  S "a" term OR "c" term.
-
-n123
-  1.
-  2.
-  3.
-
-n345
-  3. 4. 5.
-
-s1
-"სოფო ". "კარგი ". "გოგოა ".
-s2
-"თინა ". "მამას ". "ანგელოზია ".
-s3
-"ანდრიას ". "უყვარს ". "თამაში ".
-s4
-"ნიკას ". "ესმის ". "მუსიკა ".
+  "b".
+  S "a" OR "c".

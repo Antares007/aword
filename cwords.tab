@@ -1,9 +1,9 @@
 b {
-  G(Navy    ) { P; Purple               ( 0, a, b, o, s); }
+  G(Navy    ) { P_; (Yellow_ray + t * 16)(!t, a, b, o, s); }
   G(Lime    ) { P; Green                ( t, a, b, o, s); }
   G(Maroon  ) { P; Red                  ( t, a, b, o, s); }
   G(Fuchsia ) { P; if (t) Yellow        ( t, a, b, o, s); }
-  G(Olive   ) { P; (Yellow_ray + t * 16)(!t, a, b, o, s); }
+  G(Olive   ) { P_; (Yellow_ray + t * 16)(!t, a, b, o, s); }
 }.
 o {
   G(Yellow  ) { P; Lime    (t, a, b, o, s); }
@@ -13,47 +13,29 @@ o {
   G(Blue    ) { P; Navy    (t, a, b, o, s); }
 }.
 tab {
-  G(Yellow  ) {P_; Yellow           (t, a, b,     o, s); }
+  G(Yellow  ) { P; Yellow           (t, a, b,     o, s); }
   G(Navy    ) { P; ((n_t *)o)[b + 0](t, a, b + 3, o, s); }
   G(Lime    ) { P; Green            (t, a, b,     o, s); }
   G(Maroon  ) { P; ((n_t *)o)[b + 2](t, a, b + 3, o, s); }
   G(Fuchsia ) { P; ((n_t *)o)[b + 1](t, a, b + 3, o, s); }
-  G(Olive   ) {P_; ((n_t *)o)[b + 1](t, a, b + 3, o, s); }
+  G(Olive   ) { P; ((n_t *)o)[b + 1](t, a, b + 3, o, s); }
 }.
-empty {
-  G(Green) { P_; Printf("\n"); Green(t,a,b,o,s); }
-}.
+
+set_bo { G(Green) { Green(t, 3, b, o, "bo."  ); } }.
+set_ba { G(Green) { Green(t, 3, b, o, "ba"); } }.
+
 print {
   G(Green) { P;
+    Printf(">G>");
     for(long i = 3; i < a; i++)
       if((long)o[i] < 1000)
         Printf("%ld ", (long)o[i]);
       else
         Printf("%s ", o[i]);
-    Printf("\n");
+    Printf("<G<\n");
     USleep(20000);
     a = 3;
     Green(t,a,b,o,s);
-  }
-}.
-term {
-  G(Green) { P_;
-    char*str[2];
-    const char* match = o[--a];
-    long        pos   = o[--a];
-    long        len   = o[--a];
-    const char* input = o[--a];
-    if(pos < len && input[pos] == match[0]) {
-      (o[a++] = input           ),
-      (o[a++] = (void*)len      ),
-      (o[a++] = (void*)(pos + 1)),
-      Green(t,a,b,o,s);
-    } else {
-      (o[a++] = input           ),
-      (o[a++] = (void*)len      ),
-      (o[a++] = (void*)pos      ),
-      Blue (t,a,b,o,s);
-    }
   }
 }.
 NOT {
@@ -75,3 +57,14 @@ ORAND {
   G(Blue    ) { P; Yellow(t, a, b, o, s); }
   G(Green   ) { P; Yellow(t, a, b, o, s); }
   G(Lime    ) { P; Green (t, a, b, o, s); } }.
+id {
+  G(Yellow  ) { P_; Yellow  (t, a, b, o, s); }
+  G(Purple  ) { P_; Purple  (t, a, b, o, s); }
+  G(Red     ) { P_; Red     (t, a, b, o, s); }
+  G(Green   ) { P_; Green   (t, a, b, o, s); }
+  G(Blue    ) { P_; Blue    (t, a, b, o, s); }
+  G(Navy    ) { P_; Navy    (t, a, b, o, s); }
+  G(Lime    ) { P_; Lime    (t, a, b, o, s); }
+  G(Maroon  ) { P_; Maroon  (t, a, b, o, s); }
+  G(Fuchsia ) { P_; Fuchsia (t, a, b, o, s); }
+  G(Olive   ) { P_; Olive   (t, a, b, o, s); } }.

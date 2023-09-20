@@ -36,9 +36,15 @@ async function parse_awords(cwords) {
   const getStringName = (s) => {
     const n = `S${hashCode(s)}`;
     if (anon[n])
-      return n
-      anon[n] = `G(Green) { P; o[a++] = ${s}; Green(t, a, b, o, s); }`
       return n;
+    console.log(n, s);
+    const b = Buffer.from(JSON.parse(s));
+    let pred = "1";
+    for (let i = 0; i < b.length; i++)
+      pred = pred + ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
+    anon[n] = `G(Green) { Printf("%s\\n", ${s}); if (${pred}) (o[a++] = ${
+        s}), Green(t, a, b, o, s + ${b.length}); else Blue(t, a, b, o, s); }`
+    return n;
   };
   const ensureId = w => {
     if (!awords[w])
@@ -53,34 +59,53 @@ async function parse_awords(cwords) {
   ].map(add_missing_rays).map(compile))
 }
 function addBodyForTWord(atexts) {
-  return `long        aword_index;
-n_t         aword;
+  return `long        arm_index;
+n_t         arm;
 const char *atexts[${atexts.length}];
-N(Olive_connect) { 
+N(Olive_connect) {
   if (t) {
-    long narm = aword_index + t;
+    long narm = arm_index + t;
     t = narm / ${atexts.length};
-    aword_index = narm - t * ${atexts.length};
-    aword = W(atexts[aword_index]);
-    T(Maroon, Green, Maroon), (aword + 16)(t, a, b, o, s);
+    arm_index = narm - t * ${atexts.length};
+    arm = W(atexts[arm_index]);
+    T(Maroon, Green, Maroon), (arm + 16)(t, a, b, o, s);
   } else {
     Green(t, a, b, o, s);
   }
 }
-N(Navy_connect) { P_;
-  aword_index++;
-  aword = W(atexts[aword_index]);
-  T(Maroon, Green_ray,  Maroon);
-  (aword + 16)(t, a, b, o, s);
+const char*saved_s;
+long saved_a;
+N(Navy_connect ) {
+  if (t) {
+    // this arm is fully rotated lets try next arm with
+    // saved state or conitinue with charged Blue
+    if (arm_index < ${atexts.length - 1}) {
+      arm = W(atexts[++arm_index]);
+      T(Maroon, Green_ray, Maroon);
+      (arm + 16)(t, saved_a, b, o, saved_s);
+    } else {
+      Blue(t, saved_a, b, o, saved_s);
+    }
+  } else {
+    // we need to go in on next T charge or do
+    // somthing else after OR junction recharges T
+    Blue(t, saved_a, b, o, saved_s);
+  }
 }
-G(Green) { P_;
-  T(Maroon, t ? Olive_connect:Green,  aword_index < ${atexts.length - 1}? Navy_connect:Navy);
-  aword(t, a, b, o, s);
+G(Green        ) { P_;
+  if (t) {
+    saved_a = a;
+    saved_s = s;
+    T(Red, Olive_connect, Navy_connect);
+  } else {
+    T(Red, Green, Blue);
+  }
+  arm(t, a, b, o, s);
 }
-G(Purple) { P_;
+G(Purple      ) { P;
 ${atexts.map((atext, i) => `  atexts[${i}] = "tab ${atext}o";`).join('\n')}
-  aword = W(atexts[0]);
-  T(Maroon, Purple, Maroon), (aword + 16)(t, a, b, o, s);
+  arm = W(atexts[0]);
+  T(Maroon, Purple, Maroon), (arm + 16)(t, a, b, o, s);
 }
 `
 }
@@ -125,20 +150,15 @@ function add_missing_rays([ n, b ]) {
     F : "Fuchsia",
     O : "Olive",
   };
-  if (b.indexOf("Tword") != -1) {
-    delete rays["G"];
-    delete rays["P"];
-  } else {
-    const deleteDefinedRays = (type) => {
-      let p = b.indexOf(type + "(");
-      while (-1 < p) {
-        delete rays[b[p + 2]];
-        p = b.indexOf(type + "(", p + 2);
-      }
-    };
-    deleteDefinedRays("G");
-    deleteDefinedRays("R");
-  }
+  const deleteDefinedRays = (type) => {
+    let p = b.indexOf(type + "(");
+    while (-1 < p) {
+      delete rays[b[p + 2]];
+      p = b.indexOf(type + "(", p + 2);
+    }
+  };
+  deleteDefinedRays("G");
+  deleteDefinedRays("R");
   for (let k in rays)
     b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;

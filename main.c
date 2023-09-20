@@ -51,5 +51,5 @@ int main(int argc, const char **argv) {
   o[a++] = usleep;
   o[a++] = ls;
   n_t w = W("b s o");
-  (w + 16)(1, a, b, o, 0);
+  (w + 16)(1, a, b, o, "");
 }
