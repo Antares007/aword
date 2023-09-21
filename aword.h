@@ -13,3 +13,5 @@ typedef N((*n_t));
 #define C_Yellow(arm) (arm+00)
 #define C_Purple(arm) (arm+16)
 #define C_Red(arm)    (arm+32)
+#define C_Green(arm)  (arm+48)
+#define C_Blue(arm)   (arm+64)

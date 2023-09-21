@@ -5,9 +5,12 @@ function astring(s) {
     pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
 G(Yellow) {              (o[a++] = ${s}), Yellow(t, a, b, o, s); }
-G(Red   ) {              (o[a++] = ${s}), Red   (t, a, b, o, s); }
-G(Green ) { if (${pred}) (o[a++] = ${s}), Green (t, a, b, o, s + ${b.length});
-            else                          Blue  (t, a, b, o, s); }`
+G(Green ) {              (o[a++] = ${s}), Green (t, a, b, o, s); }
+G(Red   ) { if (${pred}) (o[a++] = ${s}), Red   (t, a, b, o, s + ${b.length});
+            else                          Yellow(t, a, b, o, s); }
+G(Blue  ) { if (${pred}) (o[a++] = ${s}), Blue  (t, a, b, o, s + ${b.length});
+            else                          Green (t, a, b, o, s); }
+`
 }
 function anumber(s) {
   return `
@@ -20,27 +23,35 @@ function aword(s) {
 const char *arm_texts[${s.length}];
 long        arm_index;
 n_t         arm;
-N(Red_connect ) {
-  long narm = arm_index + t;
+N(Yellow_connect) {
+  long narm   = arm_index + t;
   long charge = narm / ${s.length};
-  arm_index = narm - charge * ${s.length};
-  arm = W(arm_texts[arm_index]);
-  o[--b] = Yellow + charge * 2 * 16;
+  arm_index   = narm - charge * ${s.length};
+  arm         = W(arm_texts[arm_index]);
+  o[--b]      = Green - charge * 3 * 16;
   C_Purple(arm)(t, a, b, o, s);
 }
-G(Yellow        ) { P;
-  o[--b]  = Red;
-  o[--b]  = Yellow;
-  C_Yellow(arm)(t, a, b, o, s);
+N(Red_connect) {
+  long narm   = arm_index + t;
+  long charge = narm / ${s.length};
+  arm_index   = narm - charge * ${s.length};
+  arm         = W(arm_texts[arm_index]);
+  o[--b]      = Blue - charge * 2 * 16;
+  C_Purple(arm)(t, a, b, o, s);
 }
-R(Green) { Yellow_nar(t,a,b,o,s); }
-G(Red           ) { P;
-  o[--b]  = Red_connect;
-  o[--b]  = Yellow;
-  C_Red(arm)(t, a, b, o, s);
-}
-R(Blue) { Red_nar(t,a,b,o,s); }
-G(Purple        ) {
+G(Yellow) { o[--b]  = Yellow_connect;
+            o[--b]  = Green;
+            C_Yellow  (arm)(t, a, b, o, s); }
+G(Green ) { o[--b]  = Yellow;
+            o[--b]  = Green;
+            C_Green   (arm)(t, a, b, o, s); }
+G(Red   ) { o[--b]  = Red_connect;
+            o[--b]  = Blue;
+            C_Red     (arm)(t, a, b, o, s); }
+G(Blue  ) { o[--b]  = Red;
+            o[--b]  = Blue;
+            C_Blue    (arm)(t, a, b, o, s); }
+G(Purple) {
 ${s.map((a, i) => `  arm_texts[${i}] = "tab ${a}o";`).join('\n')}
   arm     = W(arm_texts[0]);
   o[--b]  = Purple;
