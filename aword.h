@@ -9,3 +9,7 @@ typedef N((*n_t));
 //#define P P_
 #define P (void)0
 #define W(atext) ((n_t (*)(const char*))o[2])(atext)
+
+#define C_Yellow(arm) (arm+00)
+#define C_Purple(arm) (arm+16)
+#define C_Red(arm)    (arm+32)

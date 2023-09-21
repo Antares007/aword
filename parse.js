@@ -32,7 +32,8 @@ async function parse_awords(cwords) {
       return n
     anon[n] = `
 G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Red   ) { o[a++] = ${s}; Red(t, a, b, o, s); }`
+G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
+`
       return n;
   };
   const getStringName = (s) => {
@@ -46,14 +47,15 @@ G(Red   ) { o[a++] = ${s}; Red(t, a, b, o, s); }`
       pred = pred + ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
     anon[n] = `
 G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Red   ) { o[a++] = ${s}; Red(t, a, b, o, s); }
-G(Green) {
+G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
+G(Green ) {
   Printf("%s\\n", ${s});
   if (${pred})
     (o[a++] = ${s}), Green(t, a, b, o, s + ${b.length});
   else
     Blue(t, a, b, o, s);
-}`
+}
+`
     return n;
   };
   const ensureId = w => {
@@ -73,9 +75,6 @@ function addBodyForTWord(atexts) {
 const char *arm_texts[${atexts.length}];
 long        arm_index;
 n_t         arm;
-#define C_Yellow(arm) (arm+00)
-#define C_Purple(arm) (arm+16)
-#define C_Red(arm)    (arm+32)
 N(Red_connect ) {
   long narm = arm_index + t;
   long charge = narm / ${atexts.length};
@@ -94,7 +93,7 @@ G(Red           ) { P;
   o[--b]  = Yellow;
   C_Red(arm)(t, a, b, o, s);
 }
-G(Purple        ) { P;
+G(Purple        ) {
 ${atexts.map((atext, i) => `  arm_texts[${i}] = "tab ${atext}o";`).join('\n')}
   arm     = W(arm_texts[0]);
   o[--b]  = Purple;
@@ -153,7 +152,7 @@ function add_missing_rays([ n, b ]) {
   deleteDefinedRays("G");
   deleteDefinedRays("R");
   for (let k in rays)
-    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { P; ${
+    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
                 rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
   return [ n, b ];
 }

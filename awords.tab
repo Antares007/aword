@@ -1,25 +1,28 @@
 ABOs
   ABO.
   ABO ABO.
-aOc
-  "a" OR "c".
+  ABO n123 ABO.
+
 s
-  n123 n123 n123
-  ABO ABO ABO print.
-s_
-  set_ba S print.
+  ABO print.
+E
+  1. 2. 3. 4.
+  "(" E ")".
+  E "-" E.
+  E "+" E.
+
 n123
-1. 2. 3 n345.
+  1. 2. 3 n345.
+
 n345
-3. 4. 5.
+  3. 4. 5.
+
 ABO
-  "a".
-  "b".
-  "o".
+  "a". "b". "o".
 
 sS
   "".
   "s" sS sS.
 S
   "b".
-  S "a" OR "c".
+  S "a".
