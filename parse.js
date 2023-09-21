@@ -1,7 +1,58 @@
+function astring(s) {
+  const b = Buffer.from(JSON.parse(s));
+  let pred = "1";
+  for (let i = 0; i < b.length; i++)
+    pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
+  return `
+G(Yellow) {              (o[a++] = ${s}), Yellow(t, a, b, o, s); }
+G(Red   ) {              (o[a++] = ${s}), Red   (t, a, b, o, s); }
+G(Green ) { if (${pred}) (o[a++] = ${s}), Green (t, a, b, o, s + ${b.length});
+            else                          Blue  (t, a, b, o, s); }`
+}
+function anumber(s) {
+  return `
+G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
+G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
+`
+}
+function aword(s) {
+  return `
+const char *arm_texts[${s.length}];
+long        arm_index;
+n_t         arm;
+N(Red_connect ) {
+  long narm = arm_index + t;
+  long charge = narm / ${s.length};
+  arm_index = narm - charge * ${s.length};
+  arm = W(arm_texts[arm_index]);
+  o[--b] = Yellow + charge * 2 * 16;
+  C_Purple(arm)(t, a, b, o, s);
+}
+G(Yellow        ) { P;
+  o[--b]  = Red;
+  o[--b]  = Yellow;
+  C_Yellow(arm)(t, a, b, o, s);
+}
+R(Green) { Yellow_nar(t,a,b,o,s); }
+G(Red           ) { P;
+  o[--b]  = Red_connect;
+  o[--b]  = Yellow;
+  C_Red(arm)(t, a, b, o, s);
+}
+R(Blue) { Red_nar(t,a,b,o,s); }
+G(Purple        ) {
+${s.map((a, i) => `  arm_texts[${i}] = "tab ${a}o";`).join('\n')}
+  arm     = W(arm_texts[0]);
+  o[--b]  = Purple;
+  C_Purple(arm)(t, a, b, o, s);
+}
+`
+}
 const util = require("node:util");
 const exec = util.promisify(require("node:child_process").exec);
 const {writeFile, readFile} = require("node:fs/promises");
 const {join} = require("node:path");
+
 parse()
 
 async function parse_awords(cwords) {
@@ -26,80 +77,16 @@ async function parse_awords(cwords) {
     return d;
   }, {})
   const anon = {};
-  const getNumberName = (s) => {
-    const n = `N${hashCode(s)}`;
-    if (anon[n])
-      return n
-    anon[n] = `
-G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
-`
-      return n;
-  };
-  const getStringName = (s) => {
-    const n = `S${hashCode(s)}`;
-    if (anon[n])
-      return n;
-    console.log(n, s);
-    const b = Buffer.from(JSON.parse(s));
-    let pred = "1";
-    for (let i = 0; i < b.length; i++)
-      pred = pred + ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
-    anon[n] = `
-G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
-G(Green ) {
-  Printf("%s\\n", ${s});
-  if (${pred})
-    (o[a++] = ${s}), Green(t, a, b, o, s + ${b.length});
-  else
-    Blue(t, a, b, o, s);
-}
-`
-    return n;
-  };
-  const ensureId = w => {
-    if (!awords[w])
-      throw new Error(`not a word '${w}.'`);
-    return w;
-  };
-  const turnToAWords = makeToAWordsFun(getNumberName, getStringName, ensureId);
-  const new_awords =
-      dkeys.map(n => ([ n, addBodyForTWord(d[n].map(turnToAWords)) ]))
+  const turnToAWords =
+      makeToAWordsFun(anonize(anumber, anon), anonize(astring, anon), w => {
+        if (!awords[w])
+          throw new Error(`not a word '${w}.'`);
+        return w;
+      });
+  const new_awords = dkeys.map(n => ([ n, aword(d[n].map(turnToAWords)) ]))
   return Promise.all([
     ...Object.keys(anon).map(n => ([ n, anon[n] ])), ...new_awords
   ].map(add_missing_rays).map(compile))
-}
-function addBodyForTWord(atexts) {
-  return `
-const char *arm_texts[${atexts.length}];
-long        arm_index;
-n_t         arm;
-N(Red_connect ) {
-  long narm = arm_index + t;
-  long charge = narm / ${atexts.length};
-  arm_index = narm - charge * ${atexts.length};
-  arm = W(arm_texts[arm_index]);
-  o[--b] = Yellow + charge * 2 * 16;
-  C_Purple(arm)(t, a, b, o, s);
-}
-G(Yellow        ) { P;
-  o[--b]  = Red;
-  o[--b]  = Yellow;
-  C_Yellow(arm)(t, a, b, o, s);
-}
-G(Red           ) { P;
-  o[--b]  = Red_connect;
-  o[--b]  = Yellow;
-  C_Red(arm)(t, a, b, o, s);
-}
-G(Purple        ) {
-${atexts.map((atext, i) => `  arm_texts[${i}] = "tab ${atext}o";`).join('\n')}
-  arm     = W(arm_texts[0]);
-  o[--b]  = Purple;
-  C_Purple(arm)(t, a, b, o, s);
-}
-`
 }
 async function parse() {
   await exec(`rm -rf abin`);
@@ -142,18 +129,10 @@ function add_missing_rays([ n, b ]) {
     F : "Fuchsia",
     O : "Olive",
   };
-  const deleteDefinedRays = (type) => {
-    let p = b.indexOf(type + "(");
-    while (-1 < p) {
-      delete rays[b[p + 2]];
-      p = b.indexOf(type + "(", p + 2);
-    }
-  };
-  deleteDefinedRays("G");
-  deleteDefinedRays("R");
-  for (let k in rays)
-    b = b + `\nG(${rays[k].padEnd(8, ' ')}) { ${
-                rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
+  for (let k of Object.keys(rays))
+    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) === -2)
+      b += `\nR(${rays[k].padEnd(8, ' ')}) { ${
+          rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
   return [ n, b ];
 }
 async function compile([ n, b ]) {
@@ -208,4 +187,13 @@ function hashCode(s) {
   for (let i = 0; i < s.length; i++)
     h = 31 * h + s.charCodeAt(i) | 0;
   return h;
+}
+function anonize(f, anon) {
+  return function anonized(s) {
+    const n = hashCode(s);
+    if (anon[n])
+      return n;
+    anon[n] = f(s);
+    return n;
+  }
 }
