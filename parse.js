@@ -7,15 +7,15 @@ function astring(s) {
 G(Yellow) {              (o[a++] = ${s}), Yellow(t, a, b, o, s); }
 G(Green ) {              (o[a++] = ${s}), Green (t, a, b, o, s); }
 G(Red   ) { if (${pred}) (o[a++] = ${s}), Red   (t, a, b, o, s + ${b.length});
-            else                          Yellow(t, a, b, o, s); }
+            else                          Olive (t, a, b, o, s); }
 G(Blue  ) { if (${pred}) (o[a++] = ${s}), Blue  (t, a, b, o, s + ${b.length});
-            else                          Green (t, a, b, o, s); }
+            else                          Lime  (t, a, b, o, s); }
 `
 }
 function anumber(s) {
   return `
 G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Red   ) { o[a++] = ${s}; Red   (t, a, b, o, s); }
+G(Green ) { o[a++] = ${s}; Green (t, a, b, o, s); }
 `
 }
 function aword(s) {
@@ -23,39 +23,56 @@ function aword(s) {
 const char *arm_texts[${s.length}];
 long        arm_index;
 n_t         arm;
-N(Yellow_connect) {
-  long narm   = arm_index + t;
-  long charge = narm / ${s.length};
-  arm_index   = narm - charge * ${s.length};
-  arm         = W(arm_texts[arm_index]);
-  o[--b]      = Green - charge * 3 * 16;
-  C_Purple(arm)(t, a, b, o, s);
-}
-N(Red_connect) {
-  long narm   = arm_index + t;
-  long charge = narm / ${s.length};
-  arm_index   = narm - charge * ${s.length};
-  arm         = W(arm_texts[arm_index]);
-  o[--b]      = Blue - charge * 2 * 16;
-  C_Purple(arm)(t, a, b, o, s);
-}
-G(Yellow) { o[--b]  = Yellow_connect;
-            o[--b]  = Green;
-            C_Yellow  (arm)(t, a, b, o, s); }
-G(Green ) { o[--b]  = Yellow;
-            o[--b]  = Green;
-            C_Green   (arm)(t, a, b, o, s); }
-G(Red   ) { o[--b]  = Red_connect;
-            o[--b]  = Blue;
-            C_Red     (arm)(t, a, b, o, s); }
-G(Blue  ) { o[--b]  = Red;
-            o[--b]  = Blue;
-            C_Blue    (arm)(t, a, b, o, s); }
-G(Purple) {
-${s.map((a, i) => `  arm_texts[${i}] = "tab ${a}o";`).join('\n')}
+N(switch_arm    ) { long narm   = arm_index + 1;
+                    long charge = narm / ${s.length};
+                    arm_index   = narm - charge * ${s.length};
+                    arm         = W(arm_texts[arm_index]);
+                    o[--b]      = charge + 1;
+                    TAB_Purple(arm)(t, a, b, o, s); }
+N(Yellow_Navy   ) { Blue(t, a, b, o, s); }
+N(Yellow_Lime   ) { Green(t, a, b, o, s); }
+N(Yellow_Maroon ) { (o[--b] = Red),    (o[--b] = Blue),  switch_arm(t, a, b, o, s); }
+N(Yellow_Olive  ) { (o[--b] = Yellow), (o[--b] = Green), switch_arm(t, a, b, o, s); }
+G(Yellow        ) { o[--b]  = Yellow_Navy;
+                    o[--b]  = Yellow_Lime;
+                    o[--b]  = Yellow_Maroon;
+                    o[--b]  = Yellow_Olive;
+                    TAB_Yellow(arm)(t, a, b, o, s); }
+N(Green_Navy    ) { Blue(t, a, b, o, s); }
+N(Green_Lime    ) { Green(t, a, b, o, s); }
+N(Green_Maroon  ) { Printf("Stop!\\n"); }
+N(Green_Olive   ) { Printf("Stop!\\n"); }
+G(Green         ) { o[--b]  = Green_Navy;
+                    o[--b]  = Green_Lime;
+                    o[--b]  = Green_Maroon;
+                    o[--b]  = Green_Olive;
+                    TAB_Green(arm)(t, a, b, o, s); }
+long saved_a; char*saved_s;
+N(Red_Navy      ) { Blue(t, a, b, o, s); }
+N(Red_Lime      ) { Green(t, saved_a, b, o, saved_s); }
+N(Red_Maroon    ) { (o[--b] = Red),    (o[--b] = Blue),  switch_arm(t, a, b, o, s); }
+N(Red_Olive     ) { (o[--b] = Yellow), (o[--b] = Green), switch_arm(t, saved_a, b, o, saved_s); }
+G(Red           ) { o[--b]  = Red_Navy;
+                    o[--b]  = Red_Lime;
+                    o[--b]  = Red_Maroon;
+                    o[--b]  = Red_Olive;
+                    TAB_Red(arm)(t, saved_a = a, b, o, saved_s = s); }
+N(Blue_Navy     ) { Blue(t, a, b, o, s); }
+N(Blue_Lime     ) { Green(t, saved_a, b, o, saved_s); }
+N(Blue_Maroon   ) { Printf("Stop!\\n"); }
+N(Blue_Olive    ) { Printf("Stop!\\n"); }
+G(Blue          ) { o[--b]  = Blue_Navy;
+                    o[--b]  = Blue_Lime;
+                    o[--b]  = Blue_Maroon;
+                    o[--b]  = Blue_Olive;
+                    TAB_Blue(arm)(t, saved_a = a, b, o, saved_s = s); }
+G(Purple        ) {
+${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
   arm     = W(arm_texts[0]);
   o[--b]  = Purple;
-  C_Purple(arm)(t, a, b, o, s);
+  o[--b]  = Purple;
+  o[--b]  = 1;
+  TAB_Purple(arm)(t, a, b, o, s);
 }
 `
 }
@@ -94,10 +111,17 @@ async function parse_awords(cwords) {
           throw new Error(`not a word '${w}.'`);
         return w;
       });
-  const new_awords = dkeys.map(n => ([ n, aword(d[n].map(turnToAWords)) ]))
-  return Promise.all([
-    ...Object.keys(anon).map(n => ([ n, anon[n] ])), ...new_awords
-  ].map(add_missing_rays).map(compile))
+  const new_awords =
+      dkeys.map(n => ([ n, aword(d[n] = d[n].map(turnToAWords)) ]))
+  const compiled =
+      await Promise
+          .all([...Object.keys(anon).map(n => ([ n, anon[n] ])), ...new_awords ]
+                   .map(add_missing_rays)
+                   .map(compile))
+              await Promise.all(dkeys.map(
+                  n => exec('cd abin && cat b r o > "b r o" && ' +
+                            d[n].map(s => `cat ${s} > "${s}"`).join(" && "))))
+  return compiled
 }
 async function parse() {
   await exec(`rm -rf abin`);
@@ -164,9 +188,10 @@ async function compile([ n, b ]) {
   return n;
 }
 function makeToAWordsFun(getNumberName, getStringName, ensureId) {
-  return function parseAText(input) {
+  return s => parseAText(`tab ${s}`);
+  function parseAText(input) {
     input = input.trim()
-    if (!input.length) return ""
+    if (!input.length) return "o"
     const num = parseNumber(input)
     if (num) return getNumberName(num) + " " +
         parseAText(input.slice(num.length))
@@ -201,7 +226,7 @@ function hashCode(s) {
 }
 function anonize(f, anon) {
   return function anonized(s) {
-    const n = hashCode(s);
+    const n = "A" + hashCode(s);
     if (anon[n])
       return n;
     anon[n] = f(s);

@@ -2,9 +2,21 @@ ABOs
   ABO.
   ABO ABO.
   ABO n123 ABO.
-
-s
-  ABO id ABO id ABO id print.
+r1
+  n123 n123 n123 print.
+r
+  ABO ABO ABO print.
+r2
+  "baaa" P S print.
+r4
+  "sss" P sS print.
+sS
+  "".
+  "s" sS sS.
+S
+  "b".
+  S "a".
+  S "c".
 E
   1. 2. 3. 4.
   "(" E ")".
@@ -20,9 +32,3 @@ n345
 ABO
   "a". "b". "o".
 
-sS
-  "".
-  "s" sS sS.
-S
-  "b".
-  S "a".

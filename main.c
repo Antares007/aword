@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -10,35 +11,24 @@ void *map_file(const char *file) {
   char *addr = mmap((void *)0x0000070700000000, sb.st_size,
                     PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE, fd, 0);
   close(fd);
-  if (addr == MAP_FAILED)
-    return 0;
+  assert(addr != MAP_FAILED);
   return addr;
 }
 #include "aword.h"
 #include <stdio.h>
-#include <stdlib.h>
-void *ls_(const char *atext) {
-  char file[777] = {0};
-  char makecmd[777] = {0};
-  if (777 == snprintf(file, 777, "abin/%s", atext))
-    return 0;
-  if (access(file, F_OK) == -1) {
-    if (777 == snprintf(makecmd, 777, "cd abin&&cat %s > \"%s\"", atext, atext))
-      return 0;
-    if (system(makecmd))
-      return 0;
-  }
-  return map_file(file);
-}
-#include <assert.h>
+#include <string.h>
 n_t ls(const char *atext) {
-  n_t w = ls_(atext);
-  assert(w);
+  static void *list[1024][2];
+  static long length = 0;
+  //for (long i = 0; i < length; i++)
+  //  if (strcmp(list[i][0], atext) == 0)
+  //    return list[i][1];
+  void *w = map_file(atext);
+  list[length][0] = (void *)atext;
+  list[length][1] = w;
+  length++;
   return w;
 }
-N(Maroon_end) { P; }
-N(Olive_end) { P; }
-N(Navy_end) { P; }
 N(Dot) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
 int main(int argc, const char **argv) {
   long a = 0;
@@ -48,6 +38,6 @@ int main(int argc, const char **argv) {
   o[a++] = printf;
   o[a++] = usleep;
   o[a++] = ls;
-  n_t w = W("b s o");
+  n_t w = W("b r o");
   (w + 16)(1, a, b, o, "");
 }
