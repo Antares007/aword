@@ -6,8 +6,17 @@
   N(Olive##_ray)
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
-  R(Olive) { Olive##_nar(t, a, b, o, s); }                                     \
+  N(Olive##_tin) __attribute__((noinline));                                    \
+  N(Olive##_tin) {                                                             \
+    ((void(**)(void*))o)[1](&(void*[]){(void*)#Olive,                          \
+                                       (void*)__FILE__,                        \
+                                       (void*)t, (void*)a, (void*)b,           \
+                                       (void*)o, (void*)s,                     \
+                                       (void*)Olive##_nar});                   \
+  }                                                                            \
+  R(Olive) { Olive##_tin(t,a,b,o,s); }                                         \
   N(Olive##_nar)
+
 #define Δ(Olive)                                                               \
   N(Olive##_ray) __attribute__((section(".text." #Olive "_ray")));             \
   N(Olive) __attribute__((section(".text." #Olive))) __attribute__((noinline));

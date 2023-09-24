@@ -13,30 +13,18 @@ o {
   G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-  G(Navy    ) { ((n_t*)o)[b +          3](t, a, b + 4, o, s); }
-  G(Lime    ) { ((n_t*)o)[b +          2](t, a, b + 4, o, s); }
-  G(Maroon  ) { ((n_t*)o)[b +          1](t, a, b + 4, o, s); }
-  G(Fuchsia ) { ((n_t*)o)[b + (long)o[b]](t, a, b + 3, o, s); }
-  G(Olive   ) { ((n_t*)o)[b +          0](t, a, b + 4, o, s); }
+  G(Navy    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
+  G(Lime    ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
+  G(Maroon  ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
+  G(Fuchsia ) { ((n_t )o[b])   (t, a, b + 1, o, s); }
+  G(Olive   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
 }.
-P {
-  G(Yellow  ) { Red    (t, a - 1, b, o, o[a-1]); }
-  G(Green   ) {                                  }
-}.
-R {
-  G(Red     ) { Yellow (t, a, b, o, s); }
-  G(Blue    ) { Green  (t, a, b, o, s); }
-}.
-
+s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor);
-    for(long i = 3; i < a; i++)
-      if((long)o[i] < 1000) Printf("%ld", (long)o[i]);
-      else                  Printf("%s", o[i]);
-    Printf(")\n");
+    Printf("P_%s(", scolor);for(long i = 3; i < a; i++) Printf("%s", o[i]);Printf(")\n");
     a = 3;
     color(t, a, b, o, s);
   }
@@ -64,14 +52,4 @@ ORAND {
   G(Blue    ) { Yellow(t, a, b, o, s); }
   G(Green   ) { Yellow(t, a, b, o, s); }
   G(Lime    ) { Green (t, a, b, o, s); } }.
-id {
-  G(Yellow  ) { Printf("Yellow "); Yellow  (t, a, b, o, s); }
-  G(Purple  ) { Printf("Purple "); Purple  (t, a, b, o, s); }
-  G(Red     ) { Printf("Red    "); Red     (t, a, b, o, s); }
-  G(Green   ) { Printf("Green  "); Green   (t, a, b, o, s); }
-  G(Blue    ) { Printf("Blue   "); Blue    (t, a, b, o, s); }
-  G(Navy    ) { Printf("Navy   "); Navy    (t, a, b, o, s); }
-  G(Lime    ) { Printf("Lime   "); Lime    (t, a, b, o, s); }
-  G(Maroon  ) { Printf("Maroon "); Maroon  (t, a, b, o, s); }
-  G(Fuchsia ) { Printf("Fuchsia"); Fuchsia (t, a, b, o, s); }
-  G(Olive   ) { Printf("Olive  "); Olive   (t, a, b, o, s); } }.
+id {}.

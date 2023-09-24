@@ -5,6 +5,10 @@ run: main.out awords
 	cp main.out abin && cd abin && ./main.out
 awords: parse.js awords.tab
 	node $^
+local.out: local.c
+	${CC} $^ -o $@ ${CFLAGS} -lraylib -lm
+main.out: main.c text_index.o
+	${CC} $^ -o $@ ${CFLAGS} -lraylib -lm
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
 %.o: %.c

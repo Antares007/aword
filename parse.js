@@ -7,9 +7,9 @@ function astring(s) {
 G(Yellow) {              (o[a++] = ${s}), Yellow(t, a, b, o, s); }
 G(Green ) {              (o[a++] = ${s}), Green (t, a, b, o, s); }
 G(Red   ) { if (${pred}) (o[a++] = ${s}), Red   (t, a, b, o, s + ${b.length});
-            else                          Olive (t, a, b, o, s); }
+            else                          Yellow(t, a, b, o, s); }
 G(Blue  ) { if (${pred}) (o[a++] = ${s}), Blue  (t, a, b, o, s + ${b.length});
-            else                          Lime  (t, a, b, o, s); }
+            else                          Green (t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -27,51 +27,28 @@ N(switch_arm    ) { long narm   = arm_index + 1;
                     long charge = narm / ${s.length};
                     arm_index   = narm - charge * ${s.length};
                     arm         = W(arm_texts[arm_index]);
-                    o[--b]      = charge + 1;
-                    TAB_Purple(arm)(t, a, b, o, s); }
-N(Yellow_Navy   ) { Blue(t, a, b, o, s); }
-N(Yellow_Lime   ) { Green(t, a, b, o, s); }
-N(Yellow_Maroon ) { (o[--b] = Red),    (o[--b] = Blue),  switch_arm(t, a, b, o, s); }
-N(Yellow_Olive  ) { (o[--b] = Yellow), (o[--b] = Green), switch_arm(t, a, b, o, s); }
-G(Yellow        ) { o[--b]  = Yellow_Navy;
-                    o[--b]  = Yellow_Lime;
-                    o[--b]  = Yellow_Maroon;
-                    o[--b]  = Yellow_Olive;
-                    TAB_Yellow(arm)(t, a, b, o, s); }
-N(Green_Navy    ) { Blue(t, a, b, o, s); }
-N(Green_Lime    ) { Green(t, a, b, o, s); }
-N(Green_Maroon  ) { Printf("Stop!\\n"); }
-N(Green_Olive   ) { Printf("Stop!\\n"); }
-G(Green         ) { o[--b]  = Green_Navy;
-                    o[--b]  = Green_Lime;
-                    o[--b]  = Green_Maroon;
-                    o[--b]  = Green_Olive;
-                    TAB_Green(arm)(t, a, b, o, s); }
-long saved_a; char*saved_s;
-N(Red_Navy      ) { Blue(t, a, b, o, s); }
-N(Red_Lime      ) { Green(t, saved_a, b, o, saved_s); }
-N(Red_Maroon    ) { (o[--b] = Red),    (o[--b] = Blue),  switch_arm(t, a, b, o, s); }
-N(Red_Olive     ) { (o[--b] = Yellow), (o[--b] = Green), switch_arm(t, saved_a, b, o, saved_s); }
-G(Red           ) { o[--b]  = Red_Navy;
-                    o[--b]  = Red_Lime;
-                    o[--b]  = Red_Maroon;
-                    o[--b]  = Red_Olive;
-                    TAB_Red(arm)(t, saved_a = a, b, o, saved_s = s); }
-N(Blue_Navy     ) { Blue(t, a, b, o, s); }
-N(Blue_Lime     ) { Green(t, saved_a, b, o, saved_s); }
-N(Blue_Maroon   ) { Printf("Stop!\\n"); }
-N(Blue_Olive    ) { Printf("Stop!\\n"); }
-G(Blue          ) { o[--b]  = Blue_Navy;
-                    o[--b]  = Blue_Lime;
-                    o[--b]  = Blue_Maroon;
-                    o[--b]  = Blue_Olive;
-                    TAB_Blue(arm)(t, saved_a = a, b, o, saved_s = s); }
-G(Purple        ) {
+                    o[--b]      = o[a - charge];
+                    TAB_Purple(arm)(t, a - 1, b, o, s); }
+N(Yellow_Green      ) { o[a++] = Yellow; o[a] = Green; switch_arm(t, a, b, o, s); }
+N(Red_Blue          ) { o[a++] = Red;    o[a] = Blue;  switch_arm(t, a, b, o, s); }
+n_t switchA[4];
+n_t switchB[4];
+G(Yellow            ) { o[--b] = switchA; TAB_Yellow(arm)(t, a, b, o, s); }
+G(Green             ) { o[--b] = switchB; TAB_Green (arm)(t, a, b, o, s); }
+G(Red               ) { o[--b] = switchA; TAB_Red   (arm)(t, a, b, o, s); }
+G(Blue              ) { o[--b] = switchB; TAB_Blue  (arm)(t, a, b, o, s); }
+G(Purple            ) { 
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
+  switchA[0] = Yellow_Green;
+  switchA[1] = Red_Blue;
+  switchA[2] = Green;
+  switchA[3] = Blue;
+  switchB[0] = Yellow;
+  switchB[1] = Red;
+  switchB[2] = Green; 
+  switchB[3] = Blue;
   arm     = W(arm_texts[0]);
   o[--b]  = Purple;
-  o[--b]  = Purple;
-  o[--b]  = 1;
   TAB_Purple(arm)(t, a, b, o, s);
 }
 `
@@ -164,10 +141,11 @@ function add_missing_rays([ n, b ]) {
     F : "Fuchsia",
     O : "Olive",
   };
+  let pos;
+  let i = 0;
   for (let k of Object.keys(rays))
     if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) === -2)
-      b += `\nR(${rays[k].padEnd(8, ' ')}) { ${
-          rays[k].padEnd(8, ' ')}(t, a, b, o, s); }`;
+      b += `\nG(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
   return [ n, b ];
 }
 async function compile([ n, b ]) {
@@ -226,7 +204,8 @@ function hashCode(s) {
 }
 function anonize(f, anon) {
   return function anonized(s) {
-    const n = "A" + hashCode(s);
+    const n = "aw_" +
+              (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); //"A" + hashCode(s);
     if (anon[n])
       return n;
     anon[n] = f(s);
