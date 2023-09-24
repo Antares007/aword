@@ -1,18 +1,23 @@
 r0
-  id ott id ott id ott id print.
+  n123 id n123 id n123 id print.
+r123
+  n123 n123 n123 print.
+r9
+  s_bao ABO ABO ABO print.
 r
-  S print.
+  s_baaa S print.
+rss
+  s_ss sS print.
 sS
-  "s" sS sS.
   "".
+  "s" sS sS.
 S
   "b".
   S "a".
   S "c".
 ABO
   "a". "b". "o".
-
-ott
-  "1". "2". "3" tff.
-tff
-  "3". "4". "5".
+n123
+  1. 2.
+n345
+  3. 4. 5.

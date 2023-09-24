@@ -4,51 +4,48 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Yellow) {              (o[a++] = ${s}), Yellow(t, a, b, o, s); }
-G(Green ) {              (o[a++] = ${s}), Green (t, a, b, o, s); }
-G(Red   ) { if (${pred}) (o[a++] = ${s}), Red   (t, a, b, o, s + ${b.length});
-            else                          Yellow(t, a, b, o, s); }
-G(Blue  ) { if (${pred}) (o[a++] = ${s}), Blue  (t, a, b, o, s + ${b.length});
-            else                          Green (t, a, b, o, s); }
+G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow    (t, a, b, o, s + ${b.length});
+            else                          Maroon_ray(t, a, b, o, s); }
+G(Green ) { if (${pred}) (o[a++] = ${s}), Green     (t, a, b, o, s + ${b.length});
+            else                          Navy_ray  (t, a, b, o, s); }
+G(Red   ) {                               Red       (t, a, b, o, s); }
+G(Blue  ) {                               Navy_ray  (t, a, b, o, s); }
 `
 }
 function anumber(s) {
   return `
-G(Yellow) { o[a++] = ${s}; Yellow(t, a, b, o, s); }
-G(Green ) { o[a++] = ${s}; Green (t, a, b, o, s); }
+G(Yellow) { o[a++] = "${s}"; Yellow(t, a, b, o, s); }
+G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 `
 }
 function aword(s) {
   return `
-const char *arm_texts[${s.length}];
-long        arm_index;
-n_t         arm;
-N(switch_arm    ) { long narm   = arm_index + 1;
-                    long charge = narm / ${s.length};
-                    arm_index   = narm - charge * ${s.length};
-                    arm         = W(arm_texts[arm_index]);
-                    o[--b]      = o[a - charge];
-                    TAB_Purple(arm)(t, a - 1, b, o, s); }
-N(Yellow_Green      ) { o[a++] = Yellow; o[a] = Green; switch_arm(t, a, b, o, s); }
-N(Red_Blue          ) { o[a++] = Red;    o[a] = Blue;  switch_arm(t, a, b, o, s); }
-n_t switchA[4];
-n_t switchB[4];
-G(Yellow            ) { o[--b] = switchA; TAB_Yellow(arm)(t, a, b, o, s); }
-G(Green             ) { o[--b] = switchB; TAB_Green (arm)(t, a, b, o, s); }
-G(Red               ) { o[--b] = switchA; TAB_Red   (arm)(t, a, b, o, s); }
-G(Blue              ) { o[--b] = switchB; TAB_Blue  (arm)(t, a, b, o, s); }
-G(Purple            ) { 
+const char*arm_texts[${s.length}];
+long arm_index;
+n_t arm;
+N(switch_arm  ) { long narm   = arm_index + 1;
+                  long charge = narm / ${s.length};
+                  arm_index   = narm - charge * ${s.length};
+                  arm         = W(arm_texts[arm_index]);
+                  o[--b]      = o[a - charge];
+                  TAB_Purple(arm)(t, a - 1, b, o, s); }
+N(Yellow_Green) { o[a++] = Yellow; o[a] = Green; switch_arm(t, a, b, o, s); }
+N(Red_Blue    ) { o[a++] = Red;    o[a] = Blue;  switch_arm(t, a, b, o, s); }
+n_t TAb[4];
+n_t TaB[4];
+G(Yellow      ) { o[--b] = TAb; TAB_Yellow(arm)(t, a, b, o, s); }
+G(Green       ) { o[--b] = TaB; TAB_Green (arm)(t, a, b, o, s); }
+G(Red         ) { o[--b] = TAb; TAB_Red   (arm)(t, a, b, o, s); }
+G(Blue        ) { o[--b] = TaB; TAB_Blue  (arm)(t, a, b, o, s); }
+
+N(Blue_Navy   ) { TI("Navy_cut", __FILE__, t, a, b, o, s, Navy); }
+
+G(Purple      ) { 
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
-  switchA[0] = Yellow_Green;
-  switchA[1] = Red_Blue;
-  switchA[2] = Green;
-  switchA[3] = Blue;
-  switchB[0] = Yellow;
-  switchB[1] = Red;
-  switchB[2] = Green; 
-  switchB[3] = Blue;
-  arm     = W(arm_texts[0]);
-  o[--b]  = Purple;
+  TAb[0] = Yellow_Green;  TAb[1] = Red_Blue;  TAb[2] = Green; TAb[3] = Blue_Navy;
+  TaB[0] = Yellow;        TaB[1] = Red;       TaB[2] = Green; TaB[3] = Blue_Navy;
+  arm    = W(arm_texts[0]);
+  o[--b] = Purple;
   TAB_Purple(arm)(t, a, b, o, s);
 }
 `

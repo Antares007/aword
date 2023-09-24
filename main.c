@@ -16,8 +16,6 @@ void *map_file(const char *file) {
 }
 #include "aword.h"
 #include <stdio.h>
-#include <string.h>
-N(Dot) { ((n_t *)o)[a - 1](t, a - 1, b, o, s); }
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {

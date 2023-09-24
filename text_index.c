@@ -54,7 +54,8 @@ Color LerpGradient(Color a, float point, float amount) {
   return LerpColor(LerpColor(a, BLACK, point), a, amount);
 }
 void draw(step_t **steps, long count) {
-  int key;
+  int key = 0;
+  static char skip_color = 'P';
   static int semi_auto = 0;
   do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -65,7 +66,7 @@ void draw(step_t **steps, long count) {
     else if (wheelMove < 0)
       zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(WHITE);
 
     Vector2 zero = {6 * GetScreenWidth() / 8.f, 4 * GetScreenHeight() / 8.f};
     Vector2 dir = {1, 0};
@@ -74,37 +75,46 @@ void draw(step_t **steps, long count) {
       if (strcmp("tab.c", s->name) == 0)
         dir = Vector2Rotate(dir, M_PI_2);
       Vector2 ns = MeasureTextEx(font, s->name, 35, 1);
-      zero =
-          Vector2Add(zero, Vector2Scale(dir, (long)dir.x ? Lerp(ns.x*zoom,ns.x*zoom*3, (float)i / count)
-                                                         : Lerp(ns.y*zoom,ns.y*zoom*3, (float)i / count)));
+      zero = Vector2Add(
+          zero,
+          Vector2Scale(
+              dir, (long)dir.x
+                       ? Lerp(ns.x * zoom, ns.x * zoom * 3, (float)i / count)
+                       : Lerp(ns.y * zoom, ns.y * zoom * 3, (float)i / count)));
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
-                         .zoom = Lerp(1*zoom, 2*zoom, (float)i / count),
+                         .zoom = Lerp(1 * zoom, 2 * zoom, (float)i / count),
                          .offset = Vector2Add(off, zero)};
 
-
       BeginMode2D(camera);
-      DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y, LerpGradient(calc_color(s), 0.5, (float)i/count));
+      DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y,
+                    LerpGradient(calc_color(s), 0.5, (float)i / count));
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
-      DrawTextEx(font, s->name, (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, BLACK);
+      DrawTextEx(font, s->name, (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, WHITE);
       EndMode2D();
     }
-
     EndDrawing();
     key = GetCharPressed();
-    if(key == 'c') semi_auto = !semi_auto;
-  } while (key != 'n' && !semi_auto);
+    if (key == 'c')
+      semi_auto = !semi_auto;
+    if (key == 's')
+      skip_color = steps[count - 1]->color[0];
+  } while (key != 'n' && !semi_auto && count && skip_color &&
+           steps[count - 1]->color[0] != skip_color);
 }
 #include <string.h>
 void ti(step_t *d) {
-  printf("%10s %10s %3ld %3ld\n", d->color, d->name, d->a, d->b);
+  printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
   static step_t *steps[2048];
   static long count = 0;
   if (strcmp(d->name, "b.c") && strcmp(d->name, "o.c")) {
     if (directions[(int)d->color[0]] == 1)
       steps[count++] = d;
-    else
-      count--, assert(strcmp(steps[count]->name, d->name) == 0);
+    else {
+      count--;
+      if(strcmp(steps[count]->name, d->name) != 0) count--;
+      assert(strcmp(steps[count]->name, d->name) == 0);
+    }
     draw(steps, count);
   }
   d->cont(d->t, d->a, d->b, d->o, d->s);

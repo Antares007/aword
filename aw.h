@@ -4,16 +4,16 @@
 #define R(Olive)                                                               \
   N(Olive      ) { asm("nop" : : "a"(t + a + b + (long)o + (long)s)); };       \
   N(Olive##_ray)
+#define TI(Olive, Name, t, a, b, o, s, Cont)                                   \
+    ((void(**)(void*))o)[1](&(void*[]){(void*)Olive,                           \
+                                       (void*)Name,                            \
+                                       (void*)t, (void*)a, (void*)b,           \
+                                       (void*)o, (void*)s,                     \
+                                       (void*)Cont});
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
   N(Olive##_tin) __attribute__((noinline));                                    \
-  N(Olive##_tin) {                                                             \
-    ((void(**)(void*))o)[1](&(void*[]){(void*)#Olive,                          \
-                                       (void*)__FILE__,                        \
-                                       (void*)t, (void*)a, (void*)b,           \
-                                       (void*)o, (void*)s,                     \
-                                       (void*)Olive##_nar});                   \
-  }                                                                            \
+  N(Olive##_tin) { TI(#Olive, __FILE__, t, a, b, o, s, Olive##_nar); }         \
   R(Olive) { Olive##_tin(t,a,b,o,s); }                                         \
   N(Olive##_nar)
 
