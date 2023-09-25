@@ -13,17 +13,7 @@ o {
   G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-  const char*ss;
-  long sa;
-  n_t nar;
-  N(Yellow_Navy) { TI("Yellow_Navy", __FILE__, t, sa, b,     o, ss, Yellow); }
-  N(Navy_Navy  ) { TI("Blue_Navy",   __FILE__, t, a,  b + 1, o, s,  ((n_t*)o[b])[3]); }
-  G(Yellow     ) { nar = Yellow_Navy; Yellow          (t, sa=a, b, o, ss=s); }
-  G(Green      ) { nar = Navy_Navy;   Green           (t, a,    b, o, s); }
-  G(Red        ) { TI("Maroon_cut",  __FILE__, t, a,  b + 1, o, s,  ((n_t*)o[b])[1]); }
-  G(Blue       ) { TI("Navy_cut",    __FILE__, t, a,  b + 1, o, s,  ((n_t*)o[b])[3]); }
-  G(Navy       ) { nar(t, a, b, o, s); }
-
+  G(Navy       ) { ((n_t*)o[b])[3] (t, a, b + 1, o, s); }
   G(Lime       ) { ((n_t*)o[b])[2] (t, a, b + 1, o, s); }
   G(Maroon     ) { ((n_t*)o[b])[1] (t, a, b + 1, o, s); }
   G(Fuchsia    ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
@@ -32,7 +22,7 @@ tab {
 s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
 s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
-s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
+s_baaaccc { G(Yellow  ) { Yellow(t, a, b, o, "baaaccc"); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];
