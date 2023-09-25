@@ -16,6 +16,7 @@ void *map_file(const char *file) {
 }
 #include "aword.h"
 #include <stdio.h>
+#include <string.h>
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
@@ -26,7 +27,8 @@ int main(int argc, const char **argv) {
   o[a++] = printf;
   o[a++] = ti;
   o[a++] = map_file;
+  o[a++] = strcmp;
   ti_init();
   n_t w = W("b r o");
-  (w + 16)(1, a, b, o, "");
+  (w + 16)((long)__FILE_NAME__, a, b, o, "");
 }

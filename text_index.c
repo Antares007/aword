@@ -101,24 +101,24 @@ void draw(step_t **steps, long count) {
       skip_color = steps[count - 1]->color[0];
   } while (
       key != 'n' && !semi_auto && count && skip_color && steps[count - 1]->color[0] != skip_color
-  );
+    );
 }
 #include <string.h>
 void ti(step_t *d) {
-  //printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
-  //static step_t *steps[2048];
-  //static long count = 0;
-  //static long back_count = 0;
-  //int dir = directions[(int)d->color[0]];
-  //if (dir == 1) {
-  //  count += back_count;
-  //  back_count = 0;
-  //  steps[count++] = d;
-  //} else {
-  //  assert(strcmp(steps[count + --back_count]->name, d->name) == 0);
-  //  steps[count + back_count] = d;
-  //}
-  //draw(steps, count);
+  printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
+  static step_t *steps[2048];
+  static long count = 0;
+  static long back_count = 0;
+  int dir = directions[(int)d->color[0]];
+  if (dir == 1) {
+    count += back_count;
+    back_count = 0;
+    steps[count++] = d;
+  } else {
+    assert(strcmp(steps[count + --back_count]->name, d->name) == 0);
+    steps[count + back_count] = d;
+  }
+  draw(steps, count);
   d->cont(d->t, d->a, d->b, d->o, d->s);
 }
 void ti_init() {

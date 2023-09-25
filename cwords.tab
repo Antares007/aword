@@ -23,13 +23,14 @@ tab {
 s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
 s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
-s_baaaccc { G(Yellow  ) { Yellow(t, a, b, o, "baaaccc"); } }.
+s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
+s_bax  { G(Yellow  ) { Yellow(t, a, b, o, "bax"); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor);for(long i = 3; i < a; i++) Printf("%s", o[i]);Printf(")\n");
-    a = 3;
+    Printf("P_%s(", scolor); for(long i = 4; i < a; i++) Printf("%s", o[i]); Printf(")\n");
+    a = 4;
     color(t, a, b, o, s);
   }
   G(Yellow  ) { o[a++] = Yellow; o[a++] = "Yellow"; printit(t, a, b, o, s); }

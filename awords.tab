@@ -2,11 +2,12 @@ r0
   n123 id n123 id n123 id print.
 r123
   n123 n123 n123 print.
-r9
+rABO
   s_bao ABO ABO ABO print.
-rss
-  s_baaaccc S print.
 r
+  s_bax S print.
+
+rsS
   s_ss sS print.
 sS
   "".
@@ -14,7 +15,7 @@ sS
 S
   "b".
   S "a".
-  S "c".
+  S "x".
 ABO
   "a". "b". "o".
 n123
