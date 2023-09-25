@@ -31,16 +31,23 @@ N(switch_arm    ) { long narm   = arm_index + 1;
                     TAB_Purple(arm)(t, a - 1, b, o, s); }
 N(Yellow_Green  ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
 N(Red_Blue      ) { (o[a++] = Red),    (o[a] = Blue),  switch_arm(t, a, b, o, s); }
-n_t TAb[4];
-n_t TaB[4];
-G(Yellow        ) { (o[--b] = TAb), TAB_Yellow(arm)(t, a, b, o, s); }
-G(Green         ) { (o[--b] = TaB), TAB_Green (arm)(t, a, b, o, s); }
-G(Red           ) { (o[--b] = TAb), TAB_Red   (arm)(t, a, b, o, s); }
-G(Blue          ) { (o[--b] = TaB), TAB_Blue  (arm)(t, a, b, o, s); }
+n_t Tab0[4];
+n_t Tab1[4];
+n_t Tab2[4];
+n_t Tab3[4];
+const char*ss;
+long sa;
+N(Recharge_Navy ) { (o[--b] = Tab0), TAB_Yellow(arm)(t, sa,   b, o, ss); }
+G(Yellow        ) { (o[--b] = Tab0), TAB_Yellow(arm)(t, sa=a, b, o, ss=s); }
+G(Red           ) { Red_Blue                        (t, a,    b, o, s); }
+G(Green         ) { (o[--b] = Tab2), TAB_Green (arm)(t, a,    b, o, s); }
+G(Blue          ) { (o[--b] = Tab3), TAB_Blue  (arm)(t, a,    b, o, s); }
+N(stop) { Printf("STOP!\\n"); }
 G(Purple        ) { 
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
-  TAb[0] = Yellow_Green;  TAb[1] = Red_Blue;  TAb[2] = Green; TAb[3] = Yellow;
-  TaB[0] = Yellow;        TaB[1] = Red;       TaB[2] = Green; TaB[3] = Blue;
+  Tab0[0] = Yellow_Green; Tab0[1] = Red_Blue; Tab0[2] = Green;  Tab0[3] = Recharge_Navy;
+  Tab2[0] = stop;         Tab2[1] = stop;     Tab2[2] = Green;  Tab2[3] = Blue;
+  Tab3[0] = stop;         Tab3[1] = stop;     Tab3[2] = stop;   Tab3[3] = Blue;
   arm    = W(arm_texts[0]);
   o[--b] = Purple;
   TAB_Purple(arm)(t, a, b, o, s);
@@ -160,7 +167,7 @@ async function compile([ n, b ]) {
   return n;
 }
 function makeToAWordsFun(getNumberName, getStringName, ensureId) {
-  return s => parseAText(`tab rbO yO ${s}`);
+  return s => parseAText(`tab ${s}`);
   function parseAText(input) {
     input = input.trim()
     if (!input.length) return "o"
