@@ -4,9 +4,9 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow    (t, a, b, o, s + ${b.length});
+G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow    (t, a, b, o, s + ${ b.length});
             else                          Maroon_ray(t, a, b, o, s); }
-G(Green ) { if (${pred}) (o[a++] = ${s}), Green     (t, a, b, o, s + ${b.length});
+G(Green ) { if (${pred}) (o[a++] = ${s}), Green     (t, a, b, o, s + ${ b.length});
             else                          Navy_ray  (t, a, b, o, s); }
 G(Red   ) {                               Red       (t, a, b, o, s); }
 G(Blue  ) {                               Blue      (t, a, b, o, s); }
@@ -20,34 +20,27 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function aword(s) {
   return `
-const char*arm_texts[${s.length}];
-long arm_index;
-n_t arm;
+const char* arm_texts[${s.length}];
+long        arm_index;
+n_t         arm;
 N(switch_arm    ) { long narm   = arm_index + 1;
                     long charge = narm / ${s.length};
                     arm_index   = narm - charge * ${s.length};
                     arm         = W(arm_texts[arm_index]);
                     o[--b]      = o[a - charge];
                     TAB_Purple(arm)(t, a - 1, b, o, s); }
-N(Navy_Blue_cut ) { TI("Navy_Blue_cut", __FILE__, t, a, b, o, s, Navy); }
-N(Yellow_Green  ) { o[a++] = Yellow; o[a] = Green;         switch_arm(t, a, b, o, s); }
-N(Red_Blue      ) { o[a++] = Red;    o[a] = Navy_Blue_cut; switch_arm(t, a, b, o, s); }
-
+N(Yellow_Green  ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
+N(Red_Blue      ) { (o[a++] = Red),    (o[a] = Blue),  switch_arm(t, a, b, o, s); }
 n_t TAb[4];
 n_t TaB[4];
-const char*ss;
-long sa;
-N(Yellow_Navy   ) { o[--b] = TAb; TAB_Yellow(arm)(t, sa,    b, o, ss); }
-G(Yellow        ) { o[--b] = TAb; TAB_Yellow(arm)(t, sa=a,  b, o, ss=s); }
-G(Green         ) { o[--b] = TaB; TAB_Green (arm)(t, a,     b, o, s); }
-
-G(Red           ) { Red_Blue                     (t, a, b, o, s); }
-G(Blue          ) { Navy_Blue_cut                (t, a, b, o, s); }
-
+G(Yellow        ) { (o[--b] = TAb), TAB_Yellow(arm)(t, a, b, o, s); }
+G(Green         ) { (o[--b] = TaB), TAB_Green (arm)(t, a, b, o, s); }
+G(Red           ) { (o[--b] = TAb), TAB_Red   (arm)(t, a, b, o, s); }
+G(Blue          ) { (o[--b] = TaB), TAB_Blue  (arm)(t, a, b, o, s); }
 G(Purple        ) { 
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
-  TAb[0] = Yellow_Green;  TAb[1] = Red_Blue;  TAb[2] = Green; TAb[3] = Yellow_Navy;
-  TaB[0] = Yellow;        TaB[1] = Red;       TaB[2] = Green; TaB[3] = Navy_Blue_cut;
+  TAb[0] = Yellow_Green;  TAb[1] = Red_Blue;  TAb[2] = Green; TAb[3] = Yellow;
+  TaB[0] = Yellow;        TaB[1] = Red;       TaB[2] = Green; TaB[3] = Blue;
   arm    = W(arm_texts[0]);
   o[--b] = Purple;
   TAB_Purple(arm)(t, a, b, o, s);
@@ -167,7 +160,7 @@ async function compile([ n, b ]) {
   return n;
 }
 function makeToAWordsFun(getNumberName, getStringName, ensureId) {
-  return s => parseAText(`tab ${s}`);
+  return s => parseAText(`tab rbO yO ${s}`);
   function parseAText(input) {
     input = input.trim()
     if (!input.length) return "o"

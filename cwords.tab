@@ -19,6 +19,22 @@ tab {
   G(Fuchsia    ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
   G(Olive      ) { ((n_t*)o[b])[0] (t, a, b + 1, o, s); }
 }.
+
+rbO {
+  G(Red ) { Maroon_ray(t, a, b, o, s); }
+  G(Blue) { Navy_ray  (t, a, b, o, s); } }.
+yO {
+  const char*ss;
+  long sa;
+  n_t nar;
+  N(Navy_cont   ) { Navy                    (t, a,    b, o, s); }
+  N(Yellow_rest ) { Yellow_ray              (t, sa,   b, o, ss); }
+  G(Yellow      ) { nar = Yellow_rest;Yellow(t, sa=a, b, o, ss=s); }
+  G(Green       ) { nar = Navy_cont;  Green (t, a,    b, o, s); }
+
+  G(Navy        ) { nar                     (t, s,    b, o, s); }
+}.
+
 s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
 s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
