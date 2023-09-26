@@ -31,7 +31,7 @@ static char directions[] = {
     ['P'] = +1, // Purple
     ['Y'] = +1, // Yellow
 };
-float zoom = 1;
+float zoom = 0.7;
 Vector2 off = {0, 0};
 typedef struct step_t {
   const char *color, *name;
@@ -94,6 +94,8 @@ void draw(step_t **steps, long count) {
       EndMode2D();
     }
     EndDrawing();
+    if(semi_auto && (steps[count-1]->color[0] == 'B' || steps[count-1]->color[0] == 'N' ||
+                     steps[count-1]->color[0] == 'R' || steps[count-1]->color[0] == 'M')) semi_auto = 0;
     key = GetCharPressed();
     if (key == 'c')
       semi_auto = !semi_auto;
@@ -123,7 +125,7 @@ void ti(step_t *d) {
 }
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(1700, 900, "aword");
+  InitWindow(1500, 800, "aword");
   SetTargetFPS(60);
   font = LoadFontEx("../NovaMono-Regular.ttf", 35, 0, 0);
 }
