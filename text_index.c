@@ -117,7 +117,8 @@ void ti(step_t *d) {
     back_count = 0;
     steps[count++] = d;
   } else {
-    assert(strcmp(steps[count + --back_count]->name, d->name) == 0);
+    --back_count;
+    assert(strcmp(steps[count + back_count]->name, d->name) == 0);
     steps[count + back_count] = d;
   }
   draw(steps, count);
