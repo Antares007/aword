@@ -68,8 +68,8 @@ void draw(step_t **steps, long count) {
     BeginDrawing();
     ClearBackground(WHITE);
 
-    Vector2 zero = {6 * GetScreenWidth() / 8.f, 4 * GetScreenHeight() / 8.f};
-    Vector2 dir = {1, 0};
+    Vector2 zero = {1 * GetScreenWidth() / 8.f, 2 * GetScreenHeight() / 8.f};
+    Vector2 dir = {0, -1};
     for (long i = 0; i < count; i++) {
       step_t *s = steps[i];
       if (strcmp("tab.c", s->name) == 0)
@@ -102,7 +102,11 @@ void draw(step_t **steps, long count) {
     if (key == 's')
       skip_color = steps[count - 1]->color[0];
   } while (
-      key != 'n' && !semi_auto && count && skip_color && steps[count - 1]->color[0] != skip_color
+      key != 'n' && !semi_auto && count
+      // &&
+      // skip_color &&
+      // steps[count - 1]->color[0] != 'P' &&
+      // steps[count - 1]->color[0] != 'F'
     );
 }
 #include <string.h>

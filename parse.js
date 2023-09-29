@@ -5,18 +5,25 @@ function astring(s) {
     pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
 G(Red) {
-  if (${pred})
-    (o[a++] = ${s}), Red(t, a, b, o, s + ${ b.length});
-  else
-    Yellow(t, a, b, o, s); }
-G(Blue) {
-  if (${pred})
-    (o[a++] = ${s}), Blue(t, a, b, o, s + ${ b.length});
-  else
-    Green(t, a, b, o, s);
+  (o[a++] = ${s}), Red(t, a, b, o, s);
 }
-G(Yellow) { (o[a++] = ${s}), Yellow(t, a, b, o, s); }
-G(Green) { (o[a++] = ${s}), Green (t, a, b, o, s); }
+G(Blue) {
+  (o[a++] = ${s}), Blue(t, a, b, o, s);
+}
+G(Yellow) {
+  if (${pred})
+    (o[a++] = ${s}),
+    Yellow(t, a, b, o, s + ${ b.length});
+  else
+    Red(t, a, b, o, s);
+}
+G(Green) {
+  if (${pred})
+    (o[a++] = ${s}),
+    Green(t, a, b, o, s + ${ b.length});
+  else
+    Blue(t, a, b, o, s);
+}
 `
 }
 function anumber(s) {
@@ -27,34 +34,59 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function aword(s) {
   return `
-const char*arms[${s.length}];
-n_t arm;
-long  arm_index;
+const char* arm_texts[${s.length}];
+n_t         arms[${s.length}];
+long        arm_index;
 N(switch_arm) {
-  long narm   = arm_index + 1;
-  long charge = narm / ${s.length};
-  arm_index   = narm - charge * ${s.length};
-  o[--b]      = o[a - charge];
-  TAB_Purple(arm = W(arms[arm_index]))(t, a - 1, b, o, s);
+  long narm       = arm_index + 1;
+  long charge     = narm / ${s.length};
+  arm_index       = narm - charge * ${s.length};
+  o[--b]          = o[a - charge];
+  if (arms[arm_index])
+    ((n_t)o[b])(t, a - 1, b + 1, o, s);
+  else
+    TAB_Purple(arms[arm_index] = W(arm_texts[arm_index]))(t, a - 1, b, o, s);
 }
 n_t Tab_Yellow[4];
 n_t Tab_Green[4];
-N(Yellow_tab_Olive_to_Yellow_or_Green) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-G(Yellow) { (o[--b] = Tab_Yellow), TAB_Yellow(arm)(t, a, b, o, s); }
-G(Green) { (o[--b] = Tab_Green), TAB_Green(arm)(t, a, b, o, s); }
-N(stop) { Printf("STOP!\\n"); }
+n_t Tab_Red[4];
+n_t Tab_Blue[4];
+
+N(Yellow_tab_Olive_to_Yellow_or_Green ) {
+  (o[a++] = Yellow),
+  (o[a] = Green),
+  switch_arm(t, a, b, o, s);
+}
+N(Yellow_tab_Maroon_to_Red_or_Blue ) {
+  (o[a++] = Red),
+  (o[a] = Blue),
+  switch_arm(t, a, b, o, s);
+}
+G(Yellow) { (o[--b] = Tab_Yellow), TAB_Yellow (arms[arm_index])(t, a, b, o, s); }
+G(Red   ) { (o[--b] = Tab_Red   ), TAB_Red    (arms[arm_index])(t, a, b, o, s); }
+G(Green ) { (o[--b] = Tab_Green ), TAB_Green  (arms[arm_index])(t, a, b, o, s); }
+G(Blue  ) { (o[--b] = Tab_Blue  ), TAB_Blue   (arms[arm_index])(t, a, b, o, s); }
+N(stop  ) { Printf("STOP!\\n"); }
 G(Purple) { 
-${s.map((a, i) => `  arms[${i}] = "${a}";`).join('\n')}
+${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
-  Tab_Yellow[1] = stop;
+  Tab_Yellow[1] = Yellow_tab_Maroon_to_Red_or_Blue;
   Tab_Yellow[2] = Green;
-  Tab_Yellow[3] = stop;
+  Tab_Yellow[3] = Blue;
   Tab_Green[0]  = stop;
   Tab_Green[1]  = stop;
   Tab_Green[2]  = Green;
-  Tab_Green[3]  = stop;
-  o[--b] = Purple;
-  TAB_Purple(arm = W(arms[0]))(t, a, b, o, s);
+  Tab_Green[3]  = Blue;
+  Tab_Red[0]    = stop;
+  Tab_Red[1]    = Red;
+  Tab_Red[2]    = stop;
+  Tab_Red[3]    = stop;
+  Tab_Blue[0]   = stop;
+  Tab_Blue[1]   = stop;
+  Tab_Blue[2]   = stop;
+  Tab_Blue[3]   = Blue;
+  o[--b]        = Purple;
+  TAB_Purple(arms[0] = W(arm_texts[0]))(t, a, b, o, s);
 }
 `
 }

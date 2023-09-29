@@ -3,7 +3,13 @@ r0
 r123
   n123 n123 n123 print.
 r
-  ABO ABO ABO print.
+ s_bao ABO ABO ABO print.
+r
+ s_ab BA AB print.
+BA
+  "b". "a".
+AB
+  "a". "b".
 rS
   s_bax S print.
 

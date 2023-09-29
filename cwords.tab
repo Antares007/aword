@@ -20,11 +20,14 @@ tab {
   G(Olive   ) { ((n_t*)o[b])[0] (t, a, b + 1, o, s); }
 }.
 
+s_ab { G(Yellow  ) { Yellow(t, a, b, o, "ab"); } }.
 s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
 s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
 s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
 s_bax  { G(Yellow  ) { Yellow(t, a, b, o, "bax"); } }.
+bO { G(Blue) { Navy_ray(t, a, b, o, s); } }.
+rO { G(Red) { Maroon_ray(t, a, b, o, s); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];
