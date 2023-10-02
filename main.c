@@ -30,5 +30,5 @@ int main(int argc, const char **argv) {
   o[a++] = strcmp;
   ti_init();
   n_t w = W("b r o");
-  (w + 16)((long)__FILE_NAME__, a, b, o, "");
+  w((long)__FILE_NAME__, a, b, o, "");
 }

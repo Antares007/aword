@@ -8,28 +8,28 @@
 
 static Font font;
 static Color colors[] = {
-    ['O'] = {128, 128, 000, 255}, // Olive
     ['F'] = {255, 000, 255, 255}, // Fuchsia
-    ['M'] = {128, 000, 000, 255}, // Maroon
+    ['O'] = {128, 128, 000, 255}, // Olive
     ['L'] = {000, 255, 000, 255}, // Lime
+    ['M'] = {128, 000, 000, 255}, // Maroon
     ['N'] = {000, 000, 128, 255}, // Navy
     ['B'] = {000, 000, 255, 255}, // Blue
-    ['G'] = {000, 128, 000, 255}, // Green
     ['R'] = {255, 000, 000, 255}, // Red
-    ['P'] = {128, 000, 128, 255}, // Purple
+    ['G'] = {000, 128, 000, 255}, // Green
     ['Y'] = {255, 255, 000, 255}, // Yellow
+    ['P'] = {128, 000, 128, 255}, // Purple
 };
 static char directions[] = {
-    ['O'] = -1, // Olive
     ['F'] = -1, // Fuchsia
-    ['M'] = -1, // Maroon
+    ['O'] = -1, // Olive
     ['L'] = -1, // Lime
+    ['M'] = -1, // Maroon
     ['N'] = -1, // Navy
     ['B'] = +1, // Blue
-    ['G'] = +1, // Green
     ['R'] = +1, // Red
-    ['P'] = +1, // Purple
+    ['G'] = +1, // Green
     ['Y'] = +1, // Yellow
+    ['P'] = +1, // Purple
 };
 float zoom = 0.7;
 Vector2 off = {0, 0};

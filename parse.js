@@ -43,19 +43,19 @@ N(switch_arm) {
   long narm       = arm_index + 1;
   long charge     = narm / arms_count;
   arm_index       = narm - charge * arms_count;
-  o[--b]          = o[a - charge];
+  o[b]            = ((void**)o[b])[-charge];
   if (arms[arm_index])
-    ((n_t)o[b])(t, a - 1, b + 1, o, s);
+    ((n_t)o[b])(t, a, b + 1, o, s);
   else
-    TAB_Purple(arms[arm_index] = W(arm_texts[arm_index]))(t, a - 1, b, o, s);
+    TAB_Purple(arms[arm_index] = W(arm_texts[arm_index]))(t, a, b, o, s);
 }
 n_t Tab_Yellow[4];
 n_t Tab_Green[4];
 n_t Tab_Red[4];
 n_t Tab_Blue[4];
 
-N(Yellow_tab_Olive_to_Yellow_or_Green ) { (o[a++] = Yellow),  (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Red_tab_Maroon_to_Red_or_Blue       ) { (o[a++] = Red),     (o[a] = Blue),  switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Olive_to_Yellow_or_Green ) { o[--b] = &Tab_Yellow[1]; switch_arm(t, a, b, o, s); }
+N(Red_tab_Maroon_to_Red_or_Blue       ) { o[--b] = &Tab_Red[3];    switch_arm(t, a, b, o, s); }
 N(Yellow_tab_Maroon_to_Red_or_Blue    ) {
   if (--arms_count) {
     for (long i = arm_index; i < arms_count; i++)
@@ -74,19 +74,20 @@ G(Red   ) { (o[--b] = Tab_Red   ), TAB_Red    (arms[arm_index])(t, a, b, o, s); 
 G(Green ) { (o[--b] = Tab_Green ), TAB_Green  (arms[arm_index])(t, a, b, o, s); }
 G(Blue  ) { (o[--b] = Tab_Blue  ), TAB_Blue   (arms[arm_index])(t, a, b, o, s); }
 N(stop  ) { Printf("STOP!\\n"); }
+
 G(Purple) { 
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
-  Tab_Yellow[1] = Yellow_tab_Maroon_to_Red_or_Blue;
-  Tab_Yellow[2] = Green;
+  Tab_Yellow[1] = Green;
+  Tab_Yellow[2] = Yellow_tab_Maroon_to_Red_or_Blue;
   Tab_Yellow[3] = Yellow_tab_Blue;
   Tab_Green[0]  = stop;
-  Tab_Green[1]  = stop;
-  Tab_Green[2]  = Green;
+  Tab_Green[1]  = Green;
+  Tab_Green[2]  = stop;
   Tab_Green[3]  = Blue;
   Tab_Red[0]    = stop;
-  Tab_Red[1]    = Red_tab_Maroon_to_Red_or_Blue;
-  Tab_Red[2]    = stop;
+  Tab_Red[1]    = stop;
+  Tab_Red[2]    = Red_tab_Maroon_to_Red_or_Blue;
   Tab_Red[3]    = Blue;
   Tab_Blue[0]   = stop;
   Tab_Blue[1]   = stop;
@@ -174,16 +175,16 @@ function split_name_and_body(def) {
 function add_missing_rays([ n, b ]) {
   b = '#include "aw.h"\n\n' + b;
   const rays = {
-    Y : "Yellow",
     P : "Purple",
-    R : "Red",
+    Y : "Yellow",
     G : "Green",
+    R : "Red",
     B : "Blue",
     N : "Navy",
-    L : "Lime",
     M : "Maroon",
-    F : "Fuchsia",
+    L : "Lime",
     O : "Olive",
+    F : "Fuchsia",
   };
   let pos;
   let i = 0;

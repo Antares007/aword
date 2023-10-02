@@ -1,23 +1,23 @@
 b {
   G(Navy    ) { Yellow_ray (t, a, b, o, s); }
-  G(Lime    ) { Yellow_ray (t, a, b, o, s); }
   G(Maroon  ) { }
-  G(Fuchsia ) { Yellow_ray (t, a, b, o, s); }
+  G(Lime    ) { Yellow_ray (t, a, b, o, s); }
   G(Olive   ) { }
+  G(Fuchsia ) { Yellow_ray (t, a, b, o, s); }
 }.
 o {
-  G(Yellow  ) { Olive_ray  (t, a, b, o, s); }
   G(Purple  ) { Fuchsia_ray(t, a, b, o, s); }
-  G(Red     ) { Maroon_ray (t, a, b, o, s); }
+  G(Yellow  ) { Olive_ray  (t, a, b, o, s); }
   G(Green   ) { Lime_ray   (t, a, b, o, s); }
+  G(Red     ) { Maroon_ray (t, a, b, o, s); }
   G(Blue    ) { Navy_ray   (t, a, b, o, s); }
 }.
 tab { 
   G(Navy    ) { ((n_t*)o[b])[3] (t, a, b + 1, o, s); }
-  G(Lime    ) { ((n_t*)o[b])[2] (t, a, b + 1, o, s); }
-  G(Maroon  ) { ((n_t*)o[b])[1] (t, a, b + 1, o, s); }
-  G(Fuchsia ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
+  G(Maroon  ) { ((n_t*)o[b])[2] (t, a, b + 1, o, s); }
+  G(Lime    ) { ((n_t*)o[b])[1] (t, a, b + 1, o, s); }
   G(Olive   ) { ((n_t*)o[b])[0] (t, a, b + 1, o, s); }
+  G(Fuchsia ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
 }.
 
 s_ab { G(Yellow  ) { Yellow(t, a, b, o, "ab"); } }.
