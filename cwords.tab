@@ -1,5 +1,5 @@
 b {
-  G(Navy    ) { Yellow_ray (t, a, b, o, s); }
+  G(Navy    ) { Yellow_ray (t, 4, b, o, s); }
   G(Maroon  ) { }
   G(Lime    ) { Yellow_ray (t, a, b, o, s); }
   G(Olive   ) { }
@@ -21,6 +21,7 @@ tab {
 }.
 
 s_ab { G(Yellow  ) { Yellow(t, a, b, o, "ab"); } }.
+s_tina { G(Yellow  ) { Yellow(t, a, b, o, "tina"); } }.
 s_aba { G(Yellow  ) { Yellow(t, a, b, o, "aba"); } }.
 s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
 s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
@@ -29,6 +30,7 @@ s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
 s_bax { G(Yellow  ) { Yellow(t, a, b, o, "bax"); } }.
 rbO { G(Red ) { Maroon_ray(t, a, b, o, s); }
       G(Blue) { Navy_ray  (t, a, b, o, s); } }.
+bO { G(Blue) { Navy_ray(t, a, b, o, s); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];

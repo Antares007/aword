@@ -1,8 +1,8 @@
 r
   s_ss sS print.
 sS
-  "s" sS.
   "".
+  "s" sS sS.
 
 rn123
   n123 n123 n123 print.
@@ -21,8 +21,12 @@ n345
 
 rabo
  s_bao ABO ABO ABO print.
-rba
- s_aba BA AB BA print.
+rAB
+ s_aba AB AB BA print.
+rtina
+  s_tina tina tina tina tina print.
+tina
+  "i". "n". "a". "t". 
 BA
   "b". "a".
 AB
