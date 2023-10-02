@@ -37,45 +37,50 @@ function aword(s) {
 const char* arm_texts[${s.length}];
 n_t         arms[${s.length}];
 long        arms_count = ${s.length};
-long        arm_index;
+long        ai;
 
 N(switch_arm) {
-  long narm       = arm_index + 1;
+  long narm       = ai + 1;
   long charge     = narm / arms_count;
-  arm_index       = narm - charge * arms_count;
+  ai       = narm - charge * arms_count;
   o[b]            = ((void**)o[b])[-charge];
-  if (arms[arm_index])
-    ((n_t)o[b])(t, a, b + 1, o, s);
-  else
-    TAB_Purple(arms[arm_index] = W(arm_texts[arm_index]))(t, a, b, o, s);
+  if (arms[ai]) ((n_t)o[b])(t, a, b + 1, o, s);
+  else          TAB_Purple(arms[ai] = W(arm_texts[ai]))(t, a, b, o, s);
 }
 n_t Tab_Yellow[4];
-n_t Tab_Green[4];
-n_t Tab_Red[4];
-n_t Tab_Blue[4];
+n_t Tab_Green [4];
+n_t Tab_Red   [4];
+n_t Tab_Blue  [4];
 
 N(Yellow_tab_Olive_to_Yellow_or_Green ) { o[--b] = &Tab_Yellow[1]; switch_arm(t, a, b, o, s); }
 N(Red_tab_Maroon_to_Red_or_Blue       ) { o[--b] = &Tab_Red[3];    switch_arm(t, a, b, o, s); }
 N(Yellow_tab_Maroon_to_Red_or_Blue    ) {
   if (--arms_count) {
-    for (long i = arm_index; i < arms_count; i++)
+    for (long i = ai; i < arms_count; i++)
       (arm_texts[i] = arm_texts[i + 1]),
       (arms[i]      = arms[i + 1]);
-    --arm_index;
+    --ai;
     Red_tab_Maroon_to_Red_or_Blue(t, a, b, o, s);
   } else {
     TI("Maroon", __FILE__, t, a, b, o, s, Maroon);
   }
 }
 N(Yellow_tab_Blue) { Blue(t, a, b, o, s); }
+G(Yellow) { (o[--b] = Tab_Yellow);
+            if (arms[ai]) TAB_Yellow(arms[ai])(t, a, b, o, s);
+            else (arms[ai] = W(arm_texts[ai])), (o[--b] = TAB_Yellow(arms[ai])), TAB_Purple(arms[ai])(t, a, b, o, s); }
+G(Green ) { (o[--b] = Tab_Green);
+            if (arms[ai]) TAB_Green(arms[ai])(t, a, b, o, s);
+            else (arms[ai] = W(arm_texts[ai])), (o[--b] = TAB_Green(arms[ai])), TAB_Purple(arms[ai])(t, a, b, o, s); }
+G(Red   ) { (o[--b] = Tab_Red);
+            if (arms[ai]) TAB_Red(arms[ai])(t, a, b, o, s);
+            else (arms[ai] = W(arm_texts[ai])), (o[--b] = TAB_Red(arms[ai])), TAB_Purple(arms[ai])(t, a, b, o, s); }
+G(Blue  ) { (o[--b] = Tab_Blue);
+            if (arms[ai]) TAB_Blue(arms[ai])(t, a, b, o, s);
+            else (arms[ai] = W(arm_texts[ai])), (o[--b] = TAB_Blue(arms[ai])), TAB_Purple(arms[ai])(t, a, b, o, s); }
 
-G(Yellow) { (o[--b] = Tab_Yellow), TAB_Yellow (arms[arm_index])(t, a, b, o, s); }
-G(Red   ) { (o[--b] = Tab_Red   ), TAB_Red    (arms[arm_index])(t, a, b, o, s); }
-G(Green ) { (o[--b] = Tab_Green ), TAB_Green  (arms[arm_index])(t, a, b, o, s); }
-G(Blue  ) { (o[--b] = Tab_Blue  ), TAB_Blue   (arms[arm_index])(t, a, b, o, s); }
 N(stop  ) { Printf("STOP!\\n"); }
-
-G(Purple) { 
+G(Purple) {
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
   Tab_Yellow[1] = Green;
@@ -93,8 +98,7 @@ ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Blue[1]   = stop;
   Tab_Blue[2]   = stop;
   Tab_Blue[3]   = Blue;
-  o[--b]        = Purple;
-  TAB_Purple(arms[0] = W(arm_texts[0]))(t, a, b, o, s);
+  Purple(t, a, b, o, s);
 }
 `
 }
@@ -141,7 +145,7 @@ async function parse_awords(cwords) {
                    .map(add_missing_rays)
                    .map(compile))
               await Promise.all(dkeys.map(
-                  n => exec('cd abin && cat b r o > "b r o" && ' +
+                  n => exec('cd abin && cat b r o > "b r o" && cat b o > "b o"  && ' +
                             d[n].map(s => `cat ${s} > "${s}"`).join(" && "))))
   return compiled
 }
@@ -211,7 +215,7 @@ async function compile([ n, b ]) {
   return n;
 }
 function makeToAWordsFun(getNumberName, getStringName, ensureId) {
-  return s => parseAText(`tab ${s}`);
+  return s => parseAText(`tab rbO ${s}`);
   function parseAText(input) {
     input = input.trim()
     if (!input.length) return "o"

@@ -62,6 +62,7 @@ const char*format_name(const char*name) {
   if (fname[0] == 'a' && fname[1] == 'w' && fname[2] == '_') return fname + 3;
   return fname;
 }
+#include<stdlib.h>
 void draw(step_t **steps, long count) {
   int key = 0;
   static char skip_color = 'A';
@@ -107,6 +108,7 @@ void draw(step_t **steps, long count) {
       semi_auto = !semi_auto;
     if (key == 's')
       skip_color = steps[count - 1]->color[0];
+    if (WindowShouldClose()) exit(0);
   } while (
       key != 'n' && !semi_auto && count &&
       skip_color &&

@@ -1,3 +1,9 @@
+r
+  s_ss sS print.
+sS
+  "s" sS.
+  "".
+
 rn123
   n123 n123 n123 print.
 
@@ -24,11 +30,6 @@ AB
 rS
   s_bax S print.
 
-r
-  s_ss sS print.
-sS
-  "".
-  "s" sS sS.
 S
   "b".
   S "a".

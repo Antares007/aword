@@ -27,8 +27,8 @@ s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
 s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
 s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
 s_bax { G(Yellow  ) { Yellow(t, a, b, o, "bax"); } }.
-bO { G(Blue) { Navy_ray(t, a, b, o, s); } }.
-rO { G(Red) { Maroon_ray(t, a, b, o, s); } }.
+rbO { G(Red ) { Maroon_ray(t, a, b, o, s); }
+      G(Blue) { Navy_ray  (t, a, b, o, s); } }.
 print {
   N(printit) {
     const char*scolor = o[--a];

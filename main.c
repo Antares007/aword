@@ -21,7 +21,7 @@ void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
   long a = 0;
-  void *o[512];
+  void*o[512];
   long b = sizeof(o) / sizeof(*o);
 
   o[a++] = printf;
