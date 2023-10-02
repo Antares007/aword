@@ -53,18 +53,24 @@ Color LerpColor(Color a, Color b, float amount) {
 Color LerpGradient(Color a, float point, float amount) {
   return LerpColor(LerpColor(a, BLACK, point), a, amount);
 }
+const char*format_name(const char*name) {
+  return name;
+  long len = strlen(name);
+  static char fname[100];
+  strcpy(fname, name);
+  fname[len-2] = '\0';
+  if (fname[0] == 'a' && fname[1] == 'w' && fname[2] == '_') return fname + 3;
+  return fname;
+}
 void draw(step_t **steps, long count) {
   int key = 0;
   static char skip_color = 'A';
   static int semi_auto = 0;
   do {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-      off = Vector2Add(off, GetMouseDelta());
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
-    if (wheelMove > 0)
-      zoom += 0.1;
-    else if (wheelMove < 0)
-      zoom -= 0.1;
+    if (wheelMove > 0) zoom += 0.1;
+    else if (wheelMove < 0) zoom -= 0.1;
     BeginDrawing();
     ClearBackground(WHITE);
 
@@ -74,7 +80,7 @@ void draw(step_t **steps, long count) {
       step_t *s = steps[i];
       if (strcmp("tab.c", s->name) == 0)
         dir = Vector2Rotate(dir, M_PI_2);
-      Vector2 ns = MeasureTextEx(font, s->name, 35, 1);
+      Vector2 ns = MeasureTextEx(font, format_name(s->name), 35, 1);
       zero = Vector2Add(
           zero,
           Vector2Scale(
@@ -90,21 +96,21 @@ void draw(step_t **steps, long count) {
       DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y,
                     LerpGradient(calc_color(s), 0.5, (float)i / count));
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
-      DrawTextEx(font, s->name, (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, WHITE);
+      DrawTextEx(font, format_name(s->name), (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, WHITE);
       EndMode2D();
     }
     EndDrawing();
-    if(semi_auto && (steps[count-1]->color[0] == 'B' || steps[count-1]->color[0] == 'N' ||
-                     steps[count-1]->color[0] == 'R' || steps[count-1]->color[0] == 'M')) semi_auto = 0;
+    //if(semi_auto && (steps[count-1]->color[0] == 'B' || steps[count-1]->color[0] == 'N' ||
+    //                 steps[count-1]->color[0] == 'R' || steps[count-1]->color[0] == 'M')) semi_auto = 0;
     key = GetCharPressed();
     if (key == 'c')
       semi_auto = !semi_auto;
     if (key == 's')
       skip_color = steps[count - 1]->color[0];
   } while (
-      key != 'n' && !semi_auto && count
-      // &&
-      // skip_color &&
+      key != 'n' && !semi_auto && count &&
+      skip_color &&
+      steps[count - 1]->color[0] != skip_color
       // steps[count - 1]->color[0] != 'P' &&
       // steps[count - 1]->color[0] != 'F'
     );

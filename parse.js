@@ -36,11 +36,13 @@ function aword(s) {
   return `
 const char* arm_texts[${s.length}];
 n_t         arms[${s.length}];
+long        arms_count = ${s.length};
 long        arm_index;
+
 N(switch_arm) {
   long narm       = arm_index + 1;
-  long charge     = narm / ${s.length};
-  arm_index       = narm - charge * ${s.length};
+  long charge     = narm / arms_count;
+  arm_index       = narm - charge * arms_count;
   o[--b]          = o[a - charge];
   if (arms[arm_index])
     ((n_t)o[b])(t, a - 1, b + 1, o, s);
@@ -52,16 +54,21 @@ n_t Tab_Green[4];
 n_t Tab_Red[4];
 n_t Tab_Blue[4];
 
-N(Yellow_tab_Olive_to_Yellow_or_Green ) {
-  (o[a++] = Yellow),
-  (o[a] = Green),
-  switch_arm(t, a, b, o, s);
+N(Yellow_tab_Olive_to_Yellow_or_Green ) { (o[a++] = Yellow),  (o[a] = Green), switch_arm(t, a, b, o, s); }
+N(Red_tab_Maroon_to_Red_or_Blue       ) { (o[a++] = Red),     (o[a] = Blue),  switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Maroon_to_Red_or_Blue    ) {
+  if (--arms_count) {
+    for (long i = arm_index; i < arms_count; i++)
+      (arm_texts[i] = arm_texts[i + 1]),
+      (arms[i]      = arms[i + 1]);
+    --arm_index;
+    Red_tab_Maroon_to_Red_or_Blue(t, a, b, o, s);
+  } else {
+    TI("Maroon", __FILE__, t, a, b, o, s, Maroon);
+  }
 }
-N(Yellow_tab_Maroon_to_Red_or_Blue ) {
-  (o[a++] = Red),
-  (o[a] = Blue),
-  switch_arm(t, a, b, o, s);
-}
+N(Yellow_tab_Blue) { Blue(t, a, b, o, s); }
+
 G(Yellow) { (o[--b] = Tab_Yellow), TAB_Yellow (arms[arm_index])(t, a, b, o, s); }
 G(Red   ) { (o[--b] = Tab_Red   ), TAB_Red    (arms[arm_index])(t, a, b, o, s); }
 G(Green ) { (o[--b] = Tab_Green ), TAB_Green  (arms[arm_index])(t, a, b, o, s); }
@@ -72,15 +79,15 @@ ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
   Tab_Yellow[1] = Yellow_tab_Maroon_to_Red_or_Blue;
   Tab_Yellow[2] = Green;
-  Tab_Yellow[3] = Blue;
+  Tab_Yellow[3] = Yellow_tab_Blue;
   Tab_Green[0]  = stop;
   Tab_Green[1]  = stop;
   Tab_Green[2]  = Green;
   Tab_Green[3]  = Blue;
   Tab_Red[0]    = stop;
-  Tab_Red[1]    = Red;
+  Tab_Red[1]    = Red_tab_Maroon_to_Red_or_Blue;
   Tab_Red[2]    = stop;
-  Tab_Red[3]    = stop;
+  Tab_Red[3]    = Blue;
   Tab_Blue[0]   = stop;
   Tab_Blue[1]   = stop;
   Tab_Blue[2]   = stop;

@@ -1,11 +1,22 @@
-r0
-  n123 id n123 id n123 id print.
-r123
+rn123
   n123 n123 n123 print.
-r
+
+n123
+  1.
+  2.
+  3 n345.
+
+n345
+  3.
+  4.
+  5.
+
+
+
+rabo
  s_bao ABO ABO ABO print.
-r
- s_ab BA AB print.
+rba
+ s_aba BA AB BA print.
 BA
   "b". "a".
 AB
@@ -13,7 +24,7 @@ AB
 rS
   s_bax S print.
 
-rsS
+r
   s_ss sS print.
 sS
   "".
@@ -24,7 +35,3 @@ S
   S "x".
 ABO
   "a". "b". "o".
-n123
-  1. 2.
-n345
-  3. 4. 5.
