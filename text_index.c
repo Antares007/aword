@@ -119,7 +119,7 @@ void draw(step_t **steps, long count) {
 }
 #include <string.h>
 void ti(step_t *d) {
-//  printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
+  printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
   static step_t *steps[2048];
   static long count = 0;
   static long back_count = 0;

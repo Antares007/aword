@@ -49,68 +49,65 @@ N(switch_arm) {
 n_t Tab_Yellow[6];
 n_t Tab_Green [5];
 n_t Tab_Red   [6];
-n_t Tab_Blue  [5];
+
+N(Re_Yellow);
+N(Navy_ti);
 
 N(Yellow_tab_Olive_to_Yellow_or_Green ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Red_tab_Maroon_to_Red_or_Blue       ) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Maroon_to_Red_or_Blue    ) {
+N(Red_tab_Maroon_to_Red_or_Navy       ) { (o[a++] = Red), (o[a] = Navy_ti), switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Maroon_to_Red_or_Re_Yellow   ) {
   if (--arms_count) {
     for (long i = ai; i < arms_count; i++) {
       arm_texts[i] = arm_texts[i + 1];
       arms[i]      = arms[i + 1];
     }
     --ai;
-    Red_tab_Maroon_to_Red_or_Blue(t, a, b, o, s);
+    (o[a++] = Red), (o[a] = Re_Yellow), switch_arm(t, a, b, o, s);
   } else Maroon_ray(t, a, b, o, s);
   
 }
 const char*ss; long sa;
-N(Navy_Yellow);
 n_t navy_nar;
 N(tab) {
   long c = ((long*)o[b])[4];
   if (arms[ai]) (arms[ai] + c)(t, a, b, o, s);
   else (arms[ai] = W(arm_texts[ai])), (o[--b] = (arms[ai] + c)), arms[ai](t, a, b, o, s);
 }
-G(Yellow) { navy_nar = Navy_Yellow; (o[--b] = Tab_Yellow); tab(t, sa=a, b, o, ss=s); }
+G(Yellow) { navy_nar = Re_Yellow; (o[--b] = Tab_Yellow); tab(t, sa=a, b, o, ss=s); }
 G(Green ) { navy_nar = Navy; (o[--b] = Tab_Green); tab(t, a, b, o, s); }
-G(Red   ) { for(long i = b; i < 512; i++)
+G(Red   ) { navy_nar = Navy;
+            for(long i = b; i < 512; i++)
               if (CMP(((const char**)o[i])[5], __FILE__) == 0)
-                return Maroon_ray(t, a, b, o, s);
-            navy_nar = Navy; (o[--b] = Tab_Red); tab(t, a, b, o, s); }
-G(Blue  ) { navy_nar = Navy; (o[--b] = Tab_Blue); tab(t, a, b, o, s); }
+                return Olive_ray(t, a, b, o, s);
+            (o[--b] = Tab_Red); tab(t, a, b, o, s); }
+G(Blue  ) { TI("Navy_Blue_cut", __FILE__, t, a, b, o, s, Navy); }
 
 G(Navy  ) { navy_nar(t, a, b, o, s); }
-N(Navy_Yellow) { Yellow_tin(t, sa, b, o, ss); }
-
+N(Re_Yellow) { (o[--b] = Tab_Yellow); tab(t, sa, b, o, ss); }
+N(Navy_ti) { TI("Navy", __FILE__, t, a, b, o, s, Navy); }
 N(stop  ) { Printf("STOP!\\n"); }
 G(Purple) {
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
   Tab_Yellow[1] = Green;
-  Tab_Yellow[2] = Yellow_tab_Maroon_to_Red_or_Blue;
-  Tab_Yellow[3] = Blue;
+  Tab_Yellow[2] = Yellow_tab_Maroon_to_Red_or_Re_Yellow;
+  Tab_Yellow[3] = Re_Yellow;
   Tab_Yellow[4] = (void*)16;
   Tab_Yellow[5] = __FILE__;
 
   Tab_Green[0]  = stop;
   Tab_Green[1]  = Green;
   Tab_Green[2]  = stop;
-  Tab_Green[3]  = Blue;
+  Tab_Green[3]  = Navy_ti;
   Tab_Green[4]  = (void*)32;
 
   Tab_Red[0]    = stop;
   Tab_Red[1]    = stop;
-  Tab_Red[2]    = Red_tab_Maroon_to_Red_or_Blue;
-  Tab_Red[3]    = Blue;
+  Tab_Red[2]    = Red_tab_Maroon_to_Red_or_Navy;
+  Tab_Red[3]    = Navy_ti;
   Tab_Red[4]    = (void*)48;
   Tab_Red[5]    = __FILE__;
 
-  Tab_Blue[0]   = stop;
-  Tab_Blue[1]   = stop;
-  Tab_Blue[2]   = stop;
-  Tab_Blue[3]   = Blue;
-  Tab_Blue[4]   = (void*)64;
   Purple(t, a, b, o, s);
 }
 `
