@@ -2,7 +2,7 @@ function astring(s) {
   const b = Buffer.from(JSON.parse(s));
   let pred = "1";
   for (let i = 0; i < b.length; i++)
-    pred += ` && s[${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
+    pred += ` && s[t + ${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
 G(Red) {
   (o[a++] = ${s}), Red(t, a, b, o, s);
@@ -13,16 +13,16 @@ G(Blue) {
 G(Yellow) {
   if (${pred})
     (o[a++] = ${s}),
-    Yellow(t, a, b, o, s + ${ b.length});
+    Yellow(t + ${b.length}, a, b, o, s);
   else
-    Red(t, a, b, o, s);
+    Maroon_ray(t, a, b, o, s);
 }
 G(Green) {
   if (${pred})
     (o[a++] = ${s}),
-    Green(t, a, b, o, s + ${ b.length});
+    Green(t + ${b.length}, a, b, o, s);
   else
-    Blue(t, a, b, o, s);
+    Navy_ray(t, a, b, o, s);
 }
 `
 }
@@ -34,84 +34,85 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function aword(s) {
   return `
-const char* arm_texts[${s.length}];
-n_t         arms[${s.length}];
+const char *arm_texts[${s.length}];
+n_t         arm;
 long        arms_count = ${s.length};
 long        ai;
-
 N(switch_arm) {
-  long narm       = ai + 1;
-  long charge     = narm / arms_count;
-  ai       = narm - charge * arms_count;
-  o[--b]          = o[a - charge];
-  ((n_t)o[b])(t, a - 1, b + 1, o, s);
+  long narm   = ai + 1;
+  long charge = narm / arms_count;
+  ai          = narm - charge * arms_count;
+  o[--b]      = o[a - charge];
+  ${s.length === 1 ? "" : "arm = W(arm_texts[ai]);"} 
+  arm(t, a - 1, b, o, s);
 }
-n_t Tab_Yellow[6];
-n_t Tab_Green [5];
-n_t Tab_Red   [6];
+n_t Tab_Yellow[4];
+n_t Tab_Green [4];
+const char*ss;long sa;
 
-N(Re_Yellow);
-N(Navy_ti);
+N(stop              ) { Printf("STOP!\\n"); }
 
-N(Yellow_tab_Olive_to_Yellow_or_Green ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Red_tab_Maroon_to_Red_or_Navy       ) { (o[a++] = Red), (o[a] = Navy_ti), switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Maroon_to_Red_or_Re_Yellow   ) {
-  if (--arms_count) {
-    for (long i = ai; i < arms_count; i++) {
-      arm_texts[i] = arm_texts[i + 1];
-      arms[i]      = arms[i + 1];
-    }
-    --ai;
-    (o[a++] = Red), (o[a] = Re_Yellow), switch_arm(t, a, b, o, s);
-  } else Maroon_ray(t, a, b, o, s);
-  
-}
-const char*ss; long sa;
-n_t navy_nar;
-N(tab) {
-  long c = ((long*)o[b])[4];
-  if (arms[ai]) (arms[ai] + c)(t, a, b, o, s);
-  else (arms[ai] = W(arm_texts[ai])), (o[--b] = (arms[ai] + c)), arms[ai](t, a, b, o, s);
-}
-G(Yellow) { navy_nar = Re_Yellow; (o[--b] = Tab_Yellow); tab(t, sa=a, b, o, ss=s); }
-G(Green ) { navy_nar = Navy; (o[--b] = Tab_Green); tab(t, a, b, o, s); }
-G(Red   ) { navy_nar = Navy;
-            for(long i = b; i < 512; i++)
-              if (CMP(((const char**)o[i])[5], __FILE__) == 0)
-                return Olive_ray(t, a, b, o, s);
-            (o[--b] = Tab_Red); tab(t, a, b, o, s); }
-G(Blue  ) { TI("Navy_Blue_cut", __FILE__, t, a, b, o, s, Navy); }
+G(Yellow            ) { (o[--b] = Tab_Yellow); TAB_Yellow(arm)(t, sa=a, b, o, ss=s); }
+G(Green             ) { (o[--b] = Tab_Green);  TAB_Green(arm) (t, a,    b, o, s); }
+G(Red               ) { Printf("%s\\n", __FUNCTION__); }
+G(Blue              ) { Printf("%s\\n", __FUNCTION__); }
+G(Olive             ) { o[a++] = Olive; o[a] = Lime; switch_arm(t, a, b, o, s); }
 
-G(Navy  ) { navy_nar(t, a, b, o, s); }
-N(Re_Yellow) { (o[--b] = Tab_Yellow); tab(t, sa, b, o, ss); }
-N(Navy_ti) { TI("Navy", __FILE__, t, a, b, o, s, Navy); }
-N(stop  ) { Printf("STOP!\\n"); }
+N(Yellow_tab_Olive  ) { Yellow(t, a, b, o, s); }
+N(Yellow_tab_Lime   ) { Green(t, a, b, o, s); }
+
+N(Maroon_ti         ) { TI("Maroon_ti", __FILE__, t, a, b, o, s, Maroon); }
+N(Re_Yellow_tab     ) { (o[--b] = Tab_Yellow); TAB_Yellow(arm)(t, sa, b, o, ss); }
+N(Yellow_tab_Maroon ) { o[a++] = Maroon_ti; o[a] = Re_Yellow_tab; switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Navy   ) { Printf("%s\\n", __FUNCTION__); }
+
+N(Green_tab_Olive   ) { Printf("%s\\n", __FUNCTION__); }
+N(Green_tab_Lime    ) { Green(t, a, b, o, s); }
+N(Green_tab_Maroon  ) { Printf("%s\\n", __FUNCTION__); }
+N(Green_tab_Navy    ) { Printf("%s\\n", __FUNCTION__); }
+
 G(Purple) {
-${s.map((a, i) => `  arm_texts[${i}] = "${a}"; arms[${i}] = 0;`).join('\n')}
-  Tab_Yellow[0] = Yellow_tab_Olive_to_Yellow_or_Green;
-  Tab_Yellow[1] = Green;
-  Tab_Yellow[2] = Yellow_tab_Maroon_to_Red_or_Re_Yellow;
-  Tab_Yellow[3] = Re_Yellow;
-  Tab_Yellow[4] = (void*)16;
-  Tab_Yellow[5] = __FILE__;
-
-  Tab_Green[0]  = stop;
-  Tab_Green[1]  = Green;
-  Tab_Green[2]  = stop;
-  Tab_Green[3]  = Navy_ti;
-  Tab_Green[4]  = (void*)32;
-
-  Tab_Red[0]    = stop;
-  Tab_Red[1]    = stop;
-  Tab_Red[2]    = Red_tab_Maroon_to_Red_or_Navy;
-  Tab_Red[3]    = Navy_ti;
-  Tab_Red[4]    = (void*)48;
-  Tab_Red[5]    = __FILE__;
-
-  Purple(t, a, b, o, s);
+${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
+  Tab_Yellow[0] = Yellow_tab_Olive;
+  Tab_Yellow[1] = Yellow_tab_Lime;
+  Tab_Yellow[2] = Yellow_tab_Maroon;
+  Tab_Yellow[3] = Yellow_tab_Navy;
+  Tab_Green[0] = Green_tab_Olive;
+  Tab_Green[1] = Green_tab_Lime;
+  Tab_Green[2] = Green_tab_Maroon;
+  Tab_Green[3] = Green_tab_Navy;
+  o[--b] = Purple;
+  (arm = W(arm_texts[0]))(t, a, b, o, s);
 }
 `
 }
+/*  a     a     a      aaa
+    aa    a     a      aaaa
+    aaa   a     a      aaaaa
+    a     aa    a      aaaa
+    aa    aa    a      aaaaa
+    aaa   aa    a      aaaaaa
+    a     aaa   a      aaaaa
+    aa    aaa   a      aaaaaa
+    aaa   aaa   a      aaaaaaa
+    a     a     aa     aaaa
+    aa    a     aa     aaaaa
+    aaa   a     aa     aaaaaa
+    a     aa    aa     aaaaa
+    aa    aa    aa     aaaaaa
+    aaa   aa    aa     aaaaaaa
+    a     aaa   aa     aaaaaa
+    aa    aaa   aa     aaaaaaa
+    aaa   aaa   aa     aaaaaaaa
+    a     a     aaa    aaaaa
+    aa    a     aaa    aaaaaa
+    aaa   a     aaa    aaaaaaa
+    a     aa    aaa    aaaaaa
+    aa    aa    aaa    aaaaaaa
+    aaa   aa    aaa    aaaaaaaa
+    a     aaa   aaa    aaaaaaa
+    aa    aaa   aaa    aaaaaaaa
+    aaa   aaa   aaa    aaaaaaaaa  */
 const util = require("node:util");
 const exec = util.promisify(require("node:child_process").exec);
 const {writeFile, readFile} = require("node:fs/promises");
@@ -155,8 +156,9 @@ async function parse_awords(cwords) {
                    .map(add_missing_rays)
                    .map(compile))
               await Promise.all(dkeys.map(
-                  n => exec('cd abin && cat b r o > "b r o" && cat b o > "b o"  && ' +
-                            d[n].map(s => `cat ${s} > "${s}"`).join(" && "))))
+                  n => exec(
+                      'cd abin && cat b r o > "b r o" && cat b o > "b o"  && ' +
+                      d[n].map(s => `cat ${s} > "${s}"`).join(" && "))))
   return compiled
 }
 async function parse() {

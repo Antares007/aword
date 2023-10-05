@@ -23,12 +23,11 @@ int main(int argc, const char **argv) {
   long a = 0;
   void*o[512];
   long b = sizeof(o) / sizeof(*o);
-
   o[a++] = printf;
   o[a++] = ti;
   o[a++] = map_file;
   o[a++] = strcmp;
   ti_init();
   n_t w = W("b r o");
-  w((long)__FILE_NAME__, a, b, o, "");
+  w(0, a, b, o, "");
 }

@@ -73,7 +73,7 @@ void draw(step_t **steps, long count) {
     if (wheelMove > 0) zoom += 0.1;
     else if (wheelMove < 0) zoom -= 0.1;
     BeginDrawing();
-    ClearBackground(WHITE);
+    ClearBackground(BLACK);
 
     Vector2 zero = {1 * GetScreenWidth() / 8.f, 2 * GetScreenHeight() / 8.f};
     Vector2 dir = {0, -1};
@@ -81,13 +81,13 @@ void draw(step_t **steps, long count) {
       step_t *s = steps[i];
       if (strcmp("tab.c", s->name) == 0)
         dir = Vector2Rotate(dir, M_PI_2);
-      Vector2 ns = MeasureTextEx(font, format_name(s->name), 35, 1);
+      Vector2 ns = {90,50}; //MeasureTextEx(font, format_name(s->name), 35, 1);
       zero = Vector2Add(
           zero,
           Vector2Scale(
               dir, (long)dir.x
-                       ? Lerp(ns.x * zoom, ns.x * zoom * 3, (float)i / count)
-                       : Lerp(ns.y * zoom, ns.y * zoom * 3, (float)i / count)));
+                       ? Lerp(ns.x * zoom, ns.x * zoom * 2, (float)i / count)
+                       : Lerp(ns.y * zoom, ns.y * zoom * 2, (float)i / count)));
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
                          .zoom = Lerp(1 * zoom, 2 * zoom, (float)i / count),
@@ -97,7 +97,7 @@ void draw(step_t **steps, long count) {
       DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y,
                     LerpGradient(calc_color(s), 0.5, (float)i / count));
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
-      DrawTextEx(font, format_name(s->name), (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, WHITE);
+      DrawTextEx(font, format_name(s->name), (Vector2){ -ns.x / 2, -ns.y / 2}, 35, 1, WHITE);
       EndMode2D();
     }
     EndDrawing();
@@ -119,19 +119,15 @@ void draw(step_t **steps, long count) {
 }
 #include <string.h>
 void ti(step_t *d) {
-  printf("%10s %3ld %3ld %10s %s\n", d->s, d->a, d->b, d->color, d->name);
+  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color, d->name);
   static step_t *steps[2048];
   static long count = 0;
-  static long back_count = 0;
   int dir = directions[(int)d->color[0]];
   if (dir == 1) {
-    count += back_count;
-    back_count = 0;
     steps[count++] = d;
   } else {
-    --back_count;
-    assert(strcmp(steps[count + back_count]->name, d->name) == 0);
-    steps[count + back_count] = d;
+    assert(strcmp(steps[--count]->name, d->name) == 0);
+    steps[count] = d;
   }
   draw(steps, count);
   d->cont(d->t, d->a, d->b, d->o, d->s);

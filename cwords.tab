@@ -1,9 +1,10 @@
 b {
-  G(Navy    ) { Yellow_ray (t, 4, b, o, s); }
+  G(Navy    ) { Yellow_ray (0, 4, b, o, s); }
   G(Maroon  ) { }
-  G(Lime    ) { Yellow_ray (t, a, b, o, s); }
-  G(Olive   ) { }
-  G(Fuchsia ) { Yellow_ray (t, a, b, o, s); }
+  G(Lime    ) { Yellow_ray (0, 4, b, o, s); }
+  G(Olive   ) { //Yellow_ray (0, 4, b, o, s);
+  }
+  G(Fuchsia ) { Yellow_ray (0, 4, b, o, s); }
 }.
 o {
   G(Purple  ) { Fuchsia_ray(t, a, b, o, s); }
@@ -19,20 +20,18 @@ tab {
   G(Olive   ) { ((n_t*)o[b])[0] (t, a, b + 1, o, s); }
   G(Fuchsia ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
 }.
-s_ab { G(Yellow  ) { Yellow(t, a, b, o, "ab"); } }.
-s_tina { G(Yellow  ) { Yellow(t, a, b, o, "tina"); } }.
-s_aba { G(Yellow  ) { Yellow(t, a, b, o, "aba"); } }.
-s_bao { G(Yellow  ) { Yellow(t, a, b, o, "bao"); } }.
-s_ssss { G(Yellow  ) { Yellow(t, a, b, o, "ssss"); } }.
-s_ss { G(Yellow  ) { Yellow(t, a, b, o, "ss"); } }.
-s_s { G(Yellow  ) { Yellow(t, a, b, o, "s"); } }.
-s_b { G(Yellow  ) { Yellow(t, a, b, o, "b"); } }.
-s_ba { G(Yellow  ) { Yellow(t, a, b, o, "ba"); } }.
-s_baaa { G(Yellow  ) { Yellow(t, a, b, o, "baaa"); } }.
-s_bax { G(Yellow  ) { Yellow(t, a, b, o, "bax"); } }.
-rbO { G(Red ) { Maroon_ray(t, a, b, o, s); }
-      G(Blue) { Navy_ray  (t, a, b, o, s); } }.
-bO { G(Blue) { Navy_ray(t, a, b, o, s); } }.
+twist {
+  G(Yellow) { Red   (t, a, b, o, s); }
+  G(Green ) { Blue  (t, a, b, o, s); }
+  G(Red   ) { Yellow(t, a, b, o, s); }
+  G(Blue  ) { Green (t, a, b, o, s); }
+}.
+set {
+  G(Yellow) { Yellow(0, a - 1, b, o, o[a - 1]); }
+  G(Green ) { Green (0, a - 1, b, o, o[a - 1]); }
+  G(Red   ) { Red   (0, a - 1, b, o, o[a - 1]); }
+  G(Blue  ) { Blue  (0, a - 1, b, o, o[a - 1]); }
+}.
 print {
   N(printit) {
     const char*scolor = o[--a];
@@ -47,3 +46,6 @@ print {
   G(Blue    ) { o[a++] = Blue;   o[a++] = "Blue";   printit(t, a, b, o, s); }
 }.
 id {}.
+s_aaaaaaaaa { G(Yellow) { Yellow(t, a, b, o, "aaaaaaaaa"); } }.
+s_abc       { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
+s_ss        { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
