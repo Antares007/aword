@@ -1,24 +1,30 @@
 b {
-  G(Navy    ) { Yellow_ray (0, 4, b, o, s); }
+  G(Navy    ) { Yellow (0, 4, b, o, s); }
   G(Maroon  ) { }
-  G(Lime    ) { Yellow_ray (0, 4, b, o, s); }
-  G(Olive   ) { //Yellow_ray (0, 4, b, o, s);
+  G(Lime    ) { Yellow (0, 4, b, o, s); }
+  G(Olive   ) { //Yellow (0, 4, b, o, s);
   }
-  G(Fuchsia ) { Yellow_ray (0, 4, b, o, s); }
+  G(Fuchsia ) { Yellow (0, 4, b, o, s); }
 }.
 o {
-  G(Purple  ) { Fuchsia_ray(t, a, b, o, s); }
-  G(Yellow  ) { Olive_ray  (t, a, b, o, s); }
-  G(Green   ) { Lime_ray   (t, a, b, o, s); }
-  G(Red     ) { Maroon_ray (t, a, b, o, s); }
-  G(Blue    ) { Navy_ray   (t, a, b, o, s); }
+  G(Purple  ) { Fuchsia(t, a, b, o, s); }
+  G(Yellow  ) { Olive  (t, a, b, o, s); }
+  G(Green   ) { Lime   (t, a, b, o, s); }
+  G(Red     ) { Maroon (t, a, b, o, s); }
+  G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-  G(Navy    ) { ((n_t*)o[b])[3] (t, a, b + 1, o, s); }
-  G(Maroon  ) { ((n_t*)o[b])[2] (t, a, b + 1, o, s); }
-  G(Lime    ) { ((n_t*)o[b])[1] (t, a, b + 1, o, s); }
-  G(Olive   ) { ((n_t*)o[b])[0] (t, a, b + 1, o, s); }
-  G(Fuchsia ) { ((n_t )o[b])    (t, a, b + 1, o, s); }
+#define B(Yellow) \
+  N(Yellow##_tin) __attribute__((noinline)); \
+  N(Yellow##_tin) { TI(#Yellow, __FILE__, t, a, b, o, s, Yellow, 1); } \
+  R(Yellow    ) { Yellow##_tin(t,a,b,o,s); }
+  B(Yellow)B(Green)B(Purple)
+
+  G(Navy    ) { TI("Navy",   ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[3], -1); }
+  G(Maroon  ) { TI("Maroon", ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[2], -1); }
+  G(Lime    ) { TI("Lime",   ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[1], -1); }
+  G(Olive   ) { TI("Olive",  ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[0], -1); }
+  G(Fuchsia ) { TI("Fuchsia",((char*)o[b+1]), t, a, b + 2, o, s, ((n_t)o[b]),     -1); }
 }.
 twist {
   G(Yellow) { Red   (t, a, b, o, s); }
@@ -48,4 +54,7 @@ print {
 id {}.
 s_aaaaaaaaa { G(Yellow) { Yellow(t, a, b, o, "aaaaaaaaa"); } }.
 s_abc       { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
+s_bac       { G(Yellow) { Yellow(t, a, b, o, "bac"); } }.
+s_baaaaaaa  { G(Yellow) { Yellow(t, a, b, o, "baaaaaaa"); } }.
 s_ss        { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
+s_s         { G(Yellow) { Yellow(t, a, b, o, "s"); } }.

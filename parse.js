@@ -15,14 +15,14 @@ G(Yellow) {
     (o[a++] = ${s}),
     Yellow(t + ${b.length}, a, b, o, s);
   else
-    Maroon_ray(t, a, b, o, s);
+    Maroon(t, a, b, o, s);
 }
 G(Green) {
   if (${pred})
     (o[a++] = ${s}),
     Green(t + ${b.length}, a, b, o, s);
   else
-    Navy_ray(t, a, b, o, s);
+    Navy(t, a, b, o, s);
 }
 `
 }
@@ -34,6 +34,11 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function aword(s) {
   return `
+#define TAB_Purple(arm) ((arm)+00)
+#define TAB_Yellow(arm) ((arm)+16)
+#define TAB_Green(arm)  ((arm)+32)
+#define TAB_Red(arm)    ((arm)+48)
+#define TAB_Blue(arm)   ((arm)+64)
 const char *arm_texts[${s.length}];
 n_t         arm;
 long        arms_count = ${s.length};
@@ -42,12 +47,13 @@ N(switch_arm) {
   long narm   = ai + 1;
   long charge = narm / arms_count;
   ai          = narm - charge * arms_count;
+  o[--b]      = __FILE__;
   o[--b]      = o[a - charge];
   ${s.length === 1 ? "" : "arm = W(arm_texts[ai]);"} 
   arm(t, a - 1, b, o, s);
 }
-n_t Tab_Yellow[4];
-n_t Tab_Green [4];
+n_t Tab_Yellow[5];
+n_t Tab_Green [5];
 const char*ss;long sa;
 
 N(stop              ) { Printf("STOP!\\n"); }
@@ -61,7 +67,7 @@ G(Olive             ) { o[a++] = Olive; o[a] = Lime; switch_arm(t, a, b, o, s); 
 N(Yellow_tab_Olive  ) { Yellow(t, a, b, o, s); }
 N(Yellow_tab_Lime   ) { Green(t, a, b, o, s); }
 
-N(Maroon_ti         ) { TI("Maroon_ti", __FILE__, t, a, b, o, s, Maroon); }
+N(Maroon_ti         ) { Maroon(t, a, b, o, s); }
 N(Re_Yellow_tab     ) { (o[--b] = Tab_Yellow); TAB_Yellow(arm)(t, sa, b, o, ss); }
 N(Yellow_tab_Maroon ) { o[a++] = Maroon_ti; o[a] = Re_Yellow_tab; switch_arm(t, a, b, o, s); }
 N(Yellow_tab_Navy   ) { Printf("%s\\n", __FUNCTION__); }
@@ -77,10 +83,13 @@ ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
   Tab_Yellow[1] = Yellow_tab_Lime;
   Tab_Yellow[2] = Yellow_tab_Maroon;
   Tab_Yellow[3] = Yellow_tab_Navy;
+  Tab_Yellow[4] = __FILE__;
   Tab_Green[0] = Green_tab_Olive;
   Tab_Green[1] = Green_tab_Lime;
   Tab_Green[2] = Green_tab_Maroon;
   Tab_Green[3] = Green_tab_Navy;
+  Tab_Green[4] = __FILE__;
+  o[--b] = __FILE__;
   o[--b] = Purple;
   (arm = W(arm_texts[0]))(t, a, b, o, s);
 }
@@ -205,7 +214,7 @@ function add_missing_rays([ n, b ]) {
   let pos;
   let i = 0;
   for (let k of Object.keys(rays))
-    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) === -2)
+    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) + b.indexOf("B(" + rays[k]) === -3)
       b += `\nG(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
   return [ n, b ];
 }

@@ -6,8 +6,3 @@ typedef N((*n_t));
 #define P Printf("%ld %ld %s %s\n", a, b, __FUNCTION__, __FILE__); 
 #define W(atext) ((n_t (*)(const char*))o[2])(atext)
 #define CMP(s1, s2) ((int (*)(const char*, const char*))o[3])(s1, s2)
-#define TAB_Purple(arm) ((arm)+00)
-#define TAB_Yellow(arm) ((arm)+16)
-#define TAB_Green(arm)  ((arm)+32)
-#define TAB_Red(arm)    ((arm)+48)
-#define TAB_Blue(arm)   ((arm)+64)

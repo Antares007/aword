@@ -1,23 +1,20 @@
-r
-  n123 n123 n123 print.
+rn123
+  n123 n123 print.
+
 n123
-  1.
-  2.
-  3 n345.
+  1. 2. 3 n345.
 n345
-  3.
-  4.
-  5.
+  3. 4. 5.
 
 rsS
-  s_ss sS print.
+  s_s sS print.
 sS
   "" 0.
   "s" sS sS 1.
 
-rS
-  s_abc S print.
+r
+  s_bac S print.
 S
-  "a".
-  S "b".
-  S "c".
+  0 "b".
+  1 S "a".
+  2 S "c".
