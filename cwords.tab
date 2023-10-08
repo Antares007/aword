@@ -1,10 +1,9 @@
 b {
-  G(Navy    ) { Yellow (0, 4, b, o, s); }
+  G(Navy    ) { Yellow (0, 5, b, o, s); }
   G(Maroon  ) { }
-  G(Lime    ) { Yellow (0, 4, b, o, s); }
-  G(Olive   ) { //Yellow (0, 4, b, o, s);
-  }
-  G(Fuchsia ) { Yellow (0, 4, b, o, s); }
+  G(Lime    ) { Yellow (0, 5, b, o, s); }
+  G(Olive   ) { }
+  G(Fuchsia ) { Yellow (0, 5, b, o, s); }
 }.
 o {
   G(Purple  ) { Fuchsia(t, a, b, o, s); }
@@ -14,17 +13,18 @@ o {
   G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-#define B(Yellow) \
-  N(Yellow##_tin) __attribute__((noinline)); \
-  N(Yellow##_tin) { TI(#Yellow, __FILE__, t, a, b, o, s, Yellow, 1); } \
+#define B(Yellow)                                                       \
+  N(Yellow##_tin) __attribute__((noinline));                            \
+  N(Yellow##_tin) { TI(#Yellow, __FILE__, t, a, b, o, s, Yellow, 1); }  \
   R(Yellow    ) { Yellow##_tin(t,a,b,o,s); }
+
   B(Yellow)B(Green)B(Purple)
 
-  G(Navy    ) { TI("Navy",   ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[3], -1); }
-  G(Maroon  ) { TI("Maroon", ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[2], -1); }
-  G(Lime    ) { TI("Lime",   ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[1], -1); }
-  G(Olive   ) { TI("Olive",  ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[0], -1); }
-  G(Fuchsia ) { TI("Fuchsia",((char*)o[b+1]), t, a, b + 2, o, s, ((n_t)o[b]),     -1); }
+  G(Navy    ) { TI("Navy",    ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[3], -1); }
+  G(Maroon  ) { TI("Maroon",  ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[2], -1); }
+  G(Lime    ) { TI("Lime",    ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[1], -1); }
+  G(Olive   ) { TI("Olive",   ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[0], -1); }
+  G(Fuchsia ) { TI("Fuchsia", ((char*)o[b+1]),   t, a, b + 2, o, s, ((n_t)o[b]),     -1); }
 }.
 twist {
   G(Yellow) { Red   (t, a, b, o, s); }
@@ -42,8 +42,8 @@ print {
   N(printit) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor); for(long i = 4; i < a; i++) Printf("%s", o[i]); Printf(")\n");
-    a = 4;
+    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s", o[i]); Printf(")\n");
+    a = 5;
     color(t, a, b, o, s);
   }
   G(Yellow  ) { o[a++] = Yellow; o[a++] = "Yellow"; printit(t, a, b, o, s); }

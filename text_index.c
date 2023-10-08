@@ -91,7 +91,7 @@ void draw(step_t **steps, long count) {
         dir = Vector2Rotate(dir, M_PI_2 * s->angle);
       Vector2 ns = {90, 50}; // MeasureTextEx(font, format_name(s->name), 35,
                              // 1);
-      zero = Vector2Add(zero, Vector2Scale(dir, ((long)dir.x ? ns.x : ns.y) * directions[(int)s->color[0]]));
+      zero = Vector2Add(zero, Vector2Scale(dir, zoom * ((long)dir.x ? ns.x : ns.y) * directions[(int)s->color[0]]));
       if (s->angle == -1) dir = Vector2Rotate(dir, M_PI_2 * s->angle);
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
@@ -99,11 +99,13 @@ void draw(step_t **steps, long count) {
                          .offset = Vector2Add(off, zero)};
 
       BeginMode2D(camera);
+      Color bgcolor = LerpGradient(calc_color(s), 0.5, (float)i / count);
+      Color fgcolor = (Color) {.a=255, .r = 255 - bgcolor.r, .g = 255 - bgcolor.g, .b = 255 - bgcolor.b };
       DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y,
-                    LerpGradient(calc_color(s), 0.5, (float)i / count));
+                    bgcolor);
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
       DrawTextEx(font, format_name(s->name), (Vector2){-ns.x / 2, -ns.y / 2},
-                 35, 1, WHITE);
+                 35, 1, fgcolor);
       EndMode2D();
     }
     EndDrawing();
@@ -119,15 +121,14 @@ void draw(step_t **steps, long count) {
     if (WindowShouldClose())
       exit(0);
   } while (key != 'n' && !semi_auto && count && skip_color &&
-           steps[count - 1]->color[0] != skip_color
-           // steps[count - 1]->color[0] != 'P' &&
-           // steps[count - 1]->color[0] != 'F'
+           steps[count - 1]->color[0] != skip_color &&
+           steps[count - 1]->color[0] != 'P' &&
+           steps[count - 1]->color[0] != 'F'
   );
 }
 #include <string.h>
 void ti(step_t *d) {
-  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color,
-         d->name);
+  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color, d->name);
   static step_t *steps[2048];
   static long count = 0;
   steps[count++] = d;

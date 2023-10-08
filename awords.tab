@@ -1,18 +1,20 @@
 rn123
   n123 n123 print.
-
 n123
   1. 2. 3 n345.
 n345
   3. 4. 5.
-
-rsS
-  s_s sS print.
-sS
-  "" 0.
-  "s" sS sS 1.
-
+rBB
+  s_ss B B print.
+B
+  "a". "". "s".
 r
+  s_ss sS print.
+sS
+  "s" sS 2.
+  "" 0.
+  "s" sS 1.
+rS
   s_bac S print.
 S
   0 "b".
