@@ -16,9 +16,9 @@ tab {
 #define B(Yellow)                                                       \
   N(Yellow##_tin) __attribute__((noinline));                            \
   N(Yellow##_tin) { TI(#Yellow, __FILE__, t, a, b, o, s, Yellow, 1); }  \
-  R(Yellow    ) { Yellow##_tin(t,a,b,o,s); }
+  R(Yellow) { Yellow##_tin(t, a, b, o, s); }
 
-  B(Yellow)B(Green)B(Purple)
+  B(Yellow)B(Green)B(Red)B(Blue)B(Purple)
 
   G(Navy    ) { TI("Navy",    ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[3], -1); }
   G(Maroon  ) { TI("Maroon",  ((char**)o[b])[4], t, a, b + 1, o, s, ((n_t*)o[b])[2], -1); }
@@ -52,6 +52,8 @@ print {
   G(Blue    ) { o[a++] = Blue;   o[a++] = "Blue";   printit(t, a, b, o, s); }
 }.
 id {}.
+s_be        { G(Yellow) { Yellow(t, a, b, o, "be"); } }.
+s_bf        { G(Yellow) { Yellow(t, a, b, o, "bf"); } }.
 s_aaaaaaaaa { G(Yellow) { Yellow(t, a, b, o, "aaaaaaaaa"); } }.
 s_abc       { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_bac       { G(Yellow) { Yellow(t, a, b, o, "bac"); } }.

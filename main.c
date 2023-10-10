@@ -20,9 +20,6 @@ void *map_file(const char *file) {
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
-  // Twords * Arms * String length
-  char configs[10 * 10 * 10] = {};
-  memset(configs, 0, sizeof(configs));
   long a = 0;
   void*o[512];
   long b = sizeof(o) / sizeof(*o);
@@ -30,7 +27,7 @@ int main(int argc, const char **argv) {
   o[a++] = ti;
   o[a++] = map_file;
   o[a++] = strcmp;
-  o[a++] = configs;
+  o[a++] = 0;
   ti_init();
   n_t w = W("b r o");
   w(0, a, b, o, "");
