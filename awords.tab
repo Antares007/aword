@@ -3,7 +3,7 @@ BBB
 
 BB
   B B B.
-rBB
+rB
   s_ss BBB B print.
 B
   "". "s". 
@@ -11,9 +11,9 @@ B
 r
   s_ss sS print.
 sS
-  "s" sS sS 2.
-  "s" sS sS 1.
-  "" 0.
+  0 "".
+  1 "s" sS sS.
+  3 "".
 
 rS
   s_bac S print.

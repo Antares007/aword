@@ -12,6 +12,7 @@ void *map_file(const char *file) {
                     PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE, fd, 0);
   close(fd);
   assert(addr != MAP_FAILED);
+  ((long*)addr)[1] = sb.st_size;
   return addr;
 }
 #include "aword.h"
@@ -27,8 +28,8 @@ int main(int argc, const char **argv) {
   o[a++] = ti;
   o[a++] = map_file;
   o[a++] = strcmp;
-  o[a++] = 0;
+  o[a++] = munmap;
   ti_init();
-  n_t w = W("b r o");
+  n_t w = Bark("b r o");
   w(0, a, b, o, "");
 }
