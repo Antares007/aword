@@ -33,13 +33,14 @@ n_t Tab_Yellow[6];
 n_t Tab_Green [6];
 n_t Tab_Maroon[6];
 n_t Tab_Navy  [6];
+long arms_count = ${s.length};
 n_t arms[${s.length}];
 const char *arm_texts[${s.length}];
 long ai;
 N(switch_arm) {
   long narm   = ai + 1;
-  long charge = narm / ${s.length};
-           ai = narm - charge * ${s.length};
+  long charge = narm / arms_count;
+           ai = narm - charge * arms_count;
   ((n_t)o[a - charge])(t, a - 1, b, o, s);
 }
 N(tab) {
@@ -52,30 +53,42 @@ N(tab) {
     (o[--b]   = arms[ai] + color),
     (arms[ai](t, a, b, o, s));
 }
-G(Yellow            ) { (o[--b] = Tab_Yellow),            tab(t, a, b, o, s); }
+const char*ss;
+long sa, st;
+G(Yellow            ) { (o[--b] = Tab_Yellow),            tab(st=t, sa=a, b, o, ss=s); }
 G(Green             ) { (o[--b] = Tab_Green),             tab(t, a, b, o, s); }
 G(Maroon            ) { (o[--b] = Tab_Maroon),            tab(t, a, b, o, s); }
 G(Navy              ) { (o[--b] = Tab_Navy),              tab(t, a, b, o, s); }
-G(Olive             ) { (o[a++] = Olive), (o[a] = Lime), switch_arm(t, a, b, o, s); }
 
-N(Yellow_tab_Olive  ) { Yellow(t, a, b, o, s); }
+N(Yellow_tab_Olive  ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
 N(Yellow_tab_Lime   ) { Green(t, a, b, o, s); }
-N(Yellow_tab_Maroon ) { (o[a++] = Maroon), (o[a] = Navy), switch_arm(t, a, b, o, s); } 
+N(Yellow_tab_Maroon ) { 
+  if (arms_count == 1) Maroon(t, a, b, o, s);
+  else { 
+    arms_count--;
+    for(long i      = ai; i < arms_count; i++) {
+      arms[i]       = arms[i + 1];
+      arm_texts[i]  = arm_texts[i + 1];
+    }
+    ai = ai % arms_count;
+    Navy(t, a, b, o, s);
+  }
+} 
 N(Yellow_tab_Navy   ) { Navy(t, a, b, o, s); }
 
 N(Green_tab_Olive   ) { P; }
 N(Green_tab_Lime    ) { Green(t, a, b, o, s); }
 N(Green_tab_Maroon  ) { P; }
-N(Green_tab_Navy    ) { P; }
+N(Green_tab_Navy    ) { Navy(t, a, b, o, s); }
 
 N(Maroon_tab_Olive  ) { P; }
 N(Maroon_tab_Lime   ) { P; }
-N(Maroon_tab_Maroon ) { Yellow_tab_Maroon(t, a, b, o, s); }
+N(Maroon_tab_Maroon ) { P; }
 N(Maroon_tab_Navy   ) { P; }
 
 N(Navy_tab_Olive    ) { P; }
-N(Navy_tab_Lime     ) { P; }
-N(Navy_tab_Maroon   ) { P; }
+N(Navy_tab_Lime     ) { Green(t, a, b, o, s); }
+N(Navy_tab_Maroon   ) { Yellow_tab_Maroon(t, a, b, o, s); }
 N(Navy_tab_Navy     ) { Navy(t, a, b, o, s); }
 
 G(Purple) {

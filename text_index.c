@@ -93,13 +93,14 @@ void draw(step_t **steps, long count) {
       if (s->angle == +1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle)), (at += directions[(int)s->color[0]]);
 
       float step_size = ((long)dir.x ? ns.x : ns.y) * directions[(int)s->color[0]];
-      zero = Vector2Add(zero,    Vector2Scale(dir, zoom * Lerp(step_size, step_size*2, (float)at/height)));
+      // Lerp(step_size, step_size*2, (float)at/height)
+      zero = Vector2Add(zero,    Vector2Scale(dir, zoom * step_size));
 
       if (s->angle == -1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle)), (at += directions[(int)s->color[0]]);
 
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
-                         .zoom = zoom * Lerp(1, 2, (float)at / height),
+                         .zoom = zoom ,//* Lerp(1, 2, (float)at / height),
                          .offset = Vector2Add(off, zero)};
 
       BeginMode2D(camera);
@@ -141,7 +142,7 @@ void ti(step_t *d) {
   static step_t *steps[2048];
   static long count = 0;
   steps[count++] = d;
-//  draw(steps, count);
+  draw(steps, count);
 #endif
   d->cont(d->t, d->a, d->b, d->o, d->s);
 }

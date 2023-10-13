@@ -1,6 +1,6 @@
 b {
   G(Navy    ) { Yellow (0, 5, b, o, s); }
-  G(Maroon  ) { Blue   (0, 5, b, o, s); }
+  G(Maroon  ) { }
   G(Lime    ) { Yellow (0, 5, b, o, s); }
   G(Olive   ) { }
   G(Fuchsia ) { Yellow (0, 5, b, o, s); }
@@ -15,7 +15,7 @@ o {
 tab { 
 #define B(Yellow)                                                       \
   N(Yellow##_tin) __attribute__((noinline));                            \
-  N(Yellow##_tin) { TI(#Yellow, __FILE__, t, a, b, o, s, Yellow, 1); }  \
+  N(Yellow##_tin) { TI(#Yellow "_T", __FILE__, t, a, b, o, s, Yellow, 1); }  \
   R(Yellow) { Yellow##_tin(t, a, b, o, s); }
 
   B(Yellow)B(Green)B(Red)B(Blue)B(Purple)
@@ -55,6 +55,7 @@ id {}.
 s_be        { G(Yellow) { Yellow(t, a, b, o, "be"); } }.
 s_bf        { G(Yellow) { Yellow(t, a, b, o, "bf"); } }.
 s_aaaaaaaaa { G(Yellow) { Yellow(t, a, b, o, "aaaaaaaaa"); } }.
+s_ab        { G(Yellow) { Yellow(t, a, b, o, "ab"); } }.
 s_abc       { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_bac       { G(Yellow) { Yellow(t, a, b, o, "bac"); } }.
 s_baaaaaaa  { G(Yellow) { Yellow(t, a, b, o, "baaaaaaa"); } }.

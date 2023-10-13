@@ -1,11 +1,9 @@
 r
-  s_abc aa bb cc print.
-aa
-  "a". "".
-bb
-  "b". "".
-cc
-  "c". "".
+  s_ab ab ab print.
+ab
+  "a".
+  "".
+  "b".
 
 rsS
   s_ss sS print.
