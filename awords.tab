@@ -1,16 +1,16 @@
-r
-  s_ab ab ab print.
+rab
+  s_ab ab ab ab ab print.
 ab
-  "a".
   "".
+  "a".
   "b".
 
-rsS
+r
   s_ss sS print.
 sS
   0 "".
   1 "s" sS sS.
-  3 "".
+  2 "s" sS sS.
 
 rS
   s_bac S print.

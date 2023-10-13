@@ -4,20 +4,12 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[t + ${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Red) {
-  (o[a++] = ${s}), Red(t, a, b, o, s);
-}
-G(Blue) {
-  (o[a++] = ${s}), Blue(t, a, b, o, s);
-}
-G(Yellow) {
-  if (${pred}) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
-  else         Maroon(t, a, b, o, s);
-}
-G(Green) {
-  if (${pred}) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
-  else         Navy(t, a, b, o, s);
-}
+G(Red   ) { (o[a++] = ${s}), Red(t, a, b, o, s); }
+G(Blue  ) { (o[a++] = ${s}), Blue(t, a, b, o, s); }
+G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
+            else                          Maroon(t, a, b, o, s); }
+G(Green ) { if (${pred}) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
+            else                          Navy(t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -31,8 +23,8 @@ function tword(s, id) {
 #define P Printf("%s\\n", __FUNCTION__)
 n_t Tab_Yellow[6];
 n_t Tab_Green [6];
-n_t Tab_Maroon[6];
-n_t Tab_Navy  [6];
+n_t Tab_Red   [6];
+n_t Tab_Blue  [6];
 long arms_count = ${s.length};
 n_t arms[${s.length}];
 const char *arm_texts[${s.length}];
@@ -55,41 +47,46 @@ N(tab) {
 }
 const char*ss;
 long sa, st;
-G(Yellow            ) { (o[--b] = Tab_Yellow),            tab(st=t, sa=a, b, o, ss=s); }
-G(Green             ) { (o[--b] = Tab_Green),             tab(t, a, b, o, s); }
-G(Maroon            ) { (o[--b] = Tab_Maroon),            tab(t, a, b, o, s); }
-G(Navy              ) { (o[--b] = Tab_Navy),              tab(t, a, b, o, s); }
+char visited[${s.length}];
+G(Yellow            ) { (o[--b] = Tab_Yellow), tab(st=t, sa=a, b, o, ss=s); }
+G(Green             ) { (o[--b] = Tab_Green),  tab(t, a, b, o, s); }
+G(Red               ) { if (arms[ai]) (o[--b] = Tab_Red), tab(t, a, b, o, s); else Navy(t, a, b, o, s); }
+G(Blue              ) { (o[--b] = Tab_Blue),   tab(t, a, b, o, s); }
 
-N(Yellow_tab_Olive  ) { (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Lime   ) { Green(t, a, b, o, s); }
-N(Yellow_tab_Maroon ) { 
-  if (arms_count == 1) Maroon(t, a, b, o, s);
-  else { 
+N(Yellow_tab_Olive  ) { visited[ai] = 1; (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Lime   ) { visited[ai] = 1; Green(t, a, b, o, s); }
+N(Red_proxy         ) {
+  if (1 < arms_count) arms_count--, Red(t, a, b, o, s);
+  else Maroon(t, a, b, o, s);
+}
+N(Navy_proxy        ) {
     arms_count--;
+    ai--;
     for(long i      = ai; i < arms_count; i++) {
       arms[i]       = arms[i + 1];
       arm_texts[i]  = arm_texts[i + 1];
+      visited[i]    = visited[i + 1];
     }
-    ai = ai % arms_count;
     Navy(t, a, b, o, s);
-  }
-} 
+}
+N(Yellow_tab_Maroon ) { if (visited[ai]) (o[a++] = Red), (o[a] = Navy), switch_arm(t, a, b, o, s);
+                        else (o[a++] = Red_proxy), (o[a] = Navy_proxy), switch_arm(t, a, b, o, s); } 
 N(Yellow_tab_Navy   ) { Navy(t, a, b, o, s); }
 
 N(Green_tab_Olive   ) { P; }
-N(Green_tab_Lime    ) { Green(t, a, b, o, s); }
+N(Green_tab_Lime    ) { visited[ai] = 1; Green(t, a, b, o, s); }
 N(Green_tab_Maroon  ) { P; }
 N(Green_tab_Navy    ) { Navy(t, a, b, o, s); }
 
-N(Maroon_tab_Olive  ) { P; }
-N(Maroon_tab_Lime   ) { P; }
-N(Maroon_tab_Maroon ) { P; }
-N(Maroon_tab_Navy   ) { P; }
+N(Red_tab_Olive     ) { P; }
+N(Red_tab_Lime      ) { P; }
+N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Navy), switch_arm(t, a, b, o, s); }
+N(Red_tab_Navy      ) { Navy(t, a, b, o, s); }
 
-N(Navy_tab_Olive    ) { P; }
-N(Navy_tab_Lime     ) { Green(t, a, b, o, s); }
-N(Navy_tab_Maroon   ) { Yellow_tab_Maroon(t, a, b, o, s); }
-N(Navy_tab_Navy     ) { Navy(t, a, b, o, s); }
+N(Blue_tab_Olive    ) { P; }
+N(Blue_tab_Lime     ) { P; }
+N(Blue_tab_Maroon   ) { P; }
+N(Blue_tab_Navy     ) { Navy(t, a, b, o, s); }
 
 G(Purple) {
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
@@ -107,19 +104,19 @@ ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
   Tab_Green [4] = (void*)__FILE__;
   Tab_Green [5] = (void*)32;
 
-  Tab_Maroon[0] = Maroon_tab_Olive;
-  Tab_Maroon[1] = Maroon_tab_Lime;
-  Tab_Maroon[2] = Maroon_tab_Maroon;
-  Tab_Maroon[3] = Maroon_tab_Navy;
-  Tab_Maroon[4] = (void*)__FILE__;
-  Tab_Maroon[5] = (void*)48;
+  Tab_Red   [0] = Red_tab_Olive;
+  Tab_Red   [1] = Red_tab_Lime;
+  Tab_Red   [2] = Red_tab_Maroon;
+  Tab_Red   [3] = Red_tab_Navy;
+  Tab_Red   [4] = (void*)__FILE__;
+  Tab_Red   [5] = (void*)48;
 
-  Tab_Navy  [0] = Navy_tab_Olive;
-  Tab_Navy  [1] = Navy_tab_Lime;
-  Tab_Navy  [2] = Navy_tab_Maroon;
-  Tab_Navy  [3] = Navy_tab_Navy;
-  Tab_Navy  [4] = (void*)__FILE__;
-  Tab_Navy  [5] = (void*)64;
+  Tab_Blue  [0] = Blue_tab_Olive;
+  Tab_Blue  [1] = Blue_tab_Lime;
+  Tab_Blue  [2] = Blue_tab_Maroon;
+  Tab_Blue  [3] = Blue_tab_Navy;
+  Tab_Blue  [4] = (void*)__FILE__;
+  Tab_Blue  [5] = (void*)64;
 
   Purple(t, a, b, o, s);
 }
