@@ -1,14 +1,13 @@
-BBB
-  BB.
-
-BB
-  B B B.
-rB
-  s_ss BBB B print.
-B
-  "". "s". 
-
 r
+  s_abc aa bb cc print.
+aa
+  "a". "".
+bb
+  "b". "".
+cc
+  "c". "".
+
+rsS
   s_ss sS print.
 sS
   0 "".

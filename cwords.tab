@@ -1,6 +1,6 @@
 b {
   G(Navy    ) { Yellow (0, 5, b, o, s); }
-  G(Maroon  ) { }
+  G(Maroon  ) { Blue   (0, 5, b, o, s); }
   G(Lime    ) { Yellow (0, 5, b, o, s); }
   G(Olive   ) { }
   G(Fuchsia ) { Yellow (0, 5, b, o, s); }

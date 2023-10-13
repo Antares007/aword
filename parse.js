@@ -29,55 +29,49 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 function tword(s, id) {
   return `
 #define P Printf("%s\\n", __FUNCTION__)
-n_t Tab_Yellow[5];
-n_t Tab_Green [5];
-n_t Tab_Maroon[5];
-n_t Tab_Navy  [5];
-n_t arm;
+n_t Tab_Yellow[6];
+n_t Tab_Green [6];
+n_t Tab_Maroon[6];
+n_t Tab_Navy  [6];
+n_t arms[${s.length}];
 const char *arm_texts[${s.length}];
 long ai;
 N(switch_arm) {
   long narm   = ai + 1;
   long charge = narm / ${s.length};
            ai = narm - charge * ${s.length};
-  o[--b] = (void*)__FILE__;
-  o[--b] = o[a - charge];
-//  Unbark(arm, ((long*)arm)[1]);
-  arm = Bark(arm_texts[ai]);
-  arm(t, a - 1, b, o, s);
+  ((n_t)o[a - charge])(t, a - 1, b, o, s);
 }
+N(tab) {
+  long color  = ((long*)o[b])[5];
+  if(arms[ai])
+    (arms[ai] + color)(t, a, b, o, s);
+  else
+    (arms[ai] = W(arm_texts[ai])),
+    (o[--b]   = (void*)__FILE__),
+    (o[--b]   = arms[ai] + color),
+    (arms[ai](t, a, b, o, s));
+}
+G(Yellow            ) { (o[--b] = Tab_Yellow),            tab(t, a, b, o, s); }
+G(Green             ) { (o[--b] = Tab_Green),             tab(t, a, b, o, s); }
+G(Maroon            ) { (o[--b] = Tab_Maroon),            tab(t, a, b, o, s); }
+G(Navy              ) { (o[--b] = Tab_Navy),              tab(t, a, b, o, s); }
+G(Olive             ) { (o[a++] = Olive), (o[a] = Lime), switch_arm(t, a, b, o, s); }
 
-G(Yellow            ) { (o[--b] = Tab_Yellow), (arm + 16)(t, a, b, o, s); }
-G(Green             ) { (o[--b] = Tab_Green),  (arm + 32)(t, a, b, o, s); }
-char olive;
-N(Olive_proxy       ) { olive = 1; Olive(t, a, b, o, s); }
-N(Lime_proxy        ) { olive = 0; Lime (t, a, b, o, s); }
-G(Olive             ) { (o[a++] = Olive_proxy),  (o[a] = Lime_proxy), switch_arm(t, a, b, o, s); }
-
-char Yellow_cut;
-N(Yellow_tab_Olive  ) { Yellow_cut = 1; Yellow(t, a, b, o, s); }
-N(Yellow_tab_Lime   ) { Yellow_cut = 0; Green(t, a, b, o, s); }
+N(Yellow_tab_Olive  ) { Yellow(t, a, b, o, s); }
+N(Yellow_tab_Lime   ) { Green(t, a, b, o, s); }
 N(Yellow_tab_Maroon ) { (o[a++] = Maroon), (o[a] = Navy), switch_arm(t, a, b, o, s); } 
 N(Yellow_tab_Navy   ) { Navy(t, a, b, o, s); }
 
-G(Maroon            ) {
-  if (Yellow_cut) Yellow_tab_Maroon(t, a, b, o, s);
-  else (o[--b] = Tab_Maroon), (arm + 48)(t, a, b, o, s);
-}
-G(Navy              ) {
-  if (Yellow_cut) Navy(t, a, b, o, s);
-  else (o[--b] = Tab_Navy), (arm + 64)(t, a, b, o, s);
-}
-
 N(Green_tab_Olive   ) { P; }
-N(Green_tab_Lime    ) { Yellow_cut = 0; Green(t, a, b, o, s); }
-N(Green_tab_Maroon  ) { Yellow_tab_Maroon(t, a, b, o, s); }
-N(Green_tab_Navy    ) { Navy(t, a, b, o, s); }
+N(Green_tab_Lime    ) { Green(t, a, b, o, s); }
+N(Green_tab_Maroon  ) { P; }
+N(Green_tab_Navy    ) { P; }
 
 N(Maroon_tab_Olive  ) { P; }
 N(Maroon_tab_Lime   ) { P; }
 N(Maroon_tab_Maroon ) { Yellow_tab_Maroon(t, a, b, o, s); }
-N(Maroon_tab_Navy   ) { Navy(t, a, b, o, s); }
+N(Maroon_tab_Navy   ) { P; }
 
 N(Navy_tab_Olive    ) { P; }
 N(Navy_tab_Lime     ) { P; }
@@ -91,29 +85,30 @@ ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
   Tab_Yellow[2] = Yellow_tab_Maroon;
   Tab_Yellow[3] = Yellow_tab_Navy;
   Tab_Yellow[4] = (void*)__FILE__;
+  Tab_Yellow[5] = (void*)16;
 
-  Tab_Green[0] = Green_tab_Olive;
-  Tab_Green[1] = Green_tab_Lime;
-  Tab_Green[2] = Green_tab_Maroon;
-  Tab_Green[3] = Green_tab_Navy;
-  Tab_Green[4] = (void*)__FILE__;
+  Tab_Green [0] = Green_tab_Olive;
+  Tab_Green [1] = Green_tab_Lime;
+  Tab_Green [2] = Green_tab_Maroon;
+  Tab_Green [3] = Green_tab_Navy;
+  Tab_Green [4] = (void*)__FILE__;
+  Tab_Green [5] = (void*)32;
 
   Tab_Maroon[0] = Maroon_tab_Olive;
   Tab_Maroon[1] = Maroon_tab_Lime;
   Tab_Maroon[2] = Maroon_tab_Maroon;
   Tab_Maroon[3] = Maroon_tab_Navy;
   Tab_Maroon[4] = (void*)__FILE__;
+  Tab_Maroon[5] = (void*)48;
 
-  Tab_Navy[0] = Navy_tab_Olive;
-  Tab_Navy[1] = Navy_tab_Lime;
-  Tab_Navy[2] = Navy_tab_Maroon;
-  Tab_Navy[3] = Navy_tab_Navy;
-  Tab_Navy[4] = (void*)__FILE__;
+  Tab_Navy  [0] = Navy_tab_Olive;
+  Tab_Navy  [1] = Navy_tab_Lime;
+  Tab_Navy  [2] = Navy_tab_Maroon;
+  Tab_Navy  [3] = Navy_tab_Navy;
+  Tab_Navy  [4] = (void*)__FILE__;
+  Tab_Navy  [5] = (void*)64;
 
-  o[--b] = (void*)__FILE__;
-  o[--b] = Purple;
-  arm = Bark(arm_texts[0]);
-  arm(t, a, b, o, s);
+  Purple(t, a, b, o, s);
 }
 `
 }
