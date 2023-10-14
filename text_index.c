@@ -138,7 +138,7 @@ void draw(step_t **steps, long count) {
 #include <string.h>
 void ti(step_t *d) {
 #ifndef NDEBUG
-//  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color, d->name);
+  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color, d->name);
   static step_t *steps[2048];
   static long count = 0;
   steps[count++] = d;

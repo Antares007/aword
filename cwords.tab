@@ -12,6 +12,7 @@ o {
   G(Red     ) { Maroon (t, a, b, o, s); }
   G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
+r {}.
 tab { 
 #define B(Yellow)                                                       \
   N(Yellow##_tin) __attribute__((noinline));                            \
