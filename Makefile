@@ -9,6 +9,8 @@ local.out: local.c
 	${CC} $^ -o $@ ${CFLAGS} -lraylib -lm
 main.out: main.c text_index.o
 	${CC} $^ -o $@ ${CFLAGS} -lraylib -lm
+light.out: light.c
+	${CC} $^ -o $@ ${CFLAGS} -lraylib -lm
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
 %.o: %.c
