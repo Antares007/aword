@@ -6,15 +6,16 @@ typedef N((*n_t));
 #include <unistd.h>
 #define W(nar) #nar, 0, nar, 0, 0, #nar, 0, ti, 0, 0
 const char *rays[] = {"Olive", "Maroon", "Lime", "Navy", 0, "Blue",  "Green",  "Red",  "Yellow"};
+#define P printf("%10s %10s\n", (char*)t[-2], rays[(r + 1) * d + 4]), usleep(200000)
 N(go ) {
-  // printf("%10s %10s\n", (char*)t[-2], rays[(r + 1) * d + 4]), usleep(200000);
   ((n_t)t[d * 5])(t + d * 5, a, b, o, s, r, d);
 }
 N(ti ) { go(t, a, b, o, s, r,  d); }
 N(fwd) { go(t, a, b, o, s, r, +1); }
 N(bo ) { 
-  if(r == 3) return;
-  go(t, a, b, o, s, r == 1 ? 3 : r, +1); }
+  if (r == 3 || r == 2) P;
+  else go(t, a, b, o, s, 3, 1);
+}
 N(dot) { go(t, a, b, o, s, r, -1); }
 N(ln ) {
   if (d == 1) {
@@ -63,9 +64,7 @@ N(tw_Yellow) {
   t_t *c = t[+1];
   (o[--b] = t), (o[--b] = tab), go(c->arms[c->i], a, b, o, s, r, d);
 }
-N(tw_heart) {
-  ((n_t *)t[-1])[(r + 1) * d + 4](t, a, b, o, s, r, d);
-}
+N(full_heart) { ((n_t *)t[-1])[(r + 1) * d + 4](t, a, b, o, s, r, d); }
 N(Olive_stop  ) { go(t, a, b, o, s, r, d); }
 N(Maroon_stop ) { printf("%s %s\n", __FUNCTION__, rays[(r + 1) * d + 4]); }
 N(Lime_stop   ) { go(t, a, b, o, s, r, d); }
@@ -88,11 +87,11 @@ N(Red_stop    ) { printf("%s %s\n", __FUNCTION__, rays[(r + 1) * d + 4]); }
         tw_Yellow,                                                          \
     };                                                                      \
     t[-1] = full_tab;                                                       \
-    t[+0] = tw_heart;                                                       \
+    t[+0] = full_heart;                                                       \
     t[+1] = &(t_t){ .i = 0,                                                 \
                     .count = sizeof((void *[]){__VA_ARGS__})/sizeof(void*), \
                     .arms = (void *[]){__VA_ARGS__}};                       \
-    tw_heart(t, a, b, o, s, r, d);                                          \
+    full_heart(t, a, b, o, s, r, d);                                          \
   }
 
 N(n1  ) { if (d == 1) o[a++] = "1"; go(t, a, b, o, s, r, d); }
@@ -100,6 +99,41 @@ N(n2  ) { if (d == 1) o[a++] = "2"; go(t, a, b, o, s, r, d); }
 N(n3  ) { if (d == 1) o[a++] = "3"; go(t, a, b, o, s, r, d); }
 N(n4  ) { if (d == 1) o[a++] = "4"; go(t, a, b, o, s, r, d); }
 N(n5  ) { if (d == 1) o[a++] = "5"; go(t, a, b, o, s, r, d); }
+
+N(Yellow_term) {
+  if (*s == *(char*)t[1]) (o[a++] = (void*)(long)*s), go(t, a, b, o, s + 1, r, d); // Yellow
+  else go(t, a, b, o, s, 2, -1); // Maroon
+}
+N(Green_term) { 
+  if (*s == *(char*)t[1]) (o[a++] = (void*)(long)*s), go(t, a, b, o, s + 1, r, d); // Green
+  else go(t, a, b, o, s, 0, -1); // Navy
+}
+N(term  ) { 
+  static n_t tab[] = {
+    go,           // Olive
+    go,           // Maroon
+    go,           // Lime
+    go,           // Navy
+    go,           // 0
+    go,           // Blue
+    Green_term,   // Green                                                          
+    go,           // Red
+    Yellow_term,  // Yellow                                                          
+  }; 
+  t[-1] = tab;
+  t[ 0] = full_heart;
+  full_heart(t, a, b, o, s, r, d);
+};
+N(at  ) { t[0] = term; t[+1] = "a"; term(t, a, b, o, s, r, d); }
+N(bt  ) { t[0] = term; t[+1] = "b"; term(t, a, b, o, s, r, d); }
+N(p_chars ) {
+  if (d == 1) {
+    for (long i = 0; i < a; i++)
+      printf("%c", (char)(long)o[i]);
+    (a = 0), printf("\n");
+  }
+  go(t, a, b, o, s, r, d);
+}
 
 T(n345,
   S(W(n3)),
@@ -112,9 +146,14 @@ T(n123,
 
 void ti_init();
 int main() {
-  void **text = 2 + (void *[]){W(bo), W(n123), W(n123), W(n123), W(ln), W(dot)};
+  void **text = 2 + (void *[]){W(bo),
+    W(at),
+    W(bt),
+    //W(n123), W(n123), W(n123),
+    W(p_chars),
+    W(dot)};
   long a = 0;
   void *o[512];
   long b = sizeof(o) / sizeof(*o);
-  go(text, a, b, o, "", 3, 1);
+  go(text, a, b, o, "ab", 3, 1);
 }
