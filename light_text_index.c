@@ -43,11 +43,15 @@ void draw(step_t *steps, long count) {
 
     Vector2 zero = {2 * GetScreenWidth() / 8.f, 3 * GetScreenHeight() / 8.f};
     Vector2 dir = {0, -1};
-    for (long i = 0; i < count; i++) {
+    long si = 0;
+    for (long i = si; i < count; i++) {
       step_t *s = &steps[i];
+      if (strcmp(s->name, "bo") == 0) {
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(),
+                      (Color){.a = 150, .r = -1, .g = -1, .b = -1});
+        si = i;
+      }
       Vector2 ns = {90, 50};
-      float step_size = ((long)dir.x ? ns.x : ns.y) * s->d;
-      zero = Vector2Add(zero, Vector2Scale(dir, zoom * step_size));
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
                          .zoom = zoom,
@@ -59,10 +63,12 @@ void draw(step_t *steps, long count) {
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
       DrawTextEx(font, s->name, (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, fgcolor);
       EndMode2D();
-      //if (i < count-1 && strcmp(steps[i + 1].name, "tab") == 0 && s->d == 1) 
-      //  dir = Vector2Rotate(dir, M_PI_2 * s->d);
-      //if (strcmp(steps[i].name, "tab") == 0 && s->d == -1) 
-      //  dir = Vector2Rotate(dir, M_PI_2 * s->d);
+      if (i < count-1 && strcmp(steps[i + 1].name, "tab") == 0 && s->d == 1) 
+        dir = Vector2Rotate(dir, M_PI_2 * s->d);
+      float step_size = ((long)dir.x ? ns.x : ns.y) * s->d;
+      zero = Vector2Add(zero, Vector2Scale(dir, zoom * step_size));
+      if (strcmp(steps[i].name, "tab") == 0 && s->d == -1) 
+        dir = Vector2Rotate(dir, M_PI_2 * s->d);
     }
     EndDrawing();
     key = GetCharPressed();

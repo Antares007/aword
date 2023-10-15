@@ -5,12 +5,11 @@ ab
   "a".
   "b".
 
-rsS
+r
   s_ss sS print.
 sS
   0 "".
   1 "s" sS sS.
-  2 "s" sS sS.
 
 rS
   s_bac S print.
