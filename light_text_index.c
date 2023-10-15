@@ -43,14 +43,11 @@ void draw(step_t *steps, long count) {
 
     Vector2 zero = {2 * GetScreenWidth() / 8.f, 3 * GetScreenHeight() / 8.f};
     Vector2 dir = {0, -1};
-    long si = 0;
-    for (long i = si; i < count; i++) {
+    for (long i = 0; i < count; i++) {
       step_t *s = &steps[i];
-      if (strcmp(s->name, "bo") == 0) {
+      if (strcmp(s->name, "bro") == 0) 
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(),
                       (Color){.a = 150, .r = -1, .g = -1, .b = -1});
-        si = i;
-      }
       Vector2 ns = {90, 50};
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
@@ -81,8 +78,8 @@ void ti_step(const char*name, long r, long d) {
   static step_t steps[2048];
   static long count = 0;
   steps[count].name = name;
-  steps[count].r = r;
-  steps[count].d = d;
+  steps[count].r    = r;
+  steps[count].d    = d;
   count++;
   draw(steps, count);
 }
