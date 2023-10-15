@@ -1,138 +1,126 @@
-#define N(argo) void argo(void **τ, long α, long β, void **ο, char *σ, long ρ, long δ)
+#define N(argo)                                                                \
+  void argo(void **τ, long α, long β, void **ο, char *σ, long ρ, long δ)
 typedef N((*n_t));
-#define P printf("%10s %10s %10s\n", (char*)τ[-2], rays[(ρ + 1) * δ + 4], __FUNCTION__), usleep(200000)
-
+#define P                                                                      \
+  printf("%10s %10s %10s\n", (char *)τ[-2], rays[(ρ + 1) * δ + 4],             \
+         __FUNCTION__),                                                        \
+      usleep(20000)
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
-const char *rays[] = {"Olive", "Maroon", "Lime", "Navy", 0, "Blue",  "Green",  "Red",  "Yellow"};
-void ti(const char*n, long ρ, long δ);
-N(go) { 
+const char *rays[] = {"Olive", "Maroon", "Lime", "Navy",  0,
+                      "Blue",  "Green",  "Red",  "Yellow"};
+void ti(const char *n, long ρ, long δ);
+N(goTo) {
   ti(τ[-2], ρ, δ);
   ((n_t)τ[δ * 5])(τ + δ * 5, α, β, ο, σ, ρ, δ);
 }
 N(bro) {
-  if (ρ == 3 || ρ == 2) P;
-  else go(τ, 0, β, ο, σ, 3, 1);
+  if (ρ == 3 || ρ == 2)
+    P;
+  else
+    goTo(τ, 0, β, ο, σ, 3, 1);
 }
-N(o ) { go(τ, α, β, ο, σ, ρ, -1); }
-N(tab ) { ti(τ[-2], ρ, δ); ((n_t *)ο[β])[ρ](ο[β + 1], α, β + 2, ο, σ, ρ, δ); }
+N(o) { goTo(τ, α, β, ο, σ, ρ, -1); }
+N(tab) {
+  ti(τ[-2], ρ, δ);
+  ((n_t *)ο[β])[ρ](ο[β + 1], α, β + 2, ο, σ, ρ, δ);
+}
 typedef struct t_t {
-  long   i;
-  long   count;
+  long i;
+  long count;
   void **arms;
-  char  *fruitful;
+  char *fruitful;
 } t_t;
 N(tab_switch) { ((n_t *)τ[-1])[(ρ + 1) * δ + 4](τ, α, β, ο, σ, ρ, δ); }
-#define Connector(Yellow)                               \
-  N(connect_##Yellow) {                                 \
-    static n_t tab[] = {                                \
-      connect_##Yellow##_Navy,                          \
-      connect_##Yellow##_Lime,                          \
-      connect_##Yellow##_Maroon,                        \
-      connect_##Yellow##_Olive                          \
-    };                                                  \
-    t_t *c = τ[+1];                                     \
-    ti(τ[-2], ρ, δ), (ο[--β] = τ), (ο[--β] = tab), \
-    go(c->arms[c->i], α, β, ο, σ, ρ, δ);                \
+#define Connector(Yellow)                                                      \
+  N(t_##Yellow##_heart) {                                                      \
+    static n_t tab[] = {Yellow##_Navy, Yellow##_Lime, Yellow##_Maroon,         \
+                        Yellow##_Olive};                                       \
+    t_t *c = τ[+1];                                                            \
+    ti(τ[-2], ρ, δ), (ο[--β] = τ), (ο[--β] = tab),                             \
+        goTo(c->arms[c->i], α, β, ο, σ, ρ, δ);                                 \
   }
-N(connect_Yellow_Navy  ) { go(τ, α, β, ο, σ, ρ, δ); }
-N(connect_Yellow_Lime  ) {
-  t_t *c = τ[+1];
-  c->fruitful[c->i] = 1;
-  go(τ, α, β, ο, σ, ρ, +1);
-}
-N(connect_Yellow_Maroon) {
-  assert(δ < 0 && ρ == 2);
-  t_t *c = τ[+1];
-  char is_fruitful = c->fruitful[c->i];
-  c->i = (c->i + 1) % c->count;
-  if (is_fruitful) {
-    go(τ, α, β, ο, σ, c->i == 0 ? 2 : 0, +1);
-  } else if (c->i == 0) {
-    if (1 < c->count) c->count--, go(τ, α, β, ο, σ, ρ, +1);
-    else go(τ, α, β, ο, σ, ρ, δ);
-  } else {
-    c->count--;
-    c->i--;
-    for (long i      = c->i; i < c->count; i++)
-      (c->arms[i]    = c->arms[i + 1]),
-      (c->fruitful[i] = c->fruitful[i + 1]);
-    go(τ, α, β, ο, σ, 0, δ);
-  }
-}
-N(connect_Yellow_Olive) {
-  t_t *c = τ[+1];
-  c->fruitful[c->i] = 1;
-  c->i = (c->i + 1) % c->count;
-  go(τ, α, β, ο, σ, c->i == 0 ? 3 : 1, 1);
-}
-Connector(Yellow)
-N(connect_Red_Navy  ) { go(τ, α, β, ο, σ, ρ, δ); }
-N(connect_Red_Lime  ) { P; }
-N(connect_Red_Maroon) { 
-  t_t *c = τ[+1];
-  c->i = (c->i + 1) % c->count;
-  go(τ, α, β, ο, σ, c->i == 0 ? 2 : 0, 1);
-}
-N(connect_Red_Olive ) { P; }
-Connector(Red)
-N(connect_Green_Navy   ) { go(τ, α, β, ο, σ, ρ, δ); }
-N(connect_Green_Lime   ) {
-  t_t *c = τ[+1];
-  c->fruitful[c->i] = 1;
-  go(τ, α, β, ο, σ, ρ, +1);
-}
-N(connect_Green_Maroon ) { P; }
-N(connect_Green_Olive  ) { P; }
-Connector(Green)
-N(connect_Blue_Navy   ) { go(τ, α, β, ο, σ, ρ, δ); }
-N(connect_Blue_Lime   ) { P; }
-N(connect_Blue_Maroon ) { P; }
-N(connect_Blue_Olive  ) { P; }
-Connector(Blue)
+// clang-format off
+N(Yellow_Navy   ) { goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Yellow_Lime   ) { t_t *c = τ[+1];
+                    c->fruitful[c->i] = 1;
+                    goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Yellow_Maroon ) { t_t *c = τ[+1];
+                    if(c->fruitful[c->i]) {
+                      goTo(τ, α, β, ο, σ, !(c->i = (c->i + 1) % c->count) * 2, 1);
+                    } else if (c->count == 1) {
+                      goTo(τ, α, β, ο, σ, ρ, -1);
+                    } else {
+                      c->count--;
+                      for (long i       = c->i; i < c->count; i++)
+                        (c->arms[i]     = c->arms[i + 1]),
+                        (c->fruitful[i] = c->fruitful[i + 1]);
+                      //printf("trimed %ld %ld ", c->i, c->count), P;
+                      if (c->i == c->count)
+                        (c->i = 0), goTo(τ, α, β, ο, σ, 2, 1);
+                      else
+                        goTo(τ, α, β, ο, σ, 0, 1);
+                    }
+                  }
+N(Yellow_Olive  ) { t_t *c = τ[+1];
+                    c->fruitful[c->i] = 1;
+                    goTo(τ, α, β, ο, σ, !(c->i = (c->i + 1) % c->count) * 2 + 1, 1); }
+N(Red_Navy      ) { goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Red_Lime      ) { P; }
+N(Red_Maroon    ) { t_t *c = τ[+1];
+                    goTo(τ, α, β, ο, σ, !(c->i = (c->i + 1) % c->count) * 2, 1); }
+N(Red_Olive     ) { P; }
+N(Green_Navy    ) { goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Green_Lime    ) { t_t *c = τ[+1];
+                    c->fruitful[c->i] = 1;
+                    goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Green_Maroon  ) { P; }
+N(Green_Olive   ) { P; }
+N(Blue_Navy     ) { goTo(τ, α, β, ο, σ, ρ, 1); }
+N(Blue_Lime     ) { P; }
+N(Blue_Maroon   ) { P; }
+N(Blue_Olive    ) { P; }
+Connector(Yellow) Connector(Red) Connector(Green) Connector(Blue)
 N(t_heart) {
   static n_t full_tab[] = {
-      go, go, go, go,
+      goTo, goTo, goTo, goTo,
       0,
-      connect_Blue,
-      connect_Green,
-      connect_Red,
-      connect_Yellow,
+      t_Blue_heart, t_Green_heart, t_Red_heart, t_Yellow_heart,
   };
   τ[-1]  = full_tab;
   τ[+0]  = tab_switch;
   t_t *c = τ[+1];
   char fruitful[c->count];
-  for (long i = 0; i < c->count; i++) fruitful[i] = 0;
   c->fruitful = fruitful;
-  if (ρ == 2) go(τ, α, β, ο, σ, 0, -1);
+  for (long i = 0; i < c->count; i++) fruitful[i] = 0;
+  if (ρ == 2 || ρ == 0) goTo(τ, α, β, ο, σ, ρ, -1);
   else tab_switch(τ, α, β, ο, σ, ρ, δ);
 }
 
-N(n0  ) { if (δ == 1) ο[α++] = (void*)'0'; go(τ, α, β, ο, σ, ρ, δ); }
-N(n1  ) { if (δ == 1) ο[α++] = (void*)'1'; go(τ, α, β, ο, σ, ρ, δ); }
-N(n2  ) { if (δ == 1) ο[α++] = (void*)'2'; go(τ, α, β, ο, σ, ρ, δ); }
-N(n3  ) { if (δ == 1) ο[α++] = (void*)'3'; go(τ, α, β, ο, σ, ρ, δ); }
-N(n4  ) { if (δ == 1) ο[α++] = (void*)'4'; go(τ, α, β, ο, σ, ρ, δ); }
-N(n5  ) { if (δ == 1) ο[α++] = (void*)'5'; go(τ, α, β, ο, σ, ρ, δ); }
+N(n0) { if (δ == 1) ο[α++] = (void*)'0'; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n1) { if (δ == 1) ο[α++] = (void*)'1'; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n2) { if (δ == 1) ο[α++] = (void*)'2'; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n3) { if (δ == 1) ο[α++] = (void*)'3'; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n4) { if (δ == 1) ο[α++] = (void*)'4'; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n5) { if (δ == 1) ο[α++] = (void*)'5'; goTo(τ, α, β, ο, σ, ρ, δ); }
 
 N(Yellow_Green_term) {
   if (*σ == *(char*)τ[1])
     (ο[α++] = (void*)(long)*σ),
-      go(τ, α, β, ο, σ + 1, ρ, δ);
-  else go(τ, α, β, ο, σ, ρ - 1, -1);
+      goTo(τ, α, β, ο, σ + 1, ρ, δ);
+  else goTo(τ, α, β, ο, σ, ρ - 1, -1);
 }
-N(term  ) { 
+N(term) { 
   static n_t tab[] = {
-    go,                 // Olive
-    go,                 // Maroon
-    go,                 // Lime
-    go,                 // Navy
-    go,                 // 0
-    go,                 // Blue
+    goTo,               // Olive
+    goTo,               // Maroon
+    goTo,               // Lime
+    goTo,               // Navy
+    goTo,               // 0
+    goTo,               // Blue
     Yellow_Green_term,  // Green                                                          
-    go,                 // Red
+    goTo,               // Red
     Yellow_Green_term,  // Yellow                                                          
   }; 
   τ[-1] = tab;
@@ -143,13 +131,13 @@ N(a) { τ[+1] = "a"; term(τ, α, β, ο, σ, ρ, δ); }
 N(b) { τ[+1] = "b"; term(τ, α, β, ο, σ, ρ, δ); }
 N(s) { τ[+1] = "s"; term(τ, α, β, ο, σ, ρ, δ); }
 N(p_chars ) {
-  if (δ == 1) {
-    printf("%s(", rays[(ρ + 1) * δ + 4]);
+  if (δ == 1 && ρ != 0) {
+    printf("(");
     for (long i = 0; i < α; i++)
       printf("%c", (char)(long)ο[i]);
-    (α = 0), printf(")\n");
+    (α = 0), printf(")%s\n", rays[(ρ + 1) * δ + 4]);
   }
-  go(τ, α, β, ο, σ, ρ, δ);
+  goTo(τ, α, β, ο, σ, ρ, δ);
 }
 #define T(nar) #nar, 0, nar, 0, 0
 #define B(...) (2 + (void*[]) {T(tab), __VA_ARGS__, T(o)})
@@ -171,25 +159,29 @@ D(n123,
   B(T(n1)),
   B(T(n2)),
   B(T(n3)))
-N(ε) { go(τ, α, β, ο, σ, ρ, δ); }
+N(ε) { goTo(τ, α, β, ο, σ, ρ, δ); }
 D(sS,
+  B(T(n2), T(s), T(sS), T(sS)),
   B(T(n0), T(ε)),
-  B(T(n1), T(s), T(sS), T(sS)),
-  B(T(n2), T(s), T(sS), T(sS)))
+  B(T(n3), T(s), T(sS), T(sS)),
+)
+D(S, B(T(b)), B(T(S), T(a)))
 D(εab,
   B(T(ε)),
   B(T(a)),
   B(T(b)))
 D(abS, B(T(εab), T(εab), T(εab)))
 void ti_init(); void ti_step(const char*, long, long); void ti(const char*n, long ρ, long δ) {
-  ti_step(n, ρ, δ);
+//  printf("%10s %10s\n", n, rays[(ρ + 1) * δ + 4]);
+//  ti_step(n, ρ, δ);
 }
-N(s_ss) { go(τ, α, β, ο, "ss", ρ, δ); }
+N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
+N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
 int main() {
-  void **text = 2 + (void *[]){ T(bro), T(s_ss), T(sS), T(p_chars), T(o) };
+  void **text = 2 + (void *[]){ T(bro), T(s_ss), T(n123), T(p_chars), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);
   ti_init();
-  go(text, α, β, ο, "", 3, 1);
+  goTo(text, α, β, ο, "", 3, 1);
 }
