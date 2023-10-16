@@ -48,10 +48,10 @@ N(tab) {
 const char*ss;
 long sa, st;
 char visited[${s.length}];
-G(Yellow            ) { (o[--b] = Tab_Yellow), tab(st=t, sa=a, b, o, ss=s); }
-G(Green             ) { (o[--b] = Tab_Green),  tab(t, a, b, o, s); }
-G(Red               ) { if (arms[ai]) (o[--b] = Tab_Red), tab(t, a, b, o, s); else Navy(t, a, b, o, s); }
-G(Blue              ) { (o[--b] = Tab_Blue),   tab(t, a, b, o, s); }
+G(Yellow            ) {               (o[--b] = Tab_Yellow), tab(st=t, sa=a, b, o, ss=s); }
+G(Green             ) {               (o[--b] = Tab_Green),  tab(t,    a,    b, o, s); }
+G(Red               ) { if (arms[ai]) (o[--b] = Tab_Red),    tab(t,    a,    b, o, s); else Navy(t, a, b, o, s); }
+G(Blue              ) {               (o[--b] = Tab_Blue),   tab(t,    a,    b, o, s); }
 
 N(Yellow_tab_Olive  ) { visited[ai] = 1; (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
 N(Yellow_tab_Lime   ) { visited[ai] = 1; Green(t, a, b, o, s); }
