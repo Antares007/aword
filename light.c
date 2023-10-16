@@ -56,7 +56,7 @@ N(Yellow_Maroon ) { t_t *c = τ[+1];
                       for (long i       = c->i; i < c->count; i++)
                         (c->arms[i]     = c->arms[i + 1]),
                         (c->fruitful[i] = c->fruitful[i + 1]);
-                      printf("trimed %ld %ld ", c->i, c->count), P;
+                      // printf("trimed %ld %ld ", c->i, c->count), P;
                       if (c->i == c->count)
                         (c->i = 0), goTo(τ, α, β, ο, σ, 2, 1);
                       else
@@ -95,18 +95,13 @@ N(t_heart) {
   }
 }
 
-N(n0) { if (δ == 1) ο[α++] = (void*)'0'; goTo(τ, α, β, ο, σ, ρ, δ); }
-N(n1) { if (δ == 1) ο[α++] = (void*)'1'; goTo(τ, α, β, ο, σ, ρ, δ); }
-N(n2) { if (δ == 1) ο[α++] = (void*)'2'; goTo(τ, α, β, ο, σ, ρ, δ); }
-N(n3) { if (δ == 1) ο[α++] = (void*)'3'; goTo(τ, α, β, ο, σ, ρ, δ); }
-N(n4) { if (δ == 1) ο[α++] = (void*)'4'; goTo(τ, α, β, ο, σ, ρ, δ); }
-N(n5) { if (δ == 1) ο[α++] = (void*)'5'; goTo(τ, α, β, ο, σ, ρ, δ); }
 
 N(Yellow_Green_term) {
-  if (*σ == *(char*)τ[1])
-    (ο[α++] = (void*)(long)*σ),
-      goTo(τ, α, β, ο, σ + 1, ρ, δ);
-  else goTo(τ, α, β, ο, σ, ρ - 1, δ);
+  char*s = τ[1];
+  long i = 0;
+  while (s[i] && s[i] == σ[i]) i++;
+  if (s[i] == 0) (ο[α++] = s), goTo(τ, α, β, ο, σ + i, ρ, δ);
+  else                         goTo(τ, α, β, ο, σ, ρ - 1, δ);
 }
 N(term) { 
   static n_t tab[] = {
@@ -124,14 +119,11 @@ N(term) {
   τ[ 0] = tab_switch;
   tab_switch(τ, α, β, ο, σ, ρ, δ);
 };
-N(a) { τ[+1] = "a"; term(τ, α, β, ο, σ, ρ, δ); }
-N(b) { τ[+1] = "b"; term(τ, α, β, ο, σ, ρ, δ); }
-N(s) { τ[+1] = "s"; term(τ, α, β, ο, σ, ρ, δ); }
-N(p_chars ) {
+N(print ) {
   if (δ == 1 && ρ != 0) {
     printf("(");
     for (long i = 0; i < α; i++)
-      printf("%c", (char)(long)ο[i]);
+      printf("%s", (char*)ο[i]);
     (α = 0), printf(")%s\n", rays[(ρ + 1) * δ + 4]);
   }
   goTo(τ, α, β, ο, σ, ρ, δ);
@@ -149,6 +141,15 @@ N(p_chars ) {
       .fruitful = fruitful };                               \
     t_heart(τ, α, β, ο, σ, ρ, δ);                           \
   }
+N(n0) { if (δ == 1) ο[α++] = "0"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n1) { if (δ == 1) ο[α++] = "1"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n2) { if (δ == 1) ο[α++] = "2"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n3) { if (δ == 1) ο[α++] = "3"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n4) { if (δ == 1) ο[α++] = "4"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(n5) { if (δ == 1) ο[α++] = "5"; goTo(τ, α, β, ο, σ, ρ, δ); }
+N(a) { τ[+1] = "a"; term(τ, α, β, ο, σ, ρ, δ); }
+N(b) { τ[+1] = "b"; term(τ, α, β, ο, σ, ρ, δ); }
+N(s) { τ[+1] = "s"; term(τ, α, β, ο, σ, ρ, δ); }
 
 D(n345,
   B(T(n3)),
@@ -174,15 +175,13 @@ N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
 N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
 D(sS,
   B(T(n1), T(s), T(sS), T(sS)),
-  B(T(n0), T(ε)),
   B(T(n1), T(s), T(sS), T(sS)),
+  B(T(n0), T(ε)),
 )
 D(S, B(T(b)), B(T(S), T(a)))
 
 int main() {
-  void **text = 2 + (void *[]) {
-    T(bro), T(s_ss), T(sS), T(p_chars), T(o)
-  };
+  void **text = 2 + (void *[]) { T(bro), T(s_ss), T(sS), T(print), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);
