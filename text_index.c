@@ -65,7 +65,7 @@ const char *format_name(const char *name) {
   return fname;
 }
 #include <stdlib.h>
-void draw(step_t **steps, long count) {
+void draw(step_t *steps, long count) {
   int key = 0;
   static char skip_color = 'A';
   static int semi_auto = 0;
@@ -82,27 +82,25 @@ void draw(step_t **steps, long count) {
 
     Vector2 zero = {2 * GetScreenWidth() / 8.f, 3 * GetScreenHeight() / 8.f};
     Vector2 dir = {0, -1};
-    long at = 0, height = 10;
     for (long i = 0; i < count; i++) {
-      step_t *s = steps[i];
+      step_t *s = &steps[i];
       if (strcmp(s->name, "b.c") == 0)
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(),
                       (Color){.a = 150, .r = -1, .g = -1, .b = -1});
       Vector2 ns = {90, 50}; // MeasureTextEx(font, format_name(s->name), 35,
                              // 1);
-      if (s->angle == +1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle)), (at += directions[(int)s->color[0]]);
+      if (s->angle == +1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle));
 
       float step_size = ((long)dir.x ? ns.x : ns.y) * directions[(int)s->color[0]];
       // Lerp(step_size, step_size*2, (float)at/height)
       zero = Vector2Add(zero,    Vector2Scale(dir, zoom * step_size));
 
-      if (s->angle == -1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle)), (at += directions[(int)s->color[0]]);
+      if (s->angle == -1) (dir = Vector2Rotate(dir, M_PI_2 * s->angle));
 
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
                          .zoom = zoom ,//* Lerp(1, 2, (float)at / height),
                          .offset = Vector2Add(off, zero)};
-
       BeginMode2D(camera);
       Color bgcolor = LerpGradient(calc_color(s), 0.5, (float)i / count);
       Color fgcolor = (Color) {.a=255, .r = 255 - bgcolor.r, .g = 255 - bgcolor.g, .b = 255 - bgcolor.b };
@@ -111,9 +109,6 @@ void draw(step_t **steps, long count) {
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
       DrawTextEx(font, format_name(s->name), (Vector2){-ns.x / 2, -ns.y / 2},
                  35, 1, fgcolor);
-      at += directions[(int)s->color[0]];
-      DrawTextEx(font, TextFormat("%ld", at), (Vector2){-ns.x / 2+5, -ns.y / 2 + 25},
-                 15, 1, fgcolor);
       EndMode2D();
     }
     EndDrawing();
@@ -125,26 +120,30 @@ void draw(step_t **steps, long count) {
     if (key == 'c')
       semi_auto = !semi_auto;
     if (key == 's')
-      skip_color = steps[count - 1]->color[0];
+      skip_color = steps[count - 1].color[0];
     if (WindowShouldClose())
       exit(0);
   } while (key != 'n' && !semi_auto
            && count && skip_color &&
-           steps[count - 1]->color[0] != skip_color &&
-           steps[count - 1]->color[0] != 'P' &&
-           steps[count - 1]->color[0] != 'F'
+           steps[count - 1].color[0] != skip_color &&
+           steps[count - 1].color[0] != 'P' &&
+           steps[count - 1].color[0] != 'F'
   );
 }
 #include <string.h>
-void ti(step_t *d) {
-#ifndef NDEBUG
-//  printf("%10s %ld %3ld %3ld %10s %s\n", d->s, d->t, d->a, d->b, d->color, d->name);
-  static step_t *steps[2048];
+void ti(char*color, char*name, long t, long a, long b, void**o, char*s, long angle) {
+//  printf("%10s %ld %3ld %3ld %10s %s\n", s, t, a, b, color, name);
+  static step_t steps[2048];
   static long count = 0;
-  steps[count++] = d;
+  steps[count].color = color;
+  steps[count].name = name;
+  steps[count].t = t;
+  steps[count].a = a;
+  steps[count].b = b;
+  steps[count].o = o;
+  steps[count].angle = angle;
+  count++;
 //  draw(steps, count);
-#endif
-  d->cont(d->t, d->a, d->b, d->o, d->s);
 }
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);

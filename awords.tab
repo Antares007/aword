@@ -1,5 +1,5 @@
 rab
-  s_ab ab ab ab ab print.
+  s_ab ab ab ab print.
 ab
   "".
   "a".
@@ -10,10 +10,10 @@ r
 sS
   0 "".
   1 "s" sS sS.
+  2 "s" sS sS.
 
 rS
-  s_bac S print.
+  s_ba S print.
 S
   0 "b".
   1 S "a".
-  2 S "c".

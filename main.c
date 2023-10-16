@@ -29,7 +29,7 @@ int main(int argc, const char **argv) {
   o[a++] = map_file;
   o[a++] = strcmp;
   o[a++] = munmap;
-  ti_init();
+//  ti_init();
   n_t w = Bark("b r o");
   w(0, a, b, o, "");
 }

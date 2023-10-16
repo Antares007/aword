@@ -11,21 +11,11 @@ typedef N((*n_t));
 const char *rays[] = {"Olive", "Maroon", "Lime", "Navy",  0,
                       "Blue",  "Green",  "Red",  "Yellow"};
 void ti(const char *n, long ρ, long δ);
-N(goTo) {
-  ti(τ[-2], ρ, δ);
-  ((n_t)τ[δ * 5])(τ + δ * 5, α, β, ο, σ, ρ, δ);
-}
-N(bro) {
-  if (ρ == 3 || ρ == 2)
-    P;
-  else
-    goTo(τ, 0, β, ο, σ, 3, 1);
-}
-N(o) { goTo(τ, α, β, ο, σ, ρ, -1); }
-N(tab) {
-  ti(τ[-2], ρ, δ);
-  ((n_t *)ο[β])[ρ](ο[β + 1], α, β + 2, ο, σ, ρ, δ);
-}
+// clang-format off
+N(goTo) { ti(τ[-2], ρ, δ), ((n_t)τ[δ * 5])(τ + δ * 5, α, β, ο, σ, ρ, δ); }
+N(bro ) { if (ρ == 3 || ρ == 2) P; else goTo(τ, 0, β, ο, σ, 3, 1); }
+N(o   ) { goTo(τ, α, β, ο, σ, ρ, -1); }
+N(tab) { ti(τ[-2], ρ, δ); ((n_t *)ο[β])[ρ](ο[β + 1], α, β + 2, ο, σ, ρ, δ); }
 typedef struct t_t {
   long i;
   long count;
@@ -41,7 +31,6 @@ N(tab_switch) { ((n_t *)τ[-1])[(ρ + 1) * δ + 4](τ, α, β, ο, σ, ρ, δ); 
     ti(τ[-2], ρ, δ), (ο[--β] = τ), (ο[--β] = tab),                             \
         goTo(c->arms[c->i], α, β, ο, σ, ρ, δ);                                 \
   }
-// clang-format off
 N(Yellow_Navy   ) { goTo(τ, α, β, ο, σ, ρ, 1); }
 N(Yellow_Lime   ) { t_t *c = τ[+1];
                     c->fruitful[c->i] = 1;
@@ -94,8 +83,6 @@ N(t_heart) {
     tab_switch(τ, α, β, ο, σ, ρ, δ);
   }
 }
-
-
 N(Yellow_Green_term) {
   char*s = τ[1];
   long i = 0;
@@ -150,7 +137,6 @@ N(n5) { if (δ == 1) ο[α++] = "5"; goTo(τ, α, β, ο, σ, ρ, δ); }
 N(a) { τ[+1] = "a"; term(τ, α, β, ο, σ, ρ, δ); }
 N(b) { τ[+1] = "b"; term(τ, α, β, ο, σ, ρ, δ); }
 N(s) { τ[+1] = "s"; term(τ, α, β, ο, σ, ρ, δ); }
-
 D(n345,
   B(T(n3)),
   B(T(n4)),
@@ -160,16 +146,17 @@ D(n123,
   B(T(n2)),
   B(T(n3)))
 N(ε) { goTo(τ, α, β, ο, σ, ρ, δ); }
-D(εab,
+D(ab,
   B(T(ε)),
   B(T(a)),
-  B(T(b)))
-D(abS, B(T(εab), T(εab), T(εab)))
+  B(T(b)),
+)
+D(abS,  B(T(ab), T(ab), T(ab)))
 void ti_init();
 void ti_step(const char*, long, long);
 void ti(const char*n, long ρ, long δ) {
   // printf("%10s %10s\n", n, rays[(ρ + 1) * δ + 4]);
-  //ti_step(n, ρ, δ);
+  ti_step(n, ρ, δ);
 }
 N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
 N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
@@ -179,7 +166,6 @@ D(sS,
   B(T(n0), T(ε)),
 )
 D(S, B(T(b)), B(T(S), T(a)))
-
 int main() {
   void **text = 2 + (void *[]) { T(bro), T(s_ss), T(sS), T(print), T(o) };
   long  α = 0;

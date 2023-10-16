@@ -7,9 +7,9 @@ function astring(s) {
 G(Red   ) { (o[a++] = ${s}), Red(t, a, b, o, s); }
 G(Blue  ) { (o[a++] = ${s}), Blue(t, a, b, o, s); }
 G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
-            else                          Maroon(t, a, b, o, s); }
+            else                          Red(t, a, b, o, s); }
 G(Green ) { if (${pred}) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
-            else                          Navy(t, a, b, o, s); }
+            else                          Blue(t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -40,56 +40,57 @@ N(tab) {
   if(arms[ai])
     (arms[ai] + color)(t, a, b, o, s);
   else
-    (arms[ai] = W(arm_texts[ai])),
+    (arms[ai] = Bark(arm_texts[ai])),
     (o[--b]   = (void*)__FILE__),
     (o[--b]   = arms[ai] + color),
     (arms[ai](t, a, b, o, s));
 }
-const char*ss;
-long sa, st;
-char visited[${s.length}];
-G(Yellow            ) {               (o[--b] = Tab_Yellow), tab(st=t, sa=a, b, o, ss=s); }
-G(Green             ) {               (o[--b] = Tab_Green),  tab(t,    a,    b, o, s); }
-G(Red               ) { if (arms[ai]) (o[--b] = Tab_Red),    tab(t,    a,    b, o, s); else Navy(t, a, b, o, s); }
-G(Blue              ) {               (o[--b] = Tab_Blue),   tab(t,    a,    b, o, s); }
+char fruitful[${s.length}];
+char is_open;
+G(Yellow            ) { is_open = 1; (o[--b] = Tab_Yellow), tab(t, a, b, o, s); }
+G(Green             ) { is_open = 1; (o[--b] = Tab_Green),  tab(t, a, b, o, s); }
+G(Red               ) { if (is_open) (o[--b] = Tab_Red),    tab(t, a, b, o, s); else Red(t, a, b, o, s); }
+G(Blue              ) { if (is_open) (o[--b] = Tab_Blue),   tab(t, a, b, o, s); else Blue(t, a, b, o, s); }
 
-N(Yellow_tab_Olive  ) { visited[ai] = 1; (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Lime   ) { visited[ai] = 1; Green(t, a, b, o, s); }
-N(Red_proxy         ) {
-  if (1 < arms_count) arms_count--, Red(t, a, b, o, s);
-  else Maroon(t, a, b, o, s);
-}
-N(Navy_proxy        ) {
-    arms_count--;
-    ai--;
-    for(long i      = ai; i < arms_count; i++) {
-      arms[i]       = arms[i + 1];
-      arm_texts[i]  = arm_texts[i + 1];
-      visited[i]    = visited[i + 1];
-    }
-    Navy(t, a, b, o, s);
-}
-N(Yellow_tab_Maroon ) { if (visited[ai]) (o[a++] = Red), (o[a] = Navy), switch_arm(t, a, b, o, s);
-                        else (o[a++] = Red_proxy), (o[a] = Navy_proxy), switch_arm(t, a, b, o, s); } 
-N(Yellow_tab_Navy   ) { Navy(t, a, b, o, s); }
+N(Red_trim          ) { if (1 < arms_count) arms_count--,
+                                            Unbark(arms[arms_count], ((long*)arms[arms_count])[1]),
+                                            Red(t, a, b, o, s);
+                        else Maroon(t, a, b, o, s); }
+N(Blue_trim         ) { arms_count--;
+                        ai--;
+                        Unbark(arms[ai], ((long*)arms[ai])[1]);
+                        for (long i     = ai; i < arms_count; i++) {
+                          arms[i]       = arms[i + 1];
+                          arm_texts[i]  = arm_texts[i + 1];
+                          fruitful[i]   = fruitful[i + 1];
+                        }
+                        Blue(t, a, b, o, s); }
+
+N(Yellow_tab_Olive  ) { fruitful[ai] = 1; (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Lime   ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
+N(Yellow_tab_Maroon ) { if (fruitful[ai]) (o[a++] = Red), (o[a] = Blue);
+                        else (o[a++] = Red_trim), (o[a] = Blue_trim);
+                        switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Navy   ) { Blue(t, a, b, o, s); }
 
 N(Green_tab_Olive   ) { P; }
-N(Green_tab_Lime    ) { visited[ai] = 1; Green(t, a, b, o, s); }
+N(Green_tab_Lime    ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
 N(Green_tab_Maroon  ) { P; }
-N(Green_tab_Navy    ) { Navy(t, a, b, o, s); }
+N(Green_tab_Navy    ) { Blue(t, a, b, o, s); }
 
 N(Red_tab_Olive     ) { P; }
 N(Red_tab_Lime      ) { P; }
-N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Navy), switch_arm(t, a, b, o, s); }
-N(Red_tab_Navy      ) { Navy(t, a, b, o, s); }
+N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
+N(Red_tab_Navy      ) { Blue(t, a, b, o, s); }
 
 N(Blue_tab_Olive    ) { P; }
 N(Blue_tab_Lime     ) { P; }
 N(Blue_tab_Maroon   ) { P; }
-N(Blue_tab_Navy     ) { Navy(t, a, b, o, s); }
+N(Blue_tab_Navy     ) { Blue(t, a, b, o, s); }
 
 G(Purple) {
-${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')}
+  is_open = 0;
+${s.map((a, i) => `  arm_texts[${i}] = "${a}"; fruitful[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive;
   Tab_Yellow[1] = Yellow_tab_Lime;
   Tab_Yellow[2] = Yellow_tab_Maroon;
