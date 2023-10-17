@@ -4,12 +4,10 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[t + ${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Red   ) { (o[a++] = ${s}), Red(t, a, b, o, s); }
-G(Blue  ) { (o[a++] = ${s}), Blue(t, a, b, o, s); }
-G(Yellow) { if (${pred}) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
-            else                          Red(t, a, b, o, s); }
-G(Green ) { if (${pred}) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
-            else                          Blue(t, a, b, o, s); }
+G(Yellow) { if ((${pred})) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
+            else            Red(t, a, b, o, s); }
+G(Green ) { if ((${pred})) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
+            else            Blue(t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -20,7 +18,6 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function tword(s, id) {
   return `
-#define P Printf("%s\\n", __FUNCTION__)
 n_t Tab_Yellow[6];
 n_t Tab_Green [6];
 n_t Tab_Red   [6];
@@ -29,7 +26,7 @@ long arms_count = ${s.length};
 n_t arms[${s.length}];
 const char *arm_texts[${s.length}];
 long ai;
-N(switch_arm) {
+N(Switch_arm) {
   long narm   = ai + 1;
   long charge = narm / arms_count;
            ai = narm - charge * arms_count;
@@ -52,72 +49,73 @@ G(Green             ) { is_open = 1; (o[--b] = Tab_Green),  tab(t, a, b, o, s); 
 G(Red               ) { if (is_open) (o[--b] = Tab_Red),    tab(t, a, b, o, s); else Red(t, a, b, o, s); }
 G(Blue              ) { if (is_open) (o[--b] = Tab_Blue),   tab(t, a, b, o, s); else Blue(t, a, b, o, s); }
 
-N(Red_trim          ) { if (1 < arms_count) arms_count--,
-                                            Unbark(arms[arms_count], ((long*)arms[arms_count])[1]),
-                                            Red(t, a, b, o, s);
-                        else Maroon(t, a, b, o, s); }
-N(Blue_trim         ) { arms_count--;
-                        ai--;
-                        Unbark(arms[ai], ((long*)arms[ai])[1]);
-                        for (long i     = ai; i < arms_count; i++) {
-                          arms[i]       = arms[i + 1];
-                          arm_texts[i]  = arm_texts[i + 1];
-                          fruitful[i]   = fruitful[i + 1];
-                        }
-                        Blue(t, a, b, o, s); }
 
-N(Yellow_tab_Olive  ) { fruitful[ai] = 1; (o[a++] = Yellow), (o[a] = Green), switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Lime   ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
-N(Yellow_tab_Maroon ) { if (fruitful[ai]) (o[a++] = Red), (o[a] = Blue);
-                        else (o[a++] = Red_trim), (o[a] = Blue_trim);
-                        switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Navy   ) { Blue(t, a, b, o, s); }
+N(Yellow_tab_Olive) { fruitful[ai] = 1; (o[a++] = Yellow), (o[a] = Green), Switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Lime ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
+N(Red_trim        ) { if (1 < arms_count) arms_count--,
+                                          Unbark(arms[arms_count], ((long*)arms[arms_count])[1]),
+                                          Red(t, a, b, o, s);
+                      else maroon(t, a, b, o, s); }
+N(Blue_trim       ) { arms_count--;
+                      ai--;
+                      Unbark(arms[ai], ((long*)arms[ai])[1]);
+                      for (long i     = ai; i < arms_count; i++) {
+                        arms[i]       = arms[i + 1];
+                        arm_texts[i]  = arm_texts[i + 1];
+                        fruitful[i]   = fruitful[i + 1];
+                      }
+                      Blue(t, a, b, o, s); }
+N(Yellow_tab_Maroon
+                  ) { if (fruitful[ai]) (o[a++] = Red), (o[a] = Blue);
+                      else (o[a++] = Red_trim), (o[a] = Blue_trim);
+                      Switch_arm(t, a, b, o, s); }
+N(Yellow_tab_Navy ) { Blue(t, a, b, o, s); }
 
-N(Green_tab_Olive   ) { P; }
-N(Green_tab_Lime    ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
-N(Green_tab_Maroon  ) { P; }
-N(Green_tab_Navy    ) { Blue(t, a, b, o, s); }
+N(Green_tab_Olive ) { P; }
+N(Green_tab_Lime  ) { fruitful[ai] = 1; Green(t, a, b, o, s); }
+N(Green_tab_Maroon) { P; }
+N(Green_tab_Navy  ) { Blue(t, a, b, o, s); }
 
 N(Red_tab_Olive     ) { P; }
 N(Red_tab_Lime      ) { P; }
-N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
+N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Blue), Switch_arm(t, a, b, o, s); }
 N(Red_tab_Navy      ) { Blue(t, a, b, o, s); }
 
-N(Blue_tab_Olive    ) { P; }
-N(Blue_tab_Lime     ) { P; }
-N(Blue_tab_Maroon   ) { P; }
-N(Blue_tab_Navy     ) { Blue(t, a, b, o, s); }
+N(Blue_tab_Olive  ) { P; }
+N(Blue_tab_Lime   ) { P; }
+N(Blue_tab_Maroon ) { P; }
+N(Blue_tab_Navy   ) { Blue(t, a, b, o, s); }
 
 G(Purple) {
-  is_open = 0;
+  is_open       = 0;
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; fruitful[${i}] = 0;`).join('\n')}
   Tab_Yellow[0] = Yellow_tab_Olive;
   Tab_Yellow[1] = Yellow_tab_Lime;
   Tab_Yellow[2] = Yellow_tab_Maroon;
   Tab_Yellow[3] = Yellow_tab_Navy;
   Tab_Yellow[4] = (void*)__FILE__;
-  Tab_Yellow[5] = (void*)16;
+  Tab_Yellow[5] = (void*)0x20;
 
   Tab_Green [0] = Green_tab_Olive;
   Tab_Green [1] = Green_tab_Lime;
   Tab_Green [2] = Green_tab_Maroon;
   Tab_Green [3] = Green_tab_Navy;
   Tab_Green [4] = (void*)__FILE__;
-  Tab_Green [5] = (void*)32;
+  Tab_Green [5] = (void*)0x40;
 
   Tab_Red   [0] = Red_tab_Olive;
   Tab_Red   [1] = Red_tab_Lime;
   Tab_Red   [2] = Red_tab_Maroon;
   Tab_Red   [3] = Red_tab_Navy;
   Tab_Red   [4] = (void*)__FILE__;
-  Tab_Red   [5] = (void*)48;
+  Tab_Red   [5] = (void*)0x60;
 
   Tab_Blue  [0] = Blue_tab_Olive;
   Tab_Blue  [1] = Blue_tab_Lime;
   Tab_Blue  [2] = Blue_tab_Maroon;
   Tab_Blue  [3] = Blue_tab_Navy;
   Tab_Blue  [4] = (void*)__FILE__;
-  Tab_Blue  [5] = (void*)64;
+  Tab_Blue  [5] = (void*)0x80;
 
   Purple(t, a, b, o, s);
 }
@@ -201,23 +199,21 @@ function split_name_and_body(def) {
 function add_missing_rays([ n, b ]) {
   b = '#include "aw.h"\n\n' + b;
   const rays = {
-    P : "Purple",
-    Y : "Yellow",
-    G : "Green",
-    R : "Red",
-    B : "Blue",
-    N : "Navy",
-    M : "Maroon",
-    L : "Lime",
-    O : "Olive",
-    F : "Fuchsia",
+    P : "Purple",   p : "purple",
+    Y : "Yellow",   y : "yellow",
+    G : "Green",    g : "green",
+    R : "Red",      r : "red",
+    B : "Blue",     b : "blue",
+    N : "Navy",     n : "navy",
+    M : "Maroon",   m : "maroon",
+    L : "Lime",     l : "lime",
+    O : "Olive",    o : "olive",
+    F : "Fuchsia",  f : "fuchsia",
   };
   let pos;
   let i = 0;
   for (let k of Object.keys(rays))
-    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) +
-            b.indexOf("B(" + rays[k]) ===
-        -3)
+    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) === -2)
       b += `\nG(${rays[k]}) { ${rays[k]}(t, a, b, o, s); }`;
   return [ n, b ];
 }
@@ -231,8 +227,8 @@ async function compile([ n, b ]) {
       " && " +
       `objcopy -O binary -j .text.* -j .text -j .data ${n}.elf ${n}.bin`);
   let abin = await readFile(`${n}.bin`);
-  abin = abin.slice(5 * 16);
-  abin = abin.slice(0, abin.length - 5 * 16 - 4);
+  abin = abin.slice(5 * 32);
+  abin = abin.slice(0, abin.length - 5 * 32 - 4);
   await writeFile(`abin/${n}`, abin);
   await exec(`mv ${n}.c abin`);              //
   await exec(`rm ${n}.elf ${n}.o ${n}.bin`); //

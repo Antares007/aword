@@ -1,9 +1,9 @@
 rab
-  s_ab ab ab ab print.
+  s_ab 1 ab ab ab print.
 ab
   "".
-  "a".
   "b".
+  "a".
 
 r
   s_ss sS print.

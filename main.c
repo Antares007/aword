@@ -27,9 +27,9 @@ int main(int argc, const char **argv) {
   o[a++] = printf;
   o[a++] = ti;
   o[a++] = map_file;
-  o[a++] = strcmp;
+  o[a++] = usleep;
   o[a++] = munmap;
 //  ti_init();
   n_t w = Bark("b r o");
-  w(0, a, b, o, "");
+  (w)(0, a, b, o, "");
 }

@@ -1,29 +1,44 @@
 b {
+  G(blue    ) { navy   (t, a, b, o, s); }
   G(Navy    ) { Yellow (0, 5, b, o, s); }
+  G(red     ) { maroon (t, a, b, o, s); }
   G(Maroon  ) { }
-  G(Lime    ) { Yellow (0, 5, b, o, s); }
-  G(Olive   ) { }
-  G(Fuchsia ) { Yellow (0, 5, b, o, s); }
+  G(green   ) { lime  (t, a, b, o, s); }
+  G(Lime    ) { Printf("\n"); Yellow (0, 5, b, o, s); }
+  G(yellow  ) { olive (t, a, b, o, s); }
+  G(Olive   ) { fuchsia(t, a, b, o, s); }
+  G(Fuchsia ) { }
+  G(purple  ) { Yellow (0, 5, b, o, s); }
 }.
 o {
-  G(Purple  ) { Fuchsia(t, a, b, o, s); }
-  G(Yellow  ) { Olive  (t, a, b, o, s); }
-  G(Green   ) { Lime   (t, a, b, o, s); }
-  G(Red     ) { Maroon (t, a, b, o, s); }
-  G(Blue    ) { Navy   (t, a, b, o, s); }
+  R(Purple  ) { purple (t, a, b, o, s); }
+  R(fuchsia ) { Fuchsia(t, a, b, o, s); }
+  R(Yellow  ) { yellow (t, a, b, o, s); }
+  R(olive   ) { Olive  (t, a, b, o, s); }
+  R(Green   ) { green  (t, a, b, o, s); }
+  R(lime    ) { Lime   (t, a, b, o, s); }
+  R(Red     ) { red    (t, a, b, o, s); }
+  R(maroon  ) { Maroon (t, a, b, o, s); }
+  R(Blue    ) { blue   (t, a, b, o, s); }
+  R(navy    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
+  G(blue    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
   G(Navy    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
+  G(red     ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
   G(Maroon  ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
+  G(green   ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
   G(Lime    ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
+  G(yellow  ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
   G(Olive   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
+  G(purple  ) { ((n_t)o[b])    (t, a, b + 2, o, s); }
   G(Fuchsia ) { ((n_t)o[b])    (t, a, b + 2, o, s); }
 }.
 print {
   N(print) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s", o[i]); Printf(")\n");
+    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s", o[i]); Printf(")");
     a = 5;
     color(t, a, b, o, s);
   }

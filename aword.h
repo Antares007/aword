@@ -6,4 +6,5 @@ typedef N((*n_t));
 #define Unbark(aword, size) ((int  (*)(void*, long))             o[4])(aword, size)
 #define Bark(atext)         ((n_t  (*)(const char*))             o[2])(atext)
 #define W(atext)            Bark(atext)
-#define CMP(s1, s2)         ((int  (*)(const char*, const char*))o[3])(s1, s2)
+#define Usleep(s1)          ((void (*)(long))o[3])(s1)
+#define P                   Printf("%s %s\n", __FILE__, __FUNCTION__), Usleep(200000)

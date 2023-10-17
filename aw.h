@@ -9,7 +9,8 @@
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
   N(Olive##_tin) __attribute__((noinline));                                    \
-  N(Olive##_tin) { TI(#Olive, __FILE__, t, a, b, o, s, 0);Olive##_nar(t, a, b, o, s); }      \
+  N(Olive##_tin) { TI(#Olive, __FILE__, t, a, b, o, s, 0);                     \
+                   Olive##_nar(t, a, b, o, s); }                               \
   R(Olive) { Olive##_tin(t,a,b,o,s); }                                         \
   N(Olive##_nar)
 
@@ -19,4 +20,6 @@
 
 Δ(Yellow);Δ(Purple); Δ(Red);   Δ(Green);Δ(Blue);
 Δ(Olive); Δ(Fuchsia);Δ(Maroon);Δ(Lime); Δ(Navy);
+Δ(yellow);Δ(purple); Δ(red);   Δ(green);Δ(blue);
+Δ(olive); Δ(fuchsia);Δ(maroon);Δ(lime); Δ(navy);
 #undef Δ
