@@ -4,21 +4,12 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[t + ${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Yellow) { if ((${pred})) Yellow(t + ${b.length}, a, b, o, s);
-            else           Red(t, a, b, o, s); }
-G(Green ) { if ((${pred})) Green(t + ${b.length}, a, b, o, s);
-            else           Blue(t, a, b, o, s); }
-N(print) { 
-  long try = (long)o[a-1];
-  Printf("%ld%lu [shape = diamond, label=\\"%s\\", color=yellow];\\n",
-       try, (long)__FILE__ & 0xffff, ${s});
-  if(b < 512) Printf("%ld%ld -> %ld%ld;",
-                     try, ((long*)o[b + 1])[4] & 0xffff,
-                     try, (long)__FILE__ & 0xffff);
-  ((n_t)o[b])(t, a, b + 1, o, s);
-}
-G(Olive) { o[--b] = Olive; print(t, a, b, o, s); }
-G(Lime ) { o[--b] = Lime;  print(t, a, b, o, s); }
+G(Yellow) { if ((${pred})) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
+            else                            Red(t, a, b, o, s); }
+G(Green ) { if ((${pred})) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
+            else                            Blue(t, a, b, o, s); }
+G(Olive) { Olive(t, a, b, o, s); }
+G(Lime ) { Lime (t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -38,119 +29,136 @@ long arms_count = ${s.length};
 n_t arms[${s.length}];
 const char *arm_texts[${s.length}];
 long ai;
-N(Switch_arm) {
-  long narm   = ai + 1;
+N(switch_arm) {
+  long narm = ai + 1;
   long charge = narm / arms_count;
-           ai = narm - charge * arms_count;
+  ai = narm - charge * arms_count;
   ((n_t)o[a - charge])(t, a - 1, b, o, s);
 }
 N(tab) {
-  long color  = ((long*)o[b])[5];
-  if(arms[ai])
+  long color = ((long *)o[b])[5];
+  if (arms[ai])
     (arms[ai] + color)(t, a, b, o, s);
   else
-    (arms[ai] = Bark(arm_texts[ai])),
-    (o[--b]   = (void*)__FILE__),
-    (o[--b]   = arms[ai] + color),
-    (arms[ai](t, a, b, o, s));
+    (arms[ai] = Bark(arm_texts[ai])), (o[--b] = (void *)__FILE__),
+        (o[--b] = arms[ai] + color), (arms[ai](t, a, b, o, s));
 }
-char fruitful[${s.length}];
+char fruitful[3];
 char is_open;
 long bi, back_color;
-G(Yellow         ) { is_open = 1; (o[--b] = Tab_Yellow), tab(t, a, b, o, s); }
-G(Green          ) { is_open = 1; (o[--b] = Tab_Green),  tab(t, a, b, o, s); }
-G(Red            ) { if (is_open) (o[--b] = Tab_Red),    tab(t, a, b, o, s); else Red(t, a, b, o, s); }
-G(Blue           ) { if (is_open) (o[--b] = Tab_Blue),   tab(t, a, b, o, s); else Blue(t, a, b, o, s); }
+G(Yellow) {
+  is_open = 1;
+  (o[--b] = Tab_Yellow), tab(t, a, b, o, s);
+}
+G(Green) {
+  is_open = 1;
+  (o[--b] = Tab_Green), tab(t, a, b, o, s);
+}
+G(Red) {
+  if (is_open)
+    (o[--b] = Tab_Red), tab(t, a, b, o, s);
+  else
+    Red(t, a, b, o, s);
+}
+G(Blue) {
+  if (is_open)
+    (o[--b] = Tab_Blue), tab(t, a, b, o, s);
+  else
+    Blue(t, a, b, o, s);
+}
 
-N(print          ) { long try = (long)o[a-1];
-                     Printf("%ld%lu [shape = ellipse, label=\\"%s\\", color=green];\\n",
-                          try, (long)__FILE__ & 0xffff, __FILE__);
-                     if(b < 512) Printf("%ld%ld -> %ld%ld;",
-                                        try, ((long*)o[b])[4] & 0xffff,
-                                        try, (long)__FILE__ & 0xffff);
-                     o[--b] = Tab_Back; (arms[bi] + back_color)(t, a, b, o, s); }
-G(Olive          ) { print(t, a, b, o, s); }
-G(Lime           ) { print(t, a, b, o, s); }
+G(Olive) { Olive(t, a, b, o, s); }
+G(Lime) { Lime(t, a, b, o, s); }
 
-N(Back_tab_Olive ) { Olive(t, a, b, o, s); }
-N(Back_tab_Lime  ) { Lime(t, a, b, o, s); }
-N(Back_tab_Maroon) { P; }
-N(Back_tab_Navy  ) { P; }
+N(Back_Olive) { Olive(t, a, b, o, s); }
+N(Back_Lime) { Lime(t, a, b, o, s); }
 
-N(Yellow_proxy) { back_color = 0x30; Yellow(t, a, b, o, s); }
-N(Green_proxy) { back_color = 0x50; Green(t, a, b, o, s); }
-N(Yellow_tab_Olive) { fruitful[ai] = 1; bi = ai; (o[a++] = Yellow_proxy), (o[a] = Green_proxy), Switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Lime ) { fruitful[ai] = 1; bi = ai; back_color = 0x50; Green(t, a, b, o, s); }
-
-N(Red_trim        ) { if (1 < arms_count) arms_count--,
-                                          Unbark(arms[arms_count], ((long*)arms[arms_count])[1]),
-                                          Red(t, a, b, o, s);
-                      else maroon(t, a, b, o, s); }
-N(Blue_trim       ) { arms_count--;
-                      ai--;
-                      Unbark(arms[ai], ((long*)arms[ai])[1]);
-                      for (long i     = ai; i < arms_count; i++) {
-                        arms[i]       = arms[i + 1];
-                        arm_texts[i]  = arm_texts[i + 1];
-                        fruitful[i]   = fruitful[i + 1];
-                      }
-                      Blue(t, a, b, o, s); }
-N(Yellow_tab_Maroon
-                  ) { if (fruitful[ai]) (o[a++] = Red), (o[a] = Blue);
-                      else (o[a++] = Red_trim), (o[a] = Blue_trim);
-                      Switch_arm(t, a, b, o, s); }
-N(Yellow_tab_Navy ) { Blue(t, a, b, o, s); }
-
-N(Green_tab_Olive ) { P; }
-N(Green_tab_Lime  ) { Yellow_tab_Lime(t, a, b, o, s); }
-N(Green_tab_Maroon) { P; }
-N(Green_tab_Navy  ) { Blue(t, a, b, o, s); }
-
-N(Red_tab_Olive     ) { P; }
-N(Red_tab_Lime      ) { P; }
-N(Red_tab_Maroon    ) { (o[a++] = Red), (o[a] = Blue), Switch_arm(t, a, b, o, s); }
-N(Red_tab_Navy      ) { Blue(t, a, b, o, s); }
-
-N(Blue_tab_Olive  ) { P; }
-N(Blue_tab_Lime   ) { P; }
-N(Blue_tab_Maroon ) { P; }
-N(Blue_tab_Navy   ) { Blue(t, a, b, o, s); }
-
+N(Yellow_proxy) {
+  back_color = 0x30;
+  Yellow(t, a, b, o, s);
+}
+N(Green_proxy) {
+  back_color = 0x50;
+  Green(t, a, b, o, s);
+}
+N(Yellow_Olive) {
+  fruitful[ai] = 1;
+  bi = ai;
+  (o[a++] = Yellow_proxy), (o[a] = Green_proxy), switch_arm(t, a, b, o, s);
+}
+N(Yellow_Lime) {
+  fruitful[ai] = 1;
+  bi = ai;
+  back_color = 0x50;
+  Green(t, a, b, o, s);
+}
+N(Red_trim) {
+  if (1 < arms_count)
+    arms_count--, Unbark(arms[arms_count], ((long *)arms[arms_count])[1]),
+        Red(t, a, b, o, s);
+  else
+    maroon(t, a, b, o, s);
+}
+N(Blue_trim) {
+  arms_count--;
+  ai--;
+  Unbark(arms[ai], ((long *)arms[ai])[1]);
+  for (long i = ai; i < arms_count; i++) {
+    arms[i] = arms[i + 1];
+    arm_texts[i] = arm_texts[i + 1];
+    fruitful[i] = fruitful[i + 1];
+  }
+  Blue(t, a, b, o, s);
+}
+N(Yellow_Maroon) {
+  if (fruitful[ai])
+    (o[a++] = Red), (o[a] = Blue);
+  else
+    (o[a++] = Red_trim), (o[a] = Blue_trim);
+  switch_arm(t, a, b, o, s);
+}
+N(Yellow_Navy) { Blue(t, a, b, o, s); }
+N(Green_Lime) { Yellow_Lime(t, a, b, o, s); }
+N(Green_Navy) { Blue(t, a, b, o, s); }
+N(Red_Maroon) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
+N(Red_Navy) { Blue(t, a, b, o, s); }
+N(Blue_Navy) { Blue(t, a, b, o, s); }
+N(stop) { P; }
 G(Purple) {
   is_open       = 0;
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; fruitful[${i}] = 0;`).join('\n')}
-  Tab_Yellow[0] = Yellow_tab_Olive;
-  Tab_Yellow[1] = Yellow_tab_Lime;
-  Tab_Yellow[2] = Yellow_tab_Maroon;
-  Tab_Yellow[3] = Yellow_tab_Navy;
+  Tab_Yellow[0] = Yellow_Olive;
+  Tab_Yellow[1] = Yellow_Lime;
+  Tab_Yellow[2] = Yellow_Maroon;
+  Tab_Yellow[3] = Yellow_Navy;
   Tab_Yellow[4] = (void*)__FILE__;
   Tab_Yellow[5] = (void*)0x20;
 
-  Tab_Green [0] = Green_tab_Olive;
-  Tab_Green [1] = Green_tab_Lime;
-  Tab_Green [2] = Green_tab_Maroon;
-  Tab_Green [3] = Green_tab_Navy;
+  Tab_Green [0] = stop;
+  Tab_Green [1] = Green_Lime;
+  Tab_Green [2] = stop;
+  Tab_Green [3] = Green_Navy;
   Tab_Green [4] = (void*)__FILE__;
   Tab_Green [5] = (void*)0x40;
 
-  Tab_Red   [0] = Red_tab_Olive;
-  Tab_Red   [1] = Red_tab_Lime;
-  Tab_Red   [2] = Red_tab_Maroon;
-  Tab_Red   [3] = Red_tab_Navy;
+  Tab_Red   [0] = stop;
+  Tab_Red   [1] = stop;
+  Tab_Red   [2] = Red_Maroon;
+  Tab_Red   [3] = Red_Navy;
   Tab_Red   [4] = (void*)__FILE__;
   Tab_Red   [5] = (void*)0x60;
 
-  Tab_Blue  [0] = Blue_tab_Olive;
-  Tab_Blue  [1] = Blue_tab_Lime;
-  Tab_Blue  [2] = Blue_tab_Maroon;
-  Tab_Blue  [3] = Blue_tab_Navy;
+  Tab_Blue  [0] = stop;
+  Tab_Blue  [1] = stop;
+  Tab_Blue  [2] = stop;
+  Tab_Blue  [3] = Blue_Navy;
   Tab_Blue  [4] = (void*)__FILE__;
   Tab_Blue  [5] = (void*)0x80;
 
-  Tab_Back  [0] = Back_tab_Olive;
-  Tab_Back  [1] = Back_tab_Lime;
-  Tab_Back  [2] = Back_tab_Maroon;
-  Tab_Back  [3] = Back_tab_Navy;
+  Tab_Back  [0] = Back_Olive;
+  Tab_Back  [1] = Back_Lime;
+  Tab_Back  [2] = stop;
+  Tab_Back  [3] = stop;
   Tab_Back  [4] = (void*)__FILE__;
   Purple(t, a, b, o, s);
 }
