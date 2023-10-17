@@ -167,7 +167,7 @@ D(sS,
 )
 D(S, B(T(b)), B(T(S), T(a)))
 int main() {
-  void **text = 2 + (void *[]) { T(bro), T(s_ss), T(sS), T(print), T(o) };
+  void **text = 2 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);
