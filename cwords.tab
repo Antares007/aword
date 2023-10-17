@@ -1,14 +1,24 @@
 b {
-  G(blue    ) { navy   (t, a, b, o, s); }
-  G(Navy    ) { Yellow (0, 5, b, o, s); }
-  G(red     ) { maroon (t, a, b, o, s); }
-  G(Maroon  ) { }
+  G(blue    ) {
+    Yellow (0, 5, b, o, s); }
+  G(red     ) { 
+    Printf("}\n");
+  }
   G(green   ) { lime  (t, a, b, o, s); }
-  G(Lime    ) { Printf("\n"); Yellow (0, 5, b, o, s); }
+  long try = 0;
+  G(Lime    ) {
+    a = 5;
+    o[a++] = try++;
+    Printf("\n");
+    Yellow (0, a, b, o, s); }
   G(yellow  ) { olive (t, a, b, o, s); }
   G(Olive   ) { fuchsia(t, a, b, o, s); }
-  G(Fuchsia ) { }
-  G(purple  ) { Yellow (0, 5, b, o, s); }
+  G(Fuchsia ) { 
+    Printf("}\n");
+  }
+  G(purple  ) {
+    Printf("digraph aword {\n");
+    Lime_nar (0, a, b, o, s); }
 }.
 o {
   R(Purple  ) { purple (t, a, b, o, s); }
