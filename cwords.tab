@@ -1,9 +1,10 @@
 b {
   G(blue    ) { Yellow (0, 5, b, o, s); }
   G(red     ) { P; }
-  G(green   ) { lime  (t, a, b, o, s); }
-  G(Lime    ) { Printf("\n"); Yellow (0, 5, b, o, s); }
-  G(yellow  ) { olive (t, a, b, o, s); }
+  G(green   ) { lime   (t, a, b, o, s); }
+  G(Lime    ) { Printf ("\n");
+                Yellow (0, 5, b, o, s); }
+  G(yellow  ) { olive  (t, a, b, o, s); }
   G(Olive   ) { fuchsia(t, a, b, o, s); }
   G(Fuchsia ) { P; }
   G(purple  ) { Yellow (0, 5, b, o, s); }
@@ -36,7 +37,7 @@ print {
   N(print) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s", o[i]); Printf(")");
+    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s ", o[i]); Printf(")");
     a = 5;
     color(t, a, b, o, s);
   }

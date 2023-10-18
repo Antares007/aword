@@ -4,12 +4,10 @@ function astring(s) {
   for (let i = 0; i < b.length; i++)
     pred += ` && s[t + ${i}] == ${b[i] < 128 ? b[i] : ((256 - b[i]) * -1)}`;
   return `
-G(Yellow) { if ((${pred})) (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);
-            else                            Red(t, a, b, o, s); }
-G(Green ) { if ((${pred})) (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);
-            else                            Blue(t, a, b, o, s); }
-G(Olive) { Olive(t, a, b, o, s); }
-G(Lime ) { Lime (t, a, b, o, s); }
+G(Yellow) { (o[a++] = ${s}), Yellow(t + ${b.length}, a, b, o, s);}
+G(Green ) { (o[a++] = ${s}), Green(t + ${b.length}, a, b, o, s);}
+//(Olive) { Olive(t, a, b, o, s); }
+//(Lime ) { Lime (t, a, b, o, s); }
 `
 }
 function anumber(s) {
@@ -25,22 +23,22 @@ n_t Tab_Green [6];
 n_t Tab_Red   [6];
 n_t Tab_Blue  [6];
 n_t Tab_Back  [5];
-long arms_count = ${s.length};
-n_t arms[${s.length}];
+long  arms_count = ${s.length};
+n_t   arms[${s.length}];
 const char *arm_texts[${s.length}];
-long ai;
+long  ai;
 N(switch_arm) {
-  long narm = ai + 1;
+  long narm   = ai + 1;
   long charge = narm / arms_count;
-  ai = narm - charge * arms_count;
+  ai          = narm - charge * arms_count;
   ((n_t)o[a - charge])(t, a - 1, b, o, s);
 }
 N(tab) {
-  long color = ((long *)o[b])[5];
+  long color    = ((long *)o[b])[5];
   if (arms[ai])
     (arms[ai] + color)(t, a, b, o, s);
   else
-    (arms[ai] = Bark(arm_texts[ai])), (o[--b] = (void *)__FILE__),
+    (arms[ai]   = Bark(arm_texts[ai])), (o[--b] = (void *)__FILE__),
         (o[--b] = arms[ai] + color), (arms[ai](t, a, b, o, s));
 }
 char fruitful[3];

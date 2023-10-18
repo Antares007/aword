@@ -1,19 +1,7 @@
-r
-  s_ab ab ab ab print.
-ab
-  "".
-  "b".
+Tab
+  "t".
   "a".
+  "b".
 
-rsS
-  s_ss sS print.
-sS
-  "".
-  "s" sS sS.
-  "s" sS sS.
-
-rS
-  s_ba S print.
-S
-  0 "b".
-  1 S "a".
+r
+  Tab Tab Tab  print.
