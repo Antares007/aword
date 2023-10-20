@@ -31,5 +31,5 @@ int main(int argc, const char **argv) {
   o[a++] = munmap;
 //  ti_init();
   n_t w = Bark("b r o");
-  (w)(0, a, b, o, "");
+  (w)(0, a, b, o, 0);
 }

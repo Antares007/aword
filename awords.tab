@@ -3,5 +3,13 @@ Tab
   "a".
   "b".
 
+rtab
+  s_tab Tab Tab Tab  print.
+
 r
-  Tab Tab Tab  print.
+  s_ss sS print.
+
+sS
+  2 "s" sS sS.
+  1 "s" sS sS.
+  0 "".

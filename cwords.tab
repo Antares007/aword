@@ -37,14 +37,14 @@ print {
   N(print) {
     const char*scolor = o[--a];
     n_t color = o[--a];
-    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s ", o[i]); Printf(")");
+    Printf("P_%s(", scolor); for(long i = 5; i < a; i++) Printf("%s", o[i]); Printf(")");
     a = 5;
     color(t, a, b, o, s);
   }
   G(Yellow) { o[a++] = Yellow; o[a++] = "Yellow"; print(t, a, b, o, s); }
   G(Green ) { o[a++] = Green;  o[a++] = "Green";  print(t, a, b, o, s); }
 }.
-s_ab  { G(Yellow) { Yellow(t, a, b, o, "ab"); } }.
+s_tab { G(Yellow) { Yellow(t, a, b, o, "tab"); } }.
 s_ba  { G(Yellow) { Yellow(t, a, b, o, "ba"); } }.
 s_abc { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_ss  { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
