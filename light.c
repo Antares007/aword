@@ -45,7 +45,7 @@ N(Yellow_Maroon ) { t_t *c = τ[+1];
                       for (long i       = c->i; i < c->count; i++)
                         (c->arms[i]     = c->arms[i + 1]),
                         (c->fruitful[i] = c->fruitful[i + 1]);
-                      // printf("trimed %ld %ld ", c->i, c->count), P;
+                      printf("trimed %ld %ld ", c->i, c->count), P;
                       if (c->i == c->count)
                         (c->i = 0), goTo(τ, α, β, ο, σ, 2, 1);
                       else
@@ -159,7 +159,7 @@ void ti(const char*n, long ρ, long δ) {
   ti_step(n, ρ, δ);
 }
 N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
-N(s_baaa) { goTo(τ, α, β, ο, "baaa", ρ, δ); }
+N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
 D(sS,
   B(T(n1), T(s), T(sS), T(sS)),
   B(T(n1), T(s), T(sS), T(sS)),
@@ -168,10 +168,9 @@ D(sS,
 D(S, B(T(a)),
      B(T(b)),
      B(T(S), T(a)),
-     B(T(S), T(s)),
 )
 int main() {
-  void **text = 2 + (void *[]) { T(bro), T(s_baaa), T(S), T(print), T(o) };
+  void **text = 2 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);

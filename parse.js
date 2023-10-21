@@ -24,7 +24,7 @@ n_t Tab_Yellow[6];
 n_t Tab_Green [6];
 n_t Tab_Red   [6];
 n_t Tab_Blue  [6];
-n_t Tab_Back  [5];
+
 long  arms_count = ${s.length};
 n_t   arms[${s.length}];
 const char *arm_texts[${s.length}];
@@ -33,19 +33,14 @@ N(switch_arm) {
   long narm   = ai + 1;
   long charge = narm / arms_count;
   ai          = narm - charge * arms_count;
-  ((n_t)o[a - charge])(t, a - 1, b, o, s);
-}
-N(tab) {
-  long color    = ((long *)o[b])[5];
   if (arms[ai])
-    (arms[ai] + color)(t, a, b, o, s);
+    ((n_t)o[a - charge])(t, a - 1, b, o, s);
   else
-    (arms[ai]   = Bark(arm_texts[ai])), (o[--b] = (void *)__FILE__),
-        (o[--b] = arms[ai] + color), (arms[ai](t, a, b, o, s));
+    (arms[ai] = Bark(arm_texts[ai])),
+      (o[--b] = o[a - charge]),
+        (arms[ai](t, a - 1, b, o, s));
 }
 char fruitful[3];
-
-long bi, back_color;
 n_t *frontdoor, *backdoor;
 n_t locked_frontdoor[4];
 n_t opened_frontdoor[4];
@@ -53,10 +48,10 @@ n_t Yellow_yellow_Yellow_backdoor[4];
 n_t Yellow_yellow_Green_backdoor[4];
 n_t Yellow_green_Green_backdoor[4];
 
-N(opened_frontdoor_Yellow) { (o[--b] = Tab_Yellow), tab(t, a, b, o, s); }
-N(opened_frontdoor_Green ) { (o[--b] = Tab_Green),  tab(t, a, b, o, s); }
-N(opened_frontdoor_Red   ) { (o[--b] = Tab_Red),    tab(t, a, b, o, s); }
-N(opened_frontdoor_Blue  ) { (o[--b] = Tab_Blue),   tab(t, a, b, o, s); }
+N(opened_frontdoor_Yellow) { (o[--b] = Tab_Yellow), (arms[ai]+ 32)(t, a, b, o, s); }
+N(opened_frontdoor_Green ) { (o[--b] = Tab_Green),  (arms[ai]+ 64)(t, a, b, o, s); }
+N(opened_frontdoor_Red   ) { (o[--b] = Tab_Red),    (arms[ai]+ 96)(t, a, b, o, s); }
+N(opened_frontdoor_Blue  ) { (o[--b] = Tab_Blue),   (arms[ai]+128)(t, a, b, o, s); }
 
 N(locked_frontdoor_Yellow) { (frontdoor = opened_frontdoor), opened_frontdoor_Yellow(t, a, b, o, s); }
 N(locked_frontdoor_Green ) { (frontdoor = opened_frontdoor), opened_frontdoor_Green(t, a, b, o, s); }
@@ -70,27 +65,19 @@ R(Blue  ) { frontdoor[3](t, a, b, o, s); }
 
 static void init_doors() {
   frontdoor = locked_frontdoor;
-  locked_frontdoor[0] = locked_frontdoor_Yellow;
-  locked_frontdoor[1] = locked_frontdoor_Green;
-  locked_frontdoor[2] = locked_frontdoor_Red;
-  locked_frontdoor[3] = locked_frontdoor_Blue;
-  opened_frontdoor[0] = opened_frontdoor_Yellow;
-  opened_frontdoor[1] = opened_frontdoor_Green;
-  opened_frontdoor[2] = opened_frontdoor_Red;
-  opened_frontdoor[3] = opened_frontdoor_Blue;
-//  Yellow_yellow_back[0] = Yellow_yellow_Olive;
-//  Yellow_yellow_back[1] = Yellow_yellow_Lime;
-//  Yellow_yellow_back[2] = Yellow_yellow_Maroon;
-//  Yellow_yellow_back[3] = Yellow_yellow_Navy;
-}
-G(Olive) { Olive(t, a, b, o, s); }
-G(Lime) { Lime(t, a, b, o, s); }
+  locked_frontdoor[0]   = locked_frontdoor_Yellow;
+  locked_frontdoor[1]   = locked_frontdoor_Green;
+  locked_frontdoor[2]   = locked_frontdoor_Red;
+  locked_frontdoor[3]   = locked_frontdoor_Blue;
 
-N(Back_Olive) { Olive(t, a, b, o, s); }
-N(Back_Lime) { Lime(t, a, b, o, s); }
+  opened_frontdoor[0]   = opened_frontdoor_Yellow;
+  opened_frontdoor[1]   = opened_frontdoor_Green;
+  opened_frontdoor[2]   = opened_frontdoor_Red;
+  opened_frontdoor[3]   = opened_frontdoor_Blue;
+}
 
 N(Yellow_proxy) { (backdoor = Yellow_yellow_Yellow_backdoor), Yellow(t, a, b, o, s); }
-N(Green_proxy ) { (backdoor = Yellow_yellow_Green_backdoor), Green(t, a, b, o, s); }
+N(Green_proxy) { (backdoor = Yellow_yellow_Green_backdoor), Green(t, a, b, o, s); }
 N(Yellow_yellow) {
   fruitful[ai] = 1;
   (o[a++] = Yellow_proxy), (o[a] = Green_proxy), switch_arm(t, a, b, o, s);
@@ -124,50 +111,40 @@ N(Yellow_red) {
     (o[a++] = Red_trim), (o[a] = Blue_trim);
   switch_arm(t, a, b, o, s);
 }
-N(Yellow_blue ) { Blue(t, a, b, o, s); }
-N(Green_green ) { Yellow_green(t, a, b, o, s); }
-N(Green_blue  ) { Blue(t, a, b, o, s); }
-N(Red_red     ) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
-N(Red_blue    ) { Blue(t, a, b, o, s); }
-N(Blue_blue   ) { Blue(t, a, b, o, s); }
-N(stop        ) { P; }
-G(Purple      ) {
+N(Yellow_blue) { Blue(t, a, b, o, s); }
+N(Green_green) { Yellow_green(t, a, b, o, s); }
+N(Green_blue) { Blue(t, a, b, o, s); }
+N(Red_red) { (o[a++] = Red), (o[a] = Blue), switch_arm(t, a, b, o, s); }
+N(Red_blue) { Blue(t, a, b, o, s); }
+N(Blue_blue) { Blue(t, a, b, o, s); }
+N(stop) { P; }
+
+G(Purple) {
 ${s.map((a, i) => `  arm_texts[${i}] = "${a}"; fruitful[${i}] = 0;`).join('\n')}
   init_doors();
   Tab_Yellow[0] = Yellow_yellow;
   Tab_Yellow[1] = Yellow_green;
   Tab_Yellow[2] = Yellow_red;
   Tab_Yellow[3] = Yellow_blue;
-  Tab_Yellow[4] = (void*)__FILE__;
-  Tab_Yellow[5] = (void*)0x20;
 
   Tab_Green [0] = stop;
   Tab_Green [1] = Green_green;
   Tab_Green [2] = stop;
   Tab_Green [3] = Green_blue;
-  Tab_Green [4] = (void*)__FILE__;
-  Tab_Green [5] = (void*)0x40;
 
   Tab_Red   [0] = stop;
   Tab_Red   [1] = stop;
   Tab_Red   [2] = Red_red;
   Tab_Red   [3] = Red_blue;
-  Tab_Red   [4] = (void*)__FILE__;
-  Tab_Red   [5] = (void*)0x60;
 
   Tab_Blue  [0] = stop;
   Tab_Blue  [1] = stop;
   Tab_Blue  [2] = stop;
   Tab_Blue  [3] = Blue_blue;
-  Tab_Blue  [4] = (void*)__FILE__;
-  Tab_Blue  [5] = (void*)0x80;
 
-  Tab_Back  [0] = Back_Olive;
-  Tab_Back  [1] = Back_Lime;
-  Tab_Back  [2] = stop;
-  Tab_Back  [3] = stop;
-  Tab_Back  [4] = (void*)__FILE__;
-  Purple(t, a, b, o, s);
+  arms[0] = Bark(arm_texts[0]);
+  (o[--b] = Purple);
+  arms[0](t, a, b, o, s);
 }
 `
 }

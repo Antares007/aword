@@ -30,8 +30,8 @@ tab {
   G(Lime    ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
   G(yellow  ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
   G(Olive   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
-  G(purple  ) { ((n_t)o[b])    (t, a, b + 2, o, s); }
-  G(Fuchsia ) { ((n_t)o[b])    (t, a, b + 2, o, s); }
+  G(purple  ) { ((n_t )o[b])   (t, a, b + 1, o, s); }
+  G(Fuchsia ) { ((n_t )o[b])   (t, a, b + 1, o, s); }
 }.
 print {
   N(print) {
