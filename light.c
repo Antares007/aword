@@ -135,6 +135,7 @@ N(n3) { if (δ == 1) ο[α++] = "3"; goTo(τ, α, β, ο, σ, ρ, δ); }
 N(n4) { if (δ == 1) ο[α++] = "4"; goTo(τ, α, β, ο, σ, ρ, δ); }
 N(n5) { if (δ == 1) ο[α++] = "5"; goTo(τ, α, β, ο, σ, ρ, δ); }
 N(a) { τ[+1] = "a"; term(τ, α, β, ο, σ, ρ, δ); }
+N(aa){ τ[+1] = "aa";term(τ, α, β, ο, σ, ρ, δ); }
 N(b) { τ[+1] = "b"; term(τ, α, β, ο, σ, ρ, δ); }
 N(s) { τ[+1] = "s"; term(τ, α, β, ο, σ, ρ, δ); }
 D(n345,
@@ -160,6 +161,12 @@ void ti(const char*n, long ρ, long δ) {
 }
 N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
 N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
+N(s_aaaaaa) { goTo(τ, α, β, ο, "aaaaaa", ρ, δ); }
+D(A2,B(T(ε)),
+     B(T(aa),T(A2)),
+     B(T(a), T(A2)))
+D(A1,B(T(aa),T(A2)),
+     B(T(a), T(A2)))
 D(sS,
   B(T(n1), T(s), T(sS), T(sS)),
   B(T(n1), T(s), T(sS), T(sS)),
@@ -170,7 +177,7 @@ D(S, B(T(a)),
      B(T(S), T(a)),
 )
 int main() {
-  void **text = 2 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
+  void **text = 2 + (void *[]) { T(bro), T(s_aaaaaa), T(A1), T(print), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);

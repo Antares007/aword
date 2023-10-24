@@ -1,13 +1,13 @@
 b {
-  G(blue    ) { Yellow (0, 5, b, o, s); }
+  G(blue    ) { Yellow (t, 5, b, o, s); }
   G(red     ) { P; }
   G(green   ) { lime   (t, a, b, o, s); }
   G(Lime    ) { Printf ("\n");
-                Yellow (0, 5, b, o, s); }
+                Yellow (t, 5, b, o, s); }
   G(yellow  ) { olive  (t, a, b, o, s); }
   G(Olive   ) { fuchsia(t, a, b, o, s); }
   G(Fuchsia ) { P; }
-  G(purple  ) { Yellow (0, 5, b, o, s); }
+  G(purple  ) { Yellow (t, 5, b, o, s); }
 }.
 o {
   R(Purple  ) { purple (t, a, b, o, s); }
@@ -49,3 +49,4 @@ s_ba  { G(Yellow) { Yellow(t, a, b, o, "ba"); } }.
 s_abc { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_ss  { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
 s_s   { G(Yellow) { Yellow(t, a, b, o, "s"); } }.
+s_aaaaaa   { G(Yellow) { Yellow(t, a, b, o, "aaaaaa"); } }.

@@ -25,11 +25,11 @@ int main(int argc, const char **argv) {
   void*o[512];
   long b = sizeof(o) / sizeof(*o);
   o[a++] = printf;
-  o[a++] = ti;
+  o[a++] = strcmp;
   o[a++] = map_file;
   o[a++] = usleep;
   o[a++] = munmap;
-//  ti_init();
+  o[a+0] = __FILE__; o[a+1] = 0;
   n_t w = Bark("b r o");
   (w)(0, a, b, o, 0);
 }

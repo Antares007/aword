@@ -5,11 +5,30 @@ Tab
 
 rtab
   s_tab Tab Tab Tab  print.
+rS
+  s_ba S print.
+S
+  "b".
+  S "a".
 
 r
-  s_ss sS print.
+  s_aaaaaa RR print. 
+RR
+  0 "aa" RRc.
+  1 "a" RRc.
+RRc
+  2 "".
+  3 "aa" RRc.
+  4 "a" RRc.
+LR
+  "aa".
+  "a".
+  LR "aa".
+  LR "a".
 
+rsS
+  s_ss sS print.
 sS
   0 "".
-  2 "s" sS sS.
   1 "s" sS sS.
+  2 "s" sS sS.
