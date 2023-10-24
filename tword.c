@@ -18,11 +18,11 @@ n_t Tab_Blue  [4];
 n_t *frontdoor, *backdoor;
 n_t locked_frontdoor[4];
 n_t opened_frontdoor[4];
-
-N(opened_frontdoor_Yellow ) { c_t*c = &right_arms; (o[--b] = c), (o[--b] = Tab_Yellow),  (c->arms[c->i] +  32)(t, a, b, o, s); }
-N(opened_frontdoor_Green  ) { c_t*c = &right_arms; (o[--b] = c), (o[--b] = Tab_Green),   (c->arms[c->i] +  64)(t, a, b, o, s); }
-N(opened_frontdoor_Red    ) { c_t*c = &right_arms; (o[--b] = c), (o[--b] = Tab_Red),     (c->arms[c->i] +  96)(t, a, b, o, s); }
-N(opened_frontdoor_Blue   ) { c_t*c = &right_arms; (o[--b] = c), (o[--b] = Tab_Blue),    (c->arms[c->i] + 128)(t, a, b, o, s); }
+const long Yellow_off = 32, Green_off = 64, Red_off = 96, Blue_off = 128;
+N(opened_frontdoor_Yellow ) { c_t*c = &right_arms; (o[--b] = Purple), (o[--b] = c), (o[--b] = Tab_Yellow),  (c->arms[c->i] + Yellow_off)(t, a, b, o, s); }
+N(opened_frontdoor_Green  ) { c_t*c = &right_arms; (o[--b] = Purple), (o[--b] = c), (o[--b] = Tab_Green),   (c->arms[c->i] + Green_off)(t, a, b, o, s); }
+N(opened_frontdoor_Red    ) { c_t*c = &right_arms; (o[--b] = Purple), (o[--b] = c), (o[--b] = Tab_Red),     (c->arms[c->i] + Red_off)(t, a, b, o, s); }
+N(opened_frontdoor_Blue   ) { c_t*c = &right_arms; (o[--b] = Purple), (o[--b] = c), (o[--b] = Tab_Blue),    (c->arms[c->i] + Blue_off)(t, a, b, o, s); }
 
 N(open_frontdoor) { 
   frontdoor = opened_frontdoor;
@@ -47,12 +47,12 @@ G(Green ) { frontdoor[1](t, a, b, o, s); }
 G(Red   ) { frontdoor[2](t, a, b, o, s); }
 G(Blue  ) { frontdoor[3](t, a, b, o, s); }
 
-N(Yellow_yellow ) { c_t*c = o[b++]; c->fruitful[c->i] = 1;
-                    ((c->i = (c->i + 1) % c->count) ? Green : Yellow)(t, a, b, o, s); }
-N(Yellow_green  ) { c_t*c = o[b++]; c->fruitful[c->i] = 1; Green(t, a, b, o, s); }
-N(Yellow_red    ) { c_t*c = o[b++];
+N(Yellow_yellow ) { c_t*c = o[b++]; n_t aw = o[b++]; c->fruitful[c->i] = 1;
+                    ((c->i = (c->i + 1) % c->count) ? aw + Green_off : aw + Yellow_off)(t, a, b, o, s); }
+N(Yellow_green  ) { c_t*c = o[b++]; n_t aw = o[b++]; c->fruitful[c->i] = 1; (aw + Green_off)(t, a, b, o, s); }
+N(Yellow_red    ) { c_t*c = o[b++]; n_t aw = o[b++];
                     if(c->fruitful[c->i]) {
-                      ((c->i = (c->i + 1) % c->count) ? Blue : Red)(t, a, b, o, s);
+                      ((c->i = (c->i + 1) % c->count) ? (aw + Blue_off) : (aw + Red_off))(t, a, b, o, s);
                     } else if (c->count == 1) {
                       maroon(t, a, b, o, s);
                     } else {
@@ -62,18 +62,18 @@ N(Yellow_red    ) { c_t*c = o[b++];
                         (c->arms[i]     = c->arms[i + 1]),
                         (c->fruitful[i] = c->fruitful[i + 1]);
                       // Printf("trimed %ld %ld ", c->i, c->count);
-                      ((c->i = (c->i + 0) % c->count) ? Blue : Red)(t, a, b, o, s);
+                      ((c->i = (c->i + 0) % c->count) ? (aw + Blue_off) : (aw + Red_off))(t, a, b, o, s);
                     }
                   }
-N(Yellow_blue   ) { Blue(t, a, b + 1, o, s); }
+N(Yellow_blue   ) { Blue(t, a, b + 2, o, s); }
 
 N(Green_green   ) { Yellow_green(t, a, b, o, s); }
-N(Green_blue    ) { Blue(t, a, b + 1, o, s); }
+N(Green_blue    ) { Blue(t, a, b + 2, o, s); }
 
-N(Red_red       ) { c_t*c = o[b++];
-                    ((c->i = (c->i + 1) % c->count) ? Blue : Red)(t, a, b, o, s); }
-N(Red_blue      ) { Blue(t, a, b + 1, o, s); }
-N(Blue_blue     ) { Blue(t, a, b + 1, o, s); }
+N(Red_red       ) { c_t*c = o[b++]; n_t aw = o[b++];
+                    ((c->i = (c->i + 1) % c->count) ? (aw + Blue_off) : (aw + Red_off))(t, a, b, o, s); }
+N(Red_blue      ) { Blue(t, a, b + 2, o, s); }
+N(Blue_blue     ) { Blue(t, a, b + 2, o, s); }
 
 N(stop) { P; }
 G(Purple) {
