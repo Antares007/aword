@@ -10,25 +10,21 @@ N(parse ) { n_t color = o[b++];
             else                               (color + 64)(t, a, b, o, s); }
 G(Yellow) { o[--b] = Yellow, parse(t, a, b, o, s); }
 G(Green ) { o[--b] = Green,  parse(t, a, b, o, s); }
-G(Purple) { ((long*)o)[a + 1]++, Purple(t, a, b, o, s); }
+G(Purple) { o[a + 2] = 0; ((long*)o)[a + 1]++, Purple(t, a, b, o, s); }
 `
 }
 function anumber(s) {
   return `
 G(Yellow) { o[a++] = "${s}"; Yellow(t, a, b, o, s); }
 G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
+G(Purple) { o[a + 2] = 0; Purple(t, a, b, o, s); }
 `
 }
 function tword(s, id) {
-return `
-#define COUNT ${s.length}
+return `#define COUNT ${s.length}
 long arms_count = COUNT;
-n_t arms[COUNT];
 const char *arm_texts[COUNT];
-char fruitful[COUNT];
-static void init() {
-${s.map((a, i) => `  arm_texts[${i}] = "${a}"; fruitful[${i}] = 0;`).join('\n')}
-}
+static void init() { ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')} }
 `
 }
 const util = require("node:util");
@@ -66,7 +62,7 @@ async function parse_awords(cwords) {
           throw new Error(`not a word '${w}.'`);
         return w;
       });
-  const tword_body = (await readFile("tword.c",'utf8')).split('\n').slice(7).join('\n');
+  const tword_body = (await readFile("tword.c",'utf8')).split('\n').slice(5).join('\n');
   const new_awords =
       dkeys.map((n, i) => ([ n, tword(d[n] = d[n].map(turnToAWords), i) + tword_body ]))
   const compiled =

@@ -10,7 +10,12 @@ rS
 S
   "b".
   S "a".
-
+rn1
+  n1 n1 n1 print.
+n1
+  1. 2. 3 n2.
+n2
+  3. 4. 5.
 r
   s_aaaaaa RR print. 
 RR
