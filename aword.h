@@ -8,4 +8,5 @@ typedef N((*n_t));
 #define W(atext)            Bark(atext)
 #define Usleep(s1)          ((void (*)(long))o[3])(s1)
 #define CMP(s1, s2)         ((int (*)(const char*, const char*))o[1])((s1), (s2))
-#define P                   Printf("%3ld %3ld %s %s\n", a, b, __FILE__, __FUNCTION__), Usleep(200000)
+#define P                   (void)0
+//#define P                   Printf("%3ld %3ld %s %s\n", a, b, __FILE__, __FUNCTION__), Usleep(20000)

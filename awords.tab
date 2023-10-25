@@ -16,8 +16,10 @@ n1
   1. 2. 3 n2.
 n2
   3. 4. 5.
+
 r
   s_aaaaaa RR print. 
+
 RR
   0 "aa" RRc.
   1 "a" RRc.
@@ -25,10 +27,11 @@ RRc
   2 "".
   3 "aa" RRc.
   4 "a" RRc.
+
 LR
+  LR "aa".
   "aa".
   "a".
-  LR "aa".
   LR "a".
 
 rsS

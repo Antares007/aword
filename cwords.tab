@@ -22,16 +22,16 @@ o {
   R(navy    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-  G(blue    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
-  G(Navy    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
-  G(red     ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
-  G(Maroon  ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
-  G(green   ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
-  G(Lime    ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
-  G(yellow  ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
-  G(Olive   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
-  G(purple  ) {  }
-  G(Fuchsia ) { ((n_t )o[b])   (t, a, b + 1, o, s); }
+  G(blue    ) {  ((n_t*)o[b])[3](t, a, b + 1, o, s); }
+  G(Navy    ) {  ((n_t*)o[b])[3](t, a, b + 1, o, s); }
+  G(red     ) {  ((n_t*)o[b])[2](t, a, b + 1, o, s); }
+  G(Maroon  ) {  ((n_t*)o[b])[2](t, a, b + 1, o, s); }
+  G(green   ) {  ((n_t*)o[b])[1](t, a, b + 1, o, s); }
+  G(Lime    ) {  ((n_t*)o[b])[1](t, a, b + 1, o, s); }
+  G(yellow  ) {  ((n_t*)o[b])[0](t, a, b + 1, o, s); }
+  G(Olive   ) {  ((n_t*)o[b])[0](t, a, b + 1, o, s); }
+  G(purple  ) {  ((n_t )o[b])   (t, a, b + 1, o, s); }
+  G(Fuchsia ) {  ((n_t )o[b])   (t, a, b + 1, o, s); }
 }.
 print {
   N(print) {
