@@ -18,21 +18,21 @@ n2
   3. 4. 5.
 
 r
-  s_aaaaaa RR print. 
+  s_aaaaaa id0 RR id3 print. 
 
 RR
-  0 "aa" RRc.
-  1 "a" RRc.
+  id1 0 "aa" RRc.
+  id1 1 "a" RRc.
 RRc
-  2 "".
-  3 "aa" RRc.
-  4 "a" RRc.
+  id1 2 "".
+  id1 3 "aa" RRc.
+  id1 4 "a" RRc.
 
 LR
-  LR "aa".
-  "aa".
-  "a".
-  LR "a".
+  id0 "aa".
+  id1 "a".
+  id2 LR "aa" print.
+  id3 LR "a" print.
 
 rsS
   s_ss sS print.
