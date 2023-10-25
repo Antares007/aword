@@ -10,14 +10,13 @@ N(parse ) { n_t color = o[b++];
             else                               (color + 64)(t, a, b, o, s); }
 G(Yellow) { o[--b] = Yellow, parse(t, a, b, o, s); }
 G(Green ) { o[--b] = Green,  parse(t, a, b, o, s); }
-G(Purple) { o[a + 2] = 0; ((long*)o)[a + 1]++, Purple(t, a, b, o, s); }
+G(Purple) { ((long*)o)[a + 1]++, Purple(t, a, b, o, s); }
 `
 }
 function anumber(s) {
   return `
 G(Yellow) { o[a++] = "${s}"; Yellow(t, a, b, o, s); }
 G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
-G(Purple) { o[a + 2] = 0; Purple(t, a, b, o, s); }
 `
 }
 function tword(s, id) {
