@@ -71,7 +71,7 @@ async function parse_awords(cwords) {
                    .map(compile))
               await Promise.all(dkeys.map(
                   n => exec(
-                      'cd abin && cat b r o > "b r o" && cat tab id2 o > "tab o" && ' +
+                      'cd abin && cat b r o > "b r o" && cat tab ε o > "tab o" && ' +
                       d[n].map(s => `cat ${s} > "${s}"`).join(" && "))))
   return compiled
 }

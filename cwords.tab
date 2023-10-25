@@ -49,7 +49,7 @@ s_abc { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_ss  { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
 s_s   { G(Yellow) { Yellow(t, a, b, o, "s"); } }.
 s_aaaaaa   { G(Yellow) { Yellow(t, a, b, o, "aaaaaa"); } }.
-id0 {
+ε {
   G(Yellow) { P; Yellow (t, a, b, o, s); }
   G(Green ) { P; Green  (t, a, b, o, s); }
   G(Red   ) { P; Red    (t, a, b, o, s); }
@@ -60,36 +60,11 @@ id0 {
   G(red   ) { P; red    (t, a, b, o, s); }
   G(blue  ) { P; blue   (t, a, b, o, s); }
 }.
-id1 {
-  G(Yellow) { P; Yellow (t, a, b, o, s); }
-  G(Green ) { P; Green  (t, a, b, o, s); }
-  G(Red   ) { P; Red    (t, a, b, o, s); }
-  G(Blue  ) { P; Blue   (t, a, b, o, s); }
-
-  G(yellow) { P; yellow (t, a, b, o, s); }
-  G(green ) { P; green  (t, a, b, o, s); }
-  G(red   ) { P; red    (t, a, b, o, s); }
-  G(blue  ) { P; blue   (t, a, b, o, s); }
-}.
-id2 {
-  G(Yellow) { P; Yellow (t, a, b, o, s); }
-  G(Green ) { P; Green  (t, a, b, o, s); }
-  G(Red   ) { P; Red    (t, a, b, o, s); }
-  G(Blue  ) { P; Blue   (t, a, b, o, s); }
-
-  G(yellow) { P; yellow (t, a, b, o, s); }
-  G(green ) { P; green  (t, a, b, o, s); }
-  G(red   ) { P; red    (t, a, b, o, s); }
-  G(blue  ) { P; blue   (t, a, b, o, s); }
-}.
-id3 {
-  G(Yellow) { P; Yellow (t, a, b, o, s); }
-  G(Green ) { P; Green  (t, a, b, o, s); }
-  G(Red   ) { P; Red    (t, a, b, o, s); }
-  G(Blue  ) { P; Blue   (t, a, b, o, s); }
-
-  G(yellow) { P; yellow (t, a, b, o, s); }
-  G(green ) { P; green  (t, a, b, o, s); }
-  G(red   ) { P; red    (t, a, b, o, s); }
-  G(blue  ) { P; blue   (t, a, b, o, s); }
-}.
+Fg  { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+Bg  { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id0 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id1 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id2 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id3 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id4 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
+id5 { G(Yellow) { P; Yellow (t, a, b, o, s); } G(Green ) { P; Green  (t, a, b, o, s); } G(Red   ) { P; Red    (t, a, b, o, s); } G(Blue  ) { P; Blue   (t, a, b, o, s); } G(yellow) { P; yellow (t, a, b, o, s); } G(green ) { P; green  (t, a, b, o, s); } G(red   ) { P; red    (t, a, b, o, s); } G(blue  ) { P; blue   (t, a, b, o, s); } }.
