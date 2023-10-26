@@ -18,13 +18,13 @@ n2
   3. 4. 5.
 
 r
-  s_aa RR print. 
+  s_aaaaaa LR print. 
 
 RR
   0 "aa" RRc.
   1 "a" RRc.
 RRc
-  2 "".
+  "".
   3 "aa" RRc.
   4 "a" RRc.
 LR

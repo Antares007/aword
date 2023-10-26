@@ -16,19 +16,18 @@ n_t Tab_Green [4];
 n_t Tab_Red   [4];
 n_t Tab_Blue  [4];
 
-n_t *front_separator, *right_separator, *left_separator, *back_separator;
+n_t *front_separator, *right_separator, *tab_or_back_separator, *back_separator;
 n_t locked_leftleft_gateway [4];
 n_t locked_right_gateway    [4];
 n_t right_gateway           [4];
 n_t locked_left_gateway     [4];
-n_t front_gateway           [4];
-n_t back_gateway            [4];
+n_t forward_gateway         [4];
+n_t backward_gateway        [4];
 n_t left_gateway            [4];
-n_t tab_gateway             [4];
 const long Yellow_off = 32, Green_off = 64, Red_off = 96, Blue_off = 128;
 #define Left_Gate(Yellow)                                                      \
   N(left_gate_##Yellow) {                                                      \
-    o[--b] = left_separator;                                                   \
+    o[--b] = tab_or_back_separator;                                                   \
     o[--b] = &left_arms;                                                       \
     o[--b] = Tab_##Yellow;                                                     \
     o[--b] = (void*)-1;                                                        \
@@ -40,15 +39,14 @@ N(locked_left_gate_Yellow ) { right_separator = left_gateway;
                               left_gateway[0](t, a, b, o, s); }
 N(locked_left_gate_Green  ) { right_separator = left_gateway;
                               left_gateway[1](t, a, b, o, s); }
-N(locked_left_gate_Red    ) { front_gateway[2](t, a, b, o, s); }
-N(locked_left_gate_Blue   ) { front_gateway[3](t, a, b, o, s); }
+N(locked_left_gate_Red    ) { forward_gateway[2](t, a, b, o, s); }
+N(locked_left_gate_Blue   ) { forward_gateway[3](t, a, b, o, s); }
 
 #define Right_Gate(Yellow)                                                     \
   N(right_gate_##Yellow) {                                                     \
-    o[--b] = front_gateway;                                                    \
+    o[--b] = right_separator;                                                  \
     o[--b] = &right_arms;                                                      \
     o[--b] = Tab_##Yellow;                                                     \
-    o[--b] = right_separator;                                                  \
     o[--b] = (void*)+1;                                                        \
     o[--b] = (void*)__FILE__;                                                  \
     (right_arms.arms[right_arms.i] + Yellow##_off)(t, a, b, o, s);             \
@@ -86,8 +84,8 @@ G(Olive ) { back_separator[0](t, a, b, o, s); }
 G(Lime  ) { back_separator[1](t, a, b, o, s); }
 G(Maroon) { back_separator[2](t, a, b, o, s); }
 G(Navy  ) { back_separator[3](t, a, b, o, s); }
-//#define PC (void)c
-#define PC Printf("%s %ld %ld/%ld\n", __FUNCTION__, c->fruitful[c->i], c->i, c->count)
+#define PC (void)c
+//#define PC Printf("%s %ld %ld/%ld\n", __FUNCTION__, c->fruitful[c->i], c->i, c->count)
 N(Yellow_Olive) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                   c->fruitful[c->i] = 1;
                   ((c->i = (c->i + 1) % c->count) ? gate[1] : gate[0])(t, a, b, o, s); }
@@ -147,23 +145,19 @@ G(Purple) {
   left_gateway[2] = left_gate_Red;
   left_gateway[3] = left_gate_Blue;
 
-  front_gateway[0] = Yellow;
-  front_gateway[1] = Green;
-  front_gateway[2] = Red;
-  front_gateway[3] = Blue;
-  tab_gateway[0] = tab_gate_Yellow;
-  tab_gateway[1] = tab_gate_Green;
-  tab_gateway[2] = tab_gate_Red;
-  tab_gateway[3] = tab_gate_Blue;
+  forward_gateway[0] = Yellow;
+  forward_gateway[1] = Green;
+  forward_gateway[2] = Red;
+  forward_gateway[3] = Blue;
 
   locked_leftleft_gateway[0] = locked_leftleft_gate_Yellow;
   locked_leftleft_gateway[1] = locked_leftleft_gate_Green;
   locked_leftleft_gateway[2] = locked_leftleft_gate_Red;
   locked_leftleft_gateway[3] = locked_leftleft_gate_Blue;
-  back_gateway[0] = Olive;
-  back_gateway[1] = Lime;
-  back_gateway[2] = Maroon;
-  back_gateway[3] = Navy;
+  backward_gateway[0] = Olive;
+  backward_gateway[1] = Lime;
+  backward_gateway[2] = Maroon;
+  backward_gateway[3] = Navy;
 
   Tab_Yellow[0] = Yellow_Olive;
   Tab_Yellow[1] = Yellow_Lime;
@@ -190,14 +184,14 @@ G(Purple) {
   const char *name = o[--a];
   if (CMP(name, __FILE__) == 0 && terminals_count == 0) {
     is_left_recursion     = 1;
-    front_separator       = front_gateway;
+    front_separator       = forward_gateway;
     back_separator        = locked_leftleft_gateway;
-    left_separator        = back_gateway;
+    tab_or_back_separator = backward_gateway;
   } else {
-    back_separator        = back_gateway;
+    back_separator        = backward_gateway;
     front_separator       = locked_right_gateway;
     right_separator       = locked_left_gateway;
-    left_separator        = tab_gateway;
+    tab_or_back_separator = forward_gateway;
   }
   left_arms.arms[0] = Bark("tab o");
   left_arms.count = 1;
@@ -219,9 +213,9 @@ N(set_arm) {
   n_t arm = o[--a];
   long i = (long)o[--a];
   if (is_left_recursion) {
-    n_t ε = left_arms.arms[left_arms.count - 1];
-    left_arms.arms[left_arms.count - 1] = arm;
-    left_arms.arms[left_arms.count++] = ε;
+    //n_t ε = left_arms.arms[left_arms.count - 1];
+    //left_arms.arms[left_arms.count - 1] = arm;
+    left_arms.arms[left_arms.count++] = arm;
   } else {
     right_arms.arms[right_arms.count++] = arm;
   }

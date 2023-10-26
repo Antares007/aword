@@ -132,13 +132,13 @@ void draw(step_t *steps, long count) {
 #include <string.h>
 void ti(char*color, char*name, long angle) {
   printf("%10s %10s %ld\n", color, name, angle);
-  static step_t steps[2048];
-  static long count = 0;
-  steps[count].color = color;
-  steps[count].name = name;
-  steps[count].angle = angle;
-  count++;
-  draw(steps, count);
+//  static step_t steps[2048];
+//  static long count = 0;
+//  steps[count].color = color;
+//  steps[count].name = name;
+//  steps[count].angle = angle;
+//  count++;
+//  draw(steps, count);
 }
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
