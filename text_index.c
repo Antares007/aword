@@ -55,7 +55,6 @@ Color LerpGradient(Color a, float point, float amount) {
   return LerpColor(LerpColor(a, BLACK, point), a, amount);
 }
 const char *format_name(const char *name) {
-  return name;
   long len = strlen(name);
   static char fname[100];
   strcpy(fname, name);

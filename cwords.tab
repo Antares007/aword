@@ -27,7 +27,7 @@ tab {
   G(Maroon  ) { TI("Maroon",    o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[2](t, a, b + 3, o, s); }
   G(Lime    ) { TI("Lime",      o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[1](t, a, b + 3, o, s); }
   G(Olive   ) { TI("Olive",     o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[0](t, a, b + 3, o, s); }
-  G(Fuchsia ) { TI("Fuchsia",    "T", -1             ); ((n_t )o[b])     (t, a, b + 1, o, s); }
+  G(Fuchsia ) { TI("Fuchsia", o[b+1], -1             ); ((n_t )o[b])     (t, a, b + 2, o, s); }
 }.
 print {
   N(print) {
@@ -43,7 +43,12 @@ print {
 s_tab     { G(Yellow) { Yellow(t, a, b, o, "tab"); } }.
 s_ba      { G(Yellow) { Yellow(t, a, b, o, "ba"); } }.
 s_bat     { G(Yellow) { Yellow(t, a, b, o, "bat"); } }.
+s_babatt  { G(Yellow) { Yellow(t, a, b, o, "babatt"); } }.
 s_abc     { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_ss      { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
 s_s       { G(Yellow) { Yellow(t, a, b, o, "s"); } }.
 s_aaaaaa  { G(Yellow) { Yellow(t, a, b, o, "aaaaaa"); } }.
+s_aaaaa   { G(Yellow) { Yellow(t, a, b, o, "aaaaa"); } }.
+s_aaaa    { G(Yellow) { Yellow(t, a, b, o, "aaaa"); } }.
+s_aaa     { G(Yellow) { Yellow(t, a, b, o, "aaa"); } }.
+s_aa      { G(Yellow) { Yellow(t, a, b, o, "aa"); } }.

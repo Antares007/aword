@@ -17,14 +17,14 @@ n1
 n2
   3. 4. 5.
 
-rLR
-  s_aaaaaa LR print. 
+r
+  s_aa RR print. 
 
 RR
   0 "aa" RRc.
   1 "a" RRc.
 RRc
-    "".
+  2 "".
   3 "aa" RRc.
   4 "a" RRc.
 LR
@@ -32,10 +32,11 @@ LR
   1 "a".
   3 LR "aa".
   4 LR "a".
-r
-  s_bat S print.
+rS
+  s_babatt S print.
 S
   "b".
+  S S.
   S "a".
   S "t".
 rsS

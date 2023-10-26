@@ -86,13 +86,15 @@ G(Olive ) { back_separator[0](t, a, b, o, s); }
 G(Lime  ) { back_separator[1](t, a, b, o, s); }
 G(Maroon) { back_separator[2](t, a, b, o, s); }
 G(Navy  ) { back_separator[3](t, a, b, o, s); }
-N(Yellow_Olive) { c_t *c = o[b++]; n_t *gate = o[b++];
+//#define PC (void)c
+#define PC Printf("%s %ld %ld/%ld\n", __FUNCTION__, c->fruitful[c->i], c->i, c->count)
+N(Yellow_Olive) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                   c->fruitful[c->i] = 1;
                   ((c->i = (c->i + 1) % c->count) ? gate[1] : gate[0])(t, a, b, o, s); }
-N(Yellow_Lime ) { c_t *c = o[b++]; n_t *gate = o[b++];
+N(Yellow_Lime ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                   c->fruitful[c->i] = 1;
                   gate[1](t, a, b, o, s); }
-N(Yellow_Maroon){ c_t *c = o[b++]; n_t *gate = o[b++];
+N(Yellow_Maroon){ c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                   if (c->fruitful[c->i]) {
                     ((c->i = (c->i + 1) % c->count) ? gate[3] : gate[2])(t, a, b, o, s);
                   } else if (c->count == 1) {
@@ -102,18 +104,21 @@ N(Yellow_Maroon){ c_t *c = o[b++]; n_t *gate = o[b++];
                     for (long i = c->i; i < c->count; i++)
                       // Unbark(c->arms[i], ((long *)c->arms[i])[1]),
                       (c->arms[i] = c->arms[i + 1]), (c->fruitful[i] = c->fruitful[i + 1]);
-                    // Printf("trimed %ld %ld ", c->i, c->count);
-                    ((c->i = (c->i + 0) % c->count) ? gate[3] : gate[2])(t, a, b, o, s);
+                    Printf("trimed %ld %ld\n", c->i, c->count);
+                    if (c->i == c->count) (c->i = 0), gate[2](t, a, b, o, s);
+                    else                              gate[3](t, a, b, o, s);
                   } }
-N(Yellow_Navy ) { b++; n_t *gate = o[b++]; gate[3](t, a, b, o, s); }
+N(Yellow_Navy ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[3](t, a, b, o, s); }
 
-N(Green_Lime  ) { Yellow_Lime(t, a, b, o, s); }
-N(Green_Navy  ) { Yellow_Navy(t, a, b, o, s); }
+N(Green_Lime  ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
+                  c->fruitful[c->i] = 1;
+                  gate[1](t, a, b, o, s);  }
+N(Green_Navy  ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[3](t, a, b, o, s); }
 
-N(Red_Maroon  ) { c_t *c = o[b++]; n_t *gate = o[b++];
+N(Red_Maroon  ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                   ((c->i = (c->i + 1) % c->count) ? gate[3] : gate[2])(t, a, b, o, s); }
-N(Red_Navy    ) { b++; n_t *gate = o[b++]; gate[2](t, a, b, o, s); }
-N(Blue_Navy   ) { Yellow_Navy(t, a, b, o, s); }
+N(Red_Navy    ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[2](t, a, b, o, s); }
+N(Blue_Navy   ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[3](t, a, b, o, s); }
 
 N(tab_gate_Yellow ) { ((n_t *)o[b])[0](t, a, b + 1, o, s); }
 N(tab_gate_Green  ) { ((n_t *)o[b])[1](t, a, b + 1, o, s); }
@@ -200,6 +205,7 @@ G(Purple) {
   right_arms.arms[0] = Bark(arm_texts[0]);
   right_arms.count = 1;
 
+  o[--b] = __FILE__;
   o[--b] = Purple;
   o[a++] = (void *)name;
   o[a++] = (void *)is_left_recursion;
@@ -213,7 +219,9 @@ N(set_arm) {
   n_t arm = o[--a];
   long i = (long)o[--a];
   if (is_left_recursion) {
-    left_arms.arms[left_arms.count++] = arm;
+    n_t ε = left_arms.arms[left_arms.count - 1];
+    left_arms.arms[left_arms.count - 1] = arm;
+    left_arms.arms[left_arms.count++] = ε;
   } else {
     right_arms.arms[right_arms.count++] = arm;
   }
@@ -225,6 +233,7 @@ N(init_next_arm) {
   if (i < arms_count) {
     n_t arm = Bark(arm_texts[i]);
     o[a++] = (void *)i;
+    o[--b] = (void*)__FILE__;
     o[--b] = set_arm;
     o[a++] = arm;
     o[a++] = (void *)__FILE__;
