@@ -119,7 +119,7 @@ function add_missing_rays([ n, b ]) {
   let pos;
   let i = 0;
   for (let k of Object.keys(rays))
-    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) === -2)
+    if (b.indexOf("G(" + rays[k]) + b.indexOf("R(" + rays[k]) + b.indexOf("B(" + rays[k]) === -3)
       b += `\nG(${rays[k]}) {  ${rays[k]}(t, a, b, o, s); }`;
   return [ n, b ];
 }

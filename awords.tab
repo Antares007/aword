@@ -11,13 +11,13 @@ S
   "b".
   S "a".
 rn1
-  n1 n1 n1 print.
+  n1 n1 print.
 n1
-  1. 2. 3 n2.
+  1. 2. 3.
 n2
   3. 4. 5.
 
-r
+rLR
   s_aaaaaa LR print. 
 
 RR
@@ -32,7 +32,12 @@ LR
   1 "a".
   3 LR "aa".
   4 LR "a".
-
+r
+  s_bat S print.
+S
+  "b".
+  S "a".
+  S "t".
 rsS
   s_ss sS print.
 sS

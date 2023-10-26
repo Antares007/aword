@@ -21,7 +21,7 @@ n_t locked_leftleft_gateway [4];
 n_t locked_right_gateway    [4];
 n_t right_gateway           [4];
 n_t locked_left_gateway     [4];
-n_t front_gateway            [4];
+n_t front_gateway           [4];
 n_t back_gateway            [4];
 n_t left_gateway            [4];
 n_t tab_gateway             [4];
@@ -31,6 +31,8 @@ const long Yellow_off = 32, Green_off = 64, Red_off = 96, Blue_off = 128;
     o[--b] = left_separator;                                                   \
     o[--b] = &left_arms;                                                       \
     o[--b] = Tab_##Yellow;                                                     \
+    o[--b] = (void*)-1;                                                        \
+    o[--b] = (void*)__FILE__;                                                  \
     (left_arms.arms[left_arms.i] + Yellow##_off)(t, a, b, o, s);               \
   }
 Left_Gate(Yellow) Left_Gate(Green) Left_Gate(Red) Left_Gate(Blue);
@@ -43,10 +45,12 @@ N(locked_left_gate_Blue   ) { front_gateway[3](t, a, b, o, s); }
 
 #define Right_Gate(Yellow)                                                     \
   N(right_gate_##Yellow) {                                                     \
-    o[--b] = front_gateway;                                                     \
+    o[--b] = front_gateway;                                                    \
     o[--b] = &right_arms;                                                      \
     o[--b] = Tab_##Yellow;                                                     \
     o[--b] = right_separator;                                                  \
+    o[--b] = (void*)+1;                                                        \
+    o[--b] = (void*)__FILE__;                                                  \
     (right_arms.arms[right_arms.i] + Yellow##_off)(t, a, b, o, s);             \
   }
 Right_Gate(Yellow) Right_Gate(Green) Right_Gate(Red) Right_Gate(Blue);
@@ -106,8 +110,7 @@ N(Yellow_Navy ) { b++; n_t *gate = o[b++]; gate[3](t, a, b, o, s); }
 N(Green_Lime  ) { Yellow_Lime(t, a, b, o, s); }
 N(Green_Navy  ) { Yellow_Navy(t, a, b, o, s); }
 
-N(Red_Maroon  ) { c_t *c = o[b++];
-                  n_t *gate = o[b++];
+N(Red_Maroon  ) { c_t *c = o[b++]; n_t *gate = o[b++];
                   ((c->i = (c->i + 1) % c->count) ? gate[3] : gate[2])(t, a, b, o, s); }
 N(Red_Navy    ) { b++; n_t *gate = o[b++]; gate[2](t, a, b, o, s); }
 N(Blue_Navy   ) { Yellow_Navy(t, a, b, o, s); }
@@ -196,6 +199,7 @@ G(Purple) {
 
   right_arms.arms[0] = Bark(arm_texts[0]);
   right_arms.count = 1;
+
   o[--b] = Purple;
   o[a++] = (void *)name;
   o[a++] = (void *)is_left_recursion;

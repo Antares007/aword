@@ -13,11 +13,21 @@ o {
   G(Blue    ) { Navy   (t, a, b, o, s); }
 }.
 tab { 
-  G(Navy    ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
-  G(Maroon  ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
-  G(Lime    ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
-  G(Olive   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
-  G(Fuchsia ) { ((n_t )o[b])   (t, a, b + 1, o, s); }
+#define B(Yellow, Angle)                                                                                  \
+  N(Yellow##_tin) __attribute__((noinline));                                                       \
+  N(Yellow##_tin) { TI(#Yellow "_T", __FILE__, +1*Angle); Yellow(t, a, b, o, s); } \
+  R(Yellow) { Yellow##_tin(t, a, b, o, s); }
+  B(Yellow, (long)o[b+1])
+  B(Green , (long)o[b+1])
+  B(Red   , (long)o[b+1])
+  B(Blue  , (long)o[b+1])
+  B(Purple, 1)
+
+  G(Navy    ) { TI("Navy",      o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[3](t, a, b + 3, o, s); }
+  G(Maroon  ) { TI("Maroon",    o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[2](t, a, b + 3, o, s); }
+  G(Lime    ) { TI("Lime",      o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[1](t, a, b + 3, o, s); }
+  G(Olive   ) { TI("Olive",     o[b], -1*(long)o[b+1]); ((n_t*)o[b+2])[0](t, a, b + 3, o, s); }
+  G(Fuchsia ) { TI("Fuchsia",    "T", -1             ); ((n_t )o[b])     (t, a, b + 1, o, s); }
 }.
 print {
   N(print) {
@@ -32,6 +42,7 @@ print {
 }.
 s_tab     { G(Yellow) { Yellow(t, a, b, o, "tab"); } }.
 s_ba      { G(Yellow) { Yellow(t, a, b, o, "ba"); } }.
+s_bat     { G(Yellow) { Yellow(t, a, b, o, "bat"); } }.
 s_abc     { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
 s_ss      { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
 s_s       { G(Yellow) { Yellow(t, a, b, o, "s"); } }.
