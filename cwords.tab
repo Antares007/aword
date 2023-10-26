@@ -40,15 +40,5 @@ print {
   G(Yellow) { o[a++] = Yellow; o[a++] = "Yellow"; print(t, a, b, o, s); }
   G(Green ) { o[a++] = Green;  o[a++] = "Green";  print(t, a, b, o, s); }
 }.
-s_tab     { G(Yellow) { Yellow(t, a, b, o, "tab"); } }.
-s_ba      { G(Yellow) { Yellow(t, a, b, o, "ba"); } }.
-s_bat     { G(Yellow) { Yellow(t, a, b, o, "bat"); } }.
-s_babatt  { G(Yellow) { Yellow(t, a, b, o, "babatt"); } }.
-s_abc     { G(Yellow) { Yellow(t, a, b, o, "abc"); } }.
-s_ss      { G(Yellow) { Yellow(t, a, b, o, "ss"); } }.
-s_s       { G(Yellow) { Yellow(t, a, b, o, "s"); } }.
-s_aaaaaa  { G(Yellow) { Yellow(t, a, b, o, "aaaaaa"); } }.
-s_aaaaa   { G(Yellow) { Yellow(t, a, b, o, "aaaaa"); } }.
-s_aaaa    { G(Yellow) { Yellow(t, a, b, o, "aaaa"); } }.
-s_aaa     { G(Yellow) { Yellow(t, a, b, o, "aaa"); } }.
-s_aa      { G(Yellow) { Yellow(t, a, b, o, "aa"); } }.
+set       { G(Yellow) { Yellow(t, a-1, b, o, o[a-1]); } }.
+re        { G(Yellow) { Yellow(t, a, b, o, 0); } }.

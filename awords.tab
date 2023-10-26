@@ -2,23 +2,18 @@ Tab
   "t".
   "a".
   "b".
-
 rtab
-  s_tab Tab Tab Tab  print.
-rS
-  s_ba S print.
-S
-  "b".
-  S "a".
-rn1
-  n1 n1 print.
+  re "tab" set Tab Tab Tab  print.
+
+r
+  n1 n1 n1 print.
 n1
-  1. 2. 3.
+  1. 2. 3 n2.
 n2
   3. 4. 5.
 
-r
-  s_aaaaaa LR print. 
+raa
+  re "aaaaaa" set RR print. 
 
 RR
   0 "aa" RRc.
@@ -32,16 +27,26 @@ LR
   1 "a".
   3 LR "aa".
   4 LR "a".
+
 rS
-  s_babatt S print.
+  re "babatt" set S print.
 S
   "b".
   S S.
   S "a".
   S "t".
 rsS
-  s_ss sS print.
+  re "ss" set sS print.
 sS
   0 "".
   1 "s" sS sS.
   2 "s" sS sS.
+
+rexp
+  re "(1+1)*2" set E print.
+E
+  "1".
+  "2".
+  E "+" E.
+  E "*" E.
+  "(" E ")".

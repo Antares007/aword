@@ -68,7 +68,7 @@ async function parse_awords(cwords) {
       await Promise
           .all([...Object.keys(anon).map(n => ([ n, anon[n] ])), ...new_awords ]
                    .map(add_missing_rays)
-                   .map(compile))
+                   .map(compile));
               await Promise.all(dkeys.map(
                   n => exec(
                       'cd abin && cat b r o > "b r o" && cat tab o > "tab o" && ' +
@@ -179,10 +179,8 @@ function hashCode(s) {
 }
 function anonize(f, anon) {
   return function anonized(s) {
-    const n = "aw_" +
-              (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); //"A" + hashCode(s);
-    if (anon[n])
-      return n;
+    const n = "A" + hashCode(s); //"aw_" + (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); 
+    if (anon[n]) return n;
     anon[n] = f(s);
     return n;
   }

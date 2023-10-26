@@ -102,7 +102,7 @@ N(Yellow_Maroon){ c_t *c = o[b++]; n_t *gate = o[b++]; PC;
                     for (long i = c->i; i < c->count; i++)
                       // Unbark(c->arms[i], ((long *)c->arms[i])[1]),
                       (c->arms[i] = c->arms[i + 1]), (c->fruitful[i] = c->fruitful[i + 1]);
-                    Printf("trimed %ld %ld\n", c->i, c->count);
+                    //Printf("trimed %ld %ld\n", c->i, c->count);
                     if (c->i == c->count) (c->i = 0), gate[2](t, a, b, o, s);
                     else                              gate[3](t, a, b, o, s);
                   } }
@@ -118,10 +118,6 @@ N(Red_Maroon  ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC;
 N(Red_Navy    ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[2](t, a, b, o, s); }
 N(Blue_Navy   ) { c_t *c = o[b++]; n_t *gate = o[b++]; PC; gate[3](t, a, b, o, s); }
 
-N(tab_gate_Yellow ) { ((n_t *)o[b])[0](t, a, b + 1, o, s); }
-N(tab_gate_Green  ) { ((n_t *)o[b])[1](t, a, b + 1, o, s); }
-N(tab_gate_Red    ) { ((n_t *)o[b])[2](t, a, b + 1, o, s); }
-N(tab_gate_Blue   ) { ((n_t *)o[b])[3](t, a, b + 1, o, s); }
 N(stop) { P; }
 G(Purple) {
   if (b < a)
