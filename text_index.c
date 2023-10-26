@@ -35,10 +35,10 @@ float zoom = 1;
 Vector2 off = {0, 0};
 typedef struct step_t {
   const char *color, *name;
-  long t, a, b;
-  void **o;
-  const char *s;
-  n_t cont;
+  //long t, a, b;
+  //void **o;
+  //const char *s;
+  //n_t cont;
   long angle;
 } step_t;
 Color calc_color(step_t *s) { return colors[(int)s->color[0]]; }
@@ -131,16 +131,12 @@ void draw(step_t *steps, long count) {
   );
 }
 #include <string.h>
-void ti(char*color, char*name, long t, long a, long b, void**o, char*s, long angle) {
-//  printf("%10s %ld %3ld %3ld %10s %s\n", s, t, a, b, color, name);
+void ti(char*color, char*name, long angle) {
+//  printf("%10s %10s\n", color, name);
   static step_t steps[2048];
   static long count = 0;
   steps[count].color = color;
   steps[count].name = name;
-  steps[count].t = t;
-  steps[count].a = a;
-  steps[count].b = b;
-  steps[count].o = o;
   steps[count].angle = angle;
   count++;
 //  draw(steps, count);
