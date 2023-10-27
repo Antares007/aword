@@ -1,40 +1,29 @@
 Tab
-  "t".
-  "a".
-  "b".
+  "t". "a". "b".
 rtab
   re "tab" set Tab Tab Tab  print.
 
-r
+rn1
   n1 n1 n1 print.
 n1
   1. 2. 3 n2.
 n2
   3. 4. 5.
 
-raa
+r
   re "aaaaaa" set RR print. 
-
 RR
-  0 "aa" RRc.
-  1 "a" RRc.
+  0 "aa" RRc. 1 "a" RRc.
 RRc
-  "".
-  3 "aa" RRc.
-  4 "a" RRc.
+  "". 3 "aa" RRc. 4 "a" RRc.
 LR
-  0 "aa".
-  1 "a".
-  3 LR "aa".
-  4 LR "a".
+  0 "aa". 1 "a". 3 LR "aa". 4 LR "a".
 
 rS
   re "babatt" set S print.
 S
-  "b".
-  S S.
-  S "a".
-  S "t".
+  "b". S S. S "a". S "t".
+
 rsS
   re "ss" set sS print.
 sS
@@ -42,11 +31,30 @@ sS
   1 "s" sS sS.
   2 "s" sS sS.
 
-rexp
+rE
   re "(1+1)*2" set E print.
 E
   "1".
   "2".
-  E "+" E.
-  E "*" E.
-  "(" E ")".
+   E   "+"   E.
+   E   "*"   E.
+  "("   E   ")".
+
+rs
+  re "isamntpwab" set s print.
+s
+  np vp. s pp.
+np
+  noun. det noun. np pp.
+pp
+  prep np.
+vp
+  verb np.
+det
+  "a". "t".
+noun
+  "i". "m". "p". "b".
+verb
+  "s".
+prep
+  "n". "w".
