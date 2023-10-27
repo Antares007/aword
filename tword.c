@@ -98,7 +98,8 @@ N(Yellow_Lime ) { PC; (c->fruitful[c->i] = 1), gate[1](t, a, b, o, s); }
 N(Yellow_Maroon){ PC;
                   if (c->fruitful[c->i])  (propeller(c) ? gate[3] : gate[2])(t, a, b, o, s);
                   else if (c->count == 1) gate[2](t, a, b, o, s);
-                  else                    propeller(c) ? gate[3](t, a, b, o, s) : gate[2](t, a, b, o, s); }
+                  else                    (c->trimed[c->i] = 1),
+                                          (propeller(c) ? gate[3] : gate[2])(t, a, b, o, s); }
 N(Yellow_Navy ) { PC; gate[3](t, a, b, o, s); }
 
 N(Green_Lime  ) { PC; (c->fruitful[c->i] = 1), gate[1](t, a, b, o, s);  }
