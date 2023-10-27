@@ -30,7 +30,14 @@ n_t locked_left_gateway     [4];
 n_t forward_gateway         [4];
 n_t backward_gateway        [4];
 n_t left_gateway            [4];
+n_t tab_gateway             [4];
 const long Yellow_off = 32, Green_off = 64, Red_off = 96, Blue_off = 128;
+
+N(tab_gate_Yellow   ) { ((n_t*)o[b])[0](t, a, b + 1, o, s); }
+N(tab_gate_Green    ) { ((n_t*)o[b])[1](t, a, b + 1, o, s); }
+N(tab_gate_Red      ) { ((n_t*)o[b])[2](t, a, b + 1, o, s); }
+N(tab_gate_Blue     ) { ((n_t*)o[b])[3](t, a, b + 1, o, s); }
+
 #define Left_Gate(Yellow)                                                      \
   N(left_gate_##Yellow) {                                                      \
     o[--b] = tab_or_back_separator;                                            \
@@ -50,9 +57,10 @@ N(locked_left_gate_Blue   ) { forward_gateway[3](t, a, b, o, s); }
 
 #define Right_Gate(Yellow)                                                     \
   N(right_gate_##Yellow) {                                                     \
-    o[--b] = right_separator;                                                  \
+    o[--b] = forward_gateway;                                                  \
     o[--b] = &right_arms;                                                      \
     o[--b] = Tab_##Yellow;                                                     \
+    o[--b] = right_separator;                                                  \
     o[--b] = (void*)+1;                                                        \
     o[--b] = (void*)__FILE__;                                                  \
     (right_arms.arms[right_arms.i] + Yellow##_off)(t, a, b, o, s);             \
@@ -133,6 +141,11 @@ G(Purple) {
   left_gateway[2] = left_gate_Red;
   left_gateway[3] = left_gate_Blue;
 
+  tab_gateway[0] = tab_gate_Yellow;
+  tab_gateway[1] = tab_gate_Green;
+  tab_gateway[2] = tab_gate_Red;
+  tab_gateway[3] = tab_gate_Blue;
+
   forward_gateway[0] = Yellow;
   forward_gateway[1] = Green;
   forward_gateway[2] = Red;
@@ -179,7 +192,7 @@ G(Purple) {
     back_separator        = backward_gateway;
     front_separator       = locked_right_gateway;
     right_separator       = locked_left_gateway;
-    tab_or_back_separator = forward_gateway;
+    tab_or_back_separator = tab_gateway;
   }
   left_arms.arms[0] = Bark("tab o");
   left_arms.count = 1;

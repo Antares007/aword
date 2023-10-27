@@ -179,7 +179,7 @@ function hashCode(s) {
 }
 function anonize(f, anon) {
   return function anonized(s) {
-    const n = "A" + hashCode(s); //"aw_" + (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); 
+    const n = "aw_" + (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); //"A" + hashCode(s);
     if (anon[n]) return n;
     anon[n] = f(s);
     return n;

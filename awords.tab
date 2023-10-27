@@ -31,15 +31,6 @@ sS
   1 "s" sS sS.
   2 "s" sS sS.
 
-rE
-  re "(1+1)*2" set E print.
-E
-  "1".
-  "2".
-   E   "+"   E.
-   E   "*"   E.
-  "("   E   ")".
-
 rs
   re "isamntpwab" set s print.
 s

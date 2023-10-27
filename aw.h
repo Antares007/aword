@@ -7,7 +7,7 @@
 #define G(Olive)                                                               \
   N(Olive##_nar) __attribute__((noinline));                                    \
   N(Olive##_tin) __attribute__((noinline));                                    \
-  N(Olive##_tin) { TI(#Olive, __FILE__, 0); Olive##_nar(t, a, b, o, s); }      \
+  N(Olive##_tin) {  TI(#Olive, __FILE__, 0); Olive##_nar(t, a, b, o, s); }     \
   R(Olive) { Olive##_tin(t,a,b,o,s); }                                         \
   N(Olive##_nar)
 
