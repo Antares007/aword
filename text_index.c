@@ -66,7 +66,6 @@ const char *format_name(const char *name) {
 #include <stdlib.h>
 void draw(step_t *steps, long count) {
   int key = 0;
-  static char skip_color = 'A';
   static int semi_auto = 0;
   do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -118,8 +117,6 @@ void draw(step_t *steps, long count) {
     key = GetCharPressed();
     if (key == 'c')
       semi_auto = !semi_auto;
-    if (key == 's')
-      skip_color = steps[count - 1].color[0];
     if (WindowShouldClose())
       exit(0);
   } while (key != 'n' && !semi_auto
@@ -130,19 +127,21 @@ void draw(step_t *steps, long count) {
   );
 }
 #include <string.h>
-void ti(char*color, char*name, long angle) {
-//  printf("%10s %10s %ld\n", color, name, angle);
-//  static step_t steps[2048];
-//  static long count = 0;
-//  steps[count].color = color;
-//  steps[count].name = name;
-//  steps[count].angle = angle;
-//  count++;
-//  draw(steps, count);
+void ti(char*color, char*name, long t, long a, long b, long angle ) {
+#ifdef NGUI
+  printf("%10s %10s %4ld %4ld %4ld\n", color, name, t, a, b);
+  static step_t steps[2048];
+  static long count = 0;
+  steps[count].color = color;
+  steps[count].name = name;
+  steps[count].angle = angle;
+  count++;
+  draw(steps, count);
+#endif
 }
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1500, 800, "aword");
-  SetTargetFPS(60);
+  SetTargetFPS(0);
   font = LoadFontEx("../NovaMono-Regular.ttf", 35, 0, 0);
 }

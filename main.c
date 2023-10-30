@@ -21,16 +21,17 @@ void *map_file(const char *file) {
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
+#ifdef NGUI
   ti_init();
+#endif
   long a = 0;
-  void*o[512];
+  void*o[1536];
   long b = sizeof(o) / sizeof(*o);
   o[a++] = printf;
   o[a++] = strcmp;
   o[a++] = map_file;
   o[a++] = ti;
   o[a++] = munmap;
-  o[a+0] = __FILE__; o[a+1] = 0;
   n_t w = Bark("b r o");
-  (w)(0, a, b, o, 0);
+  (w)(512, a, b, o, 0);
 }

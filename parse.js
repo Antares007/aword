@@ -21,7 +21,6 @@ G(Green ) { o[a++] = "${s}"; Green (t, a, b, o, s); }
 }
 function tword(s, id) {
 return `#define COUNT ${s.length}
-long arms_count = COUNT;
 const char *arm_texts[COUNT];
 static void init() { ${s.map((a, i) => `  arm_texts[${i}] = "${a}";`).join('\n')} }
 `
@@ -61,7 +60,7 @@ async function parse_awords(cwords) {
           throw new Error(`not a word '${w}.'`);
         return w;
       });
-  const tword_body = (await readFile("tword.c",'utf8')).split('\n').slice(5).join('\n');
+  const tword_body = (await readFile("tword.c",'utf8')).split('\n').slice(4).join('\n');
   const new_awords =
       dkeys.map((n, i) => ([ n, tword(d[n] = d[n].map(turnToAWords), i) + tword_body ]))
   const compiled =
@@ -103,7 +102,7 @@ function split_name_and_body(def) {
   return [ n.trim(), b.trim() ];
 }
 function add_missing_rays([ n, b ]) {
-  b = '#include "aw.h"\n\n' + b;
+  b = '#include "aw.h"\n' + b;
   const rays = {
     P : "Purple",   p : "purple",
     Y : "Yellow",   y : "yellow",
@@ -179,7 +178,7 @@ function hashCode(s) {
 }
 function anonize(f, anon) {
   return function anonized(s) {
-    const n = "A" + hashCode(s); //"aw_" + (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); 
+    const n = "aw_" + (JSON.parse(s) === "" ? "ε" : JSON.parse(s)); //"A" + hashCode(s); 
     if (anon[n]) return n;
     anon[n] = f(s);
     return n;

@@ -2,7 +2,7 @@ CC|=clang
 LD=ld -melf_x86_64
 CFLAGS+=-std=gnu17 -Wall
 run: main.out awords
-	cp main.out abin && cd abin && ./main.out
+	cp main.out abin && cd abin && ulimit -s unlimited && ./main.out
 awords: parse.js awords.tab
 	node $^
 local.out: local.c
