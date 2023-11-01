@@ -15,7 +15,7 @@ void ti(const char *n, long ρ, long δ);
 N(goTo) { ti(τ[-2], ρ, δ), ((n_t)τ[δ * 5])(τ + δ * 5, α, β, ο, σ, ρ, δ); }
 N(bro ) { if (ρ == 3 || ρ == 2) P; else goTo(τ, 0, β, ο, σ, 3, 1); }
 N(o   ) { goTo(τ, α, β, ο, σ, ρ, -1); }
-N(tab) { ti(τ[-2], ρ, δ); ((n_t *)ο[β])[ρ](ο[β + 1], α, β + 2, ο, σ, ρ, δ); }
+N(tab) { ti(τ[-2], ρ, δ); ((n_t *)ο[β + 1])[ρ](ο[β], α, β + 2, ο, σ, ρ, δ); }
 typedef struct t_t {
   long i;
   long count;
@@ -23,14 +23,12 @@ typedef struct t_t {
   char *fruitful;
 } t_t;
 N(tab_switch) { ((n_t *)τ[-1])[(ρ + 1) * δ + 4](τ, α, β, ο, σ, ρ, δ); }
-#define Connector(Yellow)                                                      \
-  N(t_##Yellow##_heart) {                                                      \
-    static n_t tab[] = {Yellow##_Navy, Yellow##_Lime, Yellow##_Maroon,         \
-                        Yellow##_Olive};                                       \
-    t_t *c = τ[+1];                                                            \
-    ti(τ[-2], ρ, δ), (ο[--β] = τ), (ο[--β] = tab),                             \
-        goTo(c->arms[c->i], α, β, ο, σ, ρ, δ);                                 \
-  }
+
+N(t_connector) {
+  t_t *c = τ[+1];
+  ti(τ[-2], ρ, δ);
+  (ο[--β] = τ), goTo(c->arms[c->i], α, β, ο, σ, ρ, δ);
+}
 N(Yellow_Navy   ) { goTo(τ, α, β, ο, σ, ρ, 1); }
 N(Yellow_Lime   ) { t_t *c = τ[+1];
                     c->fruitful[c->i] = 1;
@@ -45,7 +43,7 @@ N(Yellow_Maroon ) { t_t *c = τ[+1];
                       for (long i       = c->i; i < c->count; i++)
                         (c->arms[i]     = c->arms[i + 1]),
                         (c->fruitful[i] = c->fruitful[i + 1]);
-                      printf("trimed %ld %ld ", c->i, c->count), P;
+                      //printf("trimed %ld %ld ", c->i, c->count), P;
                       if (c->i == c->count)
                         (c->i = 0), goTo(τ, α, β, ο, σ, 2, 1);
                       else
@@ -70,10 +68,24 @@ N(Blue_Navy     ) { goTo(τ, α, β, ο, σ, ρ, 1); }
 N(Blue_Lime     ) { P; }
 N(Blue_Maroon   ) { P; }
 N(Blue_Olive    ) { P; }
-Connector(Yellow) Connector(Red) Connector(Green) Connector(Blue)
+N(t_Yellow_heart) {
+  static n_t tab[] = {Yellow_Navy, Yellow_Lime, Yellow_Maroon, Yellow_Olive};
+  (ο[--β] = tab), t_connector(τ, α, β, ο, σ, ρ, δ);
+}
+N(t_Red_heart) {
+  static n_t tab[] = {Red_Navy, Red_Lime, Red_Maroon, Red_Olive};
+  (ο[--β] = tab), t_connector(τ, α, β, ο, σ, ρ, δ);
+}
+N(t_Green_heart) {
+  static n_t tab[] = {Green_Navy, Green_Lime, Green_Maroon, Green_Olive};
+  (ο[--β] = tab), t_connector(τ, α, β, ο, σ, ρ, δ);
+}
+N(t_Blue_heart) {
+  static n_t tab[] = {Blue_Navy, Blue_Lime, Blue_Maroon, Blue_Olive};
+  (ο[--β] = tab), t_connector(τ, α, β, ο, σ, ρ, δ);
+}
 N(t_heart) {
-  if (ρ == 2 || ρ == 0) goTo(τ, α, β, ο, σ, ρ, δ);
-  else {
+  if (ρ == 3 || ρ == 1) {
     static n_t full_tab[] = {
         goTo, goTo, goTo, goTo, 0,
         t_Blue_heart, t_Green_heart, t_Red_heart, t_Yellow_heart,
@@ -81,7 +93,7 @@ N(t_heart) {
     τ[-1]  = full_tab;
     τ[+0]  = tab_switch;
     tab_switch(τ, α, β, ο, σ, ρ, δ);
-  }
+  } else goTo(τ, α, β, ο, σ, ρ, δ);
 }
 N(Yellow_Green_term) {
   char*s = τ[1];
@@ -157,7 +169,7 @@ void ti_init();
 void ti_step(const char*, long, long);
 void ti(const char*n, long ρ, long δ) {
   // printf("%10s %10s\n", n, rays[(ρ + 1) * δ + 4]);
-  ti_step(n, ρ, δ);
+  // ti_step(n, ρ, δ);
 }
 N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
 N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
@@ -169,15 +181,15 @@ D(A1,B(T(aa),T(A2)),
      B(T(a), T(A2)))
 D(sS,
   B(T(n1), T(s), T(sS), T(sS)),
-  B(T(n1), T(s), T(sS), T(sS)),
   B(T(n0), T(ε)),
+  B(T(n2), T(s), T(sS), T(sS)),
 )
 D(S, B(T(a)),
      B(T(b)),
      B(T(S), T(a)),
 )
 int main() {
-  void **text = 2 + (void *[]) { T(bro), T(s_aaaaaa), T(A1), T(print), T(o) };
+  void **text = 2 + (void *[]) { T(bro), T(s_ss), T(sS), T(print), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);
