@@ -15,6 +15,7 @@ typedef struct step_t {
   long d;
 } step_t;
 static Color colors[] = {
+  {255, 000, 255, 255}, // Fuchsia
   {128, 128, 000, 255}, // Olive
   {128, 000, 000, 255}, // Maroon
   {000, 255, 000, 255}, // Lime
@@ -24,6 +25,7 @@ static Color colors[] = {
   {000, 128, 000, 255}, // Green
   {255, 000, 000, 255}, // Red
   {255, 255, 000, 255}, // Yellow
+  {128, 000, 128, 255}, // Purple
 };
 #include <string.h>
 #include <stdlib.h>
@@ -49,23 +51,20 @@ void draw(step_t *steps, long count) {
         DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(),
                       (Color){.a = 150, .r = -1, .g = -1, .b = -1});
       Vector2 ns = {90, 50};
+      //  dir = Vector2Rotate(dir, M_PI_2 * s->d);
+      float step_size = ((long)dir.x ? ns.x : ns.y) * s->d;
+      zero = Vector2Add(zero, Vector2Scale(dir, zoom * step_size));
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
                          .zoom = zoom,
                          .offset = Vector2Add(off, zero)};
       BeginMode2D(camera);
-      Color bgcolor = colors[(s->r + 1) * s->d + 4];
+      Color bgcolor = colors[(s->r + 1) * s->d + 5];
       Color fgcolor = BLACK;
       DrawRectangle(-ns.x / 2, -ns.y / 2, ns.x, ns.y, bgcolor);
       DrawRectangleLines(-ns.x / 2, -ns.y / 2, ns.x, ns.y, BLACK);
       DrawTextEx(font, s->name, (Vector2){-ns.x / 2, -ns.y / 2}, 35, 1, fgcolor);
       EndMode2D();
-      if (i < count-1 && strcmp(steps[i + 1].name, "tab") == 0 && s->d == 1) 
-        dir = Vector2Rotate(dir, M_PI_2 * s->d);
-      float step_size = ((long)dir.x ? ns.x : ns.y) * s->d;
-      zero = Vector2Add(zero, Vector2Scale(dir, zoom * step_size));
-      if (strcmp(steps[i].name, "tab") == 0 && s->d == -1) 
-        dir = Vector2Rotate(dir, M_PI_2 * s->d);
     }
     EndDrawing();
     key = GetCharPressed();
