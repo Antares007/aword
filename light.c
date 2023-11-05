@@ -12,7 +12,7 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
                       "Blue",    "Green", "Red",    "Yellow", "Purple"};
 // clang-format off
 typedef struct t_t {
-  void**τ;
+  n_t*rays;
   unsigned long count;
   void ***arms;
   const char*name;
@@ -22,12 +22,9 @@ typedef struct t_t {
   unsigned long fruitful;
   unsigned long trimed;
   void*data;
-  n_t*rays;
+  void*data2;
 } t_t;
-#define T(nar) 0, 0, 0, #nar, 0, nar, 0, 0, 0, 0, 0
-#define B(...)                                                                 \
-  (5 + (void *[]){τ, 0, 0, "tab", 0, tab, 0, 0, 0, 0, 0, __VA_ARGS__, 0, 0, 0, \
-                  "o", 0, o})
+#define Tab(nar,a,b) 0, 0, 0, #nar, 0, nar, 0, 0, 0, (a), (b)
 #define C ((t_t*)&τ[-5])
 #define GET_BIT(value, bit) ((value >> bit) & 1)
 #define SET_BIT(value, bit) (value |= (1UL << bit))   
@@ -35,7 +32,7 @@ typedef struct t_t {
 N(goTo          ) { P, ((n_t)τ[δ * 11])(τ + δ * 11, α, β, ο, σ, ρ, δ); }
 N(bro           ) { if (ρ == 3 || ρ == 2) ; else goTo(τ, 0, β, ο, σ, 3, 1); }
 N(o             ) { goTo(τ, α, β, ο, σ, ρ, -1); }
-N(tab           ) { ((n_t)ο[β + ρ])(C->τ, α, β + 5, ο, σ, ρ, 1); }
+N(tab           ) { ((n_t)ο[β + ρ])(C->data, α, β + 5, ο, σ, ρ, 1); }
 N(tab505_switch ) { C->rays[(ρ + 1) * δ + 5](τ, α, β, ο, σ, ρ, δ); }
 
 int my_propeller(t_t*c) {
@@ -90,48 +87,42 @@ N(t_left_heart) {
   (C->rays = rays), (C->nar = tab505_switch)(τ, α, β, ο, σ, ρ, δ);
 }
 N(t_double_heart) {
-
-  void **text = (2 + (void *[]){"tab", 0, tab, 0, τ, τ[-2], 0, t_right_heart, 0,
-                                0, τ[-2], 0, t_left_heart, 0, 0, "o", 0, o});
+  // clang-format off
+  void **text = (2 + (void *[]){τ, 0, 0,  "tab", 0, tab,           0, 0, 0, 0, 0,
+                                0, 0, 0, "beta", 0, t_right_heart, 0, 0, 0, 0, 0,
+                                0, 0, 0, "alfa", 0, t_left_heart,  0, 0, 0, 0, 0,
+                                0, 0, 0,    "o", 0, o});
+  // clang-format on
   goTo(δ == 1 ? text : τ, α, β, ο, σ, ρ, δ);
 }
 N(forward) { goTo(τ, α, β, ο, σ, ρ, 1); }
 #include <string.h>
-N(init_arms_end) {
-  t_t *c = τ[+1];
-  c->i = 0;
-  τ[0] = ο[α + 3];
-  ((n_t)τ[0])(τ, α, β, ο, σ, ρ, δ);
-}
+N(init_arms_end) { (C->i = 0), (C->nar = C->data)(τ, α, β, ο, σ, ρ, δ); }
 N(branch_continue_branching) {
-  t_t *c = τ[+1];
-  if (strcmp(ο[α + 2], τ[-2]) == 0 && ο[α + 0] == 0) {
-    τ[0] = t_left_hearted;
-    t_t *pc = ο[α + 1];
-    //  pc->is_lr[pc->i] = 1;
-    c->is_lr = pc->is_lr;
-    ο[α + 3] = t_double_heart;
+  t_t *c = ο[α + 1];
+  if (strcmp(c->name, C->name) == 0 && ο[α + 0] == 0) {
+    C->nar = t_left_hearted;
+    SET_BIT(c->is_lr, c->i);
+    SET_BIT(C->is_lr, c->i);
+    c->data = t_double_heart;
   }
-  (ο[(β -= 5) + ρ] = forward), goTo(c->arms[0], α, β, ο, σ, ρ, δ);
+  (ο[(β -= 5) + ρ] = forward), goTo(C->arms[0], α, β, ο, σ, ρ, δ);
 }
 N(init_goin_arm);
 N(init_iplusplus) {
-  t_t *c = τ[+1];
-  c->i++;
+  C->i++;
   init_goin_arm(τ, α, β, ο, σ, ρ, δ);
 }
 N(init_goin_arm) {
-  t_t *c = τ[+1];
-  if (c->i < c->count) {
-    ο[α + 0] = 0;
-    ο[α + 1] = c;
-    (ο[(β -= 5) + 4] = init_iplusplus), goTo(c->arms[c->i], α, β, ο, σ, 4, 1);
-  } else
+  if (C->i < C->count)
+    (ο[α + 0] = 0), (ο[(β -= 5) + 4] = init_iplusplus),
+        goTo(C->arms[C->i], α, β, ο, σ, 4, 1);
+  else
     ((n_t)ο[β + 2])(τ, α, β + 3, ο, σ, (long)ο[β + 1], (long)ο[β + 0]);
 }
 N(branch_initialization_start) {
-  ο[α + 2] = τ[-2];
-  ο[α + 3] = t_heart;
+  ο[α + 1] = C;
+  C->data = t_heart;
   (ο[--β] = init_arms_end), (ο[--β] = (void *)ρ), (ο[--β] = (void *)δ),
       init_goin_arm(τ, α, β, ο, σ, ρ, δ);
 }
@@ -149,16 +140,14 @@ N(t_show_heart) {
                        branch_continue_branching};
   (C->rays = rays), (C->nar = tab505_switch)(τ, α, β, ο, σ, ρ, δ);
 }
+#define T(nar) Tab(nar, 0, 0)
+#define B(...) (5 + (void *[]){Tab(tab, τ, 0), __VA_ARGS__, T(o)})
 #define D(name, ...)                                                           \
   N(name) {                                                                    \
     void **arms[] = {__VA_ARGS__};                                             \
-    C->i = 0;                                                                  \
     C->count = sizeof(arms) / sizeof(*arms);                                   \
     C->arms = arms;                                                            \
-    C->trimed = 0;                                                             \
-    C->fruitful = 0;                                                           \
-    C->is_lr = 0;                                                              \
-    (C->nar = t_heart)(τ, α, β, ο, σ, ρ, δ);                                   \
+    (C->nar = t_show_heart)(τ, α, β, ο, σ, ρ, δ);                              \
   }
 // clang-format off
 N(Yellow_Green_term) {
