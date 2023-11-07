@@ -24,9 +24,8 @@ typedef struct t_t {
   void *data;
   long d;
 } t_t;
-#define Tab(nar, a) 0, 0, 0, (void *)#nar, 0, nar, 0, 0, 0, (void *)(a), 0
-#define T(nar) Tab(nar, 0)
-#define B(...) (5 + (void *[]){T(tab), __VA_ARGS__, T(o)})
+#define T(nar) 0, 0, 0, (void *)#nar, 0, nar, 0, 0, 0, 0, 0
+#define B(...) (void *[]){__VA_ARGS__}
 #define C ((t_t *)&τ[-5])
 #define ξ ((t_t *)ο[β+2])
 #define GET_BIT(value, bit) ((value >> bit) & 1)
@@ -54,7 +53,7 @@ N(bat515_switch ) { (ο[--β] = C),
 N(totin         ) { void*pc = ξ;
                     (ο[--β] = pc),
                     (ο[--β] = (void*)δ),
-                    (ο[--β] = τ), goTo(ξ->arms[ξ->i], α, β, ο, σ, ρ, δ); }
+                    (ο[--β] = τ), goTo(ξ->arms[ξ->i] + 5, α, β, ο, σ, ρ, δ); }
 Aword(toti,         goTo, goTo, goTo, goTo, goTo, 0,
                     totin,totin,totin,totin,goTo)
 
@@ -150,42 +149,39 @@ N(b) { C->data = "b"; term(τ, α, β, ο, σ, ρ, δ); }
 N(s) { C->data = "s"; term(τ, α, β, ο, σ, ρ, δ); }
 N(ε) { C->data = "";  term(τ, α, β, ο, σ, ρ, δ); }
 D(n345,
-  B(T(n3)),
-  B(T(n4)),
-  B(T(n5)))
+  B(T(tab), T(n3), T(o)),
+  B(T(tab), T(n4), T(o)),
+  B(T(tab), T(n5), T(o)))
 D(n123,
-  B(T(n1)),
-  B(T(n2)),
-  B(T(n3), T(n345)))
+  B(T(tab), T(n1), T(o)),
+  B(T(tab), T(n2), T(o)),
+  B(T(tab), T(n3), T(n345), T(o)))
 D(ab,
-  B(T(ε)),
-  B(T(a)),
-  B(T(b)),
+  B(T(tab), T(ε), T(o)),
+  B(T(tab), T(a), T(o)),
+  B(T(tab), T(b), T(o)),
 )
-D(abS,  B(T(ab), T(ab), T(ab)))
+D(abS,  B(T(tab), T(ab), T(ab), T(ab), T(o)))
 N(s_ss) { goTo(τ, α, β, ο, "ss", ρ, δ); }
 N(s_ba) { goTo(τ, α, β, ο, "ba", ρ, δ); }
 N(s_aaaaaa) { goTo(τ, α, β, ο, "aaaaaa", ρ, δ); }
-D(A2,B(T(n3), T(ε)),
-     B(T(n4), T(aa),T(A2)),
-     B(T(n5), T(a), T(A2)))
-D(A1,B(T(n1), T(aa),T(A2)),
-     B(T(n2), T(a), T(A2)))
+D(A2,B(T(tab), T(n3), T(ε), T(o)),
+     B(T(tab), T(n4), T(aa),T(A2), T(o)),
+     B(T(tab), T(n5), T(a), T(A2), T(o)))
+D(A1,B(T(tab), T(n1), T(aa),T(A2), T(o)),
+     B(T(tab), T(n2), T(a), T(A2), T(o)))
 D(sS,
-  B(T(ε)),
-  B(T(s), T(sS), T(sS)),
-  B(T(s), T(sS), T(sS)),
+  B(T(tab), T(ε), T(o)),
+  B(T(tab), T(s), T(sS), T(sS), T(o)),
+  B(T(tab), T(s), T(sS), T(sS), T(o)),
 )
-D(S, B(T(b)),
-     B(T(S), T(a)))
-#define NAR(n) N(n) { printf("%s", __FUNCTION__); goTo(τ, α, β, ο, σ, ρ, δ); }
-N(ln) { printf(".\n"); goTo(τ, α, β, ο, σ, ρ, δ); }
+D(S, B(T(tab), T(b), T(o)),
+     B(T(tab), T(S), T(a), T(o)))
 int main() {
   //void **τ = 5 + (void *[]) { T(bro), T(s_ba),    T(S),   T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(n123),    T(n123),T(n123),  T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(s_ss),    T(sS),  T(print), T(o) };
   void **τ = 5 + (void *[]) { T(bro), T(s_aaaaaa),T(A1),  T(print), T(o) };
-  //void **τ = 5 + (void *[]) { T(bro), T(text), T(o) };
   long  α = 0;
   void *ο[512];
   long  β = sizeof(ο) / sizeof(*ο);
