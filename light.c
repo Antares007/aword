@@ -25,9 +25,10 @@ typedef struct t_t {
   long d;
 } t_t;
 #define T(nar) 0, 0, 0, (void *)#nar, 0, nar, 0, 0, 0, 0, 0
-#define B(...) (void *[]){__VA_ARGS__}
+#define B(...)                                                                 \
+  (void *[]) { __VA_ARGS__ }
 #define C ((t_t *)&τ[-5])
-#define ξ ((t_t *)ο[β+2])
+#define BC ((t_t *)ο[β + 2])
 #define GET_BIT(value, bit) ((value >> bit) & 1)
 #define SET_BIT(value, bit) (value |= (1UL << bit))
 #define CLS_BIT(value, bit) (value &= ~(1UL << bit))
@@ -38,8 +39,8 @@ typedef struct t_t {
     assert(sizeof(rays) / sizeof(*rays) == 11);                                \
     (C->rays = (void *)rays), (C->nar = s)(τ, α, β, ο, σ, ρ, δ);               \
   }
-#define Aword(n, ...) Sword(n, tab515_switch, __VA_ARGS__)
-#define Atext(n, ...) Sword(n, bat515_switch, __VA_ARGS__)
+#define aWord(n, ...) Sword(n, tab515_switch, __VA_ARGS__)
+#define aText(n, ...) Sword(n, bat515_switch, __VA_ARGS__)
 // clang-format off
 
 N(goTo          ) { P, ((n_t)τ[δ * 11])(τ + δ * 11, α, β, ο, σ, ρ, δ); }
@@ -50,11 +51,11 @@ N(tab515_switch ) { C->rays[(ρ + 1) * δ + 5](τ, α, β, ο, σ, ρ, δ); }
 N(bat515_switch ) { (ο[--β] = C),
                     (ο[--β] = (void*)δ),
                     (ο[--β] = τ), goTo(((void**)C->rays[(ρ + 1) * δ + 5]) + 5, α, β, ο, σ, ρ, 1); }
-N(totin         ) { void*pc = ξ;
+N(totin         ) { void*pc = BC;
                     (ο[--β] = pc),
                     (ο[--β] = (void*)δ),
-                    (ο[--β] = τ), goTo(ξ->arms[ξ->i] + 5, α, β, ο, σ, ρ, δ); }
-Aword(toti,         goTo, goTo, goTo, goTo, goTo, 0,
+                    (ο[--β] = τ), goTo(BC->arms[BC->i] + 5, α, β, ο, σ, ρ, δ); }
+aWord(toti,         goTo, goTo, goTo, goTo, goTo, 0,
                     totin,totin,totin,totin,goTo)
 
 int my_propeller(t_t*c) {
@@ -62,19 +63,19 @@ int my_propeller(t_t*c) {
   while((c->i = (c->i + 1) % c->count) && GET_BIT(c->trimed, c->i));
   return !(oi < c->i);
 }
-N(Yellow_Lime   ) { SET_BIT(ξ->fruitful, ξ->i),        goTo(τ,α,β,ο,σ,ρ,δ); }
-N(Yellow_Maroon ) { if (ξ->count == 1)                 goTo(τ,α,β,ο,σ,ρ,δ);
-                    else if(GET_BIT(ξ->fruitful, ξ->i))goTo(τ,α,β,ο,σ,my_propeller(ξ)*2,δ);
-                    else SET_BIT(ξ->trimed, ξ->i),     goTo(τ,α,β,ο,σ,my_propeller(ξ)*2,δ); }
-N(Yellow_Olive  ) { SET_BIT(ξ->fruitful, ξ->i),        goTo(τ,α,β,ο,σ,my_propeller(ξ)*2+1,δ); }
-N(Red_Maroon    ) {                                    goTo(τ,α,β,ο,σ,my_propeller(ξ)*2,δ); }
-N(Green_Lime    ) { SET_BIT(ξ->fruitful, ξ->i),        goTo(τ,α,β,ο,σ,ρ,δ); }
+N(Yellow_Lime   ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
+N(Yellow_Maroon ) { if (BC->count == 1)                   goTo(τ,α,β,ο,σ,ρ,δ);
+                    else if(GET_BIT(BC->fruitful, BC->i)) goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ);
+                    else SET_BIT(BC->trimed, BC->i),      goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ); }
+N(Yellow_Olive  ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,my_propeller(BC)*2+1,δ); }
+N(Red_Maroon    ) {                                       goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ); }
+N(Green_Lime    ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
 
-Aword(a_Yellow,   goTo, goTo,         goTo,           goTo,         goTo, 0,
+aWord(a_Yellow,   goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, Yellow_Lime,  Yellow_Maroon,  Yellow_Olive, goTo)
-Aword(a_Red,      goTo, goTo,         goTo,           goTo,         goTo, 0,
+aWord(a_Red,      goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, goTo,         Red_Maroon,     goTo,         goTo)
-Aword(a_Green,    goTo, goTo,         goTo,           goTo,         goTo, 0,
+aWord(a_Green,    goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, Green_Lime,   goTo,           goTo,         goTo)
 
 
@@ -83,7 +84,7 @@ void*Blue[]    = {T(tab),T(toti),            T(o)};
 void*Green[]   = {T(tab),T(toti),T(a_Green), T(o)};
 void*Red[]     = {T(tab),T(toti),T(a_Red),   T(o)};
 void*Yellow[]  = {T(tab),T(toti),T(a_Yellow),T(o)};
-Atext(t_heart2, tab_o, tab_o, tab_o, tab_o, tab_o, 0,
+aText(t_heart2, tab_o, tab_o, tab_o, tab_o, tab_o, 0,
                 Blue,
                 Green,
                 Red,
@@ -91,7 +92,7 @@ Atext(t_heart2, tab_o, tab_o, tab_o, tab_o, tab_o, 0,
                 tab_o)
 
 N(t_heart3_open) { (C->nar = t_heart2)(τ, α, β, ο, σ, ρ, δ); }
-Aword(t_heart3, goTo, goTo,          goTo, goTo,          goTo, 0,
+aWord(t_heart3, goTo, goTo,          goTo, goTo,          goTo, 0,
                 goTo, t_heart3_open, goTo, t_heart3_open, goTo)
 #define D(name, ...)                                                           \
   N(name) {                                                                    \
@@ -100,7 +101,6 @@ Aword(t_heart3, goTo, goTo,          goTo, goTo,          goTo, 0,
     C->arms = arms;                                                            \
     (C->nar = t_heart3)(τ, α, β, ο, σ, ρ, δ);                                  \
   }
-// clang-format off
 N(Yellow_Green_term) {
   char*s = C->data;
   long i = 0;
@@ -112,22 +112,10 @@ N(Purple_term) {
   ((long*)ο)[α + 0]++;
   goTo(τ, α, β, ο, σ, ρ, δ);
 }
-N(term) {
-  static n_t rays[] = {
-    goTo,               // Fuchsia
-    goTo,               // Olive
-    goTo,               // Maroon
-    goTo,               // Lime
-    goTo,               // Navy
-    goTo,               // 0
-    goTo,               // Blue
-    Yellow_Green_term,  // Green                                                          
-    goTo,               // Red
-    Yellow_Green_term,  // Yellow                                                          
-    Purple_term,        // Purple
-  }; 
-  (C->rays = rays), (C->nar = tab515_switch)(τ, α, β, ο, σ, ρ, δ);
-};
+// Fuchsia Olive Maroon Lime Navy 0
+// Blue Green Red Yellow Purple
+aWord(term, goTo, goTo, goTo, goTo, goTo, 0,
+            goTo, Yellow_Green_term, goTo, Yellow_Green_term,  Purple_term)
 N(print ) {
   if (δ == 1 && ρ != 0) {
     printf("(");
