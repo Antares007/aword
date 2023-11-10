@@ -29,7 +29,7 @@ static Color colors[] = {
     {255, 255, 000, 255}, // Yellow
     {128, 000, 128, 255}, // Purple
 };
-static Vector2 dir = {1, 0};
+static Vector2 dir = {0, -1};
 ;
 static long height = 0, max_height = 1;
 static long after_step_turns = 0, vdir = 1;
@@ -39,7 +39,7 @@ void ti_back() { (after_step_turns = 2), height += 2 * vdir, (vdir *= -1); }
 void draw(step_t *steps, long count);
 
 void ti_step(const char *name, long r, long d) {
-  printf("%10s %3ld %3ld\n", name, r, d);
+  //printf("%10s %3ld %3ld\n", name, r, d);
   static step_t steps[2048];
   static Vector2 pos = {0, 0};
   static long count = 0;
@@ -82,8 +82,7 @@ void draw(step_t *steps, long count) {
 
       Camera2D camera = {.target = {0, 0},
                          .rotation = 0,
-                         .zoom =
-                             Lerp(1, 2,
+                         .zoom = zoom + Lerp(1, 2,
                                   (s->height < 0 ? s->height * -1 : s->height) /
                                       (float)max_height),
                          .offset = Vector2Add(Vector2Add(off, zero), s->pos)};
@@ -111,6 +110,6 @@ void draw(step_t *steps, long count) {
 void ti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(1500, 800, "aword");
-  SetTargetFPS(60);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 35, 0, 0);
 }
