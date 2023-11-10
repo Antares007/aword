@@ -220,7 +220,7 @@ int main() {
   //void **τ = 5 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(n123),      T(n123),  T(n123),    T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(s_ss),      T(sS),    T(print),   T(o) };
-  //void **τ = 5 + (void *[]) { T(bro), T(s_aaaaaa),  T(A1),    T(print),   T(o) };
+  void **τ = 5 + (void *[]) { T(bro), T(s_aaaaaa),  T(A1),    T(print),   T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(n1), T(n2), T(n3),    T(cross),   T(n3), T(n4), T(n5), T(o) };
   long  α = 0;
   void *ο[512];

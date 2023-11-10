@@ -131,7 +131,8 @@ void draw(step_t *steps, long count) {
 }
 #include <string.h>
 void ti(char*color, char*name, long angle) {
-//  printf("%10s %10s %ld\n", color, name, angle);
+//  printf("%10s %10s %ld\n", color, name, angle); 
+  usleep(2000);
 //  static step_t steps[2048];
 //  static long count = 0;
 //  steps[count].color = color;

@@ -21,7 +21,7 @@ void *map_file(const char *file) {
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
-  ti_init();
+//  ti_init();
   long a = 0;
   void*o[512];
   long b = sizeof(o) / sizeof(*o);
@@ -29,7 +29,7 @@ int main(int argc, const char **argv) {
   o[a++] = strcmp;
   o[a++] = map_file;
   o[a++] = ti;
-  o[a++] = munmap;
+  o[a++] = usleep;
   o[a+0] = __FILE__; o[a+1] = 0;
   n_t w = Bark("b r o");
   (w)(0, a, b, o, 0);
