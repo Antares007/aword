@@ -72,7 +72,7 @@ void draw(step_t *steps, long count) {
     BeginDrawing();
     ClearBackground(WHITE);
 
-    Vector2 zero = {2 * GetScreenWidth() / 8.f, 3 * GetScreenHeight() / 8.f};
+    Vector2 zero = {4 * GetScreenWidth() / 8.f, 6 * GetScreenHeight() / 8.f};
     for (long i = 0; i < count; i++) {
       step_t *s = &steps[i];
       if (strcmp(s->name, "bro") == 0)

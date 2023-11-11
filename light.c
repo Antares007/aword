@@ -24,7 +24,8 @@ typedef struct t_t {
   void *data;
   void *data2;
 } t_t;
-#define T(nar) 0, 0, 0, (void *)#nar, 0, nar, 0, 0, 0, 0, 0
+#define Tab(nar, a, b) 0, 0, 0, (void *)#nar, 0, nar, 0, 0, 0, (void*)(a), (void*)(b)
+#define T(nar) Tab(nar, 0, 0)
 #define B(...)                                                                 \
   (void *[]) { __VA_ARGS__ }
 #define C ((t_t *)&τ[-5])
@@ -33,13 +34,13 @@ typedef struct t_t {
 #define SET_BIT(value, bit) (value |= (1UL << bit))
 #define CLS_BIT(value, bit) (value &= ~(1UL << bit))
 
-#define Sword(n, s, ...)                                                       \
+#define sWord(n, s, ...)                                                       \
   N(n) {                                                                       \
     static void *rays[] = {__VA_ARGS__};                                       \
     (C->rays = (void *)rays), (C->nar = s)(τ, α, β, ο, σ, ρ, δ);               \
   }
-#define aWord(n, ...) Sword(n, tab515_switch, __VA_ARGS__)
-#define tWord(n, ...) Sword(n, bat515_switch, __VA_ARGS__)
+#define aWord(n, ...) sWord(n, tab515_switch, __VA_ARGS__)
+#define tWord(n, ...) sWord(n, bat515_switch, __VA_ARGS__)
 // clang-format off
 
 void ti_step(const char*name, long r, long d);
@@ -55,17 +56,16 @@ N(bro           ) { if (ρ == 3 || ρ == 2) ; else TB, goTo(τ, 0, β, ο, σ, 3
                     //                             TB, goTo(τ, 0, β, ο, σ, (ρ + 1) % 5, 1);
                   }
 N(o             ) { TB,        goTo(τ, α, β, ο, σ, ρ, -δ); }
-N(tab           ) { ST, TL,    goTo(ο[β], α, β + 3, ο, σ, ρ, (long)ο[β + 1]); }
+N(tab           ) { ST, TL,    goTo(ο[β], α, β + 2, ο, σ, ρ, (long)ο[β + 1]); }
 N(tab515_switch ) { C->rays[(ρ + 1) * δ + 5](τ, α, β, ο, σ, ρ, δ); }
 N(bat515_switch ) { ST, TR,
-                    (ο[--β] = C),
                     (ο[--β] = (void*)δ),
                     (ο[--β] = τ),
                     goTo(((void**)C->rays[(ρ + 1) * δ + 5]) + 5, α, β, ο, σ, ρ, 1); }
-N(totin         ) { ST, TR; void*pc = BC;
-                    (ο[--β] = pc),
+N(totin         ) { ST, TR;
+                    t_t*c = (t_t*)&((void***)ο)[β + (long)C->data * 2][-5];
                     (ο[--β] = (void*)δ),
-                    (ο[--β] = τ), goTo(BC->arms[BC->i] + 5, α, β, ο, σ, ρ, δ); }
+                    (ο[--β] = τ), goTo(c->arms[c->i] + 5, α, β, ο, σ, ρ, δ); }
 N(nop           ) { assert(0); }
 aWord(toti,         goTo, goTo, goTo, goTo, goTo, 0,
                     totin,totin,totin,totin,goTo)
@@ -86,46 +86,16 @@ aWord(a_Red,      goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, goTo,         Red_Maroon,     goTo,         goTo)
 aWord(a_Green,    goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, Green_Lime,   goTo,           goTo,         goTo)
-void*tab_o[]  = { T(tab),                       T(o) };
-void*Blue[]   = { T(tab), T(toti),              T(o) };
-void*Green[]  = { T(tab), T(toti), T(a_Green),  T(o) };
-void*Red[]    = { T(tab), T(toti), T(a_Red),    T(o) };
-void*Yellow[] = { T(tab), T(toti), T(a_Yellow), T(o) };
-tWord(t_heart2, tab_o,  tab_o,  tab_o, tab_o,   tab_o, 0,
-                Blue,   Green,  Red,   Yellow,  tab_o)
-tWord(t_heart5, tab_o,  Yellow, Red,   Green,   Blue, 0,
-                Blue,   Green,  Red,   Yellow,  tab_o)
-tWord(t_heart4, tab_o,  Yellow, Red,   Green,   Blue, 0,
-                tab_o,  tab_o,  tab_o, tab_o,   tab_o)
 
-N(toti_init_for_all_Yellow_Green) {
-  ο[α]     = 0; 
-  ο[α + 1] = (void*)BC->name; 
-  ο[α + 2] = t_heart2; 
-  C->data2 = (void*)ρ;
-  goTo(τ, α, β, ο, σ, 4, δ);
+void*tab_o[]  = { T(tab),                            T(o) };
+N(toti_init_for_all) {
+  goTo(τ,α,β,ο,σ,ρ,δ);
 }
-N(toti_init_for_all_Fuchsia) {
-  if (BC->i < BC->count)
-    (BC->i++), (ο[α] = 0), goTo(τ, α, β, ο, σ, ρ, -δ);
-  else
-    (BC->i = 0), (BC->nar = ο[α + 2])(τ, α, β + 3, ο, σ, (long)C->data2, -δ);
-}
-aWord(toti_init_for_all,  toti_init_for_all_Fuchsia, goTo, goTo, goTo, goTo,
-                          0,
-                          nop, toti_init_for_all_Yellow_Green,
-                          nop, toti_init_for_all_Yellow_Green, nop)
-#include<string.h>
 N(toti_init_conf_tword) {
-  if (δ == 1 && strcmp(ο[α + 1], C->name) == 0 && ο[α] == 0) {
-    C->nar   = t_heart4;
-    SET_BIT(BC->is_lr, BC->i);
-    ο[α + 2] = t_heart5;
-  }
-  goTo(τ, α, β, ο, σ, ρ, δ);
+  goTo(τ,α,β,ο,σ,ρ,δ);
 }
-void*toti_init_Yellow_Green[] = { T(tab), T(toti_init_for_all),    T(toti), T(o) };
-void*toti_init_Purple[]       = { T(tab), T(toti_init_conf_tword), T(toti), T(o) };
+void*toti_init_Yellow_Green[] = { T(tab), T(toti_init_for_all),    Tab(toti, 1, 0), T(o) };
+void*toti_init_Purple[]       = { T(tab), T(toti_init_conf_tword), Tab(toti, 1, 0), T(o) };
 tWord(toti_init,  tab_o,  tab_o,  tab_o,  tab_o,  tab_o, 0,
                   tab_o,
                   toti_init_Yellow_Green,
@@ -133,15 +103,22 @@ tWord(toti_init,  tab_o,  tab_o,  tab_o,  tab_o,  tab_o, 0,
                   toti_init_Yellow_Green,
                   toti_init_Purple)
 
-N(t_heart3_Yellow_Green) { (C->nar = t_heart2)(τ, α, β, ο, σ, ρ, δ); }
-aWord(t_heart3, goTo, goTo,                  goTo, goTo,                  goTo, 0,
-                goTo, t_heart3_Yellow_Green, goTo, t_heart3_Yellow_Green, goTo)
+void*Blue[]   = { T(tab), T(toti_init),              T(o) };
+void*Green[]  = { T(tab), T(toti_init),              T(o) };
+void*Red[]    = { T(tab), T(toti_init),              T(o) };
+void*Yellow[] = { T(tab), T(toti_init),              T(o) };
+tWord(t_heart, tab_o,  tab_o,  tab_o, tab_o,   tab_o, 0,
+               Blue,   Green,  Red,   Yellow,  tab_o)
+
+N(t_closed_Yellow_Green) { (C->nar = t_heart)(τ, α, β, ο, σ, ρ, δ); }
+aWord(t_closed, goTo, goTo,                  goTo, goTo,                  goTo, 0,
+                goTo, t_closed_Yellow_Green, goTo, t_closed_Yellow_Green, goTo)
 #define D(name, ...)                                                           \
   N(name) {                                                                    \
     void **arms[] = {__VA_ARGS__};                                             \
     C->count = sizeof(arms) / sizeof(*arms);                                   \
     C->arms = arms;                                                            \
-    (C->nar = t_heart3)(τ, α, β, ο, σ, ρ, δ);                                  \
+    (C->nar = t_closed)(τ, α, β, ο, σ, ρ, δ);                                  \
   }
 N(Yellow_Green_term) {
   char*s = C->data;
@@ -217,10 +194,10 @@ void*bar2[] = {T(tab), T(n2), T(cross_l), T(n4), T(o)};
 tWord(cross,  bar2, bar2, bar2, bar2, bar2, 0,
               bar2, bar2, bar2, bar2, bar2) 
 int main() {
-  //void **τ = 5 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
+  void **τ = 5 + (void *[]) { T(bro), T(s_ba), T(S), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(n123),      T(n123),  T(n123),    T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(s_ss),      T(sS),    T(print),   T(o) };
-  void **τ = 5 + (void *[]) { T(bro), T(s_aaaaaa),  T(A1),    T(print),   T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), T(s_aaaaaa),  T(A1),    T(print),   T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(n1), T(n2), T(n3),    T(cross),   T(n3), T(n4), T(n5), T(o) };
   long  α = 0;
   void *ο[512];
