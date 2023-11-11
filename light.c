@@ -28,8 +28,8 @@ typedef struct t_t {
 #define T(nar) Tab(nar, 0, 0)
 #define B(...)                                                                 \
   (void *[]) { __VA_ARGS__ }
-#define C ((t_t *)&τ[-5])
-#define BC ((t_t *)ο[β + 2])
+#define C     ((t_t *)&τ[-5])
+#define OB(r) ((t_t *)&((void***)ο)[β + (r) * 2][-5])
 #define GET_BIT(value, bit) ((value >> bit) & 1)
 #define SET_BIT(value, bit) (value |= (1UL << bit))
 #define CLS_BIT(value, bit) (value &= ~(1UL << bit))
@@ -55,31 +55,31 @@ N(goTo          ) { ST, ((n_t)τ[δ * 11])(τ + δ * 11, α, β, ο, σ, ρ, δ)
 N(bro           ) { if (ρ == 3 || ρ == 2) ; else TB, goTo(τ, 0, β, ο, σ, 3, 1);
                     //                             TB, goTo(τ, 0, β, ο, σ, (ρ + 1) % 5, 1);
                   }
-N(o             ) { TB,        goTo(τ, α, β, ο, σ, ρ, -δ); }
-N(tab           ) { ST, TL,    goTo(ο[β], α, β + 2, ο, σ, ρ, (long)ο[β + 1]); }
+N(o             ) { TB,           goTo(τ, α, β, ο, σ, ρ, -δ); }
 N(tab515_switch ) { C->rays[(ρ + 1) * δ + 5](τ, α, β, ο, σ, ρ, δ); }
+N(tab           ) { ST, TL,       goTo(ο[β], α, β + 2, ο, σ, ρ, (long)ο[β + 1]); }
 N(bat515_switch ) { ST, TR,
                     (ο[--β] = (void*)δ),
                     (ο[--β] = τ),
                     goTo(((void**)C->rays[(ρ + 1) * δ + 5]) + 5, α, β, ο, σ, ρ, 1); }
 N(totin         ) { ST, TR;
-                    t_t*c = (t_t*)&((void***)ο)[β + (long)C->data * 2][-5];
+                    t_t*c = OB((long)C->data);
                     (ο[--β] = (void*)δ),
                     (ο[--β] = τ), goTo(c->arms[c->i] + 5, α, β, ο, σ, ρ, δ); }
-N(nop           ) { assert(0); }
 aWord(toti,         goTo, goTo, goTo, goTo, goTo, 0,
                     totin,totin,totin,totin,goTo)
+N(nop           ) { assert(0); }
 int my_propeller(t_t*c) {
   long oi = c->i;
   while((c->i = (c->i + 1) % c->count) && GET_BIT(c->trimed, c->i));
   return !(oi < c->i); }
-N(Yellow_Lime   ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
-N(Yellow_Maroon ) { if (BC->count == 1)                   goTo(τ,α,β,ο,σ,ρ,δ);
-                    else if(GET_BIT(BC->fruitful, BC->i)) goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ);
-                    else SET_BIT(BC->trimed, BC->i),      goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ); }
-N(Yellow_Olive  ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,my_propeller(BC)*2+1,δ); }
-N(Red_Maroon    ) {                                       goTo(τ,α,β,ο,σ,my_propeller(BC)*2,δ); }
-N(Green_Lime    ) { SET_BIT(BC->fruitful, BC->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
+N(Yellow_Lime   ) { SET_BIT(OB(0)->fruitful, OB(0)->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
+N(Yellow_Maroon ) { if (OB(0)->count == 1)                      goTo(τ,α,β,ο,σ,ρ,δ);
+                    else if(GET_BIT(OB(0)->fruitful, OB(0)->i)) goTo(τ,α,β,ο,σ,my_propeller(OB(0))*2,δ);
+                    else SET_BIT(OB(0)->trimed, OB(0)->i),      goTo(τ,α,β,ο,σ,my_propeller(OB(0))*2,δ); }
+N(Yellow_Olive  ) { SET_BIT(OB(0)->fruitful, OB(0)->i),         goTo(τ,α,β,ο,σ,my_propeller(OB(0))*2+1,δ); }
+N(Red_Maroon    ) {                                             goTo(τ,α,β,ο,σ,my_propeller(OB(0))*2,δ); }
+N(Green_Lime    ) { SET_BIT(OB(0)->fruitful, OB(0)->i),         goTo(τ,α,β,ο,σ,ρ,δ); }
 aWord(a_Yellow,   goTo, goTo,         goTo,           goTo,         goTo, 0,
                   goTo, Yellow_Lime,  Yellow_Maroon,  Yellow_Olive, goTo)
 aWord(a_Red,      goTo, goTo,         goTo,           goTo,         goTo, 0,
@@ -103,9 +103,9 @@ tWord(toti_init,  tab_o,  tab_o,  tab_o,  tab_o,  tab_o, 0,
                   toti_init_Yellow_Green,
                   toti_init_Purple)
 
-void*Blue[]   = { T(tab), T(toti_init),              T(o) };
+void*Blue[]   = { T(tab),                            T(o) };
 void*Green[]  = { T(tab), T(toti_init),              T(o) };
-void*Red[]    = { T(tab), T(toti_init),              T(o) };
+void*Red[]    = { T(tab),                            T(o) };
 void*Yellow[] = { T(tab), T(toti_init),              T(o) };
 tWord(t_heart, tab_o,  tab_o,  tab_o, tab_o,   tab_o, 0,
                Blue,   Green,  Red,   Yellow,  tab_o)
