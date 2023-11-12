@@ -1,6 +1,6 @@
 CC|=clang
 LD=ld -melf_x86_64
-CFLAGS+=-std=gnu17 -Wall
+CFLAGS+=-std=gnu17 -Wall -Wno-int-conversion
 run: main.out awords
 	cp main.out abin && cd abin && ./main.out
 awords: parse.js awords.tab
