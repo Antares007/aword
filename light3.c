@@ -51,26 +51,17 @@ N(n3) { (τ[2] = "3"), str(obatsrd); }
 N(n4) { (τ[2] = "4"), str(obatsrd); }
 N(n5) { (τ[2] = "5"), str(obatsrd); }
 
-N(tab       ) {P; goTo(ο, β + 1, α, ο[β], srd); }
-
-N(propeller ) {P; }
-
-N(δ2_switch     ) {P; ((n_t)τ[2 * δ])(obatsrd); }
-N(t_word_open   ) {P; (τ[δ] = (void**)τ[-δ] + 2 * 4), ((n_t)*τ)(obatsrd); }
-N(δρ_tab_switch ) {P; ((n_t**)τ)[δ][ρ](obatsrd); }
-N(t_word        ) {
-  static void*gates[] = {
-    goTo,     t_word_open,goTo,     t_word_open,
-    goTo,     goTo,       goTo,     goTo,
-    goTo,     t_word_open,goTo,     t_word_open,
-    δ2_switch,δ2_switch,  δ2_switch,δ2_switch,
-  };
-  static void**zero = gates + 1 * 4;
-  τ[-2 * δ] = ο[--α];
-  τ[-1 * δ] = zero;
-  *τ        = δρ_tab_switch;
-  τ[+1 * δ] = zero + δ * 4;
-  τ[+2 * δ] = ο[--α];
+N(tab) {P; goTo(ο, β + 1, α, ο[β], srd); }
+N(ρmod2δ_switch) { ((n_t)τ[(ρ % 2 + 1) * δ])(obatsrd); }
+N(t_word_change) { (τ[δ] = τ[3 * δ]), (*τ = δ_switch), ((n_t)*τ)(obatsrd); }
+N(t_word) {
+  τ[-3 * δ] = ο[--α];
+  τ[-2 * δ] = goTo;
+  τ[-1 * δ] = goTo;
+  *τ        = ρmod2δ_switch;
+  τ[+1 * δ] = goTo;
+  τ[+2 * δ] = t_word_change;
+  τ[+3 * δ] = ο[--α];
   ((n_t)*τ)(obatsrd);
 }
 N(sS);
