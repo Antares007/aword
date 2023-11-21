@@ -8,5 +8,12 @@ n345
   4.
   5.
 
-r
+rn123
   n123 n123 n123 print.
+
+r
+  re "ss" set sS print.
+
+sS
+  1 "".
+  2 "s" sS sS.

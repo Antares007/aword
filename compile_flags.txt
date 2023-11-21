@@ -1,3 +1,2 @@
 -std=gnu99
 -Wall
--Wno-int-conversion
