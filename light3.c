@@ -33,19 +33,21 @@ N(bat) { (ο[--α] = τ), tab(obatsrd); }
 #define Trimed   OB[3]
 #define Arms     OB[1]
 #define I        OB[0]
-
-N(lg) { printf("%7s %s\n", rays[(ρ + 1) * δ + 5], (char*)τ[1]); goTo(obatsrd); }
-int my_propeller(unsigned long*c) {
-  long oi = c[0];
-  while((c[0] = (c[0] + 1) % c[1]) && GET_BIT(c[3], c[0]));
-  return !(oi < c[0]); }
-N(Yellow_Green  ) { SET_BIT(Fruitful, I),         goTo(ο,β,α,τ,σ,ρ,δ); }
-N(Yellow_Red    ) { if (Arms == 1)                goTo(ο,β,α,τ,σ,ρ,δ);
-                    else if(GET_BIT(Fruitful, I)) goTo(ο,β,α,τ,σ,my_propeller(OB)*2,δ);
-                    else SET_BIT(Trimed, I),      goTo(ο,β,α,τ,σ,my_propeller(OB)*2,δ); }
-N(Yellow_Yellow ) { SET_BIT(Fruitful, I),         goTo(ο,β,α,τ,σ,my_propeller(OB)*2+1,δ); }
-N(Red_Red       ) {                               goTo(ο,β,α,τ,σ,my_propeller(OB)*2,δ); }
-N(Green_Green   ) { SET_BIT(Fruitful, I),         goTo(ο,β,α,τ,σ,ρ,δ); }
+N(propeller) {
+  long oi = I;
+  while((I = (I + 1) % Arms) && GET_BIT(Trimed, I));
+  long d = (long)ο[--σ];
+  goTo(ο,β,α,τ,σ, !(oi < I)*2 + d, δ);
+}
+N(Red_Blue_propeller    ) { (ο[σ++] = (void*)0), propeller(obatsrd); }
+N(Yellow_Green_propeller) { (ο[σ++] = (void*)1), propeller(obatsrd); }
+N(Yellow_Green          ) { SET_BIT(Fruitful, I),         goTo(obatsrd); }
+N(Yellow_Red            ) { if (Arms == 1)                goTo(obatsrd);
+                            else if(GET_BIT(Fruitful, I)) Red_Blue_propeller(obatsrd);
+                            else SET_BIT(Trimed, I),      Red_Blue_propeller(obatsrd); }
+N(Yellow_Yellow         ) { SET_BIT(Fruitful, I),         Yellow_Green_propeller(obatsrd); }
+N(Red_Red               ) {                               Red_Blue_propeller(obatsrd); }
+N(Green_Green           ) { SET_BIT(Fruitful, I),         goTo(obatsrd); }
 
 N(Yellow) {
   τ[+4] = Yellow_Yellow;
@@ -76,6 +78,7 @@ N(toti) {
 }
 N(itot   ) { (ο[--β] = τ), goTo(ο, β, α + 1, ο[α], srd);   }
 N(goTo_δρ) { (ο[--β] = τ), goTo(oba, τ[(ρ + 1) * δ], srd); }
+
 N(var0) { 
   τ[+4] = (void*[]) {T(tab), T(toti), T(Yellow), T(tab)} + 05;
   τ[+3] = (void*[]) {T(tab), T(toti), T(Red),    T(tab)} + 05;
@@ -109,6 +112,7 @@ N(n4    ) { (τ[2] = "4"), str(obatsrd); }
 N(n5    ) { (τ[2] = "5"), str(obatsrd); }
 N(print   ) {
   if (σ) {
+    σ--;
     printf("%7s(", rays[(ρ + 1) * δ + 5]);
     for (long i = 0; i < σ; i++)
       printf("%s ", (char *)ο[i]);
@@ -125,21 +129,21 @@ N(in) {
 }
 N(ε); N(s); N(b); N(a); N(t); N(plus); N(mul); N(op); N(cp);
 N(n345) { 
-  τ[5] = (void*[]){0,3,0,0, (void*[]){ T(tab), T(n3), T(bat) } + 5,
-                            (void*[]){ T(tab), T(n4), T(bat) } + 5,
-                            (void*[]){ T(tab), T(n5), T(bat) } + 5, };
+  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(n3), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(n4), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(n5), T(bat) } + 5, };
   var(obatsrd);
 }
 N(n123) { 
-  τ[5] = (void*[]){0,3,0,0, (void*[]){ T(tab), T(n1), T(bat) } + 5,
-                            (void*[]){ T(tab), T(n2), T(bat) } + 5,
-                            (void*[]){ T(tab), T(n3), T(n345), T(bat) } + 5, };
+  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(n1), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(n2), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(n3), T(n345), T(bat) } + 5, };
   var(obatsrd);
 }
 N(Tab) { 
-  τ[5] = (void*[]){0,3,0,0, (void*[]){ T(tab), T(t), T(bat) } + 5,
-                            (void*[]){ T(tab), T(a), T(bat) } + 5,
-                            (void*[]){ T(tab), T(b), T(bat) } + 5, };
+  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(t), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(a), T(bat) } + 5,
+                                  (void*[]){ T(tab), T(b), T(bat) } + 5, };
   var(obatsrd);
 }
 N(sS) { 
@@ -150,12 +154,39 @@ N(sS) {
   };
   var(obatsrd);
 }
+N(S);
+N(Sλ) {
+  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab), T(n2), T(a), T(Sλ), T(bat)}),
+                                    (5+(void*[]){ T(tab), T(n3), T(t), T(Sλ), T(bat)}),
+                                    (5+(void*[]){ T(tab), T(n4),              T(bat)}), };
+  var(obatsrd);
+}
+N(S) {
+  τ[+5] = (void*[]){0,(void*)1,0,0, (5+(void*[]){ T(tab),   T(n1), T(b),  T(Sλ), T(bat)}), };
+  var(obatsrd);
+}
+N(E);
+N(Eλ) {
+  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab),   T(plus),  T(E),      T(Eλ), T(bat) }),
+                                    (5+(void*[]){ T(tab),   T(mul),   T(E),      T(Eλ), T(bat) }),
+                                    (5+(void*[]){ T(tab),   T(n1),    T(bat)}),                         };
+  var(obatsrd);
+}
+N(E) {
+  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab),   T(a),               T(Eλ), T(bat) }),
+                                    (5+(void*[]){ T(tab),   T(b),               T(Eλ), T(bat) }),
+                                    (5+(void*[]){ T(tab),   T(op), T(E), T(cp), T(Eλ), T(bat) }),
+  };
+  var(obatsrd);
+}
+
 int main() {
   void *ο[512];
   long β = sizeof(ο) / sizeof(*ο);
   long α = β / 4 * 3;
-  void **τ = 5 + (void *[]) {
-    T(bro), Ta(in,"ss"), T(sS), T(print), T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), Ta(in,"ss"), T(sS), T(print), T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), Ta(in,"baaaat"), T(S), T(print), T(o) };
+  void **τ = 5 + (void *[]) { T(bro), Ta(in,"(a+b)*a"), T(E), T(print), T(o) };
   long σ = 0;
   long ρ = 3;
   long δ = 1;
