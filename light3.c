@@ -115,7 +115,7 @@ N(print   ) {
     σ--;
     printf("%7s(", rays[(ρ + 1) * δ + 5]);
     for (long i = 0; i < σ; i++)
-      printf("%s ", (char *)ο[i]);
+      printf("%s", (char *)ο[i]);
     printf(")\n");
   }
   (σ = 0), goTo(obatsrd);
@@ -128,65 +128,53 @@ N(in) {
   ((n_t)(*τ = δ_switch))(obatsrd);
 }
 N(ε); N(s); N(b); N(a); N(t); N(plus); N(mul); N(op); N(cp);
-N(n345) { 
-  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(n3), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(n4), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(n5), T(bat) } + 5, };
-  var(obatsrd);
-}
-N(n123) { 
-  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(n1), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(n2), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(n3), T(n345), T(bat) } + 5, };
-  var(obatsrd);
-}
-N(Tab) { 
-  τ[5] = (void*[]){0,(void*)3,0,0,(void*[]){ T(tab), T(t), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(a), T(bat) } + 5,
-                                  (void*[]){ T(tab), T(b), T(bat) } + 5, };
-  var(obatsrd);
-}
-N(sS) { 
-  τ[5] = (void*[]){0,(void*)3,0,0,
-    (void*[]){ T(tab), T(n1), T(ε), T(bat)               } + 5,
-    (void*[]){ T(tab), T(n2), T(s), T(sS), T(sS), T(bat) } + 5,
-    (void*[]){ T(tab), T(n3), T(s), T(sS), T(sS), T(bat) } + 5,
-  };
-  var(obatsrd);
-}
+#define LEN(...) (sizeof((void*[]){__VA_ARGS__}) / sizeof(void*))
+#define B(...) (5+(void*[]){T(tab), __VA_ARGS__, T(bat)})
+#define D(S, ...)                                                       \
+  N(S) {                                                                \
+    τ[+5] = (void*[]){0,(void*)LEN(__VA_ARGS__),0,0, __VA_ARGS__};      \
+    var(obatsrd);                                                       \
+  }
+D(n345, 
+  B(T(n3)),
+  B(T(n4)),
+  B(T(n5)))
+D(n123, 
+  B(T(n1)),
+  B(T(n2)),
+  B(T(n3), T(n345)))
+D(Tab, 
+  B(T(t)),
+  B(T(a)),
+  B(T(b)),
+)
+D(sS, B(T(n1), T(ε)              ),
+      B(T(n2), T(s), T(sS), T(sS)),
+      B(T(n3), T(s), T(sS), T(sS)),
+)
 N(S);
-N(Sλ) {
-  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab), T(n2), T(a), T(Sλ), T(bat)}),
-                                    (5+(void*[]){ T(tab), T(n3), T(t), T(Sλ), T(bat)}),
-                                    (5+(void*[]){ T(tab), T(n4),              T(bat)}), };
-  var(obatsrd);
-}
-N(S) {
-  τ[+5] = (void*[]){0,(void*)1,0,0, (5+(void*[]){ T(tab),   T(n1), T(b),  T(Sλ), T(bat)}), };
-  var(obatsrd);
-}
+D(Sλ, B(T(n2), T(a), T(Sλ)),
+      B(T(n3), T(t), T(Sλ)),
+      B(T(n4)))
+D(S,  B(T(n1), T(b), T(Sλ)))
+
 N(E);
-N(Eλ) {
-  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab),   T(plus),  T(E),      T(Eλ), T(bat) }),
-                                    (5+(void*[]){ T(tab),   T(mul),   T(E),      T(Eλ), T(bat) }),
-                                    (5+(void*[]){ T(tab),   T(n1),    T(bat)}),                         };
-  var(obatsrd);
-}
-N(E) {
-  τ[+5] = (void*[]){0,(void*)3,0,0, (5+(void*[]){ T(tab),   T(a),               T(Eλ), T(bat) }),
-                                    (5+(void*[]){ T(tab),   T(b),               T(Eλ), T(bat) }),
-                                    (5+(void*[]){ T(tab),   T(op), T(E), T(cp), T(Eλ), T(bat) }),
-  };
-  var(obatsrd);
-}
+D(Eλ, B(T(plus),  T(E),     T(Eλ)),
+      B(T(mul),   T(E),     T(Eλ)),
+      B(T(n1)))
+D(E,  B(T(a),               T(Eλ)),
+      B(T(b),               T(Eλ)),
+      B(T(op), T(E), T(cp), T(Eλ)))
 
 int main() {
   void *ο[512];
   long β = sizeof(ο) / sizeof(*ο);
   long α = β / 4 * 3;
+  void **τ = 5 + (void *[]) { T(bro), Ta(in,""), T(n123), T(n123), T(n123), T(print), T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), Ta(in, "bat"), T(Tab), T(Tab), T(Tab), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), Ta(in,"ss"), T(sS), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), Ta(in,"baaaat"), T(S), T(print), T(o) };
-  void **τ = 5 + (void *[]) { T(bro), Ta(in,"(a+b)*a"), T(E), T(print), T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), Ta(in,"(a+b)*a"), T(E), T(print), T(o) };
   long σ = 0;
   long ρ = 3;
   long δ = 1;
