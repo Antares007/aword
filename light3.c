@@ -80,12 +80,17 @@ N(itot   ) { (ο[--β] = τ), goTo(ο, β, α + 1, ο[α], srd);   }
 N(goTo_δρ) { (ο[--β] = τ), goTo(oba, τ[(ρ + 1) * δ], srd); }
 
 N(var0) { 
-  τ[+4] = (void*[]) {T(tab), T(toti), T(Yellow), T(tab)} + 05;
-  τ[+3] = (void*[]) {T(tab), T(toti), T(Red),    T(tab)} + 05;
-  τ[+2] = (void*[]) {T(tab), T(toti), T(Green),  T(tab)} + 05;
-  τ[+1] = (void*[]) {T(tab), T(toti),            T(tab)} + 05;
+  static void*y[]= {T(tab), T(toti), T(Yellow), T(tab)}; 
+  static void*r[]= {T(tab), T(toti), T(Red),    T(tab)};
+  static void*g[]= {T(tab), T(toti), T(Green),  T(tab)};
+  static void*b[]= {T(tab), T(toti),            T(tab)};
+  static void*w[]= {T(tab), T(itot), T(tab)           };
+  τ[+4] = y + 5;
+  τ[+3] = r + 5;
+  τ[+2] = g + 5;
+  τ[+1] = b + 5;
 
-  τ[-1] = (void*[]) {T(tab), T(itot), T(tab)           } + 27;
+  τ[-1] = w + 27;
   τ[-2] = τ[-1];
   τ[-3] = τ[-1];
   τ[-4] = τ[-1];
@@ -103,31 +108,8 @@ N(var) {
   τ[+4] = var0;
   ((n_t)(*τ = δρ_switch))(obatsrd);
 }
-N(str_oa) { void*d = ο[--σ]; (ο[σ++] = τ[2]),(ο[σ++] = d), goTo(obatsrd); }
-N(str   ) { τ[-δ] = goTo; τ[+δ] = str_oa; ((n_t)(*τ = δ_switch))(obatsrd);  }
-N(n1    ) { (τ[2] = "1"), str(obatsrd); }
-N(n2    ) { (τ[2] = "2"), str(obatsrd); }
-N(n3    ) { (τ[2] = "3"), str(obatsrd); }
-N(n4    ) { (τ[2] = "4"), str(obatsrd); }
-N(n5    ) { (τ[2] = "5"), str(obatsrd); }
-N(print   ) {
-  if (σ) {
-    σ--;
-    printf("%7s(", rays[(ρ + 1) * δ + 5]);
-    for (long i = 0; i < σ; i++)
-      printf("%s", (char *)ο[i]);
-    printf(")\n");
-  }
-  (σ = 0), goTo(obatsrd);
-}
-N(in_heart) { if(δ == 1) ο[σ++] = τ[2]; goTo(obatsrd); }
-N(in) {
-  τ[2]  = τ[1];
-  τ[-δ] = goTo;
-  τ[+δ] = in_heart;
-  ((n_t)(*τ = δ_switch))(obatsrd);
-}
 N(ε); N(s); N(b); N(a); N(t); N(plus); N(mul); N(op); N(cp);
+N(n1); N(n2); N(n3); N(n4); N(n5); N(n6);
 #define LEN(...) (sizeof((void*[]){__VA_ARGS__}) / sizeof(void*))
 #define B(...) (5+(void*[]){T(tab), __VA_ARGS__, T(bat)})
 #define D(S, ...)                                                       \
@@ -146,7 +128,7 @@ D(n123,
 D(Tab, 
   B(T(t)),
   B(T(a)),
-  B(T(b)),
+  B(T(b))
 )
 D(sS, B(T(n1), T(ε)              ),
       B(T(n2), T(s), T(sS), T(sS)),
@@ -159,12 +141,13 @@ D(Sλ, B(T(n2), T(a), T(Sλ)),
 D(S,  B(T(n1), T(b), T(Sλ)))
 
 N(E);
-D(Eλ, B(T(plus),  T(E),     T(Eλ)),
-      B(T(mul),   T(E),     T(Eλ)),
+D(Eλ, B(T(n2),T(plus),T(E),       T(Eλ)),
+      B(T(n3),T(mul), T(E),       T(Eλ)),
       B(T(n1)))
-D(E,  B(T(a),               T(Eλ)),
-      B(T(b),               T(Eλ)),
-      B(T(op), T(E), T(cp), T(Eλ)))
+D(E,  B(T(n4),T(a),               T(Eλ)),
+      B(T(n5),T(b),               T(Eλ)),
+      B(T(n6),T(op),  T(E), T(cp),T(Eλ)))
+N(in); N(print);
 
 int main() {
   void *ο[512];
@@ -210,3 +193,28 @@ N(plus) { (τ[5] = "+"), terminal(obatsrd); }
 N(mul ) { (τ[5] = "*"), terminal(obatsrd); }
 N(op  ) { (τ[5] = "("), terminal(obatsrd); }
 N(cp  ) { (τ[5] = ")"), terminal(obatsrd); }
+N(in_heart) { if(δ == 1) ο[σ++] = τ[2]; goTo(obatsrd); }
+N(in) {
+  τ[2]  = τ[1];
+  τ[-δ] = goTo;
+  τ[+δ] = in_heart;
+  ((n_t)(*τ = δ_switch))(obatsrd);
+}
+N(str_oa) { void*d = ο[--σ]; (ο[σ++] = τ[2]),(ο[σ++] = d), goTo(obatsrd); }
+N(str   ) { τ[-δ] = goTo; τ[+δ] = str_oa; ((n_t)(*τ = δ_switch))(obatsrd);  }
+N(n1    ) { (τ[2] = "1"), str(obatsrd); }
+N(n2    ) { (τ[2] = "2"), str(obatsrd); }
+N(n3    ) { (τ[2] = "3"), str(obatsrd); }
+N(n4    ) { (τ[2] = "4"), str(obatsrd); }
+N(n5    ) { (τ[2] = "5"), str(obatsrd); }
+N(n6    ) { (τ[2] = "6"), str(obatsrd); }
+N(print   ) {
+  if (σ && (ρ == 1 || ρ == 3)) {
+    σ--;
+    printf("%7s(", rays[(ρ + 1) * δ + 5]);
+    for (long i = 0; i < σ; i++)
+      printf("%s", (char *)ο[i]);
+    printf(")\n");
+  }
+  (σ = 0), goTo(obatsrd);
+}
