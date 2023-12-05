@@ -221,13 +221,12 @@ N(print_A   ) {
   (σ = 0), goTo(obatsrd);
 }
 N(print_B   ) {
-  if (σ) {
+  if (σ && ρ % 2 == 1) {
     printf("%7s", rays[(ρ + 1) * δ + 5]);
     for (long i = --σ; -1 < i; i--)
       printf("%s", (char *)ο[i]);
     printf("\n");
-    σ = 0; 
   }
-  goTo(obatsrd);
+  (σ = 0), goTo(obatsrd);
 }
 N(print   ) { (τ[+1] = print_A), (τ[-1] = print_B), ((n_t)(*τ = δ_switch))(obatsrd); }
