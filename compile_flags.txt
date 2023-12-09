@@ -1,2 +1,4 @@
 -std=gnu99
 -Wall
+-Wno-multichar
+-Wno-int-conversion
