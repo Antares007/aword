@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define N(argo) void argo(void**ο, long β, long α, void**τ, long σ, long ρ, long δ)
+#define N(argo) void argo(void**ο, long β, long α, void**τ, const char*σ, long ρ, long δ)
 typedef N((*n_t));
 
 const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
@@ -19,7 +19,7 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
 
 N(goTo      ) { ((n_t)τ[11 * δ])(oba, τ + 11 * δ, srd); }
 N(o         ) { goTo(oba, τ, σ, ρ, -δ); }
-N(bword     ) { if(ρ < 2) goTo(oba, τ, σ, 3, -δ); }
+N(bword     ) { if(ρ < 2) goTo(oba, τ, σ, 3, -δ); else P; }
 N(tab       ) { goTo(ο, β + 1, α, (long)ο[β], σ, ρ, δ); }
 
 N(δ_switch  ) { ((n_t)τ[δ])(obatsrd); }
@@ -34,15 +34,23 @@ N(ρδ_switch ) { ((n_t)τ[(ρ+1)*δ])(obatsrd); }
   }                                     \
   N(id##_heart)
 
-N(id1) { goTo(obatsrd); }
-N(id2) { goTo(obatsrd); }
-N(b  ) { goTo(obatsrd); }
-N(a  ) { goTo(obatsrd); }
-N(t  ) { goTo(obatsrd); }
-N(s  ) { goTo(obatsrd); }
+N(term_parse) { if (*σ == ((char*)τ[5])[0]) (ο[α++] = τ[5]), σ++; else ρ--; goTo(obatsrd); }
+N(term) {
+  τ[-4] = goTo;
+  τ[-3] = goTo;
+  τ[-2] = goTo;
+  τ[-1] = goTo;
+  τ[+1] = goTo;
+  τ[+2] = term_parse;
+  τ[+3] = goTo;
+  τ[+4] = term_parse;
+  ((n_t)(*τ = ρδ_switch))(obatsrd);
+}
+N(b  ) { (τ[5] = "b"), term(obatsrd); }
+N(a  ) { (τ[5] = "a"), term(obatsrd); }
+N(t  ) { (τ[5] = "t"), term(obatsrd); }
+N(s  ) { (τ[5] = "s"), term(obatsrd); }
 
-#define GET_BIT(value, bit) ((value >> bit) & 1)
-#define SET_BIT(value, bit) (value |= (1UL << bit))
 #define OB ((unsigned long**)ο)[β]
 #define Fruitful OB[-5]
 #define Trimed   OB[-4]
@@ -50,7 +58,7 @@ N(s  ) { goTo(obatsrd); }
 #define I        OB[-2]
 N(propeller) {
   long oi = I;
-  while((I = (I + 1) % Arms) && GET_BIT(Trimed, I));
+  while((I = (I + 1) % Arms) && (Trimed >> I) & 1);
   long d = (long)ο[--α];
   long r = !(oi < I) * 2 + d;
   goTo(oba,τ,σ,r,δ);
@@ -59,12 +67,35 @@ N(Red_Blue_propeller    ) { (ο[α++] = (void*)0),          propeller(obatsrd); 
 N(Yellow_Green_propeller) { (ο[α++] = (void*)1),          propeller(obatsrd); }
 N(Yellow_Green          ) { Fruitful |= (1UL << I),       goTo(obatsrd); }
 N(Yellow_Red            ) { if (Arms == 1)                goTo(obatsrd);
-                            else if(GET_BIT(Fruitful, I)) Red_Blue_propeller(obatsrd);
-                            else SET_BIT(Trimed, I),      Red_Blue_propeller(obatsrd); }
-N(Yellow_Yellow         ) { SET_BIT(Fruitful, I),         Yellow_Green_propeller(obatsrd); }
+                            else if ((Fruitful >> I) & 1) Red_Blue_propeller(obatsrd);
+                            else Trimed |= (1UL << I),    Red_Blue_propeller(obatsrd); }
+N(Yellow_Yellow         ) { Fruitful |= (1UL << I),       Yellow_Green_propeller(obatsrd); }
 N(Red_Red               ) {                               Red_Blue_propeller(obatsrd); }
-N(Green_Green           ) { SET_BIT(Fruitful, I),         goTo(obatsrd); }
-N(door    ) { goTo(obatsrd); }
+N(Green_Green           ) { Fruitful |= (1UL << I),       goTo(obatsrd); }
+N(door_open ) {
+  τ[+4] = goTo;
+  τ[+3] = goTo;
+  τ[+1] = goTo;
+  goTo(obatsrd); 
+}
+N(door_close) {
+  τ[+4] = door_open;
+  τ[+3] = o;
+  τ[+1] = o;
+  goTo(obatsrd); 
+}
+N(door    ) {
+  τ[-4] = door_close;
+  τ[-3] = goTo;
+  τ[-2] = goTo;
+  τ[-1] = goTo;
+  *τ = ρδ_switch;
+  τ[+1] = o;
+  τ[+2] = goTo;
+  τ[+3] = o;
+  τ[+4] = door_open;
+  ((n_t)*τ)(obatsrd); 
+}
 N(Yellow  ) {
   τ[-4] = goTo; τ[-3] = goTo; τ[-2] = goTo; τ[-1] = goTo;
   τ[+1] = goTo;
@@ -140,20 +171,36 @@ N(n123) {
   τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(n345), T(o)};
   true_var(obatsrd);
 }
+N(bat) {
+  τ[-3] = 3; τ[-2] = 0;
+  τ[+2] = 5 + (void*[]) {T(tab), T(door), T(b), T(o)};
+  τ[+3] = 5 + (void*[]) {T(tab), T(door), T(a), T(o)};
+  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(t), T(o)};
+  true_var(obatsrd);
+}
+N(sS) {
+  τ[-3] = 3; τ[-2] = 0;
+  τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n1), T(goTo), T(o)};
+  τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n2), T(s), T(sS), T(sS), T(o)};
+  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(s), T(sS), T(sS), T(o)};
+  true_var(obatsrd);
+}
 N(print) {
   if(α) {
     printf("%7s P_(", rays[(ρ + 1) * δ + 5]);
-    for (long i = 0; i < α; i++) printf("%s", (char *)ο[i]);
+    for (long i = 0; i < α; i++)
+      printf("%s", (char *)ο[i]);
     printf(")\n");
     α = 0;
   }
   goTo(obatsrd);
 }
+N(in) { (σ = τ[5]), goTo(obatsrd); }
 int main() {
   void *ο[512];
   long  β = 512; 
   long  α = 0;
-  void**τ = 5 + (void*[]){ T(bword), T(n123), T(n123), T(n123), T(print), T(o) };
+  void**τ = 5 + (void*[]){ T(bword), T(print), Tab(in, 0, "ss"), T(sS), T(print), T(o) };
   long  σ = 0;
   long  ρ = 3;
   long  δ = 1;
