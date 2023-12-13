@@ -129,7 +129,6 @@ N(Blue  ) {
   τ[+4] = nop;
   ((n_t)(*τ = ρδ_switch))(obatsrd); 
 }
-
 N(toti    ) {
   static void* a_Yellow  [] = {T(o), T(Yellow), T(tab) };
   static void* a_Red     [] = {T(o), T(Red),    T(tab) };
@@ -152,11 +151,11 @@ N(S) {
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(S), T(a), T(o)};
   true_var(obatsrd);
 }
-N(n1   ) { if(δ==1) (ο[α++] = "1"); goTo(obatsrd); }
-N(n2   ) { if(δ==1) (ο[α++] = "2"); goTo(obatsrd); }
-N(n3   ) { if(δ==1) (ο[α++] = "3"); goTo(obatsrd); }
-N(n4   ) { if(δ==1) (ο[α++] = "4"); goTo(obatsrd); }
-N(n5   ) { if(δ==1) (ο[α++] = "5"); goTo(obatsrd); }
+N(n1  ) { if(δ==1) (ο[α++] = "1"); goTo(obatsrd); }
+N(n2  ) { if(δ==1) (ο[α++] = "2"); goTo(obatsrd); }
+N(n3  ) { if(δ==1) (ο[α++] = "3"); goTo(obatsrd); }
+N(n4  ) { if(δ==1) (ο[α++] = "4"); goTo(obatsrd); }
+N(n5  ) { if(δ==1) (ο[α++] = "5"); goTo(obatsrd); }
 N(n345) {
   τ[-3] = 3; τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n3), T(o)};
@@ -179,21 +178,21 @@ N(bat) {
   true_var(obatsrd);
 }
 N(sS) {
-  τ[-3] = 3; τ[-2] = 0;
+  τ[-3] = 4; τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n1), T(goTo), T(o)};
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n2), T(s), T(sS), T(sS), T(o)};
   τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(s), T(sS), T(sS), T(o)};
+  τ[+5] = 5 + (void*[]) {T(tab), T(door), T(n4), T(s), T(sS), T(sS), T(o)};
   true_var(obatsrd);
 }
 N(print) {
-  if(α) {
+  if (α && ρ % 2 == 1) {
     printf("%7s P_(", rays[(ρ + 1) * δ + 5]);
     for (long i = 0; i < α; i++)
       printf("%s", (char *)ο[i]);
     printf(")\n");
-    α = 0;
   }
-  goTo(obatsrd);
+  (α = 0), goTo(obatsrd);
 }
 N(in) { (σ = τ[5]), goTo(obatsrd); }
 int main() {
