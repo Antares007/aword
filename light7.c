@@ -3,13 +3,13 @@
 #include <assert.h>
 #include <stdio.h>
 #include <unistd.h>
-
+// ο...α________________________________________β....
 #define N(argo) void argo(void**ο, long β, long α, void**τ, const char*σ, long ρ, long δ)
 typedef N((*n_t));
 
 const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
                       "Blue",    "Green", "Red",    "Yellow", "Purple"};
-
+// (void*[]) {0,0,0,0,0,bword,0,0,0,0,0,  0,0,0,0,0,aw,0,0,0,0,0,  0,0,0,0,0,o,0,0,0,0,0};
 #define Tab(n, a, b) (a), 0,0,0,0, n, 0,0,0,0, (b)
 #define T(nar) Tab(nar, 0, 0)
 
@@ -20,7 +20,7 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
 N(goTo      ) { ((n_t)τ[11 * δ])(oba, τ + 11 * δ, srd); }
 N(o         ) { goTo(oba, τ, σ, ρ, -δ); }
 N(bword     ) { if(ρ < 2) goTo(oba, τ, σ, 3, -δ); else P; }
-N(tab       ) { goTo(ο, β + 1, α, (long)ο[β], σ, ρ, δ); }
+N(tab       ) { goTo(ο, β + 1, α, (void*)ο[β], σ, ρ, δ); }
 
 N(δ_switch  ) { ((n_t)τ[δ])(obatsrd); }
 N(ρδ_switch ) { ((n_t)τ[(ρ+1)*δ])(obatsrd); }
@@ -145,7 +145,7 @@ N(true_var) {
   ((n_t)(*τ = δ_switch))(obatsrd); 
 }
 N(S) {
-  τ[-3] = 2;
+  τ[-3] = (void*)2;
   τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(b), T(o)};
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(S), T(a), T(o)};
@@ -156,37 +156,39 @@ N(n2  ) { if(δ==1) (ο[α++] = "2"); goTo(obatsrd); }
 N(n3  ) { if(δ==1) (ο[α++] = "3"); goTo(obatsrd); }
 N(n4  ) { if(δ==1) (ο[α++] = "4"); goTo(obatsrd); }
 N(n5  ) { if(δ==1) (ο[α++] = "5"); goTo(obatsrd); }
-N(n345) {
-  τ[-3] = 3; τ[-2] = 0;
-  τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n3), T(o)};
-  τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n4), T(o)};
-  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n5), T(o)};
-  true_var(obatsrd);
-}
+// n123 → "1" | "2" | "3" n345
 N(n123) {
-  τ[-3] = 3; τ[-2] = 0;
+  τ[-3] = (void*)3; τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n1), T(o)};
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n2), T(o)};
-  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(n345), T(o)};
+  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(o)};
   true_var(obatsrd);
 }
+// n345 → "3" | "4" | "5"
+N(n345) {
+  τ[-3] = (void*)3; τ[-2] = 0;
+  τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n3), T(o)};
+  τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n4), T(o)};
+  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n5), T(n123), T(o)};
+  true_var(obatsrd);
+}
+// bat → "b" | "a" | "t"
 N(bat) {
-  τ[-3] = 3; τ[-2] = 0;
+  τ[-3] = (void*)3; τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(b), T(o)};
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(a), T(o)};
   τ[+4] = 5 + (void*[]) {T(tab), T(door), T(t), T(o)};
   true_var(obatsrd);
 }
+// sS → "" | "s" sS sS
 N(sS) {
-  τ[-3] = 4; τ[-2] = 0;
+  τ[-3] = (void*)2; τ[-2] = 0;
   τ[+2] = 5 + (void*[]) {T(tab), T(door), T(n1), T(goTo), T(o)};
   τ[+3] = 5 + (void*[]) {T(tab), T(door), T(n2), T(s), T(sS), T(sS), T(o)};
-  τ[+4] = 5 + (void*[]) {T(tab), T(door), T(n3), T(s), T(sS), T(sS), T(o)};
-  τ[+5] = 5 + (void*[]) {T(tab), T(door), T(n4), T(s), T(sS), T(sS), T(o)};
   true_var(obatsrd);
 }
 N(print) {
-  if (α && ρ % 2 == 1) {
+  if (α) {
     printf("%7s P_(", rays[(ρ + 1) * δ + 5]);
     for (long i = 0; i < α; i++)
       printf("%s", (char *)ο[i]);
@@ -194,13 +196,16 @@ N(print) {
   }
   (α = 0), goTo(obatsrd);
 }
-N(in) { (σ = τ[5]), goTo(obatsrd); }
+N(σ_ss) { (σ = "ss"), goTo(obatsrd); }
+N(σ_bat) { (σ = "bat"), goTo(obatsrd); }
 int main() {
   void *ο[512];
   long  β = 512; 
   long  α = 0;
-  void**τ = 5 + (void*[]){ T(bword), T(print), Tab(in, 0, "ss"), T(sS), T(print), T(o) };
-  long  σ = 0;
+  void**τ = 5 + (void*[]){ T(bword), T(n345), T(n345), T(n345), T(print), T(o) };
+  //void**τ = 5 + (void*[]){ T(bword), T(σ_ss), T(sS), T(print), T(o) };
+  //void**τ = 5 + (void*[]){ T(bword), T(σ_bat), T(bat), T(bat), T(bat), T(print), T(o) };
+  char *σ = 0;
   long  ρ = 3;
   long  δ = 1;
   goTo(obatsrd);
