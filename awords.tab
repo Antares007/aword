@@ -1,19 +1,20 @@
 n123
   1.
   2.
-  3 n345.
+  3.
 
 n345
   3.
   4.
-  5.
+  5 n123.
 
-rn123
-  n123 n123 n123 print.
+run
+  n345 n345 n345 print.
 
-r
-  re "ss" set sS print.
+run_S
+  re "bat" set S print.
 
-sS
-  1 "".
-  2 "s" sS sS.
+S
+  "b".
+  S "a".
+  S "t".

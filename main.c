@@ -31,6 +31,6 @@ int main(int argc, const char **argv) {
   o[a++] = ti;
   o[a++] = usleep;
   o[a+0] = __FILE__; o[a+1] = 0;
-  n_t w = Bark("b r o");
+  n_t w = Bark("b run o");
   (w)(0, a, b, o, 0);
 }
