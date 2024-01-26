@@ -14,7 +14,7 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
 #define oba     ο, β, α
 #define obatsrd ο, β, α, τ, σ, ρ, δ
 #define     srd             σ, ρ, δ
-
+// broadcast twelve
 N(goTo      ) { ((n_t*)τ)[δ * 11](ο, β, α, ((void**)τ) + δ * 11, σ, ρ, δ); }
 
 N(o         ) { goTo(ο, β, α, τ, σ, ρ, -δ); }

@@ -11,7 +11,7 @@ n345
 run
   n345 n345 n345 print.
 
-run_S
+run__
   re "bat" set S print.
 
 S

@@ -15,6 +15,12 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
 #define srd                 σ, ρ, δ
 #define Σ 2048
 N(goTo) { ((n_t)ο[τ + Σ*ρ + 11*δ])(oba, τ + 11*δ, srd); }
+N(tvar) { ο[--β]  = ο[τ];
+          ο[--β]  = ο[ρ+1];
+          goTo(oba, ο[ο[τ+5*δ]], srd);
+}
+N(tab ) { goTo(ο, β + 1, α, ο[β], srd); }
+
 N(δ_switch) { ((n_t)ο[τ + Σ*ρ + δ])(obatsrd); }
 // 
 //                   τ
@@ -48,7 +54,7 @@ N(term) {
   ο[Blue(σ)+5] = ο[--α], type(obatsrd);
 }
 N(goTo_t5) { goTo(oba, ο[τ+5], srd); }
-N(tab) { 
+N(itab) { 
   ο[Blue(σ)  ] = ο[Green(σ)] = ο[Red(σ)] = ο[Yellow(σ)] = goTo_t5,
   ο[Blue(σ)+5] = ο[β+4], type(obatsrd);
 }
@@ -68,7 +74,7 @@ N(propeller2) {
   ο[Blue(σ)] = ο[Green(σ)] = goTo_t5, ο[Red(σ)] = ο[Yellow(σ)] = reset_arm,
   ο[Blue(σ)+5] = ο[β+4], type(obatsrd);
 }
-N(o_next) { ο[α++] = ward_arm, ο[α++] = propeller1, ο[α++] = tab, oa(obatsrd); }
+N(o_next) { ο[α++] = ward_arm, ο[α++] = propeller1, ο[α++] = itab, oa(obatsrd); }
 N(o_last) { ο[α++] = ward_arm, ο[α++] = propeller2, oa(obatsrd); }
 N(var_end) { 
   β += 5,
@@ -82,7 +88,7 @@ N(var_start) {
   ο[--β] = term;
   ο[--β] = o_next;
   ο[--β] = o_last;
-  ο[α++] = var_end, ο[α++] = tab, ((n_t)ο[Blue(τ + 5)])(obatsrd);
+  ο[α++] = var_end, ο[α++] = itab, ((n_t)ο[Blue(τ + 5)])(obatsrd);
 }
 N(var) { 
   ο[Blue(σ)-1] = ο[Red(σ)-1] = ο[Green(σ)-1] = ο[Yellow(σ)-1] = goTo_ward,
@@ -112,7 +118,11 @@ N(str) {
   ο[Blue(σ)+1] = ο[Red(σ)+1] = ο[Green(σ)+1] = ο[Yellow(σ)+1] = str_push,
   ο[Blue(σ)+5] = ο[--α], type(obatsrd);
 }
-N(lbl_print) { printf("%4ld %4ld %4ld %7s %s %s\n", α, β, σ, rays[(ρ + 1) * δ + 5], __FUNCTION__, (char*)ο[τ+5]), usleep(2000), goTo(obatsrd); }
+N(lbl_print) {
+  // printf("%4ld %4ld %4ld %7s %s %s\n", α, β, σ, rays[(ρ + 1) * δ + 5], __FUNCTION__, (char*)ο[τ+5]),
+  // usleep(2000),
+  goTo(obatsrd);
+}
 N(lbl) {
   ο[Blue(σ)-1] = ο[Red(σ)-1] = ο[Green(σ)-1] = ο[Yellow(σ)-1] = goTo,
   ο[Blue(σ)  ] = ο[Red(σ)  ] = ο[Green(σ)  ] = ο[Yellow(σ)  ] = δ_switch,
@@ -161,7 +171,7 @@ int main() {
   ο[α++] = b,
   ο[α++] = print,
   ο[α++] = "b", ο[α++] = lbl,
-  ο[α++] = r,   ο[α++] = var,
+  ο[α++] =   r, ο[α++] = var,
   ο[α++] = "o", ο[α++] = lbl,
   ο[α++] = o,
   oa(obatsrd);
