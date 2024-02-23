@@ -21,47 +21,75 @@ const char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  0,
 #define obatsrd ο, β, α, τ, σ, ρ, δ
 #define     srd             σ, ρ, δ
 
-N(goto_515  ) { ((n_t)ο[τ + δ * 16])(ο, β, α, τ + δ * 11, σ, ρ, δ); }
-N(goto_a    ) { ((n_t)ο[α - 1])(ο, β, α - 1, τ, σ, ρ, δ); }
+N(goto_515) { ((n_t)ο[τ + δ * 16])(ο, β, α, τ + δ * 11, σ, ρ, δ); }
+N(goto_a  ) { ((n_t)ο[α - 1])(ο, β, α - 1, τ, σ, ρ, δ); }
 
-N(reverse_δ ) { P, ο[--β] = ρ, goto_515(oba, τ, σ, ρ, -δ); }
-N(cycle     ) { if(ο[β++] < 2) P, goto_515(oba, τ, σ, 3, -δ); }
-N(begin     ) { ο[σ - 5] = cycle, goto_515(oba, σ, σ - 11, 3, 1); }
-N(end       ) { ο[σ + 5] = reverse_δ, σ -= 11, goto_a(obatsrd); }
+N(begin_it) { if(ο[β++] < 2) P, goto_515(oba, τ, σ, 3, -δ); }
+N(begin   ) { ο[σ - 5] = begin_it, goto_515(oba, σ, σ - 11, 3, 1); }
+N(end_it  ) { P, ο[--β] = ρ, goto_515(oba, τ, σ, ρ, -δ); }
+N(end     ) { ο[σ + 5] = end_it, σ -= 11, goto_a(obatsrd); }
+
+//
+//             b
+//             |
+//        g__wsg__wsg____wog
+//             |
+//             g__wsg__wsg____wog
+//             |
+//             |
+//             |
+//  g___g____wsg__wsg__wog
+//      |      |
+//     wsg     |
+//      |      |
+//     wog     |
+//             e
+//
 
 N(term_bk) {
   P;
   goto_515(obatsrd);
 }
-N(term_it) {
-  P;
-  ο[α++] = ο[τ], goto_515(obatsrd);
+N(put_it);
+N(term_it_Yellow) {
+  put_it(obatsrd);
+  //P;
+  //if(ο[α-1] < ο[α-2] && ((char**)ο)[τ][0] == ((char**)ο)[α-3][ο[α-1]])
+  //  ο[α-1]++, goto_515(obatsrd);
+  //else {
+  //}
 }
+N(ρ_switch) { ((n_t)ο[τ + (ρ + 1) * δ])(obatsrd); }
 N(term) {
   ο[σ - 5] = term_bk;
   ο[σ] = ο[--α];
-  ο[σ + 5] = term_it;
+  ο[σ + 1] = term_it_Yellow,
+  ο[σ + 2] = term_it_Yellow,
+  ο[σ + 3] = term_it_Yellow,
+  ο[σ + 4] = term_it_Yellow,
+  ο[σ + 5] = ρ_switch;
   σ -= 11, goto_a(obatsrd);
 }
-
-N(ρ_switch          ) { P; ((n_t)ο[τ + (ρ + 1) * δ])(obatsrd); }
-
-// G w w w S w w w O
-// G      WSG     WRG
 N(shift_it) { P, ο[ο[τ]] = τ + 11, goto_515(oba, τ, σ, ρ - 2, δ); }
 N(shift   ) {
   ο[σ - 5] = goto_515,
   ο[σ] = τ,
-  ο[σ + 1] = ο[σ + 2] = goto_515, ο[σ + 3] = ο[σ + 4] = shift_it;
-  ο[σ + 5] = ρ_switch;
+  ο[σ + 1] = ο[σ + 2] = goto_515, ο[σ + 3] = ο[σ + 4] = shift_it, ο[σ + 5] = ρ_switch;
   σ -= 11, goto_a(obatsrd);
 }
 
 N(goto_it ) { P, goto_515(oba, ο[τ], srd); }
 N(goTo    ) { ο[σ - 5] = goto_it,  ο[σ] = τ, ο[σ + 5] = goto_it; σ -= 11, goto_a(obatsrd); }
 
-N(ward_it ) { P, ο[ο[τ] - 1] = τ, ο[ο[τ] - 2] = ρ, goto_515(obatsrd); }
-N(ward    ) { ο[σ - 5] = goto_515, ο[σ] = τ, ο[σ + 5] = ward_it; σ -= 11, goto_a(obatsrd); }
+N(ward_it ) { ο[ο[τ] - 1] = τ + 11, ο[ο[τ] - 2] = ρ, goto_515(obatsrd); }
+N(ward    ) { 
+  ο[σ - 5] = ρ_switch,
+  ο[σ - 4] = goto_515,
+  ο[σ - 3] = goto_515,
+  ο[σ - 2] = goto_515,
+  ο[σ - 1] = goto_515,
+  ο[σ] = τ, ο[σ + 5] = ward_it; σ -= 11, goto_a(obatsrd);
+}
 
 N(reset_it) { P, ο[ο[τ]] = ο[ο[τ] + 1], goto_515(obatsrd); }
 N(reset   ) {
@@ -99,24 +127,6 @@ N(var) {
   ο[σ - 5] = goto_ward, ο[σ] = transcript, ο[σ + 5] = run_tran, σ -= 11, goto_a(obatsrd);
 }
 
-N(id_Olive  ) { P, goto_515(obatsrd); }
-N(id_Maroon ) { P, goto_515(obatsrd); }
-N(id_Lime   ) { P, goto_515(obatsrd); }
-N(id_Navy   ) { P, goto_515(obatsrd); }
-N(id_Blue   ) { P, goto_515(obatsrd); }
-N(id_Green  ) { P, goto_515(obatsrd); }
-N(id_Red    ) { P, goto_515(obatsrd); }
-N(id_Yellow ) { P, goto_515(obatsrd); }
-N(id) {
-  P;
-  ο[σ - 5] = ρ_switch;
-  ο[σ + 1] = id_Blue;   ο[σ - 1] = id_Navy;
-  ο[σ + 2] = id_Green;  ο[σ - 2] = id_Lime;
-  ο[σ + 3] = id_Red;    ο[σ - 3] = id_Maroon;
-  ο[σ + 4] = id_Yellow; ο[σ - 4] = id_Olive;
-  ο[σ + 5] = ρ_switch;
-  σ -= 11, goto_a(obatsrd);
-}
 N(S) { P; }
 
 N(put_it  ) { P, ο[α++] = ο[τ], goto_515(obatsrd); }
@@ -129,7 +139,7 @@ N(print_it) {
       printf("%s", (char *)ο[i]);
     printf("\n");
     α = 0;
-    usleep(200000);
+    usleep(20000);
   }
   goto_515(obatsrd);
 }
@@ -156,3 +166,12 @@ int main() {
 // how we plan to grow language?
 // we need to put growing ring around pith.
 // what is the pith?
+//
+// we have
+// 505 - fully closed words
+// aradani - fully closed with import/export dynamic linking
+// 515 - using native arrays allocated on stac
+// 515 - double sides of execution
+// 515 - kalachackra double sides of execution
+//
+// 
