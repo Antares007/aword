@@ -1,0 +1,16 @@
+https://qr.ae/psnqxe
+The only limiting factor to finding a better way to compose computation and build human-like languages is the belief that the 'GOTO statement' is harmful. GOTO is most abstract form of computation. 
+Traditionally demonized since Dijkstra's influential paper in 1968, we've embarked on a journey to reassess its significance.
+Equipped with the knowledge that "The computer revolution hasnt happened yet", we've uncovered a profound perspective on the GOTO instruction in our investigations.
+It emerges not as an outdated relic but as a fundamental element, deeply ingrained in the essence of computation. 
+Drawing parallels to the innate mechanisms of CPU instructions, we've come to view GOTO as a pivotal pathway guiding the flow of execution within a program.
+Our articles (
+https://medium.com/@a.bolkvadze/actionable-word-gotos-venture-into-unexplored-programming-realms-0ea1cca12349
+https://medium.com/@a.bolkvadze/in-the-beginning-was-the-goto-and-the-goto-was-with-cpu-and-the-goto-was-cpu-aeb4c29dbdd5
+) propose a bold paradigm shift, advocating for the integration of GOTO within a new programming protocol based on actionable words and sentences.
+This approach heralds a new era in software development, where GOTO symbolizes continuity, progression, and the very essence of programmatic evolution.
+Embracing GOTO within this context opens doors to a universal language for programming, emphasizing scalability, flexibility, and the power of composability.
+It's a call to arms to reevaluate GOTO not as a deprecated relic but as a potent tool for unlocking new dimensions in software engineering.
+While conventional wisdom may caution against the indiscriminate use of GOTO in C/C++ programs, our insights prompt a reconsideration of its potential benefits within the framework of a revolutionary approach to programming.
+In conclusion, through our articles, we invite fellow programmers to join us on this transformative journey.
+Let's embrace the power of GOTO and usher in a new era of software innovation together.

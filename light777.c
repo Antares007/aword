@@ -145,9 +145,16 @@ N(print_it) {
 }
 N(print) { ο[σ - 5] = goto_515, ο[σ + 5] = print_it, σ -= 11, goto_a(obatsrd); }
 N(bat) {
-  ο[α++] = "b"; ο[α++] = term; ο[α++] = semicoma;
-  ο[α++] = "a"; ο[α++] = term; ο[α++] = semicoma;
-  ο[α++] = "t"; ο[α++] = term; ο[α++] = dot, goto_a(obatsrd);
+  ο[α++] = "b";
+    ο[α++] = term;
+      ο[α++] = semicoma;
+  ο[α++] = "a";
+    ο[α++] = term;
+      ο[α++] = semicoma;
+  ο[α++] = "t";
+    ο[α++] = term;
+      ο[α++] = dot;
+  goto_a(obatsrd);
 }
 int main() {
   long ram[2048];

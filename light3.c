@@ -155,10 +155,10 @@ int main() {
   void *ο[512];
   long β = sizeof(ο) / sizeof(*ο);
   long α = β / 4 * 3;
-  //void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,""), T(n123), T(n123), T(n123), T(print), T(o) };
+  void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,""), T(n123), T(n123), T(n123), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in, "bat"), T(Tab), T(Tab), T(Tab), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,"ss"), T(sS), T(print), T(o) };
-  void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,"baaaat"), T(S), T(print), T(o) };
+  //void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,"baaaat"), T(S), T(print), T(o) };
   //void **τ = 5 + (void *[]) { T(bro), T(print), Ta(in,"(a+b)*a"), T(E), T(print), T(o) };
   long σ = 0;
   long ρ = 3;

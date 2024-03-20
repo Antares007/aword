@@ -1,0 +1,49 @@
+aword
+  {}.
+print
+  {}.
+zprint
+  0 print. 1 print. "hi" print.
+
+head
+  head
+    aword aword.
+    aword.
+
+head
+  aword aword.
+  aword.
+  2.
+
+head
+  aword aword aword.
+  head
+    aword aword.
+    aword.
+
+Actionable word
+  Actionable word (Aword) ise a binary file which can be executed from bouth sides.
+  In other words execution flow can enter in aword from bouth sides and
+  it eventualy will pass it to the aword standing from right or left side.
+
+Actionable sentence
+  Actionable sentence (Asentence) is a group of Awords placed side by side.
+  Asentence is placed between two extrimes.
+  Thay are the special awords named as "tab" and "dot".
+  They are primarly responsible to turn execution flow to oposite direction.
+  In this manner the execution flow is cycling in Asentence.
+
+Actionable text
+  Actionable text (Atext) is a group of Asentences.
+  It can may contain special aword which represents name.
+
+how to grow things?
+no roots no tree no family
+
+
+
+Actionable text is a sequence of actionable words.
+asen
+and between two extrimes (specal actianble words).
+
+მენატრება შენი სრიალი მენატრება შენი ხმა მენატრება შენი გემო მენატრება სუნტქვა მენატება მენატრება.

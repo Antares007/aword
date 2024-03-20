@@ -5,7 +5,6 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/epoll.h>
 #include <sys/socket.h>
@@ -35,48 +34,7 @@ void AddFd(int epoll_fd, int fd) {
   SetNonblocking(fd);
 }
 /*ET Work mode features: efficient but potentially dangerous*/
-void et_process(struct epoll_event *events, int number, int epoll_fd,
-                int listen_fd) {
-  char buf[BUFFER_SIZE];
-  int i;
-  for (i = 0; i < number; i++) {
-    int sockfd = events[i].data.fd;
-    if (sockfd == listen_fd) {
-      struct sockaddr_in client_address;
-      socklen_t client_addrlength = sizeof(client_address);
-      int connfd = accept(listen_fd, (struct sockaddr *)&client_address,
-                          &client_addrlength);
-      AddFd(epoll_fd, connfd);
-    } else if (events[i].events & EPOLLIN) {
-      /* This code will not be triggered repeatedly, so we cycle through the
-       * data to make sure that all the data in the socket read cache is read
-       * out.This is how we eliminate the potential dangers of the ET model */
-      printf("et mode: event trigger once!\n");
-      while (1) {
-        memset(buf, 0, BUFFER_SIZE);
-        int ret = recv(sockfd, buf, BUFFER_SIZE - 1, 0);
-        if (ret < 0) {
-          /* For non-congested IO, the following condition is true to indicate
-           * that the data has been read completely, after which epoll can
-           * trigger the EPOLLIN event on sockfd again to drive the next read
-           * operation */
-          if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            printf("read later!\n");
-            break;
-          }
-          close(sockfd);
-          break;
-        } else if (ret == 0) {
-          close(sockfd);
-        } else // Not finished, continue reading in a loop
-        {
-          printf("get %d bytes of content: %s\n", ret, buf);
-        }
-      }
-    } else {
-      printf("something unexpected happened!\n");
-    }
-  }
+void et_process(struct epoll_event *events, int ret, int epoll_fd, int listen_fd) {
 }
 
 int main() {
@@ -110,7 +68,46 @@ int main() {
       printf("epoll failure!\n");
       break;
     }
-    et_process(events, ret, epoll_fd, listen_fd);
+    char buf[BUFFER_SIZE];
+    int i;
+    for (i = 0; i < ret; i++) {
+      int sockfd = events[i].data.fd;
+      if (sockfd == listen_fd) {
+        struct sockaddr_in client_address;
+        socklen_t client_addrlength = sizeof(client_address);
+        int connfd = accept(listen_fd, (struct sockaddr *)&client_address,
+                            &client_addrlength);
+        AddFd(epoll_fd, connfd);
+      } else if (events[i].events & EPOLLIN) {
+        /* This code will not be triggered repeatedly, so we cycle through the
+         * data to make sure that all the data in the socket read cache is read
+         * out.This is how we eliminate the potential dangers of the ET model */
+        printf("et mode: event trigger once!\n");
+        while (1) {
+          memset(buf, 0, BUFFER_SIZE);
+          int ret = recv(sockfd, buf, BUFFER_SIZE - 1, 0);
+          if (ret < 0) {
+            /* For non-congested IO, the following condition is true to indicate
+             * that the data has been read completely, after which epoll can
+             * trigger the EPOLLIN event on sockfd again to drive the next read
+             * operation */
+            if (errno == EAGAIN || errno == EWOULDBLOCK) {
+              printf("read later!\n");
+              break;
+            }
+            close(sockfd);
+            break;
+          } else if (ret == 0) {
+            close(sockfd);
+          } else // Not finished, continue reading in a loop
+          {
+            printf("get %d bytes of content: %s\n", ret, buf);
+          }
+        }
+      } else {
+        printf("something unexpected happened!\n");
+      }
+    }
   }
   close(listen_fd);
   return 0;
