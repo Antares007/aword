@@ -21,7 +21,7 @@ void *map_file(const char *file) {
 void ti(void*);
 void ti_init();
 int main(int argc, const char **argv) {
-//  ti_init();
+  ti_init();
   long a = 0;
   void*o[512];
   long b = sizeof(o) / sizeof(*o);
