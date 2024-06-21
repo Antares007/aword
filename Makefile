@@ -1,5 +1,5 @@
 CC|=clang
-CFLAGS+=-std=c2x -Wall -Wpedantic
+CFLAGS+=-std=c2x -Wall
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
 %.o: %.c
