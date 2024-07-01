@@ -41,6 +41,13 @@ void fork(struct sContext *s) {
   goTo(&sn);
 }
 void (*sopcodes[])(struct sContext *s) = {halt, put, call, ret, fork};
+// clang-format off
+#define Halt    s->ram[s->space] = 0,                             s->space += 11,
+#define Put(c)  s->ram[s->space] = 1, s->ram[s->space + 5] = (c), s->space += 11,
+#define Call(a) s->ram[s->space] = 2, s->ram[s->space + 5] = (a), s->space += 11,
+#define Ret     s->ram[s->space] = 3,                             s->space += 11,
+#define Fork    s->ram[s->space] = 4,                             s->space += 11,
+// clang-format on
 void goTo(struct sContext *s) {
   push(s);
   s = unshift();
@@ -52,15 +59,5 @@ int main() {
   s->advance = 0;
   s->call_stack = 512;
   s->text_index = s->space = s->call_stack + 5;
-  // clang-format off
-  s->ram[s->space] = 0,                             s->space += 11, // halt
-  s->ram[s->space] = 4,                             s->space += 11, // fork
-  s->ram[s->space] = 4,                             s->space += 11, // fork
-  s->ram[s->space] = 2, s->ram[s->space + 5] = 3,   s->space += 11, // call +3
-  s->ram[s->space] = 1, s->ram[s->space + 5] = 'a', s->space += 11, // put 'a'
-  s->ram[s->space] = 1, s->ram[s->space + 5] = 'b', s->space += 11, // put 'b'
-  s->ram[s->space] = 0,                             s->space += 11, // halt
-  s->ram[s->space] = 1, s->ram[s->space + 5] = 't', s->space += 11, // put 't'
-  s->ram[s->space] = 3,                             s->space += 11, // ret
-  goTo(s);
+  Halt Fork Fork Call(3) Put('a') Put('b') Halt Put('t') Ret goTo(s);
 }
