@@ -59,14 +59,5 @@ int main() {
   s->advance = 0;
   s->call_stack = 512;
   s->text_index = s->space = s->call_stack + 5;
-  Halt
-    Fork
-    Fork
-    Call(3)
-    Put('a')
-    Put('b')
-    Halt
-    Put('t')
-    Ret
-    goTo(s);
+  Halt Fork Fork Call(3) Put('a') Put('b') Halt Put('t') Ret goTo(s);
 }

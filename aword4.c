@@ -1,5 +1,18 @@
 // clang-format off
-#include "aword.h"
+extern int printf(const char *, ...);
+#define P printf("%s\n", __func__)
+
+typedef struct O {
+  long advance;
+  long back_stack;
+  long text_index;
+  long bSide;
+  long space;
+  long ray;
+  long direction;
+  long ram[];
+} O;
+
 #define NAMES X(beginning) X(end) X(halt) X(put) X(call) X(ret)
 #define X(n)  void n##_Fuchsia (O *o); \
               void n##_Olive   (O *o); \
@@ -43,8 +56,12 @@ void got(O *o) {
   long opcode = o->ram[o->text_index = o->text_index + 11 * o->direction];
   (sopcodes[opcode * 11 + (o->ray + 1) * o->direction + 5])(o);
 }
+void got0(O *o) {
+  void (*sophi)(O *o) = (void*)o->ram[o->text_index += 11 * o->direction];
+  sophi(o);
+}
 
-void halt_Fuchsia(O *o) {}
+void halt_Fuchsia(O *o) { got(o); }
 void halt_Olive(O *o) {}
 void halt_Maroon(O *o) {}
 void halt_Lime(O *o) {}
@@ -94,7 +111,6 @@ void ret_Green  (O *o) {}
 void ret_Red    (O *o) {}
 void ret_Yellow (O *o) { o->text_index = o->ram[o->back_stack++]; got(o); }
 void ret_Purple (O *o) {}
-
 
 void end_Fuchsia(O *o) {P;}
 void end_Olive  (O *o) {P;}
