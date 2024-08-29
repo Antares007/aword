@@ -1,29 +1,8 @@
 #pragma GCC diagnostic ignored "-Wint-conversion"
 #pragma GCC diagnostic ignored "-Wmathematical-notation-identifier-extension"
 
-#define N(ame) void ame(long *o)
-#define τ o[100]
-#define α o[101]
-#define β o[102]
-#define σ o[103]
-#define ρ o[104]
-#define δ o[105]
-#define NAMES                                                                  \
-  X(halt)                                                                      \
-  X(beginning)                                                                 \
-  X(tab)                                                                       \
-  X(tword)                                                                     \
-  X(put)                                                                       \
-  X(dot)                                                                       \
-  X(print)                                                                     \
-  X(name)
-enum Names {
-#define X(n) n,
-  NAMES
-#undef X
-      Names_count
-};
-#define S(n) static N(n)
+#include "sophis.h"
+
 #define X(n)                                                                   \
   S(n##_Fuchsia);                                                              \
   S(n##_Olive);                                                                \
@@ -37,24 +16,18 @@ enum Names {
   S(n##_Purple);
 NAMES
 #undef X
+
 static N((*sopcodes[])) = {
-#define X(n)  n##_Fuchsia,n##_Olive,n##_Maroon,n##_Lime,  n##_Navy, 0,         \
-              n##_Blue,   n##_Green,n##_Red,   n##_Yellow,n##_Purple,
+#define X(n)  n##_Fuchsia,n##_Olive,n##_Maroon,n##_Lime,n##_Navy,0,n##_Blue,n##_Green,n##_Red,n##_Yellow,n##_Purple,
   NAMES
 #undef X
 };
 
 extern int printf(const char *, ...);
 extern int usleep(long);
+void sti_got(long *o);
 S(dbg) {
-  static const char*rays[11] = {"Fuchsia", "Olive",  "Maroon", "Lime",  "Navy", 0,
-                                "Blue",    "Green",  "Red",    "Yellow","Purple"};
-  static const char*snames[] = {
-  #define X(n)  #n,
-    NAMES
-  #undef X
-  };
-  printf("%7s %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], τ, σ, snames[o[τ]]), usleep(20000),
+  sti_got(o);
   sopcodes[o[τ] * 11 + (ρ + 1) * δ + 5](o);
 }
 
@@ -170,7 +143,9 @@ S(print_Yellow  ) { print_pith(o); }
 S(print_Purple  ) { o[σ+5] = o[τ]; σ += 11; got(o); }
 
 static long ram[0x10000];
+void sti_init();
 int main () {
+  sti_init();
   long *o = ram;
   α = 0;
   τ = β = σ = 512;
@@ -193,9 +168,9 @@ int main () {
   Ta(name, "tritab")                                              AL
   T(tab) Ta(tword, "tab") Ta(tword, "tab") Ta(tword, "tab") T(dot)AL
 
-  Ta(name, "S")                                                   AL
-  T(tab) Ta(put, 'b')                                       T(dot)AL
-  T(tab) Ta(tword, "S") Ta(put, 'a')                        T(dot)AL
+//Ta(name, "S")                                                   AL
+//T(tab) Ta(put, 'b')                                       T(dot)AL
+//T(tab) Ta(tword, "S") Ta(put, 'a')                        T(dot)AL
 
   got(o);
 }
