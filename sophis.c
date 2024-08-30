@@ -167,6 +167,7 @@ N(S_sample) {
   Ta(name, "S")                                                     AL
   T(tab) Ta(put, 'b')                                         T(dot)AL
   T(tab) Ta(tword, "S") Ta(put, 'a')                          T(dot)AL
+  T(tab) Ta(tword, "S") Ta(put, 't')                          T(dot)AL
   σ += 5;
   got(o);
 }
@@ -189,7 +190,8 @@ int main () {
   sti_init();
   long *o = ram;
   α = 0;
-  τ = β = σ = 512;
+  β = 507;
+  τ = σ = 512;
   ρ = 3;
   δ = 1;
   S_sample(o);
