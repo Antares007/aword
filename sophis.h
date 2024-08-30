@@ -15,6 +15,7 @@
   X(beginning)                                                                 \
   X(tab)                                                                       \
   X(tword)                                                                     \
+  X(term)                                                                      \
   X(put)                                                                       \
   X(dot)                                                                       \
   X(print)                                                                     \
