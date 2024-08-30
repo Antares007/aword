@@ -1,8 +1,10 @@
 CC|=clang
 CFLAGS+=-std=c2x -Wall
 
-%.ray: %.c
-	${CC} -lraylib -lm $^ -o $@ ${CFLAGS}
+sophis.out: sophis.c sophis_text_index.o
+	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
+sophis_text_index.out: sophis_text_index.c sophis.o
+	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
 %.out: %.c
 	${CC} $^ -o $@ ${CFLAGS}
 %.o: %.c

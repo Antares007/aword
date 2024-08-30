@@ -27,10 +27,10 @@ static const Color colors[] = {
 };
 
 static Font font;
-static float zoom = 1.0;
-static Vector2 off = {0, 0};
+static float zoom = 1.5;
+static Vector2 off = {10, -140};
 
-void drawVMState(long *o) {
+static void drawVMState(long *o) {
   ClearBackground(RAYWHITE);
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
@@ -52,13 +52,13 @@ void drawVMState(long *o) {
                                            CELL_WIDTH - 5, CELL_HEIGHT - 5},
                                3, RED);
         }
-        DrawTextEx(font,
-                   opcode == put
-                       ? TextFormat("%c", o[t + 1])
-                       : TextFormat("%s", (opcode == tword || opcode == name
-                                               ? (char *)o[t + 1]
-                                               : snames[opcode])),
-                   (Vector2){x * CELL_WIDTH, y * CELL_HEIGHT}, 25, 0, BLACK);
+        DrawTextEx(
+            font,
+            opcode == put ? TextFormat("%c", o[t + 1])
+                          : TextFormat("%s", (opcode == tword || opcode == name
+                                                  ? (char *)o[t + 1]
+                                                  : snames[opcode])),
+            (Vector2){x * CELL_WIDTH + 5, y * CELL_HEIGHT}, 25, 0, BLACK);
       }
     }
   }
@@ -81,8 +81,10 @@ void sti_got(long *o) {
       zoom -= 0.1;
     key = GetCharPressed();
     drawVMState(o);
-    if (WindowShouldClose())
+    if (WindowShouldClose()) {
+      CloseWindow();
       exit(0);
+    }
   } while (key != 'c');
 }
 void sti_init() {
