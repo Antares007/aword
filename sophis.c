@@ -142,6 +142,47 @@ S(print_Red     ) {}
 S(print_Yellow  ) { print_pith(o); }
 S(print_Purple  ) { o[σ] = o[τ]; σ += 11; got(o); }
 
+#define ν(a) (o[σ++] = a, π++)
+#define _ ν(0)
+#define T(s)        _,_,_,_,_,    (ν(s)),   _,   _   ,_,_,_,
+#define Ta(s, a)    _,_,_,_,_,    (ν(s)),   ν(a),_   ,_,_,_,
+#define AL          ({ while (π < (1 << 7)) _; π = 0; }),
+N(tritab_sample) {
+  long π = 0;
+  σ -= 5;
+  T(beginning) Ta(tword, "tritab") T(print)                 T(dot)AL
+  Ta(name, "tab")                                                 AL
+  T(tab) Ta(put, 't')                                       T(dot)AL
+  T(tab) Ta(put, 'a')                                       T(dot)AL
+  T(tab) Ta(put, 'b')                                       T(dot)AL
+  Ta(name, "tritab")                                              AL
+  T(tab) Ta(tword, "tab") Ta(tword, "tab") Ta(tword, "tab") T(dot)AL
+  σ += 5;
+  got(o);
+}
+N(S_sample) {
+  long π = 0;
+  σ -= 5;
+  T(beginning) Ta(tword, "S") T(print)                        T(dot)AL
+  Ta(name, "S")                                                     AL
+  T(tab) Ta(put, 'b')                                         T(dot)AL
+  T(tab) Ta(tword, "S") Ta(put, 'a')                          T(dot)AL
+  σ += 5;
+  got(o);
+}
+N(AB_sample) {
+  long π = 0;
+  σ -= 5;
+  T(beginning) Ta(tword, "A") T(print)                        T(dot)AL
+  Ta(name, "A")                                                     AL
+  T(tab) Ta(put, 'o')                                         T(dot)AL
+  T(tab) Ta(tword, "B") Ta(put, 'a')                          T(dot)AL
+  Ta(name, "B")                                                     AL
+  T(tab) Ta(put, 'y')                                         T(dot)AL
+  T(tab) Ta(tword, "A") Ta(put, 'b')                          T(dot)AL
+  σ += 5;
+  got(o);
+}
 static long ram[0x10000];
 void sti_init();
 int main () {
@@ -151,27 +192,5 @@ int main () {
   τ = β = σ = 512;
   ρ = 3;
   δ = 1;
-#define ν(a) (o[σ++] = a, π++)
-#define _ ν(0)
-#define T(s)        _,_,_,_,_,    (ν(s)),   _,   _   ,_,_,_,
-#define Ta(s, a)    _,_,_,_,_,    (ν(s)),   ν(a),_   ,_,_,_,
-#define AL          ({ while (π < (1 << 7)) _; π = 0; }),
-  long π = 0;
-
-  σ -= 5;
-  T(beginning) Ta(tword, "tritab") T(print)                 T(dot)AL
-  Ta(name, "tab")                                                 AL
-  T(tab) Ta(put, 't')                                       T(dot)AL
-  T(tab) Ta(put, 'a')                                       T(dot)AL
-  T(tab) Ta(put, 'b')                                       T(dot)AL
-
-  Ta(name, "tritab")                                              AL
-  T(tab) Ta(tword, "tab") Ta(tword, "tab") Ta(tword, "tab") T(dot)AL
-  σ += 5;
-
-//Ta(name, "S")                                                   AL
-//T(tab) Ta(put, 'b')                                       T(dot)AL
-//T(tab) Ta(tword, "S") Ta(put, 'a')                        T(dot)AL
-
-  got(o);
+  S_sample(o);
 }

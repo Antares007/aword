@@ -12,18 +12,18 @@ const int CELL_HEIGHT = 30;
 const int MAX_OPCODES = 512;
 
 // Color Definitions
-static const Color colors[] = {
-    CLITERAL(Color){255, 0, 255, 255},   // Fuchsia
-    CLITERAL(Color){128, 128, 0, 255},   // Olive
-    CLITERAL(Color){128, 0, 0, 255},     // Maroon
-    CLITERAL(Color){0, 255, 0, 255},     // Lime
-    CLITERAL(Color){0, 0, 128, 255},     // Navy
-    CLITERAL(Color){255, 255, 255, 255}, // White
-    CLITERAL(Color){0, 0, 255, 255},     // Blue
-    CLITERAL(Color){0, 128, 0, 255},     // Green
-    CLITERAL(Color){255, 0, 0, 255},     // Red
-    CLITERAL(Color){255, 255, 0, 255},   // Yellow
-    CLITERAL(Color){128, 0, 128, 255},   // Purple
+static const Color colors[][2] = {
+    {(Color){255, 0, 255, 255}, BLACK},   // Fuchsia
+    {(Color){128, 128, 0, 255}, BLACK},   // Olive
+    {(Color){128, 0, 0, 255}, WHITE},     // Maroon
+    {(Color){0, 255, 0, 255}, BLACK},     // Lime
+    {(Color){0, 0, 128, 255}, WHITE},     // Navy
+    {(Color){255, 255, 255, 255}, BLACK}, // White
+    {(Color){0, 0, 255, 255}, WHITE},     // Blue
+    {(Color){0, 128, 0, 255}, WHITE},     // Green
+    {(Color){255, 0, 0, 255}, BLACK},     // Red
+    {(Color){255, 255, 0, 255}, BLACK},   // Yellow
+    {(Color){128, 0, 128, 255}, WHITE},   // Purple
 };
 
 static Font font;
@@ -44,23 +44,20 @@ static void drawVMState(long *o) {
         continue;
       long opcode = o[t];
       long colindex = (o[t - 5] + 1) * o[t - 4] + 5;
+      Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT,
+                                   CELL_WIDTH-5, CELL_HEIGHT-5};
       if (opcode) {
-        DrawRectangle(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH - 5,
-                      CELL_HEIGHT - 5, colors[colindex]);
+        DrawRectangleRounded(rect, 10, 10, colors[colindex][0]);
         if (t == τ) {
-          DrawRectangleLinesEx((Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT,
-                                           CELL_WIDTH - 5, CELL_HEIGHT - 5},
-                               3, RED);
+          DrawRectangleRoundedLines(rect, 10, 10, 3, RED);
         }
-        TextFormat("%s", (opcode == tword || opcode == name ? (char *)o[t + 1]
-                                                            : snames[opcode]));
         DrawTextEx(font,
                    opcode == put     ? TextFormat("'%c'", o[t + 1])
                    : opcode == tword ? TextFormat("T:%s", (char *)o[t + 1])
                    : opcode == name  ? TextFormat("N:%s", (char *)o[t + 1])
                                      : TextFormat("%s", snames[opcode]),
                    (Vector2){x * CELL_WIDTH + 5, y * CELL_HEIGHT}, 25, 0,
-                   BLACK);
+                   colors[colindex][1]);
       }
     }
   }
