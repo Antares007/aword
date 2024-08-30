@@ -68,10 +68,10 @@ S(tab_Blue      ) {}
 S(tab_Green     ) { τ = o[β++]; β++; got(o); }
 S(tab_Red       ) {}
 S(tab_Yellow    ) { o[o[β]+2] = τ; τ = o[β++]; β++; ρ = 1; got(o); }
-S(tab_Purple    ) { o[σ+5] = o[τ]; σ += 11; got(o); }
+S(tab_Purple    ) { o[σ] = o[τ]; σ += 11; got(o); }
 
 S(tword_pith    ) { o[--β] = ρ; o[--β] = τ; τ = o[τ + 2]; got(o); }
-S(tword_init    ) { o[τ+5]++; o[--β] = ρ; o[--β] = τ; τ = σ + 5; δ = -δ; ρ = 4; yot(o); }
+S(tword_init    ) { o[τ+5]++; o[--β] = ρ; o[--β] = τ; τ = σ; δ = -δ; ρ = 4; yot(o); }
 S(tword_switch  ) { static N((*sopcodes[])) = {tword_init, tword_pith}; sopcodes[o[τ+5]](o); }
 S(tword_Fuchsia ) {}
 S(tword_Olive   ) { got(o); }
@@ -82,7 +82,7 @@ S(tword_Blue    ) {}
 S(tword_Green   ) { tword_switch(o); }
 S(tword_Red     ) {}
 S(tword_Yellow  ) { tword_switch(o); }
-S(tword_Purple  ) { o[σ+5] = o[τ]; o[σ+6] = o[τ+1]; σ += 11; got(o);}
+S(tword_Purple  ) { o[σ] = o[τ]; o[σ+1] = o[τ+1]; σ += 11; got(o);}
 
 S(put_pith      ) { o[α++] = (char)o[τ+1]; got(o); }
 S(put_Fuchsia   ) {}
@@ -94,7 +94,7 @@ S(put_Blue      ) {}
 S(put_Green     ) { put_pith(o); }
 S(put_Red       ) {}
 S(put_Yellow    ) { put_pith(o); }
-S(put_Purple    ) { o[σ+5] = o[τ]; o[σ+6] = o[τ+1]; σ += 11; got(o); }
+S(put_Purple    ) { o[σ] = o[τ]; o[σ+1] = o[τ+1]; σ += 11; got(o); }
 
 S(dot_Fuchsia   ) {}
 S(dot_Olive     ) {}
@@ -105,14 +105,14 @@ S(dot_Blue      ) {}
 S(dot_Green     ) { δ = -δ; got(o); }
 S(dot_Red       ) {}
 S(dot_Yellow    ) { δ = -δ; got(o); }
-S(dot_Purple    ) { o[σ+5] = o[τ]; σ = (((σ >> 7) + 1) << 7); o[σ] = name; σ -= 5; τ = (τ >> 7) << 7; yot(o); }
+S(dot_Purple    ) { o[σ] = o[τ]; σ = (((σ >> 7) + 1) << 7); o[σ] = name; τ = (τ >> 7) << 7; yot(o); }
 
 #include<string.h>
 S(name_Fuchsia  ) { if (strcmp(o[τ+1], o[o[β]+1]) == 0) {
-                      o[σ+5] = o[τ];
-                      o[σ+6] = o[τ+1];
+                      o[σ] = o[τ];
+                      o[σ+1] = o[τ+1];
                       σ += 1 << 7;
-                      o[o[β]+2] = o[o[β]+3] = σ + 5;
+                      o[o[β]+2] = o[o[β]+3] = σ;
                       δ = -δ;
                     }
                     yot(o); }
@@ -140,7 +140,7 @@ S(print_Blue    ) {}
 S(print_Green   ) { print_pith(o); }
 S(print_Red     ) {}
 S(print_Yellow  ) { print_pith(o); }
-S(print_Purple  ) { o[σ+5] = o[τ]; σ += 11; got(o); }
+S(print_Purple  ) { o[σ] = o[τ]; σ += 11; got(o); }
 
 static long ram[0x10000];
 void sti_init();
@@ -149,7 +149,6 @@ int main () {
   long *o = ram;
   α = 0;
   τ = β = σ = 512;
-  σ -= 5;
   ρ = 3;
   δ = 1;
 #define ν(a) (o[σ++] = a, π++)
@@ -159,6 +158,7 @@ int main () {
 #define AL          ({ while (π < (1 << 7)) _; π = 0; }),
   long π = 0;
 
+  σ -= 5;
   T(beginning) Ta(tword, "tritab") T(print)                 T(dot)AL
   Ta(name, "tab")                                                 AL
   T(tab) Ta(put, 't')                                       T(dot)AL
@@ -167,6 +167,7 @@ int main () {
 
   Ta(name, "tritab")                                              AL
   T(tab) Ta(tword, "tab") Ta(tword, "tab") Ta(tword, "tab") T(dot)AL
+  σ += 5;
 
 //Ta(name, "S")                                                   AL
 //T(tab) Ta(put, 'b')                                       T(dot)AL
