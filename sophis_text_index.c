@@ -71,6 +71,7 @@ void sti_got(long *o) {
   o[τ - 4] = δ;
   printf("%7s %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], τ, σ, snames[o[τ]]);
   long key;
+  static int semi_auto = 0;
   do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -84,12 +85,13 @@ void sti_got(long *o) {
     if (WindowShouldClose()) {
       CloseWindow();
       exit(0);
-    }
-  } while (key != 'c');
+    } else if (key == 'c')
+      semi_auto = !semi_auto;
+  } while (key != 's' && !semi_auto);
 }
 void sti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sophisticated text index");
-  SetTargetFPS(0);
+  SetTargetFPS(60);
   font = LoadFontEx("NovaMono-Regular.ttf", 25, 0, 0);
 }
