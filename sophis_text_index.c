@@ -52,13 +52,15 @@ static void drawVMState(long *o) {
                                            CELL_WIDTH - 5, CELL_HEIGHT - 5},
                                3, RED);
         }
-        DrawTextEx(
-            font,
-            opcode == put ? TextFormat("%c", o[t + 1])
-                          : TextFormat("%s", (opcode == tword || opcode == name
-                                                  ? (char *)o[t + 1]
-                                                  : snames[opcode])),
-            (Vector2){x * CELL_WIDTH + 5, y * CELL_HEIGHT}, 25, 0, BLACK);
+        TextFormat("%s", (opcode == tword || opcode == name ? (char *)o[t + 1]
+                                                            : snames[opcode]));
+        DrawTextEx(font,
+                   opcode == put     ? TextFormat("'%c'", o[t + 1])
+                   : opcode == tword ? TextFormat("T:%s", (char *)o[t + 1])
+                   : opcode == name  ? TextFormat("N:%s", (char *)o[t + 1])
+                                     : TextFormat("%s", snames[opcode]),
+                   (Vector2){x * CELL_WIDTH + 5, y * CELL_HEIGHT}, 25, 0,
+                   BLACK);
       }
     }
   }
