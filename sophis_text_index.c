@@ -4,26 +4,24 @@
 #include <stdio.h>
 #include <unistd.h>
 
-// Constants
 const int SCREEN_WIDTH = 100 * (1 << 7) / 11;
 const int SCREEN_HEIGHT = 600;
 const int CELL_WIDTH = 100;
 const int CELL_HEIGHT = 30;
 const int MAX_OPCODES = 512;
 
-// Color Definitions
 static const Color colors[][2] = {
-    {(Color){255, 0, 255, 255}, BLACK},   // Fuchsia
-    {(Color){128, 128, 0, 255}, BLACK},   // Olive
-    {(Color){128, 0, 0, 255}, WHITE},     // Maroon
-    {(Color){0, 255, 0, 255}, BLACK},     // Lime
-    {(Color){0, 0, 128, 255}, WHITE},     // Navy
+    {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
+    {(Color){128, 128, 000, 255}, BLACK}, // Olive
+    {(Color){128, 000, 000, 255}, WHITE}, // Maroon
+    {(Color){000, 255, 000, 255}, BLACK}, // Lime
+    {(Color){000, 000, 128, 255}, WHITE}, // Navy
     {(Color){255, 255, 255, 255}, BLACK}, // White
-    {(Color){0, 0, 255, 255}, WHITE},     // Blue
-    {(Color){0, 128, 0, 255}, WHITE},     // Green
-    {(Color){255, 0, 0, 255}, BLACK},     // Red
-    {(Color){255, 255, 0, 255}, BLACK},   // Yellow
-    {(Color){128, 0, 128, 255}, WHITE},   // Purple
+    {(Color){000, 000, 255, 255}, WHITE}, // Blue
+    {(Color){000, 128, 000, 255}, WHITE}, // Green
+    {(Color){255, 000, 000, 255}, BLACK}, // Red
+    {(Color){255, 255, 000, 255}, BLACK}, // Yellow
+    {(Color){128, 000, 128, 255}, WHITE}, // Purple
 };
 
 static Font font;
@@ -45,7 +43,7 @@ static void drawVMState(long *o) {
       long opcode = o[t];
       long colindex = (o[t - 5] + 1) * o[t - 4] + 5;
       Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT,
-                                   CELL_WIDTH-5, CELL_HEIGHT-5};
+                                   CELL_WIDTH - 5, CELL_HEIGHT - 5};
       if (opcode) {
         DrawRectangleRounded(rect, 10, 10, colors[colindex][0]);
         if (t == τ) {
@@ -69,7 +67,8 @@ static int semi_auto = 0;
 void sti_got(long *o) {
   o[τ - 5] = ρ;
   o[τ - 4] = δ;
-  printf("%7s %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], τ, σ, snames[o[τ]]);
+  printf("%7s %2ld %3ld %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], α, β, τ, σ,
+         snames[o[τ]]);
   long key;
   if (τ == 512 && ρ >= 2)
     semi_auto = 0;
