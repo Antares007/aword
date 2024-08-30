@@ -68,12 +68,14 @@ static void drawVMState(long *o) {
   EndDrawing();
 }
 #include <stdlib.h>
+static int semi_auto = 0;
 void sti_got(long *o) {
   o[τ - 5] = ρ;
   o[τ - 4] = δ;
   printf("%7s %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], τ, σ, snames[o[τ]]);
   long key;
-  static int semi_auto = 0;
+  if (τ == 512 && ρ >= 2)
+    semi_auto = 0;
   do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
