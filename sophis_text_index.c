@@ -54,7 +54,10 @@ static void drawVMState(long *o) {
           DrawRectangleRoundedLines(rect, 10, 10, 3, RED);
         }
         DrawTextEx(font,
-                   opcode == put     ? TextFormat("\"%s\"", (char *)o[t + 1])
+                   opcode == put
+                       ? (o[t + 1] < 100
+                              ? TextFormat("%ld", o[t + 1])
+                              : TextFormat("\"%s\"", (char *)o[t + 1]))
                    : opcode == tword ? TextFormat("T:%s", (char *)o[t + 1])
                    : opcode == name  ? TextFormat("N:%s", (char *)o[t + 1])
                    : opcode == term  ? TextFormat("%s<", (char *)o[t + 1])
@@ -82,7 +85,7 @@ void sti_got(long *o, long s) {
   printf("%17s %2ld %3ld %4ld %4ld %s\n", ray_names[o[τ] * 20 + s * 5 + ρ], α,
          β, τ, σ, snames[o[τ]]);
   long key;
-  if (τ == 512 && ρ >= 2)
+  if (o[τ] == beginning && ρ > 1)
     semi_auto = 0;
   do {
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))

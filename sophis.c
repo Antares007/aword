@@ -4,27 +4,17 @@
 
 #include "sophis.h"
 
-#define X(n)                                                                   \
-  S(n##_Fuchsia);                                                              \
-  S(n##_Olive);                                                                \
-  S(n##_Maroon);                                                               \
-  S(n##_Lime);                                                                 \
-  S(n##_Navy);                                                                 \
-  S(n##_Blue);                                                                 \
-  S(n##_Green);                                                                \
-  S(n##_Red);                                                                  \
-  S(n##_Yellow);                                                               \
-  S(n##_Purple);                                                               \
-  S(Fuchsia_##n);                                                              \
-  S(Olive_##n);                                                                \
-  S(Maroon_##n);                                                               \
-  S(Lime_##n);                                                                 \
-  S(Navy_##n);                                                                 \
-  S(Blue_##n);                                                                 \
-  S(Green_##n);                                                                \
-  S(Red_##n);                                                                  \
-  S(Yellow_##n);                                                               \
-  S(Purple_##n);
+#define X(n)                      \
+  S(n##_Fuchsia); S(Fuchsia_##n); \
+    S(n##_Olive); S(Olive_##n);   \
+   S(n##_Maroon); S(Maroon_##n);  \
+     S(n##_Lime); S(Lime_##n);    \
+     S(n##_Navy); S(Navy_##n);    \
+     S(n##_Blue); S(Blue_##n);    \
+    S(n##_Green); S(Green_##n);   \
+      S(n##_Red); S(Red_##n);     \
+   S(n##_Yellow); S(Yellow_##n);  \
+   S(n##_Purple); S(Purple_##n);    
 NAMES
 #undef X
 
@@ -43,8 +33,6 @@ static Nar((*sopcodes_w[])) = {NAMES};
 #undef X
 #undef CAT
 
-extern int printf(const char *, ...);
-extern int usleep(long);
 void sti_got(long *o, long s);
 
 S(goto_n) __attribute__((noinline));
@@ -190,12 +178,12 @@ S(Purple_nl)  {}
 
 S(dot_Fuchsia){}
 S(dot_Olive)  { goto_w(o); }
-S(dot_Maroon) {}
+S(dot_Maroon) { goto_w(o); }
 S(dot_Lime)   { goto_w(o); }
-S(dot_Navy)   {}
-S(dot_Blue)   {}
+S(dot_Navy)   { goto_w(o); }
+S(dot_Blue)   { goto_w(o); }
 S(dot_Green)  { goto_e(o); }
-S(dot_Red)    {}
+S(dot_Red)    { goto_w(o); }
 S(dot_Yellow) { goto_e(o); }
 S(dot_Purple) { o[σ] = o[τ], σ += 11, goto_e(o); }
 S(Fuchsia_dot){}
@@ -211,16 +199,18 @@ S(Purple_dot) {}
 
 S(print_Fuchsia){}
 S(print_Olive)  { goto_w(o); }
-S(print_Maroon) {}
+S(print_Maroon) { goto_w(o); }
 S(print_Lime)   { goto_w(o); }
-S(print_Navy)   {}
-S(print_Blue)   {}
+S(print_Navy)   { goto_w(o); }
+S(print_Blue)   { print_Green(o); }
+extern int printf(const char *, ...);
 S(print_Green)  { for(long i = 0; i < α; i++)
-                      printf("%s ", (char*)o[i]);
+                      if(o[i] < 100) printf("%ld ", o[i]);
+                      else           printf("%s ", (char*)o[i]);
                     printf("\n");
                     α = 0;
                     goto_e(o); }
-S(print_Red)    {}
+S(print_Red)    { print_Green(o); }
 S(print_Yellow) { print_Green(o); }
 S(print_Purple) {}
 S(Fuchsia_print){}
@@ -236,9 +226,9 @@ S(Purple_print) {}
 
 S(put_Fuchsia){}
 S(put_Olive)  { goto_w(o); }
-S(put_Maroon) {}
+S(put_Maroon) { goto_w(o); }
 S(put_Lime)   { goto_w(o); }
-S(put_Navy)   {}
+S(put_Navy)   { goto_w(o); }
 S(put_Blue)   {}
 S(put_Green)  { o[α++] = o[τ+1], goto_e(o); }
 S(put_Red)    {}
@@ -255,15 +245,20 @@ S(Red_put)    {}
 S(Yellow_put) {}
 S(Purple_put) {}
 
-S(term_Fuchsia) {}
-S(term_Olive)   {}
-S(term_Maroon)  {}
-S(term_Lime)    {}
-S(term_Navy)    {}
-S(term_Blue)    {}
-S(term_Green)   {}
-S(term_Red)     {}
-S(term_Yellow)  {}
+S(term_Fuchsia) {            }
+S(term_Olive)   { goto_w(o); }
+S(term_Maroon)  { goto_w(o); }
+S(term_Lime)    { goto_w(o); }
+S(term_Navy)    { goto_w(o); }
+S(term_Blue)    { goto_e(o); }
+S(term_Green)   { term_Yellow(o); }
+S(term_Red)     { goto_e(o); }
+S(term_Yellow)  { if (o[α-1] < o[α-2] && ((char*)o[α-3])[o[α-1]] == ((char*)o[τ+1])[0])
+                    o[α - 1]++;
+                  else
+                    ρ--;
+                  goto_e(o);
+                }
 S(term_Purple)  { o[σ] = o[τ], o[σ+1] = o[τ+1], σ += 11, goto_e(o); }
 S(Fuchsia_term) {}
 S(Olive_term)   {}
@@ -308,9 +303,15 @@ Nar(S_sample) {
   long π = 0; σ -= 5;
 
   beginning T("S") print dot nl
-  N("S") nl
-  tab T("S") put("a") dot nl
+  N("S") nl tab T("S") put("a") dot nl
   tab put("b") dot nl
+
+  σ += 5; goto_e(o);
+}
+Nar(parse_sample) {
+  long π = 0; σ -= 5;
+
+  beginning put("baa") put(3) put(0) term("b")term("a")term("t") print dot nl
 
   σ += 5; goto_e(o);
 }
@@ -325,5 +326,5 @@ int main () {
   τ = σ = 512;
   ρ = 3;
   δ = 1;
-  S_sample(o);
+  parse_sample(o);
 }
