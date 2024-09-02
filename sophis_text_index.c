@@ -10,6 +10,10 @@ const int CELL_WIDTH = 100;
 const int CELL_HEIGHT = 30;
 const int MAX_OPCODES = 512;
 
+#define X(n) #n,
+static const char *snames[] = {NAMES};
+#undef X
+
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
     {(Color){128, 128, 000, 255}, BLACK}, // Olive
@@ -63,13 +67,20 @@ static void drawVMState(long *o) {
   EndMode2D();
   EndDrawing();
 }
+#define CAT(a, b) #a #b
+#define X(n) RAYS_N(n) RAYS_E(n) RAYS_S(n) RAYS_W(n)
+static const char *ray_names[20 * Names_count] = {NAMES};
+#undef X
+#undef CAT
+
 #include <stdlib.h>
 static int semi_auto = 0;
-void sti_got(long *o) {
+
+void sti_got(long *o, long s) {
   o[τ - 5] = ρ;
   o[τ - 4] = δ;
-  printf("%7s %2ld %3ld %4ld %4ld %s\n", rays[(ρ + 1) * δ + 5], α, β, τ, σ,
-         snames[o[τ]]);
+  printf("%17s %2ld %3ld %4ld %4ld %s\n", ray_names[o[τ] * 20 + s * 5 + ρ], α,
+         β, τ, σ, snames[o[τ]]);
   long key;
   if (τ == 512 && ρ >= 2)
     semi_auto = 0;
@@ -93,6 +104,6 @@ void sti_got(long *o) {
 void sti_init() {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sophisticated text index");
-  SetTargetFPS(60);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 25, 0, 0);
 }
