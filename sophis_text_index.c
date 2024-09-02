@@ -50,20 +50,19 @@ static void drawVMState(long *o) {
                                    CELL_WIDTH - 5, CELL_HEIGHT - 5};
       if (opcode) {
         DrawRectangleRounded(rect, 10, 10, colors[colindex][0]);
-        if (t == τ) {
+        if (t == τ)
           DrawRectangleRoundedLines(rect, 10, 10, 3, RED);
-        }
-        DrawTextEx(font,
-                   opcode == put
-                       ? (o[t + 1] < 100
-                              ? TextFormat("%ld", o[t + 1])
-                              : TextFormat("\"%s\"", (char *)o[t + 1]))
-                   : opcode == tword ? TextFormat("T:%s", (char *)o[t + 1])
-                   : opcode == name  ? TextFormat("N:%s", (char *)o[t + 1])
-                   : opcode == term  ? TextFormat("%s<", (char *)o[t + 1])
-                                     : TextFormat("%s", snames[opcode]),
-                   (Vector2){x * CELL_WIDTH + 5, y * CELL_HEIGHT}, 25, 0,
-                   colors[colindex][1]);
+        const char *text =
+            opcode == put
+                ? (o[t + 1] < 100 ? TextFormat("%ld", o[t + 1])
+                                  : TextFormat("\"%s\"", (char *)o[t + 1]))
+            : opcode == tword ? TextFormat("T:%s", (char *)o[t + 1])
+            : opcode == name  ? TextFormat("N:%s", (char *)o[t + 1])
+            : opcode == term  ? TextFormat("%s<", (char *)o[t + 1])
+                              : TextFormat("%s", snames[opcode]);
+        float fontSize = 25, spacing = 0;
+        Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
+        DrawTextEx(font, text, pos, fontSize, spacing, colors[colindex][1]);
       }
     }
   }

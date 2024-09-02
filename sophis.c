@@ -69,7 +69,7 @@ S(beginning_Fuchsia){}
 S(beginning_Olive)  {}
 S(beginning_Maroon) {}
 S(beginning_Lime)   { ρ = 3, goto_e(o); }
-S(beginning_Navy)   {}
+S(beginning_Navy)   { ρ = 3, goto_e(o); }
 S(beginning_Blue)   {}
 S(beginning_Green)  {}
 S(beginning_Red)    {}
@@ -88,14 +88,15 @@ S(Purple_beginning) {}
 
 S(tword_Fuchsia){}
 S(tword_Olive)  { goto_w(o); }
-S(tword_Maroon) {}
+S(tword_Maroon) { goto_w(o); }
 S(tword_Lime)   { goto_w(o); }
-S(tword_Navy)   {}
+S(tword_Navy)   { goto_w(o); }
 S(tword_pith)   { o[--β] = τ, τ = o[τ+2], goto_e(o); }
 S(tword_init)   { o[τ+5] = 1, o[τ+4] = ρ, ρ = 4, o[--β] = τ, τ = σ, goto_n(o); }
-S(tword_Blue)   {}
+S(tword_locked) { goto_w(o); }
+S(tword_Blue)   { tword_Red(o); }
 S(tword_Green)  { tword_Yellow(o); }
-S(tword_Red)    {}
+S(tword_Red)    { Nar((*sc[])) = {tword_locked, tword_pith}; sc[o[τ+5]](o); }
 S(tword_Yellow) { Nar((*sc[])) = {tword_init, tword_pith}; sc[o[τ+5]](o); }
 S(tword_Purple) { o[σ] = o[τ], o[σ+1] = o[τ+1], σ += 11, goto_e(o); }
 S(Fuchsia_tword){}
@@ -125,9 +126,9 @@ S(Fuchsia_name) { if (strcmp(o[τ+1], o[o[β]+1]) == 0)
                   else
                     goto_n(o); }
 S(Olive_name)   { o[o[β]+2] = o[o[β]+3], τ = o[β++], goto_e(o); }
-S(Maroon_name)  {}
+S(Maroon_name)  { o[o[β]+2] = o[o[β]+3], τ = o[β++], goto_e(o); }
 S(Lime_name)    { τ = o[β++], goto_e(o); }
-S(Navy_name)    {}
+S(Navy_name)    { τ = o[β++], goto_e(o); }
 S(Blue_name)    {}
 S(Green_name)   {}
 S(Red_name)     {}
@@ -135,20 +136,24 @@ S(Yellow_name)  {}
 S(Purple_name)  { ρ = o[o[β]+4], o[o[β]+2] = o[o[β]+3] = τ = σ - (1<<7), goto_e(o); }
 
 S(tab_Fuchsia){}
-S(tab_Olive)  { goto_n(o); }
-S(tab_Maroon) {}
-S(tab_Lime)   { goto_n(o); }
-S(tab_Navy)   {}
+S(tab_Olive)  {              o[τ+1] = 1; goto_n(o); }
+S(tab_Maroon) { if (!o[τ+1]) o[τ+2] = 1; goto_n(o); }
+S(tab_Lime)   {              o[τ+1] = 1; goto_n(o); }
+S(tab_Navy)   {                          goto_n(o); }
 S(tab_Blue)   {}
 S(tab_Green)  {}
 S(tab_Red)    {}
 S(tab_Yellow) {}
 S(tab_Purple) {}
 S(Fuchsia_tab){ goto_n(o); }
-S(Olive_tab)  { ρ -= 2, o[o[β]+2] = τ, τ = o[β++], goto_e(o); }
-S(Maroon_tab) {}
-S(Lime_tab)   { τ = o[β++], goto_e(o); }
-S(Navy_tab)   {}
+S(Olive_tab)  { if(o[τ+2]) goto_n(o);
+                else ρ -= 2, o[o[β]+2] = τ, τ = o[β++], goto_e(o); }
+S(Maroon_tab) { if(o[τ+2]) goto_n(o);
+                else ρ -= 2, o[o[β]+2] = τ, τ = o[β++], goto_e(o); }
+S(Lime_tab)   { if(o[τ+2]) goto_n(o);
+                else τ = o[β++], goto_e(o); }
+S(Navy_tab)   { if(o[τ+2]) goto_n(o);
+                else τ = o[β++], goto_e(o); }
 S(Blue_tab)   {}
 S(Green_tab)  {}
 S(Red_tab)    {}
@@ -311,7 +316,13 @@ Nar(S_sample) {
 Nar(parse_sample) {
   long π = 0; σ -= 5;
 
-  beginning put("baa") put(3) put(0) term("b")term("a")term("t") print dot nl
+  beginning put("baa") put(3) put(0) T("tritab") print dot nl
+  N("tab") nl
+  tab term("t") dot nl
+  tab term("a") dot nl
+  tab term("b") dot nl
+  N("tritab") nl
+  tab T("tab") T("tab") T("tab") dot nl
 
   σ += 5; goto_e(o);
 }
