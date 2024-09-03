@@ -307,7 +307,10 @@ Nar(tritab_sample) {
 Nar(S_sample) {
   long π = 0; σ -= 5;
 
-  beginning T("S") print dot nl
+  beginning T("Start") print dot nl
+  N("Start") nl
+  tab T("S") dot nl
+
   N("S") nl tab T("S") put("a") dot nl
   tab put("b") dot nl
 
@@ -337,5 +340,5 @@ int main () {
   τ = σ = 512;
   ρ = 3;
   δ = 1;
-  parse_sample(o);
+  S_sample(o);
 }

@@ -38,12 +38,10 @@ static void drawVMState(long *o) {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
   const long cols = (1 << 7) / 11;
-  long rows = 1 + ((σ + 5) / (1 << 7));
-  for (long y = 0; y < rows; y++) {
+  long rows = 1 + (σ / (1 << 7));
+  for (long y = 512 / (1 << 7); y < rows; y++) {
     for (long x = 0; x < cols; x++) {
       long t = x * 11 + y * (1 << 7);
-      if (t < MAX_OPCODES)
-        continue;
       long opcode = o[t];
       long colindex = (o[t - 5] + 1) * o[t - 4] + 5;
       Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT,
