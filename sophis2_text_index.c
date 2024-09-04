@@ -1,19 +1,15 @@
 #include "sophis2.h"
 #include <raylib.h>
 #include <raymath.h>
-#include<stdio.h>
 
-const long SCREEN_WIDTH = 950;
-const long SCREEN_HEIGHT = 600;
 const long CELL_WIDTH = 90;
 const long CELL_HEIGHT = 30;
-
 
 typedef struct debug_member_s {
   char rho, delta;
 } debug_member_t;
 static debug_member_t debug_text_members[1024] = {};
-static debug_member_t*debug_text = debug_text_members + 512;
+static debug_member_t *debug_text = debug_text_members + 512;
 
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
@@ -60,7 +56,7 @@ static Nar(drawVMState) {
             : opcode == name ? TextFormat("N:%s", (char *)T[t].a)
             : opcode == put
                 ? (T[t].a < 100 ? TextFormat("%ld", T[t].a)
-                                   : TextFormat("\"%s\"", (char *)T[t].a))
+                                : TextFormat("\"%s\"", (char *)T[t].a))
                 : TextFormat("%s", sopcode_names[T[t].sc]);
         float fontSize = 25, spacing = 0;
         Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
@@ -89,15 +85,16 @@ Nar(sti_got) {
     key = GetCharPressed();
     drawVMState(OS);
     if (WindowShouldClose()) {
-      CloseWindow(),
-      exit(0);
+      CloseWindow(), exit(0);
     } else if (key == 'c')
       semi_auto = !semi_auto;
   } while (key != 's' && !semi_auto);
 }
 void sti_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Sophisticated T index");
-  SetTargetFPS(0);
+  InitWindow(0, 0, "Sophisticated T index");
+  SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
+  SetWindowPosition(0, 0);
+  SetTargetFPS(15);
   font = LoadFontEx("NovaMono-Regular.ttf", 25, 0, 0);
 }
