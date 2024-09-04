@@ -32,3 +32,13 @@ static const char*sopcode_names[] = {NAMES};
 
 typedef struct member_s { long sc, sc2, a, b, c, d, e; } member_t;
 typedef Nar((*n_t));
+
+#define OAN(O,A,N)  (*--next = (O),*--next = (A),*--next = (N))
+#define AND(A)      (*--next = Gor,*--next = (A),*--next = Got)
+
+#define aFillBook(n) n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n
+#define aBook(N, ...)                                               \
+  S(N##_s) { printf(#N "_%s(OS);\n", sopcode_names[T[τ].sc]); }    \
+  static n_t N##_sopcodes[] = { aFillBook(N##_s), __VA_ARGS__ };                                                           \
+  Nar(N) { N##_sopcodes[T[τ].sc](OS); }
+
