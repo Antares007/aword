@@ -59,34 +59,12 @@ aBook(search_n,
   [name] = search_n_name,
   [begin] = Gor)
 
-#define begin     T[σ].sc = begin,              σ++,
-#define tword(v)  T[σ].sc = tword, T[σ].a = v,  σ++,
-#define put(v)    T[σ].sc = put,   T[σ].a = v,  σ++,
-#define print     T[σ].sc = print,              σ++,
-#define name(v)   T[σ].sc = name,  T[σ].a = v,  σ++,
-#define tab       T[σ].sc = tab,                σ++,
-#define dot       T[σ].sc = dot,                σ++,
-#define nop       T[σ].sc = nop,                σ++,
-#define nl        T[σ].sc = nl,                 σ = ((σ >> 4) + 1) << 4,
-#define end       T[σ].sc = end,
-
-static member_t members[1024];
-static long ram[1024];
-static void*nexts[1024];
 S(not_done) {P;}
 S(and_done) {P;}
 S(or_done) {P;}
-void sti_init();
-int main() {
-  sti_init();
-  void**next = nexts + 1024;
-  member_t *T = members + 512;
-  long *o = ram + 512;
-  long regs[10] = {};
-  β = 512;
-  ρ = 3;
-  α = 0;
 
+S(program) {
+  #include "sisa.h"
   begin nl
   name("start") nl
   tab nop tword("tritab") print dot nl
@@ -103,4 +81,17 @@ int main() {
   OAN(or_done, and_done, not_done),
   AND(grow),
   o[α++] = "tab", search_s(OS);
+}
+
+static member_t members[1024];
+static long ram[1024];
+static void*nexts[1024];
+void sti_init();
+int main() {
+  sti_init();
+  void**next = nexts + 1024;
+  member_t *T = members + 512;
+  long *o = ram + 512;
+  long regs[10] = {};
+  β = 512, ρ = 3, α = 0, program(OS);
 }
