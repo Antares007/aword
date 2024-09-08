@@ -54,6 +54,7 @@ static Nar(drawVMState) {
         const char *txt =
             opcode == tword  ? TextFormat("T:%s", (char *)T[t].a)
             : opcode == name ? TextFormat("N:%s", (char *)T[t].a)
+            : opcode == term ? TextFormat("'%s'", (char *)T[t].a)
             : opcode == put
                 ? (T[t].a < 100 ? TextFormat("%ld", T[t].a)
                                 : TextFormat("\"%s\"", (char *)T[t].a))
@@ -75,6 +76,8 @@ Nar(sti_got) {
   long key;
   static int semi_auto = 0;
   do {
+    if (T[τ].sc == begin && ρ > 1)
+      semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
@@ -95,6 +98,6 @@ void sti_init() {
   InitWindow(0, 0, "Sophisticated T index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(15);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 25, 0, 0);
 }
