@@ -7,7 +7,7 @@
 #define δ regs[5]
 #define βοοκ regs[6]
 
-#define Nar(go) void go(long *o, member_t *text, long *regs, void**next)
+#define Nar(go) void go(long *o, mb_t *text, long *regs, void**next)
 #define S(go) static Nar(go)
 #define OS o, text, regs, next
 
@@ -32,7 +32,7 @@ enum Names {NAMES};
 static const char*sopcode_names[] = {NAMES};
 #undef X
 
-typedef struct member_s { long sc, sc2, a, b, c, d, e; } member_t;
+typedef struct { long sc, sc2, a, b, c, d, e; } mb_t;
 typedef Nar((*n_t));
 
 #define NAO(not, and, or) (*--next = not,  *--next = and, *--next = or)

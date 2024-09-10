@@ -35,7 +35,6 @@ static Nar(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-
   const long cols = (1 << 4);
   const long rows = 1 + (σ / (1 << 4));
 
@@ -57,6 +56,7 @@ static Nar(drawVMState) {
             opcode == tword  ? TextFormat("T:%s", (char *)text[t].a)
             : opcode == name ? TextFormat("N:%s", (char *)text[t].a)
             : opcode == term ? TextFormat("'%s'", (char *)text[t].a)
+            : opcode == tab  ? TextFormat("tab%ld%ld", text[t].e, text[t].d)
             : opcode == put
                 ? (text[t].a < 100 ? TextFormat("%ld", text[t].a)
                                    : TextFormat("\"%s\"", (char *)text[t].a))
@@ -64,17 +64,12 @@ static Nar(drawVMState) {
         float fontSize = 25, spacing = 0;
         Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
         DrawTextEx(font, txt, pos, fontSize, spacing, colors[colindex][1]);
-        if (opcode == tab)
-          DrawTextEx(font, TextFormat("%ld %ld", text[t].e, text[t].d),
-                     Vector2Add(pos, (Vector2){35, 10}), fontSize / 1.7,
-                     spacing, colors[colindex][1]);
       }
     }
   }
   EndMode2D();
   EndDrawing();
 }
-
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
 Nar(sti_got) {
   debug_text[τ].rho = ρ;
@@ -106,6 +101,6 @@ void sti_init() {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(0);
-  font = LoadFontEx("NovaMono-Regular.ttf", 25, 0, 0);
+  SetTargetFPS(15);
+  font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }

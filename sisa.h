@@ -8,6 +8,6 @@
 #define tab       text[σ].sc = tab,                   σ++,
 #define dot       text[σ].sc = dot,                   σ++,
 #define nop       text[σ].sc = nop,                   σ++,
-#define nl        text[σ].sc = nl,                    σ = ((σ >> 4) + 1) << 4,
-#define end       text[σ].sc = end,
+#define nl        text[σ].sc = nl,                    σ = ((σ >> 4) + 1) << 4
+#define end       text[σ].sc = end
 
