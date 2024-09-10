@@ -5,10 +5,11 @@
 #define σ regs[3]
 #define ρ regs[4]
 #define δ regs[5]
+#define βοοκ regs[6]
 
-#define Nar(go) void go(long *o, member_t *T, long *regs, void**next)
+#define Nar(go) void go(long *o, member_t *text, long *regs, void**next)
 #define S(go) static Nar(go)
-#define OS o, T, regs, next
+#define OS o, text, regs, next
 
 #define NAMES \
   X(halt)     \
@@ -39,7 +40,8 @@ typedef Nar((*n_t));
 
 #define aFillBook(n) n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n
 #define aBook(N, ...)                                             \
-  S(N##_σ) { printf(#N "_%s(OS);\n", sopcode_names[T[τ].sc]); }   \
+  const long β##N = __LINE__;                                     \
+  S(N##_σ) { printf(#N "_%s(OS);\n", sopcode_names[text[τ].sc]); }\
   static n_t N##_sopcodes[] = { aFillBook(N##_σ), __VA_ARGS__ };  \
-  Nar(N) { N##_sopcodes[T[τ].sc](OS); }
+  Nar(N ) { βοοκ = #N, N##_sopcodes[text[τ].sc](OS); }
 

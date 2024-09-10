@@ -8,8 +8,10 @@ const long CELL_HEIGHT = 30;
 typedef struct debug_member_s {
   char rho, delta;
 } debug_member_t;
-static debug_member_t debug_text_members[1024] = {};
-static debug_member_t *debug_text = debug_text_members + 512;
+static debug_member_t debug_text_members[0x800] = {};
+static debug_member_t *debug_text =
+    debug_text_members +
+    sizeof(debug_text_members) / sizeof(*debug_text_members) / 2;
 
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
@@ -29,7 +31,7 @@ static float zoom = 1.5;
 static Vector2 off = {10, 10};
 
 static Nar(drawVMState) {
-  ClearBackground(RAYWHITE);
+  ClearBackground(DARKGRAY);
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
@@ -40,7 +42,7 @@ static Nar(drawVMState) {
   for (long x = 0; x < cols; x++) {
     for (long y = 0; y < rows; y++) {
       long t = x + y * (1 << 4);
-      long opcode = T[t].sc;
+      long opcode = text[t].sc;
       long colindex = (debug_text[t].rho + 1) * debug_text[t].delta + 5;
       if (!opcode)
         continue;
@@ -52,16 +54,20 @@ static Nar(drawVMState) {
         if (t == τ)
           DrawRectangleRoundedLines(rect, 10, 10, 3, RED);
         const char *txt =
-            opcode == tword  ? TextFormat("T:%s", (char *)T[t].a)
-            : opcode == name ? TextFormat("N:%s", (char *)T[t].a)
-            : opcode == term ? TextFormat("'%s'", (char *)T[t].a)
+            opcode == tword  ? TextFormat("T:%s", (char *)text[t].a)
+            : opcode == name ? TextFormat("N:%s", (char *)text[t].a)
+            : opcode == term ? TextFormat("'%s'", (char *)text[t].a)
             : opcode == put
-                ? (T[t].a < 100 ? TextFormat("%ld", T[t].a)
-                                : TextFormat("\"%s\"", (char *)T[t].a))
-                : TextFormat("%s", sopcode_names[T[t].sc]);
+                ? (text[t].a < 100 ? TextFormat("%ld", text[t].a)
+                                   : TextFormat("\"%s\"", (char *)text[t].a))
+                : TextFormat("%s", sopcode_names[text[t].sc]);
         float fontSize = 25, spacing = 0;
         Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
         DrawTextEx(font, txt, pos, fontSize, spacing, colors[colindex][1]);
+        if (opcode == tab)
+          DrawTextEx(font, TextFormat("%ld %ld", text[t].e, text[t].d),
+                     Vector2Add(pos, (Vector2){35, 10}), fontSize / 1.7,
+                     spacing, colors[colindex][1]);
       }
     }
   }
@@ -76,7 +82,7 @@ Nar(sti_got) {
   long key;
   static int semi_auto = 0;
   do {
-    if (T[τ].sc == begin && ρ > 1)
+    if (text[τ].sc == begin && semi_auto == 2)
       semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -87,15 +93,17 @@ Nar(sti_got) {
       zoom -= 0.1;
     key = GetCharPressed();
     drawVMState(OS);
-    if (WindowShouldClose()) {
+    if (WindowShouldClose())
       CloseWindow(), exit(0);
-    } else if (key == 'c')
+    else if (key == 'c')
+      semi_auto = 2;
+    else if (key == 'C')
       semi_auto = !semi_auto;
   } while (key != 's' && !semi_auto);
 }
 void sti_init() {
   SetTraceLogLevel(LOG_ERROR);
-  InitWindow(0, 0, "Sophisticated T index");
+  InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
   SetTargetFPS(0);
