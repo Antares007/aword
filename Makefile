@@ -1,20 +1,14 @@
 CC|=clang
-CFLAGS+=-std=c2x -Wall
+CFLAGS+=-std=gnu17 -Wall
 
-sophis2.out: sophis2.c sophis2_text_index.o
-	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
-sophis2_text_index.out: sophis2_text_index.c sophis2.o
-	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
-
+sophis2.out: sophis2.c sophis2_text_index.o bo_grow.o bo_search.o bo_twist.o
+	${CC} ${CFLAGS} -lraylib -lm $^ -o $@
 sophis.out: sophis.c sophis_text_index.o
-	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
-sophis_text_index.out: sophis_text_index.c sophis.o
-	${CC} $^ -o $@ -lraylib -lm  ${CFLAGS}
-
+	${CC} ${CFLAGS} -lraylib -lm $^ -o $@
 %.out: %.c
-	${CC} $^ -o $@ ${CFLAGS}
+	${CC} ${CFLAGS} $^ -o $@
 %.o: %.c
-	${CC} -c $^ -o $@ ${CFLAGS}
+	${CC} ${CFLAGS} -c $^ -o $@
 clean:
 	rm -f *.o *.out
 .PHONY: clean run

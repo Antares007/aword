@@ -1,13 +1,14 @@
 #pragma once
-#define begin     text[σ].sc = begin,                 σ++,
-#define tword(v)  text[σ].sc = tword, text[σ].a = v,  σ++,
-#define put(v)    text[σ].sc = put,   text[σ].a = v,  σ++,
-#define term(v)   text[σ].sc = term,  text[σ].a = v,  σ++,
-#define print     text[σ].sc = print,                 σ++,
-#define name(v)   text[σ].sc = name,  text[σ].a = v,  σ++,
-#define tab       text[σ].sc = tab,                   σ++,
-#define dot       text[σ].sc = dot,                   σ++,
-#define nop       text[σ].sc = nop,                   σ++,
-#define nl        text[σ].sc = nl,                    σ = ((σ >> 4) + 1) << 4
-#define end       text[σ].sc = end
+#define begin   o[σ] = begin,             σ+=11,
+#define _₀_     o[σ] = halt,              σ+=11,
+#define T(v)    o[σ] = tword, o[σ+1] = v, σ+=11,
+#define N(v)    o[σ] = name,  o[σ+1] = v, σ+=11,
+#define put(v)  o[σ] = put,   o[σ+1] = v, σ+=11,
+#define term(v) o[σ] = term,  o[σ+1] = v, σ+=11,
+#define print   o[σ] = print,             σ+=11,
+#define tab     o[σ] = tab,               σ+=11,
+#define dot     o[σ] = dot,               σ+=11,
+#define nop     o[σ] = nop,               σ+=11,
+#define nl      o[σ] = nl,                σ = ((σ >> Σ) + 1) << Σ
+#define end     o[σ] = end                     
 
