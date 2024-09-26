@@ -25,7 +25,8 @@ S(twist_tword) {
 }
 S(twist_s ) { O(twist), O(go_s), O(cr), Go(OS); }
 S(twist_e ) { O(twist), O(go_e), Go(OS); }
-Book_of_(twist,
+Nar(twist) {
+  static n_t sopcodes[] = {
     [name ] = twist_e,
     [tab  ] = twist_e,
     [print] = twist_e,
@@ -33,4 +34,6 @@ Book_of_(twist,
     [nl   ] = twist_s,
     [tword] = twist_tword,
     [dot  ] = Gor,
-);
+  };
+  sopcodes[o[τ]](OS);
+}

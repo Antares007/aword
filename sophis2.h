@@ -1,8 +1,5 @@
 #pragma once
 #pragma GCC diagnostic ignored "-Wint-conversion"
-#pragma GCC diagnostic ignored "-Winitializer-overrides"
-#pragma GCC diagnostic ignored "-Wunused-function"
-#pragma GCC diagnostic ignored "-Wmathematical-notation-identifier-extension"
 
 #define Nar(go) void go(long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν)
 typedef Nar((*n_t));
@@ -31,16 +28,6 @@ enum Names { NAMES };
 static const char *sopcode_names[] = {NAMES};
 #undef X
 extern int printf(const char *, ...);
-extern long lastbookid;
-#define Book_of_(twist, ...)                                                   \
-  Nar(twist) {                                                                 \
-    static n_t sopcodes[] = {__VA_ARGS__};                                     \
-    static const char *name = #twist;                                          \
-    if (lastbookid != (long)name)                                              \
-      printf("Book of %s(%s)\n", name, sopcode_names[o[τ]]),                   \
-          lastbookid = (long)name;                                             \
-    sopcodes[o[τ]](OS);                                                        \
-  }
 #define P printf("%s\n", __func__)
 #define O(v) (o[-(--β)] = #v), (o[β] = v)
 

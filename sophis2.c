@@ -1,6 +1,5 @@
 // clang-format off
 #include "sophis2.h"
-long lastbookid;
 static char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  "White",
                        "Blue",    "Green", "Red",    "Yellow", "Purple"};
 Nar(sti_got );
