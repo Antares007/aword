@@ -22,6 +22,7 @@ S(w);
 S(w_w   ) { o[--β] = w, o[--β] = And, go_w(OS); }
 Book_of_(w,
     [tword] = w_w,
+    [nop  ] = w_w,
     [begin] = s,
     [tab  ] = n,
 )

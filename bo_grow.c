@@ -29,10 +29,12 @@ S(grow_nl   ) {
                 o[--β] = g0,   o[--β] = And,
                 Go(OS);
               }
-Nar(bo_grow ) { long offset = o[--α] - (τ % (1 << Σ));
+Nar(bo_grow ) {
+                long offset = o[--α] - (τ % (1 << Σ));
                 o[α++] = σ + offset;
                 o[α++] = offset;
-                grow_a(OS); }
+                grow_a(OS);
+              }
 Nar(grow    ) {
   static n_t sopcodes[] = {
       [tab  ] = grow_,
@@ -47,6 +49,6 @@ Nar(grow    ) {
   if (lastbookid != (long)name)
     printf("Book of %s(%s)\n", name, sopcode_names[o[τ]]),
         lastbookid = (long)name;
-  sopcodes[o[τ]](o, regs, τ, α, β, ν);
+  sopcodes[o[τ]](OS);
 }
 

@@ -3,14 +3,11 @@
 #pragma GCC diagnostic ignored "-Winitializer-overrides"
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wmathematical-notation-identifier-extension"
-#define σ regs[3]
-#define ρ regs[4]
-#define δ regs[5]
 
-#define Nar(go) void go(long *o, long *regs, long τ, long α, long β, long ν)
+#define Nar(go) void go(long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν)
 typedef Nar((*n_t));
 #define S(go) static Nar(go)
-#define OS o, regs, τ, α, β, ν
+#define OS o, β, α, τ, σ, ρ, δ, ν
 #define Σ 8
 
 #define NAMES                                                                  \
@@ -45,6 +42,7 @@ extern long lastbookid;
     sopcodes[o[τ]](OS);                                                        \
   }
 #define P printf("%s\n", __func__)
+#define O(v) (o[-(--β)] = #v), (o[β] = v)
 
 Nar(Go);
 Nar(G1);

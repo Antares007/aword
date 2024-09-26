@@ -5,7 +5,7 @@
 const long CELL_WIDTH = 90;
 const long CELL_HEIGHT = 30;
 
-static long d_ram[0x10000] = {};
+static long d_ram[0x10000];
 static long *d_o = d_ram + sizeof(d_ram) / sizeof(*d_ram) / 2;
 
 static const Color colors[][2] = {
@@ -24,15 +24,15 @@ static const Color colors[][2] = {
 static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
-
+Nar(NotAndOr);
 static void DrawCell(long opcode, long colindex, long x, long y, long t,
-                     long selected, long *o, long betadepth) {
+                     long selected, long *o, long β, long ν) {
   Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH - 5,
                                CELL_HEIGHT - 5};
   Color bgcolor = opcode == halt ? GRAY : colors[colindex][0];
   DrawRectangleRounded(rect, 10, 10, bgcolor);
   if (selected)
-    DrawRectangleRoundedLines(rect, 10, 10, betadepth, RED);
+    DrawRectangleRoundedLines(rect, 10, 10, (1022 - β) * 2, RED);
   const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
                     : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
                     : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
@@ -40,18 +40,22 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
                                      : TextFormat("%s", sopcode_names[o[t]]);
   float fontSize = 25, spacing = 0;
   Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
-  DrawTextEx(font, TextFormat("%15ld", t), Vector2Add(pos, (Vector2){0, 0}),
-             fontSize / 2, spacing, colors[colindex][1]);
-  DrawTextEx(font, txt, pos, fontSize, spacing, colors[colindex][1]);
+  if (selected)
+    DrawTextEx(
+        font,
+        TextFormat("%11s", o[-β + (o[β - 4] == (long)NotAndOr ? 3 - ν : 0)]),
+        Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
+        colors[colindex][1]);
+  DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[colindex][1]);
 }
 static Nar(drawVMState) {
   ClearBackground(DARKGRAY);
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  long x, y = x = 0, t = 1024;
+  long x = 0, y = 0, t = 1024;
   while (t <= σ) {
-    DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, 1024-β);
+    DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, β, ν);
     if (o[t] == nl)
       y++, x = 0, t = ((t >> Σ) + 1) << Σ;
     else
@@ -86,7 +90,7 @@ Nar(sti_got) {
       semi_auto = !semi_auto;
   } while (key != 's' && !semi_auto);
 }
-void sti_init() {
+void sti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
