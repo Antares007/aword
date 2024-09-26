@@ -16,8 +16,10 @@ Nar(G2      ) { G1(o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(Got     ) { Go(o, β,     α, τ, σ, ρ, δ, 2); }
 Nar(God     ) { Go(o, β,     α, τ, σ, ρ, δ, 1); }
 Nar(Gor     ) { Go(o, β,     α, τ, σ, ρ, δ, 0); }
-Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, narg(OS); }
-Nar(And     ) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
+Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, ν = 1, narg(OS); }
+Nar(Not     ) { static n_t nars[] = {G1, G1, God}; nars[ν](OS); }
+Nar(And     ) { static n_t nars[] = {G1, God, G1}; nars[ν](OS); }
+Nar(Or      ) { static n_t nars[] = {God, G1, G1}; nars[ν](OS); }
 
 Nar(go_ns   ) { τ = τ + (δ << Σ), Go(OS); }
 Nar(go_we   ) { τ = τ + 11 * δ,   Go(OS); }
@@ -29,33 +31,21 @@ Nar(go_w    ) { δ = -1, go_we(OS); }
 Nar(drop_α  ) { α--, Go(OS); }
 
 S(done      ) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
-#include<string.h>
-Nar(walk);
-extern int strcmp (const char *, const char *);
-S(walk_match) { (strcmp(o[τ+1], o[α-1]) ? Gor : God)(OS); }
-S(found) {P; Go(OS);}
-S(notfound) {P; Go(OS);}
-S(walk_name) {
-  O(Go), O(found), O(notfound), O(NotAndOr);
-  O(walk_match), O(And);
-  Go(OS);
-}
-Book_of_(walk,
-    [name] = walk_name,
-)
 Nar(twist);
+Nar(ss);
 #include "sisa.h"
 Nar(programTritab) {
-  N("main") nl;
-  tab       T("tab")  print     dot       nl;
   N("ttt")  nl;
   tab       T("tab")  T("tab")  T("tab")  dot       nl;
+  N("main") nl;
+  tab       T("ttt")  print     dot       nl;
   N("tab")  nl;
   tab       put("t")  dot       nl;
   tab       put("a")  dot       nl;
   tab       put("b")  dot       nl;
-  o[--β] = done, 
-    o[α++] = "main", walk(OS);
+  O(done),
+  O(twist), O(And);
+  o[α++] = "main", ss(OS);
 }
 Nar(programS) {
   begin     T("S")    print     dot       nl;

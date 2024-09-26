@@ -51,7 +51,7 @@ Nar(Got);
 Nar(God);
 Nar(Gor);
 Nar(NotAndOr);
-Nar(And);
+Nar(Not);Nar(And);Nar(Or);
 Nar(go_ns);
 Nar(go_we);
 Nar(go_n);

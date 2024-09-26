@@ -40,10 +40,10 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
                                      : TextFormat("%s", sopcode_names[o[t]]);
   float fontSize = 25, spacing = 0;
   Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
-  if (selected)
+  if (selected && o[-β])
     DrawTextEx(
         font,
-        TextFormat("%11s", o[-β + (o[β - 4] == (long)NotAndOr ? 3 - ν : 0)]),
+        TextFormat("%11s", o[-β]),
         Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
         colors[colindex][1]);
   DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[colindex][1]);
