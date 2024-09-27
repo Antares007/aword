@@ -30,9 +30,9 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
   Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH - 5,
                                CELL_HEIGHT - 5};
   Color bgcolor = opcode == halt ? GRAY : colors[colindex][0];
-  DrawRectangleRounded(rect, 10, 10, bgcolor);
+  DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
   if (selected)
-    DrawRectangleRoundedLines(rect, 10, 10, (1022 - β) * 2, RED);
+    DrawRectangleRoundedLines(rect, 0.2f, 10, (1022 - β) * 2, RED);
   const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
                     : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
                     : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
@@ -41,11 +41,9 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
   float fontSize = 25, spacing = 0;
   Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
   if (selected && o[-β])
-    DrawTextEx(
-        font,
-        TextFormat("%11s", o[-β]),
-        Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
-        colors[colindex][1]);
+    DrawTextEx(font, TextFormat("%11s", o[-β]),
+               Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
+               colors[colindex][1]);
   DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[colindex][1]);
 }
 static Nar(drawVMState) {
@@ -61,6 +59,17 @@ static Nar(drawVMState) {
     else
       x++, t += 11;
   }
+
+  int beta_top = 1024 < (β + 10) ? 1024 : β + 10;
+  Vector2 pos = {GetScreenWidth() / zoom - CELL_WIDTH - 5,
+                 GetScreenHeight() / zoom - CELL_HEIGHT * (beta_top - β) - 5};
+  for (long beta = β; beta < beta_top; beta++) {
+    Rectangle rect = {pos.x, pos.y, CELL_WIDTH - 5, CELL_HEIGHT - 5};
+    DrawRectangleRounded(rect, 0.2f, 10, LIGHTGRAY);
+    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0, RED);
+    pos.y += CELL_HEIGHT;
+  }
+
   EndMode2D();
   EndDrawing();
 }
