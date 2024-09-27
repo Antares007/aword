@@ -15,7 +15,7 @@ Nar(G2      ) { G1(o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(Got     ) { Go(o, β,     α, τ, σ, ρ, δ, 2); }
 Nar(God     ) { Go(o, β,     α, τ, σ, ρ, δ, 1); }
 Nar(Gor     ) { Go(o, β,     α, τ, σ, ρ, δ, 0); }
-Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, ν = 1, narg(OS); }
+Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, narg(OS); }
 Nar(Not     ) { static n_t nars[] = {G1, G1, God}; nars[ν](OS); }
 Nar(And     ) { static n_t nars[] = {G1, God, G1}; nars[ν](OS); }
 Nar(Or      ) { static n_t nars[] = {God, G1, G1}; nars[ν](OS); }
