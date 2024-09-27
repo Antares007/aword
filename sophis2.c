@@ -8,26 +8,26 @@ S(sdb       ) {
   printf("%7s %7s %2ld %3ld %3ld %3ld\n", rays[(ρ + 1) * δ + 5], sopcode_names[o[τ]], α, β, τ, σ), sti_got(OS);
 #endif
 }
-Nar(Go      ) {sdb(OS),
+Nar(γο      ) {sdb(OS),
      ((n_t *)o)[β](o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(G1      ) { Go(o, β + 1, α, τ, σ, ρ, δ, ν); }
+Nar(G1      ) { γο(o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(G2      ) { G1(o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(Got     ) { Go(o, β,     α, τ, σ, ρ, δ, 2); }
-Nar(God     ) { Go(o, β,     α, τ, σ, ρ, δ, 1); }
-Nar(Gor     ) { Go(o, β,     α, τ, σ, ρ, δ, 0); }
+Nar(Got     ) { γο(o, β,     α, τ, σ, ρ, δ, 2); }
+Nar(God     ) { γο(o, β,     α, τ, σ, ρ, δ, 1); }
+Nar(Gor     ) { γο(o, β,     α, τ, σ, ρ, δ, 0); }
 Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, narg(OS); }
-Nar(Not     ) { static n_t nars[] = {G1, G1, God}; nars[ν](OS); }
-Nar(And     ) { static n_t nars[] = {G1, God, G1}; nars[ν](OS); }
-Nar(Or      ) { static n_t nars[] = {God, G1, G1}; nars[ν](OS); }
+Nar(Not     ) { static n_t nars[] = {G1, G1, γο}; nars[ν](OS); }
+Nar(And     ) { static n_t nars[] = {G1, γο, G1}; nars[ν](OS); }
+Nar(Or      ) { static n_t nars[] = {γο, G1, G1}; nars[ν](OS); }
 
-Nar(go_ns   ) { τ = τ + (δ << Σ), Go(OS); }
-Nar(go_we   ) { τ = τ + 11 * δ,   Go(OS); }
+Nar(go_ns   ) { τ = τ + (δ << Σ), God(OS); }
+Nar(go_we   ) { τ = τ + 11 * δ,   God(OS); }
 Nar(go_n    ) { δ = -1, go_ns(OS); }
 Nar(go_e    ) { δ = +1, go_we(OS); }
 Nar(go_s    ) { δ = +1, go_ns(OS); }
 Nar(go_w    ) { δ = -1, go_we(OS); }
 
-Nar(drop_α  ) { α--, Go(OS); }
+Nar(drop_α  ) { α--, God(OS); }
 
 S(done      ) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
 Nar(twist);
