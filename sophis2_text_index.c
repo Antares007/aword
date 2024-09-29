@@ -59,18 +59,16 @@ static Nar(drawVMState) {
     else
       x++, t += 11;
   }
-
-  int beta_top = 1024 < (β + 10) ? 1024 : β + 10;
-  Vector2 pos = {GetScreenWidth() / zoom - CELL_WIDTH - 5,
-                 GetScreenHeight() / zoom - CELL_HEIGHT * (beta_top - β) - 5};
+  EndMode2D();
+  int beta_top = 1024;
+  Vector2 pos = {GetScreenWidth() - CELL_WIDTH - 5,
+                 GetScreenHeight() - CELL_HEIGHT * (beta_top - β) - 5};
   for (long beta = β; beta < beta_top; beta++) {
     Rectangle rect = {pos.x, pos.y, CELL_WIDTH - 5, CELL_HEIGHT - 5};
-    DrawRectangleRounded(rect, 0.2f, 10, LIGHTGRAY);
-    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0, RED);
+    DrawRectangleRounded(rect, 0.2f, 10, BLACK);
+    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0, WHITE);
     pos.y += CELL_HEIGHT;
   }
-
-  EndMode2D();
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));

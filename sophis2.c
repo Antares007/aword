@@ -2,16 +2,19 @@
 #include "sophis2.h"
 static char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  "White",
                        "Blue",    "Green", "Red",    "Yellow", "Purple"};
-Nar(sti_got );
-S(sdb       ) {
+Nar(sti_got);
+S(sdb) {
 #ifdef NDEBUG
-  printf("%7s %7s %2ld %3ld %3ld %3ld\n", rays[(ρ + 1) * δ + 5], sopcode_names[o[τ]], α, β, τ, σ), sti_got(OS);
+  printf("%7s %7s %9s %2ld %3ld %3ld %3ld\n", rays[(ρ + 1) * δ + 5],
+         sopcode_names[o[τ]], (char *)o[-β], α, β, τ, σ),
+      sti_got(OS);
 #endif
 }
 Nar(γο      ) {sdb(OS),
      ((n_t *)o)[β](o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(G1      ) { γο(o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(G2      ) { G1(o, β + 1, α, τ, σ, ρ, δ, ν); }
+Nar(G3      ) { G2(o, β + 1, α, τ, σ, ρ, δ, ν); }
 Nar(Got     ) { γο(o, β,     α, τ, σ, ρ, δ, 2); }
 Nar(God     ) { γο(o, β,     α, τ, σ, ρ, δ, 1); }
 Nar(Gor     ) { γο(o, β,     α, τ, σ, ρ, δ, 0); }
@@ -27,9 +30,9 @@ Nar(go_e    ) { δ = +1, go_we(OS); }
 Nar(go_s    ) { δ = +1, go_ns(OS); }
 Nar(go_w    ) { δ = -1, go_we(OS); }
 
-Nar(drop_α  ) { α--, God(OS); }
+Nar(drop_alfa) { α--, God(OS); }
 
-S(done      ) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
+S(done) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
 Nar(twist);
 Nar(ss);
 #include "sisa.h"
@@ -72,4 +75,3 @@ int main(int argc, char**argv) {
   long β, α, τ, σ, ρ, δ, ν;
   α = 0, β = τ = σ = 1024, ρ = 3, δ = 1, ν = 1, programTritab(OS);
 }
-

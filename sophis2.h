@@ -1,6 +1,6 @@
 #pragma once
 #pragma GCC diagnostic ignored "-Wint-conversion"
-
+#define SC long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν
 #define Nar(go) void go(long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν)
 typedef Nar((*n_t));
 #define S(go) static Nar(go)
@@ -34,6 +34,7 @@ extern int printf(const char *, ...);
 Nar(Go);
 Nar(G1);
 Nar(G2);
+Nar(G3);
 Nar(Got);
 Nar(God);
 Nar(Gor);
@@ -45,4 +46,4 @@ Nar(go_n);
 Nar(go_e);
 Nar(go_s);
 Nar(go_w);
-Nar(drop_α);
+Nar(drop_alfa);
