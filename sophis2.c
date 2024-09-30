@@ -4,7 +4,7 @@ static char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  "White",
                        "Blue",    "Green", "Red",    "Yellow", "Purple"};
 Nar(sti_got);
 S(sdb) {
-#ifdef NDEBUG
+#ifndef NDEBUG
   printf("%7s %7s %9s %2ld %3ld %3ld %3ld\n", rays[(ρ + 1) * δ + 5],
          sopcode_names[o[τ]], (char *)o[-β[ρ]], α, β[ρ], τ, σ),
       sti_got(OS);
@@ -33,10 +33,20 @@ Nar(go_w    ) { δ = -1, go_we(OS); }
 
 Nar(drop_alfa) { α--, God(OS); }
 
-S(done) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
+S(done) { P, printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
 
 Nar(twist);
 Nar(ss);
+Nar(Go_Blue     ) { ρ = 0, Go(OS); }
+Nar(Go_Green    ) { ρ = 1, Go(OS); }
+Nar(Go_Red      ) { ρ = 2, Go(OS); }
+Nar(Go_Yellow   ) { ρ = 3, Go(OS); }
+
+Nar(Push_Blue   ) { long v = o[β[ρ]++]; o[--β[0]] = v, Go(OS); }
+Nar(Push_Green  ) { long v = o[β[ρ]++]; o[--β[1]] = v, Go(OS); }
+Nar(Push_Red    ) { long v = o[β[ρ]++]; o[--β[2]] = v, Go(OS); }
+Nar(Push_Yellow ) { long v = o[β[ρ]++]; o[--β[3]] = v, Go(OS); }
+
 #include "sisa.h"
 Nar(programTritab) {
   N("ttt")  nl;
@@ -52,6 +62,14 @@ Nar(programTritab) {
   B(twist), B(And);
 
   o[α++] = "main", ss(OS);
+}
+Nar(programPropeller) {
+  OB(0, done);
+  OB(1, Go_Blue);
+  OB(2, Go_Green);
+  OB(3, Go_Red);
+
+  Go_Yellow(OS);
 }
 Nar(programS) {
   begin     T("S")    print     dot       nl;
@@ -73,7 +91,9 @@ Nar(programAB) {
 }
 void sti_init(void);
 int main(int argc, char**argv) {
+#ifndef NDEBUG
   sti_init();
+#endif
   long ram[0x10000];
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long β[4] = { 2 << Σ, 3 << Σ, 5 << Σ, 4 << Σ };
