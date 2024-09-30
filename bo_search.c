@@ -3,8 +3,8 @@ extern int strcmp(const char *, const char *);
 S(match) { (strcmp(o[τ + 1], o[α - 1]) ? Gor : God)(OS); }
 
 Nar(sn);
-S(sn_n) { O(sn), O(go_n), God(OS); }
-S(sn_name) { O(sn_n), O(Or), O(match), God(OS); }
+S(sn_n) { B(sn), B(go_n), God(OS); }
+S(sn_name) { B(sn_n), B(Or), B(match), God(OS); }
 Nar(sn) {
   static n_t sopcodes[] = {
       [name ] = sn_name,
@@ -15,8 +15,8 @@ Nar(sn) {
 }
 
 Nar(ss);
-S(ss_s) { O(ss), O(go_s), God(OS); }
-S(ss_name) { O(ss_s), O(Or), O(match), God(OS); }
+S(ss_s) { B(ss), B(go_s), God(OS); }
+S(ss_name) { B(ss_s), B(Or), B(match), God(OS); }
 Nar(ss) {
   static n_t sopcodes[] = {
       [name ] = ss_name,

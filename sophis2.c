@@ -10,21 +10,24 @@ S(sdb) {
       sti_got(OS);
 #endif
 }
-Nar(γο      ) {sdb(OS),
-     ((n_t *)o)[β](o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(G1      ) { γο(o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(G2      ) { G1(o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(G3      ) { G2(o, β + 1, α, τ, σ, ρ, δ, ν); }
-Nar(Got     ) { γο(o, β,     α, τ, σ, ρ, δ, 2); }
-Nar(God     ) { γο(o, β,     α, τ, σ, ρ, δ, 1); }
-Nar(Gor     ) { γο(o, β,     α, τ, σ, ρ, δ, 0); }
+Nar(Go      ) { sdb(OS);
+                n_t nar = o[β];
+                β++, nar(OS); }
+Nar(G1      ) { β++, Go(OS); }
+Nar(G2      ) { β++, G1(OS); }
+Nar(G3      ) { β++, G2(OS); }
+Nar(Got     ) { ν = 2, Go(OS); }
+Nar(God     ) { ν = 1, Go(OS); }
+Nar(Gor     ) { ν = 0, Go(OS); }
 Nar(NotAndOr) { n_t narg = o[β + ν]; β += 3, narg(OS); }
-Nar(Not     ) { static n_t nars[] = {G1, G1, γο}; nars[ν](OS); }
-Nar(And     ) { static n_t nars[] = {G1, γο, G1}; nars[ν](OS); }
-Nar(Or      ) { static n_t nars[] = {γο, G1, G1}; nars[ν](OS); }
+Nar(Not     ) { static n_t nars[] = {G1, G1, Go}; nars[ν](OS); }
+Nar(And     ) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
+Nar(Or      ) { static n_t nars[] = {Go, G1, G1}; nars[ν](OS); }
+Nar(And1    ) { static n_t nars[] = {G2, Go, G2}; nars[ν](OS); }
+Nar(Or1     ) { static n_t nars[] = {Go, G2, G2}; nars[ν](OS); }
 
 Nar(go_ns   ) { τ = τ + (δ << Σ), God(OS); }
-Nar(go_we   ) { τ = τ + 11 * δ,   God(OS); }
+Nar(go_we   ) { τ = τ + 11 * δ, God(OS); }
 Nar(go_n    ) { δ = -1, go_ns(OS); }
 Nar(go_e    ) { δ = +1, go_we(OS); }
 Nar(go_s    ) { δ = +1, go_ns(OS); }
@@ -33,6 +36,7 @@ Nar(go_w    ) { δ = -1, go_we(OS); }
 Nar(drop_alfa) { α--, God(OS); }
 
 S(done) { printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
+S(sideb){ Go(OS); }
 Nar(twist);
 Nar(ss);
 #include "sisa.h"
@@ -45,8 +49,10 @@ Nar(programTritab) {
   tab       put("t")  dot       nl;
   tab       put("a")  dot       nl;
   tab       put("b")  dot       nl;
-  O(done),
-  O(twist), O(And);
+
+  B(done),
+  B(twist), B(And);
+
   o[α++] = "main", ss(OS);
 }
 Nar(programS) {
@@ -72,6 +78,5 @@ int main(int argc, char**argv) {
   sti_init();
   long ram[0x10000];
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
-  long β, α, τ, σ, ρ, δ, ν;
   α = 0, β = τ = σ = 1024, ρ = 3, δ = 1, ν = 1, programTritab(OS);
 }

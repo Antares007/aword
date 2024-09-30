@@ -1,10 +1,18 @@
 #pragma once
 #pragma GCC diagnostic ignored "-Wint-conversion"
-#define SC long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν
-#define Nar(go) void go(long *o, long β, long α, long τ, long σ, long ρ, long δ, long ν)
+#define β o[-1]
+#define α o[-2]
+#define τ o[-3]
+#define σ o[-4]
+#define ρ o[-5]
+#define δ o[-6]
+#define ν o[-7]
+#define ω o[-8]
+#define γ o[-9]
+#define Nar(go) void go(long *o)
 typedef Nar((*n_t));
 #define S(go) static Nar(go)
-#define OS o, β, α, τ, σ, ρ, δ, ν
+#define OS o
 #define Σ 8
 
 #define NAMES                                                                  \
@@ -29,7 +37,9 @@ static const char *sopcode_names[] = {NAMES};
 #undef X
 extern int printf(const char *, ...);
 #define P printf("%s\n", __func__)
-#define O(v) (o[-(--β)] = #v), (o[β] = v)
+
+#define B(v) (o[-(--β)] = #v), (o[β] = v)
+#define O(v) (o[-(--ω)] = #v), (o[ω] = v)
 
 Nar(Go);
 Nar(G1);
@@ -40,6 +50,7 @@ Nar(God);
 Nar(Gor);
 Nar(NotAndOr);
 Nar(Not);Nar(And);Nar(Or);
+Nar(And1); Nar(Or1);
 Nar(go_ns);
 Nar(go_we);
 Nar(go_n);
