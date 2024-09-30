@@ -32,7 +32,8 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
   Color bgcolor = opcode == halt ? GRAY : colors[colindex][0];
   DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
   if (selected)
-    DrawRectangleRoundedLines(rect, 0.2f, 10, (1022 - beta) * 2, RED);
+    DrawRectangleRoundedLines(rect, 0.2f, 10,
+                              ((((beta >> Σ) + 1) << Σ) - beta) * 2, RED);
   const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
                     : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
                     : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
@@ -51,22 +52,23 @@ static Nar(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  long x = 0, y = 0, t = 1024;
+  long x = 0, y = 0, t = 5 << Σ;
   while (t <= σ) {
-    DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, β);
+    DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, β[ρ]);
     if (o[t] == nl)
       y++, x = 0, t = ((t >> Σ) + 1) << Σ;
     else
       x++, t += 11;
   }
   EndMode2D();
-  int beta_top = 1024;
+  int beta_top = ((β[ρ] >> Σ) + 1) << Σ;
   Vector2 pos = {GetScreenWidth() - CELL_WIDTH - 5,
-                 GetScreenHeight() - CELL_HEIGHT * (beta_top - β) - 5};
-  for (long beta = β; beta < beta_top; beta++) {
+                 GetScreenHeight() - CELL_HEIGHT * (beta_top - β[ρ]) - 5};
+  for (long beta = β[ρ]; beta < beta_top; beta++) {
     Rectangle rect = {pos.x, pos.y, CELL_WIDTH - 5, CELL_HEIGHT - 5};
-    DrawRectangleRounded(rect, 0.2f, 10, BLACK);
-    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0, WHITE);
+    DrawRectangleRounded(rect, 0.2f, 10, colors[(ρ + 1) * δ + 5][0]);
+    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0,
+               colors[(ρ + 1) * δ + 5][1]);
     pos.y += CELL_HEIGHT;
   }
   EndDrawing();

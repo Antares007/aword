@@ -3,13 +3,25 @@ Nar(twist);
 Nar(ss);
 Nar(sn);
 S(cr) { τ = ((τ >> Σ) << Σ), God(OS); }
-S(nearch) { τ = o[β++], B(sn), B(cr), God(OS); }
+S(nearch) { τ = o[β[ρ]++], B(sn), B(cr), God(OS); }
 S(search) {
   o[α++] = o[τ + 1];
-  B(drop_alfa), B(τ), B(nearch), B(Or1), B(ss), B(cr), God(OS);
+  {
+    long sentence[] = {drop_alfa, τ, nearch, Or1, ss, cr};
+    long length = sizeof(sentence) / sizeof(*sentence);
+    if ((β[ρ] - length) < ((β[ρ] >> Σ) << Σ))
+      Got(OS);
+    else {
+      long b = β[ρ];
+      for(long i = 0; i < length; i++) 
+        o[--b] = sentence[i];
+      β[ρ] = b;
+      God(OS);
+    }
+  }
 }
 
-S(sta) { τ = o[β++], God(OS); }
+S(sta) { τ = o[β[ρ]++], God(OS); }
 
 S(twist_tword) {
   B(twist), B(And);
