@@ -5,9 +5,6 @@
 const long CELL_WIDTH = 90;
 const long CELL_HEIGHT = 30;
 
-static long d_ram[0x10000];
-static long *d_o = d_ram + sizeof(d_ram) / sizeof(*d_ram) / 2;
-
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
     {(Color){128, 128, 000, 255}, BLACK}, // Olive
@@ -25,15 +22,20 @@ static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
 Nar(NotAndOr);
-static void DrawCell(long opcode, long colindex, long x, long y, long t,
-                     long selected, long *o, long beta) {
+S(DrawCell) {
+  long t = o[--α];
+  long y = o[--α];
+  long x = o[--α];
+  long color_index = (o[-t - 1] + 1) * o[-t - 2] + 5;
+  long opcode = o[α++] = o[t];
+  long selected = t == τ;
   Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH - 5,
                                CELL_HEIGHT - 5};
-  Color bgcolor = opcode == halt ? GRAY : colors[colindex][0];
+  Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
   DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
   if (selected)
     DrawRectangleRoundedLines(rect, 0.2f, 10,
-                              ((((beta >> Σ) + 1) << Σ) - beta) * 2, RED);
+                              ((((β[ρ] >> Σ) + 1) << Σ) - β[ρ]) * 2, RED);
   const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
                     : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
                     : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
@@ -41,11 +43,25 @@ static void DrawCell(long opcode, long colindex, long x, long y, long t,
                                      : TextFormat("%s", sopcode_names[o[t]]);
   float fontSize = 25, spacing = 0;
   Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
-  if (selected && o[-beta])
-    DrawTextEx(font, TextFormat("%11s", o[-beta]),
+  if (selected && o[-β[ρ]])
+    DrawTextEx(font, TextFormat("%11s", o[-β[ρ]]),
                Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
-               colors[colindex][1]);
-  DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[colindex][1]);
+               colors[color_index][1]);
+  DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[color_index][1]);
+}
+static void drawKanal(long *o, long beta, long color_index) {
+  int beta_top = ((beta >> Σ) + 1) << Σ;
+  const float cell_width = CELL_WIDTH * 1.5f;
+  const float cell_height = CELL_HEIGHT;
+  Vector2 pos = {-(cell_width - 5) / 2.f,
+                 -(cell_height * (beta_top - beta) - 5)};
+  for (; beta < beta_top; beta++) {
+    Rectangle rect = {pos.x, pos.y, cell_width - 5, cell_height - 5};
+    DrawRectangleRounded(rect, 0.2f, 10, colors[color_index][0]);
+    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 30, 0,
+               colors[color_index][1]);
+    pos.y += cell_height;
+  }
 }
 static Nar(drawVMState) {
   ClearBackground(DARKGRAY);
@@ -54,29 +70,52 @@ static Nar(drawVMState) {
   BeginMode2D(camera);
   long x = 0, y = 0, t = 6 << Σ;
   while (t <= σ) {
-    DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, β[ρ]);
+    o[α++] = x, o[α++] = y, o[α++] = t, DrawCell(OS);
     if (o[t] == nl)
       y++, x = 0, t = ((t >> Σ) + 1) << Σ;
     else
       x++, t += 11;
   }
   EndMode2D();
-  int beta_top = ((β[ρ] >> Σ) + 1) << Σ;
-  Vector2 pos = {GetScreenWidth() - CELL_WIDTH - 5,
-                 GetScreenHeight() - CELL_HEIGHT * (beta_top - β[ρ]) - 5};
-  for (long beta = β[ρ]; beta < beta_top; beta++) {
-    Rectangle rect = {pos.x, pos.y, CELL_WIDTH - 5, CELL_HEIGHT - 5};
-    DrawRectangleRounded(rect, 0.2f, 10, colors[(ρ + 1) * δ + 5][0]);
-    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 30, 0,
-               colors[(ρ + 1) * δ + 5][1]);
-    pos.y += CELL_HEIGHT;
-  }
+  float k_zoom = zoom / 2.f;
+  Camera2D k1 = {.target = {0, 0},
+                 .rotation = 0,
+                 .zoom = k_zoom,
+                 .offset = {GetScreenWidth() / 2.f, GetScreenHeight()}};
+  BeginMode2D(k1);
+  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  EndMode2D();
+
+  Camera2D k2 = {.target = {0, 0},
+                 .rotation = 180,
+                 .zoom = k_zoom,
+                 .offset = {GetScreenWidth() / 2.f, 0}};
+  BeginMode2D(k2);
+  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  EndMode2D();
+
+  Camera2D k3 = {.target = {0, 0},
+                 .rotation = 90,
+                 .zoom = k_zoom,
+                 .offset = {0, GetScreenHeight() / 2.f}};
+  BeginMode2D(k3);
+  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  EndMode2D();
+
+  Camera2D k4 = {.target = {0, 0},
+                 .rotation = 270,
+                 .zoom = k_zoom,
+                 .offset = {GetScreenWidth(), GetScreenHeight() / 2.f}};
+  BeginMode2D(k4);
+  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  EndMode2D();
+
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
 Nar(sti_got) {
-  d_o[τ + 1] = ρ;
-  d_o[τ + 2] = δ;
+  o[-(τ + 1)] = ρ;
+  o[-(τ + 2)] = δ;
   long key;
   static int semi_auto = 0;
   do {
@@ -104,6 +143,6 @@ void sti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(15);
+  SetTargetFPS(120);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
