@@ -74,7 +74,7 @@ static Nar(drawVMState) {
                  .zoom = k_zoom,
                  .offset = {GetScreenWidth() / 2.f, GetScreenHeight()}};
   BeginMode2D(k1);
-  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  drawKanal(o, β[0], (0 + 1) * δ + 5);
   EndMode2D();
 
   Camera2D k2 = {.target = {0, 0},
@@ -82,7 +82,7 @@ static Nar(drawVMState) {
                  .zoom = k_zoom,
                  .offset = {GetScreenWidth() / 2.f, 0}};
   BeginMode2D(k2);
-  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  drawKanal(o, β[2], (2 + 1) * δ + 5);
   EndMode2D();
 
   Camera2D k3 = {.target = {0, 0},
@@ -90,7 +90,7 @@ static Nar(drawVMState) {
                  .zoom = k_zoom,
                  .offset = {0, GetScreenHeight() / 2.f}};
   BeginMode2D(k3);
-  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  drawKanal(o, β[1], (1 + 1) * δ + 5);
   EndMode2D();
 
   Camera2D k4 = {.target = {0, 0},
@@ -98,7 +98,7 @@ static Nar(drawVMState) {
                  .zoom = k_zoom,
                  .offset = {GetScreenWidth(), GetScreenHeight() / 2.f}};
   BeginMode2D(k4);
-  drawKanal(o, β[ρ], (ρ + 1) * δ + 5);
+  drawKanal(o, β[3], (3 + 1) * δ + 5);
   EndMode2D();
 
   EndDrawing();
@@ -120,7 +120,7 @@ Nar(sti_got) {
     else if (wheelMove < 0)
       zoom -= 0.1;
     key = GetCharPressed();
-    drawVMState(OS);
+    drawVMState(To);
     if (WindowShouldClose())
       CloseWindow(), exit(0);
     else if (key == 'c')
