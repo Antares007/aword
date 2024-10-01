@@ -52,7 +52,7 @@ static Nar(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  long x = 0, y = 0, t = 5 << Σ;
+  long x = 0, y = 0, t = 6 << Σ;
   while (t <= σ) {
     DrawCell(o[t], (d_o[t + 1] + 1) * d_o[t + 2] + 5, x, y, t, t == τ, o, β[ρ]);
     if (o[t] == nl)
@@ -67,7 +67,7 @@ static Nar(drawVMState) {
   for (long beta = β[ρ]; beta < beta_top; beta++) {
     Rectangle rect = {pos.x, pos.y, CELL_WIDTH - 5, CELL_HEIGHT - 5};
     DrawRectangleRounded(rect, 0.2f, 10, colors[(ρ + 1) * δ + 5][0]);
-    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 20, 0,
+    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 30, 0,
                colors[(ρ + 1) * δ + 5][1]);
     pos.y += CELL_HEIGHT;
   }
