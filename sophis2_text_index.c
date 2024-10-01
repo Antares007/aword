@@ -22,33 +22,6 @@ static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
 Nar(NotAndOr);
-S(DrawCell) {
-  long t = o[--α];
-  long y = o[--α];
-  long x = o[--α];
-  long color_index = (o[-t - 1] + 1) * o[-t - 2] + 5;
-  long opcode = o[α++] = o[t];
-  long selected = t == τ;
-  Rectangle rect = (Rectangle){x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH - 5,
-                               CELL_HEIGHT - 5};
-  Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
-  DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
-  if (selected)
-    DrawRectangleRoundedLines(rect, 0.2f, 10,
-                              ((((β[ρ] >> Σ) + 1) << Σ) - β[ρ]) * 2, RED);
-  const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
-                    : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
-                    : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
-                    : opcode == put  ? TextFormat("\"%s\"", (char *)o[t + 1])
-                                     : TextFormat("%s", sopcode_names[o[t]]);
-  float fontSize = 25, spacing = 0;
-  Vector2 pos = {x * CELL_WIDTH + 5, y * CELL_HEIGHT};
-  if (selected && o[-β[ρ]])
-    DrawTextEx(font, TextFormat("%11s", o[-β[ρ]]),
-               Vector2Add(pos, (Vector2){0, 10}), fontSize / 1.5, spacing,
-               colors[color_index][1]);
-  DrawTextEx(font, txt, pos, fontSize / 1.5, spacing, colors[color_index][1]);
-}
 static void drawKanal(long *o, long beta, long color_index) {
   int beta_top = ((beta >> Σ) + 1) << Σ;
   const float cell_width = CELL_WIDTH * 1.5f;
@@ -68,16 +41,34 @@ static Nar(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  long x = 0, y = 0, t = 6 << Σ;
-  while (t <= σ) {
-    o[α++] = x, o[α++] = y, o[α++] = t, DrawCell(OS);
+  for (long x = 0, y = 0, t = 6 << Σ; t < σ;) {
+    long color_index = (o[-t - 1] + 1) * o[-t - 2] + 5;
+    long opcode = o[α++] = o[t];
+    long selected = t == τ;
+    long beta_height = ((((β[ρ] >> Σ) + 1) << Σ) - β[ρ]) * 2;
+    const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
+                      : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
+                      : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
+                      : opcode == put  ? TextFormat("\"%s\"", (char *)o[t + 1])
+                                       : TextFormat("%s", sopcode_names[o[t]]);
+    float fontSize = 25, spacing = 0;
+    Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
+
+    Rectangle rect = (Rectangle){x, y, textsize.x + 10, CELL_HEIGHT - 5};
+    Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
+    DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
+    if (selected)
+      DrawRectangleRoundedLines(rect, 0.2f, 10, beta_height, RED);
+    Vector2 pos = {x + 5, y};
+    DrawTextEx(font, txt, pos, fontSize, spacing, colors[color_index][1]);
+
     if (o[t] == nl)
-      y++, x = 0, t = ((t >> Σ) + 1) << Σ;
+      y += CELL_HEIGHT, x = 0, t = ((t >> Σ) + 1) << Σ;
     else
-      x++, t += 11;
+      x += textsize.x + 15, t += 11;
   }
   EndMode2D();
-  float k_zoom = zoom / 2.f;
+  float k_zoom = zoom / 1.5f;
   Camera2D k1 = {.target = {0, 0},
                  .rotation = 0,
                  .zoom = k_zoom,

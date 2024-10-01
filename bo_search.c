@@ -7,9 +7,9 @@ S(sn_n) { B(sn), B(go_n), God(OS); }
 S(sn_name) { B(sn_n), B(Or), B(match), God(OS); }
 Nar(sn) {
   static n_t sopcodes[] = {
-      [name ] = sn_name,
-      [tab  ] = sn_n,
-      [halt ] = Gor,
+      [name] = sn_name,
+      [tab] = sn_n,
+      [halt] = Gor,
   };
   sopcodes[o[τ]](OS);
 }
@@ -19,9 +19,9 @@ S(ss_s) { B(ss), B(go_s), God(OS); }
 S(ss_name) { B(ss_s), B(Or), B(match), God(OS); }
 Nar(ss) {
   static n_t sopcodes[] = {
-      [name ] = ss_name,
-      [tab  ] = ss_s,
-      [halt ] = Gor,
+      [name] = ss_name,
+      [tab] = ss_s,
+      [halt] = Gor,
   };
   sopcodes[o[τ]](OS);
 }

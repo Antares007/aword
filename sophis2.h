@@ -17,7 +17,6 @@ typedef Nar((*n_t));
   X(name)                                                                      \
   X(tab)                                                                       \
   X(tword)                                                                     \
-  X(end)                                                                       \
   X(nop)
 #define X(n) n,
 enum Names { NAMES };

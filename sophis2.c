@@ -47,7 +47,28 @@ Nar(Push_Green  ) { long v = o[β[ρ]++]; o[--β[1]] = v, Go(OS); }
 Nar(Push_Red    ) { long v = o[β[ρ]++]; o[--β[2]] = v, Go(OS); }
 Nar(Push_Yellow ) { long v = o[β[ρ]++]; o[--β[3]] = v, Go(OS); }
 
+S(bo_ani);
+S(ani_begin) {
+  OB(ρ, bo_ani), go_e(OS);
+}
+S(bo_ani) {
+  static n_t nars[] = { ani_begin, ani_begin, ani_begin, ani_begin, ani_begin, ani_begin,
+                        ani_begin, ani_begin, ani_begin, ani_begin, ani_begin, ani_begin,
+                        ani_begin, ani_begin, ani_begin, ani_begin, ani_begin, };
+  if (o[τ] < sizeof(nars) / sizeof(*nars) && nars[o[τ]])
+    nars[o[τ]](OS);
+  else
+    printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
+}
 #include "sisa.h"
+Nar(programAraDaNi) {
+  begin put("t") put("a") put("b") print dot tab put("1") put("2") put("3") print dot nl;
+  tab put("3") put("4") put("5") print dot nl;
+  OB(3, done);
+  OB(3, bo_ani);
+  Go(OS);
+}
+
 Nar(programTritab) {
   N("ttt")  nl;
   tab       T("tab")  T("tab")  T("tab")  dot       nl;
@@ -98,5 +119,6 @@ int main(int argc, char**argv) {
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long β[4] = { 3 << Σ, 4 << Σ, 6 << Σ, 5 << Σ };
   long α = 0, τ, σ = τ = 6 << Σ, ρ = 3, δ = 1, ν = 1;
-  programTritab(OS);
+  //programTritab(OS);
+  programAraDaNi(OS);
 }
