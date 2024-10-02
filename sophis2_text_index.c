@@ -18,30 +18,40 @@ static const Color colors[][2] = {
     {(Color){255, 255, 000, 255}, BLACK}, // Yellow
     {(Color){128, 000, 128, 255}, WHITE}, // Purple
 };
+
 static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
-N(NotAndOr);
-static void drawKanal(long *o, long beta, long color_index) {
+
+static void DrawKannal(long *o, long beta, long color_index) {
   int beta_top = ((beta >> Σ) + 1) << Σ;
-  const float cell_width = CELL_WIDTH * 1.5f;
   const float cell_height = CELL_HEIGHT;
-  Vector2 pos = {-(cell_width - 5) / 2.f,
-                 -(cell_height * (beta_top - beta) - 5)};
+  float cell_offset = cell_height + 3;
+  Vector2 pos = {0, -cell_offset * (beta_top - beta)};
+  int size = 30;
+  int spacing = 0;
+
   for (; beta < beta_top; beta++) {
-    Rectangle rect = {pos.x, pos.y, cell_width - 5, cell_height - 5};
-    DrawRectangleRounded(rect, 0.2f, 10, colors[color_index][0]);
-    DrawTextEx(font, TextFormat("%s", o[-beta]), pos, 30, 0,
-               colors[color_index][1]);
-    pos.y += cell_height;
+    const char *text = (const char *)o[-beta];
+    Vector2 text_size = MeasureTextEx(font, text, size, spacing);
+
+    float half_text_width = text_size.x / 2.f;
+    Rectangle rect = {-half_text_width - 10, pos.y, text_size.x + 20,
+                      cell_height};
+    DrawRectangleRounded(rect, 0.6f, 10, colors[color_index][0]);
+    DrawTextEx(font, text, Vector2Add(pos, (Vector2){-half_text_width, 0}),
+               size, spacing, colors[color_index][1]);
+
+    pos.y += cell_offset;
   }
 }
+
 static void DrawBetaStack(long *o, long *beta, int rho, long delta, float zoom,
                           int x, int y) {
   Camera2D k1 = {
       .target = {0, 0}, .rotation = rho * 90, .zoom = zoom, .offset = {x, y}};
   BeginMode2D(k1);
-  drawKanal(o, beta[rho], (rho + 1) * delta + 5);
+  DrawKannal(o, beta[rho], (rho + 1) * delta + 5);
   EndMode2D();
 }
 static N(drawVMState) {
