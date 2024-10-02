@@ -1,11 +1,11 @@
 #include "sophis2.h"
-Nar(doni);
-Nar(gani);
-Nar(ani);
+N(doni);
+N(gani);
+N(ani);
 S(gani_e) { OB(ρ, gani), go_e(To); }
 S(gani_dot) { OB(ρ, ani), go_e(To); }
 S(gani_nl) { OB(ρ, doni), go_w(To); }
-Nar(gani) {
+N(gani) {
   Book_of(              //
       [put] = gani_e,   //
       [print] = gani_e, //

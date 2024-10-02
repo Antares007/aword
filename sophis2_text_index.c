@@ -21,7 +21,7 @@ static const Color colors[][2] = {
 static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
-Nar(NotAndOr);
+N(NotAndOr);
 static void drawKanal(long *o, long beta, long color_index) {
   int beta_top = ((beta >> Σ) + 1) << Σ;
   const float cell_width = CELL_WIDTH * 1.5f;
@@ -36,7 +36,15 @@ static void drawKanal(long *o, long beta, long color_index) {
     pos.y += cell_height;
   }
 }
-static Nar(drawVMState) {
+static void DrawBetaStack(long *o, long *beta, int rho, long delta, float zoom,
+                          int x, int y) {
+  Camera2D k1 = {
+      .target = {0, 0}, .rotation = rho * 90, .zoom = zoom, .offset = {x, y}};
+  BeginMode2D(k1);
+  drawKanal(o, beta[rho], (rho + 1) * delta + 5);
+  EndMode2D();
+}
+static N(drawVMState) {
   ClearBackground(DARKGRAY);
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
@@ -46,8 +54,8 @@ static Nar(drawVMState) {
     long opcode = o[α++] = o[t];
     long selected = t == τ;
     long beta_height = ((((β[ρ] >> Σ) + 1) << Σ) - β[ρ]) * 2;
-    const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
-                      : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
+    const char *txt = opcode == tword ? TextFormat("tword:%s", (char *)o[t + 1])
+                      : opcode == name ? TextFormat("name:%s", (char *)o[t + 1])
                       : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
                       : opcode == put  ? TextFormat("\"%s\"", (char *)o[t + 1])
                                        : TextFormat("%s", sopcode_names[o[t]]);
@@ -68,43 +76,16 @@ static Nar(drawVMState) {
       x += textsize.x + 15, t += 11;
   }
   EndMode2D();
+
   float k_zoom = zoom / 1.5f;
-  Camera2D k1 = {.target = {0, 0},
-                 .rotation = 0,
-                 .zoom = k_zoom,
-                 .offset = {GetScreenWidth() / 2.f, GetScreenHeight()}};
-  BeginMode2D(k1);
-  drawKanal(o, β[0], (0 + 1) * δ + 5);
-  EndMode2D();
-
-  Camera2D k2 = {.target = {0, 0},
-                 .rotation = 180,
-                 .zoom = k_zoom,
-                 .offset = {GetScreenWidth() / 2.f, 0}};
-  BeginMode2D(k2);
-  drawKanal(o, β[2], (2 + 1) * δ + 5);
-  EndMode2D();
-
-  Camera2D k3 = {.target = {0, 0},
-                 .rotation = 90,
-                 .zoom = k_zoom,
-                 .offset = {0, GetScreenHeight() / 2.f}};
-  BeginMode2D(k3);
-  drawKanal(o, β[1], (1 + 1) * δ + 5);
-  EndMode2D();
-
-  Camera2D k4 = {.target = {0, 0},
-                 .rotation = 270,
-                 .zoom = k_zoom,
-                 .offset = {GetScreenWidth(), GetScreenHeight() / 2.f}};
-  BeginMode2D(k4);
-  drawKanal(o, β[3], (3 + 1) * δ + 5);
-  EndMode2D();
-
+  DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
+  DrawBetaStack(o, β, 1, δ, k_zoom, 0, GetScreenHeight() / 2.f);
+  DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, 0);
+  DrawBetaStack(o, β, 3, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
-Nar(sti_got) {
+N(sti_got) {
   o[-(τ + 1)] = ρ;
   o[-(τ + 2)] = δ;
   long key;

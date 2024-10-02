@@ -1,7 +1,7 @@
 #include "sophis2.h"
-Nar(twist);
-Nar(ss);
-Nar(sn);
+N(twist);
+N(ss);
+N(sn);
 S(cr) { τ = ((τ >> Σ) << Σ), God(To); }
 S(nearch) { τ = o[β[ρ]++], B(sn), B(cr), God(To); }
 S(search) {
@@ -21,7 +21,7 @@ S(twist_tword) {
 
 S(twist_s) { B(twist), B(go_s), B(cr), God(To); }
 S(twist_e) { B(twist), B(go_e), God(To); }
-Nar(twist) {
+N(twist) {
   static n_t sopcodes[] = {
       [name] = twist_e, [tab] = twist_e, [print] = twist_e,
       [put] = twist_e,  [nl] = twist_s,  [tword] = twist_tword,

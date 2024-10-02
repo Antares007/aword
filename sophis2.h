@@ -1,9 +1,9 @@
 #pragma once
 #pragma GCC diagnostic ignored "-Wint-conversion"
-#define Nar(go)                                                                \
+#define N(go)                                                                  \
   void go(long *o, long *β, long α, long τ, long σ, long ρ, long δ, long ν)
-typedef Nar((*n_t));
-#define S(go) static Nar(go)
+typedef N((*n_t));
+#define S(go) static N(go)
 #define To o, β, α, τ, σ, ρ, δ, ν
 #define Σ 8
 #define NAMES                                                                  \
@@ -42,23 +42,23 @@ extern int printf(const char *, ...);
   nars[o[τ]](To);
 #endif
 #define B(v) OB(ρ, v)
-Nar(Go);
-Nar(G1);
-Nar(G2);
-Nar(G3);
-Nar(Got);
-Nar(God);
-Nar(Gor);
-Nar(NotAndOr);
-Nar(Not);
-Nar(And);
-Nar(Or);
-Nar(And1);
-Nar(Or1);
-Nar(go_ns);
-Nar(go_we);
-Nar(go_n);
-Nar(go_e);
-Nar(go_s);
-Nar(go_w);
-Nar(drop_alfa);
+N(Go);
+N(G1);
+N(G2);
+N(G3);
+N(Got);
+N(God);
+N(Gor);
+N(NotAndOr);
+N(Not);
+N(And);
+N(Or);
+N(And1);
+N(Or1);
+N(go_ns);
+N(go_we);
+N(go_n);
+N(go_e);
+N(go_s);
+N(go_w);
+N(drop_alfa);
