@@ -28,7 +28,7 @@ extern int printf(const char *, ...);
 #ifndef NDEBUG
 #define P printf("%s\n", __func__)
 #define OB(r, v) (o[--β[r]] = v), (o[-β[r]] = #v)
-#define Book_of(...)                                                           \
+#define is_a_book_of(...)                                                           \
   static n_t nars[] = {__VA_ARGS__};                                           \
   if (o[τ] < sizeof(nars) / sizeof(*nars) && nars[o[τ]])                       \
     nars[o[τ]](To);                                                            \
@@ -37,7 +37,7 @@ extern int printf(const char *, ...);
 #else
 #define P (void)0
 #define OB(r, v) (o[--β[r]] = v)
-#define Book_of(...)                                                           \
+#define is_a_book_of(...)                                                           \
   static n_t nars[] = {__VA_ARGS__};                                           \
   nars[o[τ]](To);
 #endif

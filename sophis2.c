@@ -110,6 +110,6 @@ int main(int argc, char**argv) {
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long β[4] = { 3 << Σ, 4 << Σ, 6 << Σ, 5 << Σ };
   long α = 0, τ, σ = τ = 6 << Σ, ρ = 3, δ = 1, ν = 1;
-  programTritab(To);
-  //programAraDaNi(To);
+  //programTritab(To);
+  programAraDaNi(To);
 }
