@@ -1,11 +1,11 @@
 #include "sophis2.h"
 N(twist);
-N(ss);
-N(sn);
+N(dive);
+N(rise);
 S(cr          ) { τ = ((τ >> Σ) << Σ), God(To); }
-S(nearch      ) { τ = o[β[ρ]++], B(sn), B(cr), God(To); }
+S(nearch      ) { τ = o[β[ρ]++], B(rise), B(cr), God(To); }
 S(search      ) { o[α++] = o[τ + 1];
-                  B(drop_alfa), B(τ), B(nearch), B(Or1), B(ss), B(cr), God(To); }
+                  B(drop_alfa), B(τ), B(nearch), B(Or1), B(dive), B(cr), God(To); }
 S(sta         ) { τ = o[β[ρ]++], God(To); }
 S(twist_tword ) { B(twist),     B(And);
                   B(go_e),      B(And);

@@ -36,7 +36,7 @@ N(drop_alfa) { α--, God(To); }
 S(done) { P, printf("the %s!\n", ν ? ν == 2 ? "not" : "and" : "or"); }
 
 N(twist);
-N(ss);
+N(dive);
 N(Go_Blue     ) { ρ = 0, Go(To); }
 N(Go_Green    ) { ρ = 1, Go(To); }
 N(Go_Red      ) { ρ = 2, Go(To); }
@@ -62,7 +62,7 @@ N(programAraDaNi) {
   OB(2, done),
   OB(3, done), OB(3, ani);
 
-  o[α++] = "ani", ss(To);
+  o[α++] = "ani", dive(To);
 }
 N(programTritab) {
   name("ttt") nl;
@@ -77,7 +77,7 @@ N(programTritab) {
   OB(0,done), OB(1,done), OB(2,done), OB(3,done);
   OB(3,twist), B(And);
 
-  o[α++] = "main", ss(To);
+  o[α++] = "main", dive(To);
 }
 N(programPropeller) {
   OB(0, done);

@@ -5,14 +5,14 @@ N(bani);
 S(ani_e ) { OB(ρ, ani), go_e(To); }
 S(ani_nl) { OB(ρ, bani), go_w(To); }
 
-N(ss); N(sn);
+N(dive); N(rise);
 S(cr          ) { τ = ((τ >> Σ) << Σ), God(To); }
-S(nearch      ) { τ = o[β[ρ]++],  OB(ρ, sn),
+S(nearch      ) { τ = o[β[ρ]++],  OB(ρ, rise),
                                   OB(ρ, cr), God(To); }
 S(search      ) { o[α++] = o[τ + 1];
                   OB(ρ, drop_alfa),
                   OB(ρ, τ), OB(ρ, nearch), OB(ρ, Or1),
-                  OB(ρ, ss),OB(ρ, cr), God(To); }
+                  OB(ρ, dive),OB(ρ, cr), God(To); }
 S(sta         ) { τ = o[β[ρ]++], God(To); }
 S(ani_tword   ) { OB(ρ, ani),           OB(ρ, And);
                   OB(ρ, go_e),          OB(ρ, And);
