@@ -101,7 +101,7 @@ N(sti_got) {
   long key;
   static int semi_auto = 0;
   do {
-    if (o[τ] == begin && semi_auto == 2)
+    if (o[τ] == nl && semi_auto == 2)
       semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());

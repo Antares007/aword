@@ -7,9 +7,11 @@ S(gani_dot) { OB(ρ, ani), go_e(To); }
 S(gani_nl ) { OB(ρ, doni), go_w(To); }
 N(gani) {
   is_a_book_of(
+      [tword] = gani_e,
       [put  ] = gani_e,
       [print] = gani_e,
       [dot  ] = gani_dot,
       [nl   ] = gani_nl,
+      [nop  ] = gani_e,
   )
 }

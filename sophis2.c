@@ -50,8 +50,12 @@ N(Push_Yellow ) { long v = o[β[ρ]++]; o[--β[3]] = v, Go(To); }
 N(ani);
 #include "sisa.h"
 N(programAraDaNi) {
+  name("tab") nl;
+  tab put("t") dot nl;
+  tab put("a") dot nl;
+  tab put("b") dot nl;
   name("ani") nl;
-  tab put("t") put("a") put("b") print dot put("1") put("2") put("3") print dot nl;
+  tab nop tword("tab") print dot put("1") put("2") put("3") print dot nl;
   tab put("3") put("4") put("5") print dot nl;
   OB(0, done),
   OB(1, done),
@@ -84,7 +88,8 @@ N(programPropeller) {
   Go_Yellow(To);
 }
 N(programS) {
-  begin tword("S") print dot nl;
+  name("main") nl;
+  tab tword("S") print dot nl;
   name("S") nl;
   tab put("b") dot nl;
   tab tword("S") put("a") dot nl;
@@ -92,7 +97,8 @@ N(programS) {
   B(done), twist(To);
 }
 N(programAB) {
-  begin tword("A") print dot nl;
+  name("main") nl;
+  tab tword("A") print dot nl;
   name("A") nl;
   tab put("o") dot nl;
   tab tword("B") put("a") dot nl;

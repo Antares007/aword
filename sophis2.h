@@ -8,16 +8,15 @@ typedef N((*n_t));
 #define Σ 8
 #define NAMES                                                                  \
   X(halt)                                                                      \
-  X(begin)                                                                     \
-  X(put)                                                                       \
-  X(term)                                                                      \
-  X(print)                                                                     \
   X(dot)                                                                       \
-  X(nl)                                                                        \
   X(name)                                                                      \
+  X(nl)                                                                        \
+  X(nop)                                                                       \
+  X(print)                                                                     \
+  X(put)                                                                       \
   X(tab)                                                                       \
-  X(tword)                                                                     \
-  X(nop)
+  X(term)                                                                      \
+  X(tword)
 #define X(n) n,
 enum Names { NAMES };
 #undef X
