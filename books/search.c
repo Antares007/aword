@@ -4,18 +4,27 @@ extern int strcmp(const char *, const char *);
 S(match) { (strcmp(o[τ + 1], β[0][1]) ? Gor : God)(OS); }
 
 N(rise);
-N(rise){is_a_book_of()}
+S(rise_n) { οYellow(rise), go_n(OS); }
+S(rise_name) {
+  οYellow(rise_n, Go, Go), οYellow(NotAndOr);
+  match(OS);
+}
+N(rise){is_a_book_of(   //
+    [name] = rise_name, //
+    [tab ] = rise_n,     //
+    [halt] = Gor,       //
+    )}
 
 N(dive);
-S(dive_s) { OB(3, dive), OB(3, go_s), God(OS); }
+S(dive_s) { οYellow(dive), go_s(OS); }
 S(dive_name) {
-  OB(3, dive_s, Go, Go), OB(3, NotAndOr);
-  OB(3, match), God(OS);
+  οYellow(dive_s, Go, Go), οYellow(NotAndOr);
+  match(OS);
 }
 N(dive) {
-  is_a_book_of([name] = dive_name, //
-               [tab] = dive_s,     //
+  is_a_book_of(           //
+      [name] = dive_name, //
+      [tab ] = dive_s,     //
+      [halt] = Gor,       //
   )
 }
-
-

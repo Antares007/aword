@@ -43,6 +43,11 @@ extern int printf(const char *__restrict __format, ...);
 #define OB(ρ, ...)                                                             \
   β = (long *[]) { β[0], β[1], β[2], β[3], [ρ] = R(β, __VA_ARGS__) }
 
+#define οBlue(...) OB(0, __VA_ARGS__)
+#define οGreen(...) OB(1, __VA_ARGS__)
+#define οRed(...) OB(2, __VA_ARGS__)
+#define οYellow(...) OB(3, __VA_ARGS__)
+
 #define is_a_book_of(...)                                                      \
   static n_t nars[] = {__VA_ARGS__};                                           \
   if (o[τ] < sizeof(nars) / sizeof(*nars) && nars[o[τ]])                       \
