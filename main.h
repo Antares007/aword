@@ -4,7 +4,7 @@
 
 #define NAMES                                                                  \
   X(halt)                                                                      \
-  X(dot)                                                                       \
+  X(begin)                                                                     \
   X(name)                                                                      \
   X(nl)                                                                        \
   X(nop)                                                                       \
@@ -12,7 +12,9 @@
   X(put)                                                                       \
   X(tab)                                                                       \
   X(term)                                                                      \
-  X(tword)
+  X(tword)                                                                     \
+  X(dot)                                                                       \
+  X(end)
 
 #define X(n) n,
 enum Names { NAMES };
@@ -23,10 +25,13 @@ static const char *sopcode_names[] = {NAMES};
 #undef X
 
 #define Σ 8
-#define OS o, β, τ, σ, ρ, δ, ν
+#define OS o, β, α, τ, σ, ρ, δ, ν
+#define SO o, α, β, τ, σ, ρ, δ, ν
 #define N(argo)                                                                \
-  void argo(long *o, long **β, long τ, long σ, long ρ, long δ, long ν)
+  void argo(long *o, long **β, long **α, long τ, long σ, long ρ, long δ, long ν)
 #define S(argo) static N(argo)
+//#undef S
+//#define S(argo) static N(argo##_); static N(argo) { οRed(Go, #argo), argo##_(OS); } static N(argo##_)
 typedef N((*n_t));
 
 #include "evalmap.h"
@@ -40,13 +45,14 @@ extern int printf(const char *__restrict __format, ...);
 #define R(β, ...)                                                              \
   (long[]){LEN(__VA_ARGS__), β, __VA_ARGS__, MAPTOSTR(__VA_ARGS__)} + 2
 
-#define OB(ρ, ...)                                                             \
-  β = (long *[]) { β[0], β[1], β[2], β[3], [ρ] = R(β, __VA_ARGS__) }
-
-#define οBlue(...) OB(0, __VA_ARGS__)
-#define οGreen(...) OB(1, __VA_ARGS__)
-#define οRed(...) OB(2, __VA_ARGS__)
-#define οYellow(...) OB(3, __VA_ARGS__)
+#define οYellow(...)  β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
+#define οRed(...)     β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }
+#define οGreen(...)   β = (long *[]) { β[0], R(β, __VA_ARGS__), β[2], β[3] }
+#define οBlue(...)    β = (long *[]) { R(β, __VA_ARGS__), β[1], β[2], β[3] }
+#define οNavy(...)    α = (long *[]) { R(α, __VA_ARGS__), α[1], α[2], α[3] }
+#define οLime(...)    α = (long *[]) { α[0], R(α, __VA_ARGS__), α[2], α[3] }
+#define οMaroon(...)  α = (long *[]) { α[0], α[1], R(α, __VA_ARGS__), α[3] }
+#define οOlive(...)   α = (long *[]) { α[0], α[1], α[2], R(α, __VA_ARGS__) }
 
 #define is_a_book_of(...)                                                      \
   static n_t nars[] = {__VA_ARGS__};                                           \
@@ -60,7 +66,9 @@ N(Got);
 N(God);
 N(Gor);
 N(NotAndOr);
+N(Not); N(And); N(Or);
 N(go_n);
 N(go_e);
 N(go_s);
 N(go_w);
+N(Twist);

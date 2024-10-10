@@ -21,12 +21,12 @@ static const Color colors[][2] = {
 static Font font;
 static float zoom = 1.5;
 static Vector2 off = {10, 10};
+static int bside = 0;
 
 static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
                           int y) {
   Camera2D k1 = {
       .target = {0, 0}, .rotation = ρ * 90, .zoom = zoom, .offset = {x, y}};
-  ρ = -ρ + 3;
   BeginMode2D(k1);
   const float cell_height = 30;
   float font_size = 30;
@@ -60,7 +60,7 @@ static N(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  for (long x = 0, y = 0, t = 0; t < σ;) {
+  for (long x = 0, y = 0, t = 512; t < σ;) {
     long color_index = (o[t - 1] + 1) * o[t - 2] + 5;
     long opcode = o[t];
     long selected = t == τ;
@@ -70,7 +70,7 @@ static N(drawVMState) {
                       : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
                       : opcode == put  ? TextFormat("\"%s\"", (char *)o[t + 1])
                                        : TextFormat("%s", sopcode_names[o[t]]);
-    float fontSize = 25, spacing = 0;
+    float fontSize = 20, spacing = 0;
     // Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
     Vector2 textsize = {50, 30};
 
@@ -79,8 +79,11 @@ static N(drawVMState) {
     DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
     if (selected)
       DrawRectangleRoundedLines(rect, 0.2f, 10, beta_height, RED);
-    Vector2 pos = {x + 5, y};
-    DrawTextEx(font, txt, pos, fontSize, spacing, colors[color_index][1]);
+
+    DrawTextEx(font, txt, (Vector2){x + 3, y - 3}, fontSize, spacing,
+               colors[color_index][1]);
+    DrawTextEx(font, TextFormat("%10ld", t), (Vector2){x + 3, y + 12},
+               fontSize / 1.5f, spacing, colors[color_index][1]);
 
     if (o[t] == nl)
       y += CELL_HEIGHT, x = 0, t = ((t >> Σ) + 1) << Σ;
@@ -90,6 +93,10 @@ static N(drawVMState) {
   EndMode2D();
 
   float k_zoom = zoom / 1.5f;
+  if (bside){
+    β = α;
+    δ = -δ;
+  }
   DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, 0);
   DrawBetaStack(o, β, 1, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
   DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
@@ -103,7 +110,7 @@ N(ti_debug) {
   long key;
   static int semi_auto = 0;
   do {
-    if (o[τ] == nl && semi_auto == 2)
+    if (o[τ] == end && semi_auto == 2)
       semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -116,6 +123,8 @@ N(ti_debug) {
     drawVMState(OS);
     if (WindowShouldClose())
       CloseWindow(), exit(0);
+    else if (key == 'b')
+      bside = !bside;
     else if (key == 'c')
       semi_auto = 2;
     else if (key == 'C')

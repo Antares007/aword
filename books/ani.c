@@ -1,54 +1,65 @@
 #include "../main.h"
 N(dive);
 N(rise);
+N(ani);
+N(bani);
 
 S(cr) { τ = ((τ >> Σ) << Σ), Go(OS); }
 S(nearch) { τ = β[3][1], οYellow(rise), cr(OS); }
 S(search) {
-  οBlue(Go, o[τ + 1]);
-
-  οYellow(Go, τ);
-  οYellow(nearch, Go, Go), οYellow(NotAndOr);
-  οYellow(dive);
-  cr(OS);
+  οGreen(Go, o[τ + 1]), οYellow(Go, τ), οYellow(nearch), οYellow(Or),
+      οYellow(dive), cr(OS);
 }
 
-N(ani);
-N(bani);
-S(bani_name) { οYellow(ani), go_s(OS); }
-S(bani_w) { οYellow(bani), go_w(OS); }
-N(bani) {
-  is_a_book_of(           //
-      [name] = bani_name, //
-      [dot] = bani_w, //
-      [put] = bani_w, //
-      [print] = bani_w, //
-      [tword] = bani_w, //
-      [nop] = bani_w, //
-      [tab] = God, //
-  );
-}
 S(ani_e) { οYellow(ani), go_e(OS); }
+S(ani_put) { οRed(Go, "a"), β[2][1] = β[2][3] = o[τ + 1], ani_e(OS); }
+S(ani_print) {
+  long **b = β;
+  while (b[2][-1])
+    printf("%s ", (char *)b[2][1]), b = b[2][-1];
+  printf("\n");
+  ani_e(OS);
+}
+
 S(ani_nl) { οYellow(bani), go_w(OS); }
 
-S(sta) { τ = β[3][1], Go(OS); }
+S(ani_continue) { τ = β[3][1], οOlive(ani_e), Twist(OS); }
+
 S(ani_tword) {
-  οYellow(Go, ani_e, Go), οYellow(NotAndOr);
-  οYellow(Go, τ);
-  οYellow(Go, sta, Go), οYellow(NotAndOr);
-  οYellow(Go, ani, Go), οYellow(NotAndOr);
-  search(OS);
+  οOlive(Go, τ), οOlive(ani_continue), οOlive(And);
+  οYellow(ani_e), οYellow(And), search(OS);
 }
+
+S(ani_next_arm) { α = β[3][1], τ = β[3][2], οYellow(ani), Go(OS); }
+S(ani_tab) { οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_next_arm), ani_e(OS); }
+S(bani_tab) { Twist(OS); }
+
 N(ani) {
   is_a_book_of(            //
-      [name] = ani_e,      //
-      [nl] = ani_nl,       //
-      [tab] = ani_e,       //
+      [begin] = ani_e,     //
+      [tab] = ani_tab,     //
+      [put] = ani_put,     //
       [nop] = ani_e,       //
+      [print] = ani_print, //
       [tword] = ani_tword, //
-      [put] = ani_e,       //
-      [print] = ani_e,     //
       [dot] = ani_e,       //
-                           //
+      [nl] = ani_nl,       //
+      [end] = Go,          //
+      [name] = Go,         //
+      [halt] = Go,         //
+  );
+}
+
+S(bani_s) { οYellow(ani), go_s(OS); }
+S(bani_w) { οYellow(bani), go_w(OS); }
+N(bani) {
+  is_a_book_of(         //
+      [name] = bani_s,  //
+      [tab] = bani_tab, //
+      [put] = bani_w,   //
+      [nop] = bani_w,   //
+      [print] = bani_w, //
+      [tword] = bani_w, //
+      [dot] = bani_w,   //
   );
 }
