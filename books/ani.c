@@ -23,16 +23,19 @@ S(ani_print) {
 
 S(ani_nl) { οYellow(bani), go_w(OS); }
 
-S(ani_continue) { τ = β[3][1], οOlive(ani_e), Twist(OS); }
-
-S(ani_tword) {
+S(ani_continue) { τ = β[3][1], οOlive(ani_e), Go(OS); }
+S(ani_tword   ) {
+  οOlive(Twist), οOlive(And),
   οOlive(Go, τ), οOlive(ani_continue), οOlive(And);
+
   οYellow(ani_e), οYellow(And), search(OS);
 }
 
-S(ani_next_arm) { α = β[3][1], τ = β[3][2], οYellow(ani), Go(OS); }
-S(ani_tab) { οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_next_arm), ani_e(OS); }
-S(bani_tab) { Twist(OS); }
+S(ani_restore ) { α = β[3][1], τ = β[3][2], Go(OS); }
+S(ani_tab     ) { οYellow(ani), οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_restore);
+                  οYellow(ani), go_e(OS); }
+S(ani_end     ) { οYellow(bani), go_w(OS); }
+S(bani_tab    ) { Twist(OS); }
 
 N(ani) {
   is_a_book_of(            //
@@ -44,7 +47,7 @@ N(ani) {
       [tword] = ani_tword, //
       [dot] = ani_e,       //
       [nl] = ani_nl,       //
-      [end] = Go,          //
+      [end] = ani_end,     //
       [name] = Go,         //
       [halt] = Go,         //
   );
@@ -61,5 +64,6 @@ N(bani) {
       [print] = bani_w, //
       [tword] = bani_w, //
       [dot] = bani_w,   //
+      [begin] = Go,     //
   );
 }
