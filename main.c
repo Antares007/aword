@@ -27,21 +27,25 @@ N(bone) { printf("bhe %s!\n", ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani);
 N(dive);
 #include "sisa.h"
-void ti_init(void);
-int main(int argc, char **argv) {
-  ti_init();
-  long *root = R(0, done);
-  long *boot = R(0, bone);
-  long ram[0x10000];
-  long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
-  long **β = (long *[]){root, root, root, root};
-  long **α = (long *[]){boot, boot, boot, boot};;
-  long τ;
-  long σ = τ = 512;
-  long ρ = 3;
-  long δ = 1;
-  long ν = 1;
-
+N(program123) {
+  begin tword("123456789") print end nl;
+  name("123456789") nl;
+    tab tword("123") tword("456") tword("789") dot nl;
+  name("123") nl;
+    tab put("1") dot nl;
+    tab put("2") dot nl;
+    tab put("3") dot nl;
+  name("456") nl;
+    tab put("4") dot nl;
+    tab put("5") dot nl;
+    tab put("6") dot nl;
+  name("789") nl;
+    tab put("7") dot nl;
+    tab put("8") dot nl;
+    tab put("9") dot nl;
+  ani(OS);
+}
+N(programTritab) {
   begin tword("tritab") print end nl;
 
   name("tritab") nl;
@@ -58,4 +62,20 @@ int main(int argc, char **argv) {
     tab tword("S") put("t") dot nl; 
 
   οYellow(ani), Go(OS);
+}
+void ti_init(void);
+int main(int argc, char **argv) {
+  ti_init();
+  long *root = R(0, done);
+  long *boot = R(0, bone);
+  long ram[0x10000];
+  long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
+  long **β = (long *[]){root, root, root, root};
+  long **α = (long *[]){boot, boot, boot, boot};;
+  long τ;
+  long σ = τ = 512;
+  long ρ = 3;
+  long δ = 1;
+  long ν = 1;
+  program123(OS);
 }
