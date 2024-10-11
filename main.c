@@ -5,7 +5,7 @@ N(Go) __attribute__((noinline));
 N(ti_debug);
 S(sdb) {
 #ifndef NDEBUG
-  printf("%7s %7s ", rays[(ρ + 1) * δ + 5], sopcode_names[o[τ]]);
+  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5], sopcode_names[o[τ]]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", (char *)β[ρ][β[ρ][-2] + i]);
   printf("\n");
@@ -61,21 +61,22 @@ N(program123) {
   ani(OS);
 }
 N(programTritab) {
-  begin tword("S") print dot nl;
+  begin tword("tritab") print dot nl;
 
   name("tritab") nl;
   tab tword("tab") tword("tab") tword("tab") dot nl;
 
   name("tab") nl;
-  tab put("b") dot nl;
-  tab put("a") dot nl;
-  tab put("t") dot nl;
+  tab term("b") dot nl;
+  tab term("a") dot nl;
+  tab term("t") dot nl;
 
   name("S") nl;
   tab put("b") dot nl;
   tab tword("S") put("a") dot nl;
   tab tword("S") put("t") dot nl;
 
+  οBlue(Go, "tab", 3, 0);
   οYellow(ani), Go(OS);
 }
 void ti_init(void);
@@ -87,7 +88,6 @@ int main(int argc, char **argv) {
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long **β = (long *[]){root, root, root, root};
   long **α = (long *[]){boot, boot, boot, boot};
-  ;
   long τ;
   long σ = τ = 512;
   long ρ = 3;

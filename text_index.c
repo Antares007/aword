@@ -5,6 +5,11 @@
 const long CELL_WIDTH = 90;
 const long CELL_HEIGHT = 30;
 
+static const Color oan_colors[][2] = {
+    {(Color){000, 000, 255, 255}, WHITE}, // Blue
+    {(Color){000, 128, 000, 255}, WHITE}, // Green
+    {(Color){255, 000, 000, 255}, BLACK}, // Red
+};
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
     {(Color){128, 128, 000, 255}, BLACK}, // Olive
@@ -78,7 +83,7 @@ static N(drawVMState) {
     Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
     DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
     if (selected)
-      DrawRectangleRoundedLines(rect, 0.2f, 10, beta_height, RED);
+      DrawRectangleRoundedLines(rect, 0.2f, 10, beta_height, oan_colors[ν][0]);
 
     DrawTextEx(font, txt, (Vector2){x + 3, y - 3}, fontSize, spacing,
                colors[color_index][1]);
