@@ -28,6 +28,7 @@ static float zoom = 1.5;
 static Vector2 off = {10, 10};
 static int bside = 0;
 
+const char **stringify_ray(long *ray);
 static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
                           int y) {
   Camera2D k1 = {
@@ -40,19 +41,18 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
   int color_index = (ρ + 1) * δ + 5;
 
   while (β) {
-    long length = β[ρ][-2];
-    float widths[length];
+    float widths[20];
     float row_width = 0;
-    for (long i = 0; i < length; i++)
+    const char **lables = stringify_ray(β[ρ]);
+    for (long i = 0; i < β[ρ][-2]; i++)
       row_width += widths[i] =
-          MeasureTextEx(font, β[ρ][i + length], font_size, spacing).x + 20;
+          MeasureTextEx(font, lables[i], font_size, spacing).x + 20;
     float left = -(row_width / 2.f);
-    for (long i = 0; i < length; i++) {
+    for (long i = 0; i < β[ρ][-2]; i++) {
       Rectangle rect = {left + 3, top, widths[i] - 6, cell_height};
       DrawRectangleRounded(rect, 0.6f, 10, colors[color_index][0]);
-      const char *text = β[ρ][i + length];
-      DrawTextEx(font, text, (Vector2){rect.x + 10, rect.y}, font_size, spacing,
-                 colors[color_index][1]);
+      DrawTextEx(font, lables[i], (Vector2){rect.x + 10, rect.y}, font_size,
+                 spacing, colors[color_index][1]);
       left += widths[i];
     }
     top += cell_height + 3;
@@ -98,7 +98,7 @@ static N(drawVMState) {
   EndMode2D();
 
   float k_zoom = zoom / 1.5f;
-  if (bside){
+  if (bside) {
     β = α;
     δ = -δ;
   }
@@ -143,4 +143,26 @@ void ti_init(void) {
   SetWindowPosition(0, 0);
   SetTargetFPS(120);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
+}
+#include <ctype.h>
+int isValidCString(const char *str) {
+  int i = 0;
+  if (str == 0)
+    return false;
+  while (str[i] != '\0') {
+    if (!isprint((unsigned char)str[i]))
+      return false;
+    i++;
+  }
+  return true;
+}
+const char **stringify_ray(long *ray) {
+  static const char *lables[20];
+  for (long i = 0; i < ray[-2]; i++)
+    lables[i] = i == 0             ? (char *)ray[-3]
+                : ray[i] < 0x10000 ? TextFormat("%ld", ray[i])
+                : isValidCString(ray[i])
+                    ? TextFormat("%s", ray[i])
+                    : TextFormat("0x%05lx", ray[i] & 0xfffff);
+  return lables;
 }

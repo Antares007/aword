@@ -15,7 +15,7 @@ S(ani_term  ) { const char*t = o[τ + 1];
                 long length = β[0][2];
                 long pos = β[0][3];
                 if (pos < length && s[pos] == t[0])
-                  οBlue(Go, t, length, pos), οYellow(ani), go_e(OS);
+                  οRed(Go, o[τ + 1]), οBlue(Go, s, length, pos+1), οYellow(ani), go_e(OS);
                 else
                   Gor(OS);
               }
@@ -34,7 +34,7 @@ S(ani_tword ) { οOlive(Twist), οOlive(And),
 
                 οYellow(ani_e), οYellow(And), search(OS); }
 
-S(ani_restore ) { α = β[3][1], τ = β[3][2], Go(OS); }
+S(ani_restore ) { α = β[3][1], τ = β[3][2], God(OS); }
 S(ani_tab     ) { οYellow(ani), οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_restore);
                   οYellow(ani), go_e(OS); }
 S(ani_end     ) { οYellow(bani), go_w(OS); }

@@ -34,16 +34,12 @@ static const char *sopcode_names[] = {NAMES};
 //#define S(argo) static N(argo##_); static N(argo) { οRed(Go, #argo), argo##_(OS); } static N(argo##_)
 typedef N((*n_t));
 
-#include "evalmap.h"
-#define TOSTR(a) #a,
-#define MAPTOSTR(...) EVAL8(MAP(TOSTR, __VA_ARGS__))
-#define LEN(...) sizeof((long[]){__VA_ARGS__}) / sizeof(long)
-
 extern int printf(const char *__restrict __format, ...);
 #define P printf("%s\n", __func__)
 
+#define FIRSTR(a, ...) #a
 #define R(β, ...)                                                              \
-  (long[]){LEN(__VA_ARGS__), β, __VA_ARGS__, MAPTOSTR(__VA_ARGS__)} + 2
+  (long[]){FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 3
 
 #define οYellow(...)  β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
 #define οRed(...)     β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }

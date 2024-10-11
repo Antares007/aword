@@ -3,11 +3,14 @@ static char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  "White",
                        "Blue",    "Green", "Red",    "Yellow", "Purple"};
 N(Go) __attribute__((noinline));
 N(ti_debug);
+const char **stringify_ray(long *ray);
 S(sdb) {
 #ifndef NDEBUG
-  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5], sopcode_names[o[τ]]);
+  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+         sopcode_names[o[τ]]);
+  const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
-    printf("%s ", (char *)β[ρ][β[ρ][-2] + i]);
+    printf("%s ", lables[i]);
   printf("\n");
   ti_debug(OS);
 #endif
@@ -71,12 +74,18 @@ N(programTritab) {
   tab term("a") dot nl;
   tab term("t") dot nl;
 
-  name("S") nl;
-  tab put("b") dot nl;
-  tab tword("S") put("a") dot nl;
-  tab tword("S") put("t") dot nl;
-
   οBlue(Go, "tab", 3, 0);
+  οYellow(ani), Go(OS);
+}
+N(programS) {
+  begin tword("S") print dot nl;
+
+  name("S") nl;
+  tab term("b") dot nl;
+  tab tword("S") term("a") dot nl;
+  tab tword("S") term("t") dot nl;
+
+  οBlue(Go, "bat", 3, 0);
   οYellow(ani), Go(OS);
 }
 void ti_init(void);
