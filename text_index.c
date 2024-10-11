@@ -166,3 +166,17 @@ const char **stringify_ray(long *ray) {
                     : TextFormat("0x%05lx", ray[i] & 0xfffff);
   return lables;
 }
+N(sdb) {
+#ifndef NDEBUG
+  static char *rays[] = {"Fuchsia", "Olive",  "Maroon", "Lime",
+                         "Navy",    "White",  "Blue",   "Green",
+                         "Red",     "Yellow", "Purple"};
+  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+         sopcode_names[o[τ]]);
+  const char **lables = stringify_ray(β[ρ]);
+  for (long i = 0; i < β[ρ][-2]; i++)
+    printf("%s ", lables[i]);
+  printf("\n");
+  ti_debug(OS);
+#endif
+}

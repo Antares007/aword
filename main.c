@@ -1,20 +1,6 @@
 #include "main.h"
-static char *rays[] = {"Fuchsia", "Olive", "Maroon", "Lime",   "Navy",  "White",
-                       "Blue",    "Green", "Red",    "Yellow", "Purple"};
+N(sdb);
 N(Go) __attribute__((noinline));
-N(ti_debug);
-const char **stringify_ray(long *ray);
-S(sdb) {
-#ifndef NDEBUG
-  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
-         sopcode_names[o[τ]]);
-  const char **lables = stringify_ray(β[ρ]);
-  for (long i = 0; i < β[ρ][-2]; i++)
-    printf("%s ", lables[i]);
-  printf("\n");
-  ti_debug(OS);
-#endif
-}
 N(Go) { sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, τ, σ, ρ, δ, ν); }
 N(G1) { Go(o, β[ρ][-1], α, τ, σ, ρ, δ, ν); }
 N(Gor) { ν = 0, Go(OS); }
