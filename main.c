@@ -11,12 +11,12 @@ N(Not) {
   static n_t nars[] = {G1, G1, Go};
   nars[ν](OS);
 }
-N(Or) {
-  static n_t nars[] = {Go, G1, G1};
-  nars[ν](OS);
-}
 N(And) {
   static n_t nars[] = {G1, Go, G1};
+  nars[ν](OS);
+}
+N(Or) {
+  static n_t nars[] = {Go, G1, G1};
   nars[ν](OS);
 }
 N(Twist) { Go(o, α, β, τ, σ, ρ, -δ, ν); }
