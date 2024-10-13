@@ -25,7 +25,7 @@ static const Color colors[][2] = {
 };
 static Font font;
 static float zoom = 1.5;
-static Vector2 off = {10, 10};
+static Vector2 off = {300, 200};
 static int bside = 0;
 
 const char **stringify_ray(long *ray);
@@ -114,7 +114,7 @@ N(ti_debug) {
   long key;
   static int semi_auto = 0;
   do {
-    if (o[τ] == print && semi_auto == 2)
+    if (o[τ] == nop && semi_auto == 2)
       semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -140,7 +140,7 @@ void ti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(120);
+  SetTargetFPS(15);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 #include <ctype.h>

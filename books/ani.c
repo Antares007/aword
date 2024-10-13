@@ -29,24 +29,31 @@ S(ani_print   ) { long **b = β;
                   ani_e(OS); }
 
 S(ani_jump    ) { τ = β[3][1], Go(OS); }
-S(ani_twist   ) { οOlive(ani),        οOlive(go_e),   Twist(OS); }
-S(ani_tword   ) { οOlive(ani_twist),  οOlive(Go, τ),  οOlive(ani_jump);
-
-                  οYellow(ani),   οYellow(And),
-                  οYellow(go_s),  οYellow(And), search(OS); }
-
 S(ani_restore ) { α = β[3][1], τ = β[3][2], Go(OS); }
+
+S(ani_twist   ) { οOlive(ani),        οOlive(go_e),   Twist(OS); }
+
+S(ani_on_name ) { οYellow(ani),   οYellow(And), go_s(OS); }
+
+S(ani_tword   ) { οOlive(ani_twist),  οOlive(Go, τ),  οOlive(ani_jump);
+                  οYellow(ani_on_name),  οYellow(And), search(OS); }
+
 S(ani_tab     ) { οYellow(ani), οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_restore);
                   οYellow(ani), go_e(OS); }
 
-//S(untwist) {  }
-//
-//S(twist_α) {
-//  α = (long *[]) { α[3], α[0], α[1], α[2] };
-//  long*ray = R(α, untwist);
-//  α = (long *[]) { ray, ray, ray, ray };
-//  Go(OS);
-//}
+S(untwist) {  
+  long*ray = R(0, "nar");
+  β = (long *[]) { ray, ray, ray, ray };
+  β = (long *[]) { β[0], β[1], β[2], β[3] };
+
+}
+
+S(twist_α) {
+  α = (long *[]) { α[3], α[0], α[1], α[2] };
+  long*ray = R(α, untwist);
+  α = (long *[]) { ray, ray, ray, ray };
+  Go(OS);
+}
 
 N(ani) {
   is_a_book_of(             //

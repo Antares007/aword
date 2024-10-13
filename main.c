@@ -33,7 +33,7 @@ N(dive);
 #define end       o[σ] = end,                 σ += 11,
 #define nl        o[σ] = nl,                  σ = ((σ >> Σ) + 1) << Σ
 N(program123) {
-  begin tword("123456789") print end nl;
+  begin tword("123456789") print nop end nl;
   name("123456789") nl;
     tab tword("123") tword("456") tword("789") dot nl;
   name("123") nl;
@@ -51,7 +51,7 @@ N(program123) {
   ani(OS);
 }
 N(programTritab) {
-  begin tword("tribat") print dot nl;
+  begin tword("tribat") print nop dot nl;
 
   name("tribat") nl;
     tab tword("bat") tword("bat") tword("bat") dot nl;
@@ -65,7 +65,7 @@ N(programTritab) {
   οYellow(ani), Go(OS);
 }
 N(programS) {
-  begin tword("S") print end nl;
+  begin tword("S") print nop end nl;
 
   name("S") nl;
     tab term("b") dot nl;
