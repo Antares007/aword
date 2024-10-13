@@ -27,6 +27,7 @@ static Font font;
 static float zoom = 1.5;
 static Vector2 off = {300, 200};
 static int bside = 0;
+static int auto_center = 1;
 
 const char **stringify_ray(long *ray);
 
@@ -73,7 +74,8 @@ S(drawVMState) {
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
-  for (long x = 0, y = 0, t = 512; t < σ;) {
+  long text_width = 0, y = 0;
+  for (long x = 0, t = 512; t < σ;) {
     long color_index = (o[t - 1] + 1) * o[t - 2] + 5;
     long opcode = o[t];
     long selected = t == τ;
@@ -95,10 +97,19 @@ S(drawVMState) {
                colors[color_index][1]);
     DrawTextEx(font, TextFormat("%ld", t), (Vector2){x + 3, y + 12},
                fontSize / 1.5f, spacing, colors[color_index][1]);
+    long this_cell_width = textsize.x + 15;
     if (o[t] == nl)
-      y += CELL_HEIGHT, x = 0, t = ((t >> Σ) + 1) << Σ;
+      y += CELL_HEIGHT,
+          (text_width = text_width < (x + this_cell_width) ? x + this_cell_width
+                                                           : text_width),
+          x = 0, t = ((t >> Σ) + 1) << Σ;
     else
-      x += textsize.x + 15, t += 11;
+      x += this_cell_width, t += 11;
+  }
+  long text_height = y;
+  if (auto_center) {
+    off.x = GetScreenWidth() / 2.f - text_width * zoom / 2.f;
+    off.y = GetScreenHeight() / 2.f - text_height * zoom / 2.f;
   }
   EndMode2D();
   if (bside)
@@ -116,7 +127,7 @@ N(ti_debug) {
   do {
     if (o[τ] == nop && semi_auto == 2)
       semi_auto = 0;
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    if (!auto_center && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
     if (wheelMove > 0)
@@ -127,6 +138,8 @@ N(ti_debug) {
     drawVMState(OS);
     if (WindowShouldClose())
       CloseWindow(), exit(0);
+    else if (key == 'a')
+      auto_center = !auto_center;
     else if (key == 'b')
       bside = !bside;
     else if (key == 'c')
