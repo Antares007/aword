@@ -7,7 +7,7 @@ const long CELL_HEIGHT = 30;
 
 static const Color oan_colors[][2] = {
     {(Color){000, 000, 255, 255}, WHITE}, // Blue
-    {(Color){000, 128, 000, 255}, WHITE}, // Green
+    {(Color){000, 255, 000, 255}, WHITE}, // Green
     {(Color){255, 000, 000, 255}, BLACK}, // Red
 };
 static const Color colors[][2] = {
@@ -29,6 +29,7 @@ static Vector2 off = {10, 10};
 static int bside = 0;
 
 const char **stringify_ray(long *ray);
+
 static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
                           int y) {
   Camera2D k1 = {
@@ -60,7 +61,14 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
   }
   EndMode2D();
 }
-static N(drawVMState) {
+S(drawStacks) {
+  float k_zoom = zoom / 1.5f;
+  DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, 0);
+  DrawBetaStack(o, β, 1, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
+  DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
+  DrawBetaStack(o, β, 3, δ, k_zoom, 0, GetScreenHeight() / 2.f);
+}
+S(drawVMState) {
   ClearBackground(DARKGRAY);
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
@@ -69,43 +77,34 @@ static N(drawVMState) {
     long color_index = (o[t - 1] + 1) * o[t - 2] + 5;
     long opcode = o[t];
     long selected = t == τ;
-    long beta_height = 3;
-    const char *txt = opcode == tword  ? TextFormat("T:%s", (char *)o[t + 1])
-                      : opcode == name ? TextFormat("N:%s", (char *)o[t + 1])
-                      : opcode == term ? TextFormat("'%s'", (char *)o[t + 1])
-                      : opcode == put  ? TextFormat("\"%s\"", (char *)o[t + 1])
-                                       : TextFormat("%s", sopcode_names[o[t]]);
+    const char *txt =
+        opcode == tword  ? TextFormat("%2s", (char *)o[t + 1])
+        : opcode == name ? TextFormat("%2s", (char *)o[t + 1])
+        : opcode == term ? TextFormat("term '%s'", (char *)o[t + 1])
+        : opcode == put  ? TextFormat("put \"%s\"", (char *)o[t + 1])
+                         : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
-    // Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
-    Vector2 textsize = {50, 30};
+    Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
 
     Rectangle rect = (Rectangle){x, y, textsize.x + 10, CELL_HEIGHT - 5};
     Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
     DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
     if (selected)
-      DrawRectangleRoundedLines(rect, 0.2f, 10, beta_height, oan_colors[ν][0]);
-
+      DrawRectangleRoundedLines(rect, 0.2f, 10, 5, oan_colors[ν][0]);
     DrawTextEx(font, txt, (Vector2){x + 3, y - 3}, fontSize, spacing,
                colors[color_index][1]);
-    DrawTextEx(font, TextFormat("%10ld", t), (Vector2){x + 3, y + 12},
+    DrawTextEx(font, TextFormat("%ld", t), (Vector2){x + 3, y + 12},
                fontSize / 1.5f, spacing, colors[color_index][1]);
-
     if (o[t] == nl)
       y += CELL_HEIGHT, x = 0, t = ((t >> Σ) + 1) << Σ;
     else
       x += textsize.x + 15, t += 11;
   }
   EndMode2D();
-
-  float k_zoom = zoom / 1.5f;
-  if (bside) {
-    β = α;
-    δ = -δ;
-  }
-  DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, 0);
-  DrawBetaStack(o, β, 1, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
-  DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
-  DrawBetaStack(o, β, 3, δ, k_zoom, 0, GetScreenHeight() / 2.f);
+  if (bside)
+    drawStacks(SO);
+  else
+    drawStacks(OS);
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
@@ -115,7 +114,7 @@ N(ti_debug) {
   long key;
   static int semi_auto = 0;
   do {
-    if (o[τ] == begin && semi_auto == 2)
+    if (o[τ] == print && semi_auto == 2)
       semi_auto = 0;
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -171,8 +170,8 @@ N(sdb) {
   static char *rays[] = {"Fuchsia", "Olive",  "Maroon", "Lime",
                          "Navy",    "White",  "Blue",   "Green",
                          "Red",     "Yellow", "Purple"};
-  printf("%5s %7s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
-         sopcode_names[o[τ]]);
+  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+         (char *)β[ρ][-4], sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);

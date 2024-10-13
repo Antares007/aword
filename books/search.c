@@ -5,7 +5,7 @@ S(match     ) { (strcmp(o[τ + 1], β[1][1]) ? Gor : God)(OS); }
 N(rise      );
 S(rise_n    ) { οYellow(rise), go_n(OS); }
 S(rise_name ) { οYellow(rise_n), οYellow(Or), match(OS); }
-N(rise      ){
+N(rise      ) {
   is_a_book_of(
     [name ] = rise_name,
     [tab  ] = rise_n,

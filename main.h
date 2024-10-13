@@ -30,8 +30,6 @@ static const char *sopcode_names[] = {NAMES};
 #define N(argo)                                                                \
   void argo(long *o, long **β, long **α, long τ, long σ, long ρ, long δ, long ν)
 #define S(argo) static N(argo)
-//#undef S
-//#define S(argo) static N(argo##_); static N(argo) { οRed(Go, #argo), argo##_(OS); } static N(argo##_)
 typedef N((*n_t));
 
 extern int printf(const char *__restrict __format, ...);
@@ -39,7 +37,7 @@ extern int printf(const char *__restrict __format, ...);
 
 #define FIRSTR(a, ...) #a
 #define R(β, ...)                                                              \
-  (long[]){FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 3
+  (long[]){__func__, FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 4
 
 #define οYellow(...)  β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
 #define οRed(...)     β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }
