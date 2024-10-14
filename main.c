@@ -50,18 +50,17 @@ N(program123) {
   ani(OS);
 }
 N(programTritab) {
-  begin tword("tribat") print nop dot nl;
+  begin tword("triTAB") print nop end nl;
 
-  name("tribat") nl;
-    tab tword("bat") tword("bat") tword("bat") dot nl;
+  name("triTAB") nl;
+    tab tword("TAB") tword("TAB") tword("TAB") dot nl;
 
-  name("bat") nl;
-    tab term("b") dot nl;
-    tab term("a") dot nl;
-    tab term("t") dot nl;
+  name("TAB") nl;
+    tab term("T") dot nl;
+    tab term("A") dot nl;
+    tab term("B") dot nl;
 
-  οBlue(Go, "tab", 3, 0);
-  οYellow(ani), Go(OS);
+  οBlue(Go, "TAB", 3, 0), ani(OS);
 }
 N(programS) {
   begin tword("S") print nop end nl;
@@ -71,19 +70,17 @@ N(programS) {
     tab tword("S") term("a") dot nl;
     tab tword("S") term("t") dot nl;
 
-  οBlue(Go, "bt", 3, 0);
-  οYellow(ani), Go(OS);
+  οBlue(Go, "bt", 2, 0), ani(OS);
 }
 N(programSs) {
   begin tword("Ss") print nop end nl;
 
   name("Ss") nl;
+    tab put("2") term("s") tword("Ss")  tword("Ss") dot nl;
     tab put("0") dot nl;
     tab put("1") term("s") tword("Ss")  tword("Ss") dot nl;
-    tab put("2") term("s") tword("Ss")  tword("Ss") dot nl;
 
-  οBlue(Go, "ss", 2, 0);
-  οYellow(ani), Go(OS);
+  οBlue(Go, "ss", 2, 0), ani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
@@ -99,5 +96,5 @@ int main(int argc, char **argv) {
   long ρ = 3;
   long δ = 1;
   long ν = 1;
-  program123(OS);
+  programTritab(OS);
 }

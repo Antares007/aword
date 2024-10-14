@@ -48,22 +48,8 @@ S(ani_on_name ) { οGreen(ani), οGreen(And), go_Green(OS); }
 S(ani_tword   ) { οOlive(ani_twist), οOlive(Go, τ), οOlive(ani_jump);
                   οGreen(ani_on_name), οRed(ani_on_name), search(OS); }
 
-S(ani_tab     ) { οYellow(ani), οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_restore),
+S(ani_tab     ) { οYellow(ani), οYellow(Go, α, τ + (1 << Σ)), οYellow(ani_restore), οYellow(God),
                   οYellow(ani), go_Yellow(OS); }
-
-S(untwist) {
-  long *ray = R(0, "nar");
-  β = (long *[]){ray, ray, ray, ray};
-  β = (long *[]){β[0], β[1], β[2], β[3]};
-}
-
-S(twist_α) {
-  α = (long *[]){α[3], α[0], α[1], α[2]};
-  long *ray = R(α, untwist);
-  α = (long *[]){ray, ray, ray, ray};
-  Go(OS);
-}
-
 N(ani) {
   is_a_book_of(             //
       [begin] = ani_e,      //
