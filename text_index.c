@@ -10,17 +10,19 @@ static const Color oan_colors[][2] = {
     {(Color){000, 255, 000, 255}, WHITE}, // Green
     {(Color){255, 000, 000, 255}, BLACK}, // Red
 };
+const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
+                      "Blue",    "Green",  "Yellow", "Red",  "Purple"};
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
-    {(Color){128, 128, 000, 255}, BLACK}, // Olive
     {(Color){128, 000, 000, 255}, WHITE}, // Maroon
+    {(Color){128, 128, 000, 255}, BLACK}, // Olive
     {(Color){000, 255, 000, 255}, BLACK}, // Lime
     {(Color){000, 000, 128, 255}, WHITE}, // Navy
     {(Color){255, 255, 255, 255}, BLACK}, // White
     {(Color){000, 000, 255, 255}, WHITE}, // Blue
     {(Color){000, 128, 000, 255}, WHITE}, // Green
-    {(Color){255, 000, 000, 255}, BLACK}, // Red
     {(Color){255, 255, 000, 255}, BLACK}, // Yellow
+    {(Color){255, 000, 000, 255}, BLACK}, // Red
     {(Color){128, 000, 128, 255}, WHITE}, // Purple
 };
 static Font font;
@@ -34,7 +36,11 @@ const char **stringify_ray(long *ray);
 static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
                           int y) {
   Camera2D k1 = {
-      .target = {0, 0}, .rotation = ρ * 90, .zoom = zoom, .offset = {x, y}};
+    .target = {0, 0},
+    .rotation = ρ * 90,
+    .zoom = zoom,
+    .offset = {x, y}
+  };
   BeginMode2D(k1);
   const float cell_height = 30;
   float font_size = 30;
@@ -153,7 +159,7 @@ void ti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(15);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 #include <ctype.h>
@@ -180,9 +186,6 @@ const char **stringify_ray(long *ray) {
 }
 N(sdb) {
 #ifndef NDEBUG
-  static char *rays[] = {"Fuchsia", "Olive",  "Maroon", "Lime",
-                         "Navy",    "White",  "Blue",   "Green",
-                         "Red",     "Yellow", "Purple"};
   printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
          (char *)β[ρ][-4], sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);

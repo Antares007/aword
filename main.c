@@ -12,13 +12,12 @@ N(And) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
 N(Or ) { static n_t nars[] = {Go, G1, G1}; nars[ν](OS); }
 N(Twist) { Go(o, α, β, τ, σ, ρ, -δ, ν); }
 
-N(go_n) { τ -= 1 << Σ, Go(OS); }
-N(go_e) { τ += 11, Go(OS); }
-N(go_s) { τ += 1 << Σ, Go(OS); }
-N(go_w) { τ -= 11, Go(OS); }
-
-N(A_side) { printf("A side the %s!\n", ν == 2 ? "not" : ν ? "and" : "or"); }
-N(B_side) { printf("B side the %s!\n", ν == 2 ? "not" : ν ? "and" : "or"); }
+N(go_Red) { τ -= 1 << Σ,  ρ = 3, Go(OS); }
+N(go_Yellow) { τ += 11,      ρ = 2, Go(OS); }
+N(go_Green) { τ += 1 << Σ,  ρ = 1, Go(OS); }
+N(go_Blue) { τ -= 11,      ρ = 0, Go(OS); }
+extern const char *rays[];
+N(done) { printf("the %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani);
 N(dive);
 #define begin     o[σ] = begin,               σ += 11,
@@ -34,6 +33,10 @@ N(dive);
 #define nl        o[σ] = nl,                  σ = ((σ >> Σ) + 1) << Σ
 N(program123) {
   begin tword("123456789") print nop end nl;
+  name("789") nl;
+    tab put("7") dot nl;
+    tab put("8") dot nl;
+    tab put("9") dot nl;
   name("123456789") nl;
     tab tword("123") tword("456") tword("789") dot nl;
   name("123") nl;
@@ -44,10 +47,6 @@ N(program123) {
     tab put("4") dot nl;
     tab put("5") dot nl;
     tab put("6") dot nl;
-  name("789") nl;
-    tab put("7") dot nl;
-    tab put("8") dot nl;
-    tab put("9") dot nl;
   ani(OS);
 }
 N(programTritab) {
@@ -75,11 +74,22 @@ N(programS) {
   οBlue(Go, "bt", 3, 0);
   οYellow(ani), Go(OS);
 }
+N(programSs) {
+  begin tword("Ss") print nop end nl;
+
+  name("Ss") nl;
+    tab put("0") dot nl;
+    tab put("1") term("s") tword("Ss")  tword("Ss") dot nl;
+    tab put("2") term("s") tword("Ss")  tword("Ss") dot nl;
+
+  οBlue(Go, "ss", 2, 0);
+  οYellow(ani), Go(OS);
+}
 void ti_init(void);
 int main(int argc, char **argv) {
   ti_init();
-  long *root = R(0, A_side);
-  long *boot = R(0, B_side);
+  long *root = R(0, done);
+  long *boot = R(0, done);
   long ram[0x10000];
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long **β = (long *[]){root, root, root, root};

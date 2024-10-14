@@ -39,14 +39,14 @@ extern int printf(const char *__restrict __format, ...);
 #define R(β, ...)                                                              \
   (long[]){__func__, FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 4
 
-#define οYellow(...)  β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
-#define οRed(...)     β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }
+#define οRed(...)     β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
+#define οYellow(...)  β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }
 #define οGreen(...)   β = (long *[]) { β[0], R(β, __VA_ARGS__), β[2], β[3] }
 #define οBlue(...)    β = (long *[]) { R(β, __VA_ARGS__), β[1], β[2], β[3] }
 #define οNavy(...)    α = (long *[]) { R(α, __VA_ARGS__), α[1], α[2], α[3] }
 #define οLime(...)    α = (long *[]) { α[0], R(α, __VA_ARGS__), α[2], α[3] }
-#define οMaroon(...)  α = (long *[]) { α[0], α[1], R(α, __VA_ARGS__), α[3] }
-#define οOlive(...)   α = (long *[]) { α[0], α[1], α[2], R(α, __VA_ARGS__) }
+#define οOlive(...)   α = (long *[]) { α[0], α[1], R(α, __VA_ARGS__), α[3] }
+#define οMaroon(...)  α = (long *[]) { α[0], α[1], α[2], R(α, __VA_ARGS__) }
 
 #define is_a_book_of(...)                                                      \
   static n_t nars[] = {__VA_ARGS__};                                           \
@@ -61,8 +61,8 @@ N(God);
 N(Gor);
 N(NotAndOr);
 N(Not); N(And); N(Or);
-N(go_n);
-N(go_e);
-N(go_s);
-N(go_w);
+N(go_Red);
+N(go_Yellow);
+N(go_Green);
+N(go_Blue);
 N(Twist);
