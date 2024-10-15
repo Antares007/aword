@@ -20,7 +20,7 @@ S(ani_term) {
   long length = β[0][2];
   long pos = β[0][3];
   if (pos < length && s[pos] == t[0])
-    οRed(Go, o[τ + 1]), οBlue(Go, s, length, pos + 1), οYellow(bo_ani), go_Yellow(OS);
+    οRed(Go, o[τ + 1]), οBlue(Go, s, length, pos + 1), ani_pass(OS);
   else
     Gor(OS);
 }

@@ -34,16 +34,17 @@ static int full_duplex = 1;
 
 const char **stringify_ray(long *ray);
 
-static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
-                          int y) {
+static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
+                          float zoom, int r, int x, int y) {
   Camera2D k1 = {
-      .target = {0, 0}, .rotation = ρ * 90, .zoom = zoom, .offset = {x, y}};
+      .target = {0, 0}, .rotation = r, .zoom = zoom, .offset = {x, y}};
   BeginMode2D(k1);
   const float cell_height = 30;
   float font_size = 30;
   float spacing = 0;
   float top = 0;
-  int color_index = (ρ + 1) * (δ<0?-1:+1) + 5;
+  float max_width = 0;
+  int color_index = (ρ + 1) * (δ < 0 ? -1 : +1) + 5;
 
   while (β) {
     float widths[20];
@@ -52,6 +53,8 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
     for (long i = 0; i < β[ρ][-2]; i++)
       row_width += widths[i] =
           MeasureTextEx(font, lables[i], font_size, spacing).x + 20;
+    if (max_width < row_width)
+      max_width = row_width;
     float left = -(row_width / 2.f);
     for (long i = 0; i < β[ρ][-2]; i++) {
       Rectangle rect = {left + 3, top, widths[i] - 6, cell_height};
@@ -63,14 +66,22 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
     top += cell_height + 3;
     β = β[ρ][-1];
   }
+  if (selected)
+    DrawRectangleRoundedLines(
+        (Rectangle){-max_width / 2.f, -3, max_width, top + 3}, 0.1f, 10, 3,
+        colors[color_index][0]);
   EndMode2D();
 }
 N(drawStacks) {
   float k_zoom = zoom / 1.5f;
-  DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, 0);
-  DrawBetaStack(o, β, 1, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
-  DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
-  DrawBetaStack(o, β, 3, δ, k_zoom, 0, GetScreenHeight() / 2.f);
+  float sw = GetScreenWidth();
+  float sh = GetScreenHeight();
+  float hw = sw / 2.f;
+  float hh = sh / 2.f;
+  DrawBetaStack(o, β, 3, ρ == 3, δ, k_zoom, 0, hw, 10);
+  DrawBetaStack(o, β, 0, ρ == 0, δ, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(o, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(o, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
 }
 N(drawEightStacks) {
   float k_zoom = zoom / 1.5f;
@@ -78,18 +89,18 @@ N(drawEightStacks) {
   float sh = GetScreenHeight();
   float hw = sw / 2.f;
   float hh = sh / 2.f;
-  hw -= 100*zoom;
-  hh -= 100*zoom;
-  DrawBetaStack(o, β, 0, δ, k_zoom, hw, 0);
-  DrawBetaStack(o, β, 1, δ, k_zoom, sw, hh);
-  DrawBetaStack(o, β, 2, δ, k_zoom, hw, sh);
-  DrawBetaStack(o, β, 3, δ, k_zoom, 0, hh);
-  hw += 200*zoom;
-  hh += 200*zoom;
-  DrawBetaStack(o, α, 0, -δ, k_zoom, hw, 0);
-  DrawBetaStack(o, α, 1, -δ, k_zoom, sw, hh);
-  DrawBetaStack(o, α, 2, -δ, k_zoom, hw, sh);
-  DrawBetaStack(o, α, 3, -δ, k_zoom, 0, hh);
+  hw -= 100 * zoom;
+  hh -= 100 * zoom;
+  DrawBetaStack(o, β, 3, ρ == 3, δ, k_zoom, 0, hw, 10);
+  DrawBetaStack(o, β, 0, ρ == 0, δ, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(o, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(o, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
+  hw += 200 * zoom;
+  hh += 200 * zoom;
+  DrawBetaStack(o, α, 3, 0, -δ, k_zoom, 0, hw, 10);
+  DrawBetaStack(o, α, 0, 0, -δ, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(o, α, 1, 0, -δ, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(o, α, 2, 0, -δ, k_zoom, 270, 10, hh);
 }
 S(drawVMState) {
   ClearBackground(DARKGRAY);
@@ -181,7 +192,7 @@ void ti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(0);
+  SetTargetFPS(15);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 #include <ctype.h>
@@ -208,8 +219,9 @@ const char **stringify_ray(long *ray) {
 }
 N(sdb) {
 #ifndef NDEBUG
-  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * (δ < 0 ? -1 : +1) + 5],
-         (char *)β[ρ][-4], sopcode_names[o[τ]]);
+  printf("%5s %7s %15s %7s ", rays[6 + ν],
+         rays[(ρ + 1) * (δ < 0 ? -1 : +1) + 5], (char *)β[ρ][-4],
+         sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);
