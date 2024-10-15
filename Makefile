@@ -19,5 +19,5 @@ sophis.out: sophis.c sophis_text_index.o
 %.o: %.c
 	${CC} ${CFLAGS} -c $^ -o $@
 clean:
-	rm -f *.o *.out
+	rm -f **/*.o **/*.out *.o *.out
 .PHONY: clean run

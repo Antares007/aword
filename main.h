@@ -26,7 +26,6 @@ static const char *sopcode_names[] = {NAMES};
 
 #define Σ 8
 #define OS o, β, α, τ, σ, ρ, δ, ν
-#define SO o, α, β, τ, σ, ρ, δ, ν
 #define N(argo)                                                                \
   void argo(long *o, long **β, long **α, long τ, long σ, long ρ, long δ, long ν)
 #define S(argo) static N(argo)
@@ -61,6 +60,7 @@ N(God);
 N(Gor);
 N(NotAndOr);
 N(Not); N(And); N(Or);
+N(pass);
 N(go_Red);
 N(go_Yellow);
 N(go_Green);

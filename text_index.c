@@ -26,7 +26,7 @@ static const Color colors[][2] = {
     {(Color){128, 000, 128, 255}, WHITE}, // Purple
 };
 static Font font;
-static float zoom = 1.5;
+static float zoom = 2;
 static Vector2 off = {300, 200};
 static int bside = 0;
 static int auto_center = 1;
@@ -43,7 +43,7 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
   float font_size = 30;
   float spacing = 0;
   float top = 0;
-  int color_index = (ρ + 1) * δ + 5;
+  int color_index = (ρ + 1) * (δ<0?-1:+1) + 5;
 
   while (β) {
     float widths[20];
@@ -78,14 +78,14 @@ N(drawEightStacks) {
   float sh = GetScreenHeight();
   float hw = sw / 2.f;
   float hh = sh / 2.f;
-  hw -= 100;
-  hh -= 100;
+  hw -= 100*zoom;
+  hh -= 100*zoom;
   DrawBetaStack(o, β, 0, δ, k_zoom, hw, 0);
   DrawBetaStack(o, β, 1, δ, k_zoom, sw, hh);
   DrawBetaStack(o, β, 2, δ, k_zoom, hw, sh);
   DrawBetaStack(o, β, 3, δ, k_zoom, 0, hh);
-  hw += 200;
-  hh += 200;
+  hw += 200*zoom;
+  hh += 200*zoom;
   DrawBetaStack(o, α, 0, -δ, k_zoom, hw, 0);
   DrawBetaStack(o, α, 1, -δ, k_zoom, sw, hh);
   DrawBetaStack(o, α, 2, -δ, k_zoom, hw, sh);
@@ -147,11 +147,11 @@ S(drawVMState) {
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
 N(ti_debug) {
   o[τ - 1] = ρ;
-  o[τ - 2] = δ;
+  o[τ - 2] = δ < 0 ? -1 : +1;
   long key;
   static int semi_auto = 0;
   do {
-    if ((o[τ] == nop || o[τ] == dot) && semi_auto == 2)
+    if ((o[τ] == nop) && semi_auto == 2)
       semi_auto = 0;
     if (!auto_center && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -208,7 +208,7 @@ const char **stringify_ray(long *ray) {
 }
 N(sdb) {
 #ifndef NDEBUG
-  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * (δ < 0 ? -1 : +1) + 5],
          (char *)β[ρ][-4], sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
