@@ -30,17 +30,14 @@ static float zoom = 1.5;
 static Vector2 off = {300, 200};
 static int bside = 0;
 static int auto_center = 1;
+static int full_duplex = 1;
 
 const char **stringify_ray(long *ray);
 
 static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x,
                           int y) {
   Camera2D k1 = {
-    .target = {0, 0},
-    .rotation = ρ * 90,
-    .zoom = zoom,
-    .offset = {x, y}
-  };
+      .target = {0, 0}, .rotation = ρ * 90, .zoom = zoom, .offset = {x, y}};
   BeginMode2D(k1);
   const float cell_height = 30;
   float font_size = 30;
@@ -68,12 +65,31 @@ static void DrawBetaStack(long *o, long **β, int ρ, long δ, float zoom, int x
   }
   EndMode2D();
 }
-S(drawStacks) {
+N(drawStacks) {
   float k_zoom = zoom / 1.5f;
   DrawBetaStack(o, β, 0, δ, k_zoom, GetScreenWidth() / 2.f, 0);
   DrawBetaStack(o, β, 1, δ, k_zoom, GetScreenWidth(), GetScreenHeight() / 2.f);
   DrawBetaStack(o, β, 2, δ, k_zoom, GetScreenWidth() / 2.f, GetScreenHeight());
   DrawBetaStack(o, β, 3, δ, k_zoom, 0, GetScreenHeight() / 2.f);
+}
+N(drawEightStacks) {
+  float k_zoom = zoom / 1.5f;
+  float sw = GetScreenWidth();
+  float sh = GetScreenHeight();
+  float hw = sw / 2.f;
+  float hh = sh / 2.f;
+  hw -= 100;
+  hh -= 100;
+  DrawBetaStack(o, β, 0, δ, k_zoom, hw, 0);
+  DrawBetaStack(o, β, 1, δ, k_zoom, sw, hh);
+  DrawBetaStack(o, β, 2, δ, k_zoom, hw, sh);
+  DrawBetaStack(o, β, 3, δ, k_zoom, 0, hh);
+  hw += 200;
+  hh += 200;
+  DrawBetaStack(o, α, 0, -δ, k_zoom, hw, 0);
+  DrawBetaStack(o, α, 1, -δ, k_zoom, sw, hh);
+  DrawBetaStack(o, α, 2, -δ, k_zoom, hw, sh);
+  DrawBetaStack(o, α, 3, -δ, k_zoom, 0, hh);
 }
 S(drawVMState) {
   ClearBackground(DARKGRAY);
@@ -118,10 +134,14 @@ S(drawVMState) {
     off.y = GetScreenHeight() / 2.f - text_height * zoom / 2.f;
   }
   EndMode2D();
-  if (bside)
-    drawStacks(SO);
-  else
-    drawStacks(OS);
+  if (full_duplex)
+    drawEightStacks(OS);
+  else {
+    if (bside)
+      drawStacks(o, α, β, τ, σ, ρ, -δ, ν);
+    else
+      drawStacks(OS);
+  }
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
@@ -131,7 +151,7 @@ N(ti_debug) {
   long key;
   static int semi_auto = 0;
   do {
-    if (o[τ] == nop && semi_auto == 2)
+    if ((o[τ] == nop || o[τ] == dot) && semi_auto == 2)
       semi_auto = 0;
     if (!auto_center && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
@@ -144,6 +164,8 @@ N(ti_debug) {
     drawVMState(OS);
     if (WindowShouldClose())
       CloseWindow(), exit(0);
+    else if (key == 'f')
+      full_duplex = !full_duplex;
     else if (key == 'a')
       auto_center = !auto_center;
     else if (key == 'b')
@@ -181,7 +203,7 @@ const char **stringify_ray(long *ray) {
                 : ray[i] < 0x10000 ? TextFormat("%ld", ray[i])
                 : isValidCString(ray[i])
                     ? TextFormat("%s", ray[i])
-                    : TextFormat("0x%05lx", ray[i] & 0xfffff);
+                    : TextFormat("0x%07lx", ray[i] & 0xfffffff);
   return lables;
 }
 N(sdb) {
