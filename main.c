@@ -96,5 +96,5 @@ int main(int argc, char **argv) {
   long ρ = 3;
   long δ = 1;
   long ν = 1;
-  program123(OS);
+  programS(OS);
 }

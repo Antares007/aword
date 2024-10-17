@@ -45,7 +45,7 @@ S(ani_tword   ) { οOlive(ani_twist), οOlive(Go, τ), οOlive(set_tau, i++);
                   οYellow(bo_ani), οYellow(And), οYellow(search), Go(OS);
                 }
 S(ani_set_next) { τ = β[2][1], α = β[2][2], God(OS); }
-S(ani_tab     ) { οYellow(bo_ani), οYellow(Go, τ + (1 << Σ), α), οYellow(ani_set_next, i++);
+S(ani_tab     ) { οYellow(bo_ani), οYellow(Go, τ + (1 << Σ), α, α[2][1]), οYellow(ani_set_next, i++);
                   οYellow(bo_ani), οYellow(pass), Go(OS); }
 S(bo_ani) {
   is_a_book_of(             //

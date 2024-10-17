@@ -86,8 +86,11 @@ N(drawEightStacks) {
   DrawBetaStack(o, α, 2, 0, -δ, k_zoom, 270, 10, hh);
 }
 static void DrawGoToTable();
+static void DrawBackGround();
 S(drawVMState) {
   ClearBackground(DARKGRAY);
+  DrawBackGround();
+
   Camera2D camera = {
       .target = {0, 0}, .rotation = 0, .zoom = zoom, .offset = off};
   BeginMode2D(camera);
@@ -139,6 +142,7 @@ S(drawVMState) {
   }
   if (going_to)
     DrawGoToTable();
+
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
@@ -186,9 +190,11 @@ N(ti_debug) {
   } while (key != 's' && semi_auto == 0 && skip_until == -1 &&
            skip_this_word == 0);
 }
+static void LoadBackgroundImage();
 void ti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(0, 0, "Sophisticated text index");
+  LoadBackgroundImage();
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
   SetTargetFPS(0);
@@ -209,11 +215,10 @@ int isValidCString(const char *str) {
 const char **stringify_ray(long *ray) {
   static const char *lables[20];
   for (long i = 0; i < ray[-2]; i++)
-    lables[i] = i == 0             ? (char *)ray[-3]
-                : ray[i] < 0x10000 ? TextFormat("%ld", ray[i])
-                : isValidCString(ray[i])
-                    ? TextFormat("%s", ray[i])
-                    : TextFormat("0x%07lx", ray[i] & 0xfffffff);
+    lables[i] = i == 0                   ? (char *)ray[-3]
+                : ray[i] < 0x100000      ? TextFormat("%ld", ray[i])
+                : isValidCString(ray[i]) ? TextFormat("%s", ray[i])
+                                         : TextFormat("[ptr]");
   return lables;
 }
 N(sdb) {
@@ -248,9 +253,9 @@ static const Color colors[][2] = {
 const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
                       "Blue",    "Green",  "Yellow", "Red",  "Purple"};
 static int stops[127] = {
-    ['b'] = begin, ['N'] = name,  ['l'] = nl,  ['n'] = nop,
-    ['p'] = put,   ['r'] = print, ['t'] = tab, ['a'] = term,
-    ['T'] = tword, ['d'] = dot,   ['e'] = end,
+    ['b'] = begin, ['d'] = dot,  ['e'] = end,   ['N'] = name,
+    ['l'] = nl,    ['n'] = nop,  ['r'] = print, ['p'] = put,
+    ['t'] = tab,   ['a'] = term, ['T'] = tword,
 };
 static void DrawGoToTable() {
   long top = 0;
@@ -264,4 +269,22 @@ static void DrawGoToTable() {
                (Vector2){rect.x + 10, rect.y}, font_size, 0, BLACK);
     top += font_size + 5;
   }
+}
+static Texture2D texture;
+static void DrawBackGround() {
+  Rectangle sourceRect = {0.0f, 0.0f, (float)texture.width,
+                          (float)texture.height};
+  Rectangle destRect = {0.0f, 0.0f, GetScreenWidth(), GetScreenHeight()};
+  Vector2 origin = {0.0f, 0.0f};
+  DrawTexturePro(texture, sourceRect, destRect, origin, 0.0f, WHITE);
+  DrawRectangleRec(destRect, (Color){.a = 177});
+}
+static void LoadBackgroundImage() {
+  Image image = LoadImage("background_2048.png");
+  if (image.data == 0) {
+    printf("Failed to load image!\n");
+    return exit(0); // Exit with an error code
+  }
+  texture = LoadTextureFromImage(image);
+  UnloadImage(image);
 }
