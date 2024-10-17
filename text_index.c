@@ -15,8 +15,9 @@ static int full_duplex = 1;
 static int going_to = 0;
 static int skip_until = -1;
 static int skip_this_word = 0;
+static unsigned char opacity = 177;
 static int stops[127];
-const char **stringify_ray(long *ray);
+static const char **stringify_ray(long *ray);
 static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
                           float zoom, int r, int x, int y) {
   Camera2D k1 = {
@@ -187,6 +188,11 @@ N(ti_debug) {
       bside = !bside;
     else if (key == 'c')
       semi_auto = !semi_auto;
+
+    else if (key == '=')
+      opacity += 10;
+    else if (key == '-')
+      opacity -= 10;
   } while (key != 's' && semi_auto == 0 && skip_until == -1 &&
            skip_this_word == 0);
 }
@@ -199,27 +205,6 @@ void ti_init(void) {
   SetWindowPosition(0, 0);
   SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
-}
-#include <ctype.h>
-int isValidCString(const char *str) {
-  int i = 0;
-  if (str == 0)
-    return false;
-  while (str[i] != '\0') {
-    if (!isprint((unsigned char)str[i]))
-      return false;
-    i++;
-  }
-  return true;
-}
-const char **stringify_ray(long *ray) {
-  static const char *lables[20];
-  for (long i = 0; i < ray[-2]; i++)
-    lables[i] = i == 0                   ? (char *)ray[-3]
-                : ray[i] < 0x100000      ? TextFormat("%ld", ray[i])
-                : isValidCString(ray[i]) ? TextFormat("%s", ray[i])
-                                         : TextFormat("[ptr]");
-  return lables;
 }
 N(sdb) {
 #ifndef NDEBUG
@@ -277,7 +262,7 @@ static void DrawBackGround() {
   Rectangle destRect = {0.0f, 0.0f, GetScreenWidth(), GetScreenHeight()};
   Vector2 origin = {0.0f, 0.0f};
   DrawTexturePro(texture, sourceRect, destRect, origin, 0.0f, WHITE);
-  DrawRectangleRec(destRect, (Color){.a = 177});
+  DrawRectangleRec(destRect, (Color){.a = opacity});
 }
 static void LoadBackgroundImage() {
   Image image = LoadImage("background_2048.png");
@@ -287,4 +272,28 @@ static void LoadBackgroundImage() {
   }
   texture = LoadTextureFromImage(image);
   UnloadImage(image);
+}
+#include <ctype.h>
+int isValidCString(const char *str) {
+  int i = 0;
+  if (str == 0)
+    return false;
+  while (str[i] != '\0') {
+    if (!isprint((unsigned char)str[i]))
+      return false;
+    i++;
+  }
+  return true;
+}
+#include <stdio.h>
+static const char **stringify_ray(long *ray) {
+  static char b[10][100];
+  static const char *lables[10] = {};
+  for (long i = 0; i < ray[-2]; i++)
+    lables[i] = i == 0              ? (char *)ray[-3]
+                : ray[i] < 0x100000 ? (snprintf(b[i], 100, "%ld", ray[i]), b[i])
+                : isValidCString(ray[i])
+                    ? (snprintf(b[i], 100, "%s", (char *)ray[i]), b[i])
+                    : "*";
+  return lables;
 }
