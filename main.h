@@ -1,6 +1,5 @@
 #pragma once
 #pragma GCC diagnostic ignored "-Wint-conversion"
-#pragma GCC diagnostic ignored "-Winitializer-overrides"
 
 #define NAMES                                                                  \
   X(halt)                                                                      \

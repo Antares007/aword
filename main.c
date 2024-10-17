@@ -12,11 +12,11 @@ N(Not) { static n_t nars[] = {G1, G1, Go}; nars[ν](OS); }
 N(And) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
 N(Or ) { static n_t nars[] = {Go, G1, G1}; nars[ν](OS); }
 N(Twist) { Go(o, α, β, τ, σ, ρ, -δ, ν); }
-N(pass) { τ += δ, Go(OS); }
-N(go_Red    ) { δ = -(1 << Σ),  ρ = 3,  Go(OS); }
-N(go_Yellow ) { δ = +11,        ρ = 2,  Go(OS); }
-N(go_Green  ) { δ = +(1 << Σ),  ρ = 1,  Go(OS); }
-N(go_Blue   ) { δ = -11,        ρ = 0,  Go(OS); }
+N(pass) { static long ss[] = {-11,+(1 << Σ),+11,-(1 << Σ)}; τ += ss[ρ], Go(OS); }
+N(go_Red    ) { ρ = 3,  Go(OS); }
+N(go_Yellow ) { ρ = 2,  Go(OS); }
+N(go_Green  ) { ρ = 1,  Go(OS); }
+N(go_Blue   ) { ρ = 0,  Go(OS); }
 extern const char *rays[];
 N(done) { printf("the %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani);
@@ -68,16 +68,15 @@ N(programS) {
 
   name("S") nl;
     tab term("b") dot nl;
-    tab tword("S") term("a") dot nl;
-    tab tword("S") term("t") dot nl;
+    tab tword("S") term("a") nop dot nl;
+    tab tword("S") term("t") nop dot nl;
 
-  οBlue(Go, "baat", 2, 0), ani(OS);
+  οBlue(Go, "baat", 4, 0), ani(OS);
 }
 N(programSs) {
   begin tword("Ss") print nop end nl;
 
   name("Ss") nl;
-    tab put("2") term("s") tword("Ss")  tword("Ss") dot nl;
     tab put("0") dot nl;
     tab put("1") term("s") tword("Ss")  tword("Ss") dot nl;
 
@@ -95,7 +94,7 @@ int main(int argc, char **argv) {
   long τ;
   long σ = τ = 512;
   long ρ = 3;
-  long δ = 11;
+  long δ = 1;
   long ν = 1;
-  programS(OS);
+  program123(OS);
 }

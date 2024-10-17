@@ -1,39 +1,22 @@
 #include "main.h"
 #include <raylib.h>
 #include <raymath.h>
-
 const long CELL_WIDTH = 90;
 const long CELL_HEIGHT = 30;
-
-static const Color oan_colors[][2] = {
-    {(Color){000, 000, 255, 255}, WHITE}, // Blue
-    {(Color){000, 255, 000, 255}, WHITE}, // Green
-    {(Color){255, 000, 000, 255}, BLACK}, // Red
-};
-const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
-                      "Blue",    "Green",  "Yellow", "Red",  "Purple"};
-static const Color colors[][2] = {
-    {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
-    {(Color){128, 000, 000, 255}, WHITE}, // Maroon
-    {(Color){128, 128, 000, 255}, BLACK}, // Olive
-    {(Color){000, 255, 000, 255}, BLACK}, // Lime
-    {(Color){000, 000, 128, 255}, WHITE}, // Navy
-    {(Color){255, 255, 255, 255}, BLACK}, // White
-    {(Color){000, 000, 255, 255}, WHITE}, // Blue
-    {(Color){000, 128, 000, 255}, WHITE}, // Green
-    {(Color){255, 255, 000, 255}, BLACK}, // Yellow
-    {(Color){255, 000, 000, 255}, BLACK}, // Red
-    {(Color){128, 000, 128, 255}, WHITE}, // Purple
-};
+static const Color oan_colors[][2];
+const char *rays[];
+static const Color colors[][2];
 static Font font;
 static float zoom = 2;
 static Vector2 off = {300, 200};
 static int bside = 0;
 static int auto_center = 1;
 static int full_duplex = 1;
-
+static int going_to = 0;
+static int skip_until = -1;
+static int skip_this_word = 0;
+static int stops[127];
 const char **stringify_ray(long *ray);
-
 static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
                           float zoom, int r, int x, int y) {
   Camera2D k1 = {
@@ -44,7 +27,7 @@ static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
   float spacing = 0;
   float top = 0;
   float max_width = 0;
-  int color_index = (ρ + 1) * (δ < 0 ? -1 : +1) + 5;
+  int color_index = (ρ + 1) * δ + 5;
 
   while (β) {
     float widths[20];
@@ -102,6 +85,7 @@ N(drawEightStacks) {
   DrawBetaStack(o, α, 1, 0, -δ, k_zoom, 180, hw, sh - 10);
   DrawBetaStack(o, α, 2, 0, -δ, k_zoom, 270, 10, hh);
 }
+static void DrawGoToTable();
 S(drawVMState) {
   ClearBackground(DARKGRAY);
   Camera2D camera = {
@@ -153,17 +137,17 @@ S(drawVMState) {
     else
       drawStacks(OS);
   }
+  if (going_to)
+    DrawGoToTable();
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
 N(ti_debug) {
   o[τ - 1] = ρ;
-  o[τ - 2] = δ < 0 ? -1 : +1;
+  o[τ - 2] = δ;
   long key;
   static int semi_auto = 0;
   do {
-    if ((o[τ] == nop) && semi_auto == 2)
-      semi_auto = 0;
     if (!auto_center && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
       off = Vector2Add(off, GetMouseDelta());
     int wheelMove = GetMouseWheelMove();
@@ -173,8 +157,24 @@ N(ti_debug) {
       zoom -= 0.1;
     key = GetCharPressed();
     drawVMState(OS);
+
     if (WindowShouldClose())
       CloseWindow(), exit(0);
+
+    if (key == 'g')
+      going_to = 1;
+    else if (going_to && key < (sizeof(stops) / sizeof(*stops)) && stops[key])
+      going_to = 0, skip_until = stops[key];
+    else if (skip_until == o[τ])
+      skip_until = -1;
+    else if (going_to && key)
+      going_to = 0;
+
+    else if (key == 'n')
+      skip_this_word = τ;
+    else if (skip_this_word && skip_this_word != τ)
+      skip_this_word = 0;
+
     else if (key == 'f')
       full_duplex = !full_duplex;
     else if (key == 'a')
@@ -182,17 +182,16 @@ N(ti_debug) {
     else if (key == 'b')
       bside = !bside;
     else if (key == 'c')
-      semi_auto = 2;
-    else if (key == 'C')
       semi_auto = !semi_auto;
-  } while (key != 's' && !semi_auto);
+  } while (key != 's' && semi_auto == 0 && skip_until == -1 &&
+           skip_this_word == 0);
 }
 void ti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(15);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 #include <ctype.h>
@@ -219,13 +218,50 @@ const char **stringify_ray(long *ray) {
 }
 N(sdb) {
 #ifndef NDEBUG
-  printf("%5s %7s %15s %7s ", rays[6 + ν],
-         rays[(ρ + 1) * (δ < 0 ? -1 : +1) + 5], (char *)β[ρ][-4],
-         sopcode_names[o[τ]]);
+  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+         (char *)β[ρ][-4], sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);
   printf("\n");
   ti_debug(OS);
 #endif
+}
+static const Color oan_colors[][2] = {
+    {(Color){000, 000, 255, 255}, WHITE}, // Blue
+    {(Color){000, 255, 000, 255}, WHITE}, // Green
+    {(Color){255, 000, 000, 255}, BLACK}, // Red
+};
+static const Color colors[][2] = {
+    {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
+    {(Color){128, 000, 000, 255}, WHITE}, // Maroon
+    {(Color){128, 128, 000, 255}, BLACK}, // Olive
+    {(Color){000, 255, 000, 255}, BLACK}, // Lime
+    {(Color){000, 000, 128, 255}, WHITE}, // Navy
+    {(Color){255, 255, 255, 255}, BLACK}, // White
+    {(Color){000, 000, 255, 255}, WHITE}, // Blue
+    {(Color){000, 128, 000, 255}, WHITE}, // Green
+    {(Color){255, 255, 000, 255}, BLACK}, // Yellow
+    {(Color){255, 000, 000, 255}, BLACK}, // Red
+    {(Color){128, 000, 128, 255}, WHITE}, // Purple
+};
+const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
+                      "Blue",    "Green",  "Yellow", "Red",  "Purple"};
+static int stops[127] = {
+    ['b'] = begin, ['N'] = name,  ['l'] = nl,  ['n'] = nop,
+    ['p'] = put,   ['r'] = print, ['t'] = tab, ['a'] = term,
+    ['T'] = tword, ['d'] = dot,   ['e'] = end,
+};
+static void DrawGoToTable() {
+  long top = 0;
+  const long font_size = 35;
+  for (long i = 0; i < sizeof(stops) / sizeof(*stops); i++) {
+    if (stops[i] == 0)
+      continue;
+    Rectangle rect = {0, top, 6 * font_size, font_size + 5};
+    DrawRectangleRounded(rect, 0.1f, 10, WHITE);
+    DrawTextEx(font, TextFormat("%c - %s", i, sopcode_names[stops[i]]),
+               (Vector2){rect.x + 10, rect.y}, font_size, 0, BLACK);
+    top += font_size + 5;
+  }
 }
