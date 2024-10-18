@@ -220,19 +220,19 @@ N(sdb) {
 static const Color oan_colors[][2] = {
     {(Color){000, 000, 255, 255}, WHITE}, // Blue
     {(Color){000, 255, 000, 255}, WHITE}, // Green
-    {(Color){255, 000, 000, 255}, BLACK}, // Red
+    {(Color){255, 000, 000, 255}, WHITE}, // Red
 };
 static const Color colors[][2] = {
     {(Color){255, 000, 255, 255}, BLACK}, // Fuchsia
     {(Color){128, 000, 000, 255}, WHITE}, // Maroon
-    {(Color){128, 128, 000, 255}, BLACK}, // Olive
+    {(Color){128, 128, 000, 255}, WHITE}, // Olive
     {(Color){000, 255, 000, 255}, BLACK}, // Lime
     {(Color){000, 000, 128, 255}, WHITE}, // Navy
     {(Color){255, 255, 255, 255}, BLACK}, // White
     {(Color){000, 000, 255, 255}, WHITE}, // Blue
     {(Color){000, 128, 000, 255}, WHITE}, // Green
     {(Color){255, 255, 000, 255}, BLACK}, // Yellow
-    {(Color){255, 000, 000, 255}, BLACK}, // Red
+    {(Color){255, 000, 000, 255}, WHITE}, // Red
     {(Color){128, 000, 128, 255}, WHITE}, // Purple
 };
 const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
