@@ -1,5 +1,5 @@
+// clang-format off
 #include "../main.h"
-
 extern int strcmp(const char *, const char *);
 S(match     ) { (strcmp(o[τ + 1], β[0][1]) ? Gor : God)(OS); }
 S(bo_rise   );
