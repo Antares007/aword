@@ -273,13 +273,12 @@ static void LoadBackgroundImage() {
   texture = LoadTextureFromImage(image);
   UnloadImage(image);
 }
-#include <ctype.h>
-int isValidCString(const char *str) {
+int isValidLenghtCString(const char *str, long lenght) {
   int i = 0;
   if (str == 0)
     return false;
   while (str[i] != '\0') {
-    if (!isprint((unsigned char)str[i]))
+    if (lenght < i || str[i] < ' ' || '~' < str[i])
       return false;
     i++;
   }
@@ -289,10 +288,10 @@ int isValidCString(const char *str) {
 static const char **stringify_ray(long *ray) {
   static char b[10][100];
   static const char *lables[10] = {};
-  for (long i = 0; i < ray[-2]; i++)
-    lables[i] = i == 0              ? (char *)ray[-3]
-                : ray[i] < 0x100000 ? (snprintf(b[i], 100, "%ld", ray[i]), b[i])
-                : isValidCString(ray[i])
+  lables[0] = (char *)ray[-3];
+  for (long i = 1; i < ray[-2]; i++)
+    lables[i] = ray[i] < 0x100000 ? (snprintf(b[i], 100, "%ld", ray[i]), b[i])
+                : isValidLenghtCString(ray[i], 99)
                     ? (snprintf(b[i], 100, "%s", (char *)ray[i]), b[i])
                     : "*";
   return lables;
