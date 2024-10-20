@@ -147,6 +147,9 @@ S(drawVMState) {
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
+static const char *backgroundImages[] = {"background_2048.png", "background_2000.png"};
+static long texture_index = 0;
+static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
 N(ti_debug) {
   o[τ - 1] = ρ;
   o[τ - 2] = δ;
@@ -166,7 +169,11 @@ N(ti_debug) {
     if (WindowShouldClose())
       CloseWindow(), exit(0);
 
-    if (key == 'g')
+    if (key == '`')
+      texture_index =
+          (texture_index + 1) % (sizeof(textures) / sizeof(*textures));
+
+    else if (key == 'g')
       going_to = 1;
     else if (going_to && key < (sizeof(stops) / sizeof(*stops)) && stops[key])
       going_to = 0, skip_until = stops[key];
@@ -196,14 +203,12 @@ N(ti_debug) {
   } while (key != 's' && semi_auto == 0 && skip_until == -1 &&
            skip_this_word == 0);
 }
-static void LoadBackgroundImage();
 void ti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(0, 0, "Sophisticated text index");
-  LoadBackgroundImage();
   SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(0);
+  SetTargetFPS(120);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 N(sdb) {
@@ -255,22 +260,25 @@ static void DrawGoToTable() {
     top += font_size + 5;
   }
 }
-static Texture2D texture;
+static void LoadBackgroundImage();
 static void DrawBackGround() {
-  Rectangle sourceRect = {0.0f, 0.0f, (float)texture.width,
-                          (float)texture.height};
+  if (textures[texture_index].id == 0)
+    LoadBackgroundImage();
+  Rectangle sourceRect = {0.0f, 0.0f, (float)textures[texture_index].width,
+                          (float)textures[texture_index].height};
   Rectangle destRect = {0.0f, 0.0f, GetScreenWidth(), GetScreenHeight()};
   Vector2 origin = {0.0f, 0.0f};
-  DrawTexturePro(texture, sourceRect, destRect, origin, 0.0f, WHITE);
+  DrawTexturePro(textures[texture_index], sourceRect, destRect, origin, 0.0f,
+                 WHITE);
   DrawRectangleRec(destRect, (Color){.a = opacity});
 }
 static void LoadBackgroundImage() {
-  Image image = LoadImage("background_2048.png");
+  Image image = LoadImage(backgroundImages[texture_index]);
   if (image.data == 0) {
     printf("Failed to load image!\n");
     return exit(0); // Exit with an error code
   }
-  texture = LoadTextureFromImage(image);
+  textures[texture_index] = LoadTextureFromImage(image);
   UnloadImage(image);
 }
 int isValidLenghtCString(const char *str, long lenght) {
@@ -293,6 +301,6 @@ static const char **stringify_ray(long *ray) {
     lables[i] = ray[i] < 0x100000 ? (snprintf(b[i], 100, "%ld", ray[i]), b[i])
                 : isValidLenghtCString(ray[i], 99)
                     ? (snprintf(b[i], 100, "%s", (char *)ray[i]), b[i])
-                    : "*";
+                    : (snprintf(b[i], 100, "%lx", ray[i]), b[i]);
   return lables;
 }
