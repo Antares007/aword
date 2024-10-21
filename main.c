@@ -2,9 +2,10 @@
 #include "main.h"
 N(sdb       );
 N(Go        ) __attribute__((noinline));
-N(pass      ) __attribute__((noinline));
+N(pass      ) __attribute__((noinline)); // propeller
 N(Go        ) { sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, τ, σ, ρ, δ, ν); }
 N(G1        ) { Go(o, β[ρ][-1], α, τ, σ, ρ, δ, ν); }
+N(G2        ) { G1(o, β[ρ][-1], α, τ, σ, ρ, δ, ν); }
 N(Gor       ) { ν = 0, Go(OS); }
 N(God       ) { ν = 1, Go(OS); }
 N(Got       ) { ν = 2, Go(OS); }
@@ -13,13 +14,13 @@ N(Not       ) { static n_t nars[] = {G1, G1, Go}; nars[ν](OS); }
 N(And       ) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
 N(Or        ) { static n_t nars[] = {Go, G1, G1}; nars[ν](OS); }
 N(Twist     ) { Go(o, α, β, τ, σ, ρ, -δ, ν); }
-N(pass      ) { static long ss[] = {-11,+(1 << Σ),+11,-(1 << Σ)}; τ += ss[ρ], Go(OS); }
-N(go_Red    ) { ρ = 3,  Go(OS); }
-N(go_Yellow ) { ρ = 2,  Go(OS); }
-N(go_Green  ) { ρ = 1,  Go(OS); }
-N(go_Blue   ) { ρ = 0,  Go(OS); }
+N(pass      ) { static long ss[] = { -11, +(1 << Σ), +11, -(1 << Σ) }; τ += ss[ρ], Go(OS); }
+N(go_n      ) { ρ = 3,  Go(OS); }
+N(go_e      ) { ρ = 2,  Go(OS); }
+N(go_s      ) { ρ = 1,  Go(OS); }
+N(go_w      ) { ρ = 0,  Go(OS); }
 extern const char *rays[];
-N(done      ) { printf("the %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
+N(done      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani       );
 N(dive      );
 #define begin     o[σ] = begin,               σ += 11,
@@ -65,16 +66,27 @@ N(programS) {
   begin tword("S") print nop end nl;
   name("S") nl;
     tab term("b") dot nl;
-    tab tword("S") term("a") nop dot nl;
-    tab tword("S") term("t") nop dot nl;
-  οBlue(Go, "baaat", 5, 0), ani(OS);
+    tab tword("S") term("a") dot nl;
+    tab tword("S") term("t") dot nl;
+  οBlue(Go, "bat", 3, 0), ani(OS);
 }
 N(programSs) {
   begin tword("Ss") print nop end nl;
   name("Ss") nl;
+    tab put("2") term("s") tword("Ss") tword("Ss") dot nl;
     tab put("0") dot nl;
-    tab put("1") term("s") tword("Ss")  tword("Ss") dot nl;
+    tab put("1") term("s") tword("Ss") tword("Ss") dot nl;
   οBlue(Go, "ss", 2, 0), ani(OS);
+}
+N(programAB) {
+  begin tword("A") print nop end nl;
+  name("A") nl;
+    tab put("o") dot nl;
+    tab tword("B") put("a") dot nl;
+  name("B") nl;
+    tab put("y") dot nl;
+    tab tword("A") put("b") dot nl;
+  οBlue(Go, "", 0, 0), ani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {

@@ -15,7 +15,7 @@ static int full_duplex = 1;
 static int going_to = 0;
 static int skip_until = -1;
 static int skip_this_word = 0;
-static unsigned char opacity = 177;
+static unsigned char opacity = 91;
 static int stops[127];
 static const char **stringify_ray(long *ray);
 static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
@@ -147,7 +147,8 @@ S(drawVMState) {
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
-static const char *backgroundImages[] = {"background_2048.png", "background_2000.png"};
+static const char *backgroundImages[] = {"background_2000.png",
+                                         "background_2048.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
 N(ti_debug) {
@@ -193,6 +194,8 @@ N(ti_debug) {
       auto_center = !auto_center;
     else if (key == 'b')
       bside = !bside;
+    else if (key == 'c' && skip_until != -1)
+      skip_until = -1;
     else if (key == 'c')
       semi_auto = !semi_auto;
 
@@ -206,7 +209,7 @@ N(ti_debug) {
 void ti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
   InitWindow(0, 0, "Sophisticated text index");
-  SetWindowSize(GetScreenWidth() / 2, GetScreenHeight());
+  SetWindowSize(GetScreenWidth(), GetScreenHeight());
   SetWindowPosition(0, 0);
   SetTargetFPS(120);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
@@ -301,6 +304,6 @@ static const char **stringify_ray(long *ray) {
     lables[i] = ray[i] < 0x100000 ? (snprintf(b[i], 100, "%ld", ray[i]), b[i])
                 : isValidLenghtCString(ray[i], 99)
                     ? (snprintf(b[i], 100, "%s", (char *)ray[i]), b[i])
-                    : (snprintf(b[i], 100, "%lx", ray[i]), b[i]);
+                    : "*";
   return lables;
 }

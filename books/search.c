@@ -4,7 +4,7 @@ extern int strcmp(const char *, const char *);
 S(match     ) { (strcmp(o[τ + 1], β[0][1]) ? Gor : God)(OS); }
 S(bo_rise   );
 S(rise_pass ) { οRed(bo_rise), pass(OS); }
-N(rise      ) { οRed(rise_pass), go_Red(OS); }
+N(rise      ) { οRed(rise_pass), go_n(OS); }
 S(rise_name ) { οRed(rise_pass), οRed(Or), οRed(match), Go(OS); }
 S(bo_rise   ) {
   is_a_book_of(
@@ -16,7 +16,7 @@ S(bo_rise   ) {
 }
 S(bo_dive   );
 S(dive_pass ) { οGreen(bo_dive), pass(OS); }
-N(dive      ) { οGreen(dive_pass), go_Green(OS);}
+N(dive      ) { οGreen(dive_pass), go_s(OS);}
 S(dive_name ) { οGreen(dive_pass), οGreen(Or), οGreen(match), Go(OS); }
 S(bo_dive   ) {
   is_a_book_of(
