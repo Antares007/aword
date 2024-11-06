@@ -3,66 +3,62 @@
 N(dive);
 N(rise);
 S(cr                ) { τ = ((τ >> Σ) << Σ), Go(OS); }
-
-S(nearch            ) { τ = β[1][1], οGreen(rise), οGreen(cr), Go(OS); }
-
-S(search            ) { οGreen(go_e), οGreen(And), 
-                        οGreen(pass),      οGreen(And),
-                        οRed(go_s),    οRed(And),
-                        οBlue(Go, o[τ + 1]),
-                        οGreen(Go, τ), οGreen(nearch), οGreen(Or),
+S(nearch            ) { τ = β[2][1], οYellow(rise), οYellow(cr), Go(OS); }
+S(search            ) { οBlue(Go, o[τ + 1]),
+                        οYellow(go_s), οYellow(And),
+                        οYellow(Go, τ), οYellow(nearch), οYellow(Or),
                         οYellow(dive), οYellow(cr), Go(OS); }
-S(bo_ani            );
-S(bo_ani_pass       ) { οYellow(bo_ani), pass(OS); }
+
+S(book_of_ani       );
+
+N(ani               ) { οYellow(book_of_ani), go_e(OS); }
 
 S(ani_term          ) { const char *t = o[τ + 1];
                         const char *s = β[0][1];
                         long length = β[0][2]; long pos = β[0][3];
                         if (pos < length && s[pos] == t[0])
-                          οRed(Go, o[τ + 1]), οBlue(Go, s, length, pos + 1), bo_ani_pass(OS);
+                          οBlue(Go, s, length, pos + 1), ani(OS);
                         else
-                          Gor(OS); }
+                          Gor(OS);
+                      }
 
-S(ani_put           ) { οRed(Go, o[τ + 1]), bo_ani_pass(OS); }
+S(ani_put           ) { οGreen(Go, o[τ + 1]), ani(OS); }
 
 S(ani_print         ) { long **b = β;
                         printf("%7s(", ν == 2 ? "Red" : ν ? "Green" : "Blue");
-                        while (b[3][-1])
-                          printf("%s ", (char *)b[3][1]), b = b[3][-1];
+                        while (b[1][-1])
+                          printf("%s ", (char *)b[1][1]), b = b[1][-1];
                         printf(")\n");
-                        bo_ani_pass(OS); }
-#include<stdio.h>
-#define Peek(β, ρ) ((long**)β[ρ][-1])
-
-S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
+                        ani(OS); }
+#include <stdio.h>
+#include <string.h>
 S(set_tau           ) { τ = β[2][1], Go(OS); }
+S(ani_twist         ) { οOlive(ani), οYellow(Twist), Go(OS); }
+S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
 
-N(ani               ) { οYellow(bo_ani_pass), go_e(OS); }
-static long αι = 0;
-S(bo_ani_pass_twist ) { οOlive(bo_ani_pass), οYellow(Twist), Go(OS); }
-S(ani_tword         ) { οOlive(bo_ani_pass_twist), οOlive(Go, τ), οOlive(set_tau, o[τ + 1], αι++);
+S(ani_tword         ) { οOlive(ani_twist), οOlive(Go, τ, β), οOlive(set_tau);
+                        οRed(Go, o[τ + 1]); 
+                        οYellow(book_of_ani), οYellow(And), οYellow(search), Go(OS); }
 
-                        οYellow(bo_ani), οYellow(And), οYellow(search), Go(OS); }
-
-S(ani_tab           ) { οYellow(bo_ani), οYellow(Go, τ + (1 << Σ), α, α[2][2]), οYellow(Next);
-                        bo_ani_pass(OS); }
+S(ani_tab           ) { οYellow(book_of_ani), οYellow(Go, τ + (1 << Σ), α), οYellow(Next);
+                        ani(OS); }
 
 S(ani_dot           ) { οYellow(Twist), Go(OS); }
 S(ani_name          ) { Go(OS); }
 S(ani_halt          ) { Go(OS); }
 S(ani_end           ) { Go(OS); }
 
-S(bo_ani            ) {
+S(book_of_ani       ) {
   is_a_book_of(
-      [tab  ] = ani_tab,
-      [put  ] = ani_put,
-      [term ] = ani_term,
-      [nop  ] = bo_ani_pass,
-      [print] = ani_print,
-      [tword] = ani_tword,
-      [dot  ] = ani_dot,
-      [end  ] = ani_end,
-      [name ] = ani_name,
-      [halt ] = ani_halt,
+    [tab  ] = ani_tab,
+    [put  ] = ani_put,
+    [term ] = ani_term,
+    [nop  ] = ani,
+    [print] = ani_print,
+    [tword] = ani_tword,
+    [dot  ] = ani_dot,
+    [end  ] = ani_end,
+    [name ] = ani_name,
+    [halt ] = ani_halt,
   );
 }

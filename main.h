@@ -46,6 +46,8 @@ extern int printf(const char *__restrict __format, ...);
 #define οOlive(...)   α = (long *[]) { α[0], α[1], R(α, __VA_ARGS__), α[3] }
 #define οMaroon(...)  α = (long *[]) { α[0], α[1], α[2], R(α, __VA_ARGS__) }
 
+#define οPeek(β, ρ)   ((long**)β[ρ][-1])
+
 #define is_a_book_of(...)                                                      \
   static n_t nars[] = {__VA_ARGS__};                                           \
   if (o[τ] < sizeof(nars) / sizeof(*nars) && nars[o[τ]])                       \
@@ -61,7 +63,6 @@ N(God);
 N(Gor);
 N(NotAndOr);
 N(Not); N(And); N(Or);
-N(pass);
 N(go_n);
 N(go_e);
 N(go_s);
