@@ -75,6 +75,7 @@ N(programSs) {
   name("Ss") nl;
     tab put("0") dot nl;
     tab put("1") term("s") tword("Ss") tword("Ss") dot nl;
+    tab put("2") term("s") tword("Ss") tword("Ss") dot nl;
   οBlue(Go, "ss", 2, 0), ani(OS);
 }
 N(programAB) {
@@ -101,5 +102,9 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  program123(OS);
+
+  //begin put("t") put("a") put("b") print end nl;
+  //ani(OS);
+
+  programSs(OS);
 }

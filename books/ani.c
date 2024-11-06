@@ -2,15 +2,13 @@
 #include "../main.h"
 N(dive);
 N(rise);
-S(cr                ) { τ = ((τ >> Σ) << Σ), Go(OS); }
-S(nearch            ) { τ = β[2][1], οYellow(rise), οYellow(cr), Go(OS); }
+S(nearch            ) { τ = β[2][1], οYellow(rise), Go(OS); }
 S(search            ) { οBlue(Go, o[τ + 1]),
                         οYellow(go_s), οYellow(And),
-                        οYellow(Go, τ), οYellow(nearch), οYellow(Or),
-                        οYellow(dive), οYellow(cr), Go(OS); }
+                        οYellow(Go, τ = ((τ >> Σ) << Σ)), οYellow(nearch), οYellow(Or),
+                        οYellow(dive), Go(OS); }
 
 S(book_of_ani       );
-
 N(ani               ) { οYellow(book_of_ani), go_e(OS); }
 
 S(ani_term          ) { const char *t = o[τ + 1];
@@ -32,12 +30,21 @@ S(ani_print         ) { long **b = β;
                         ani(OS); }
 #include <stdio.h>
 #include <string.h>
-S(set_tau           ) { τ = β[2][1], Go(OS); }
+S(set_tau           ) {
+  long**u_name = β[2][2];
+  long**c_name = α;
+  
+  if (strcmp(c_name[3][1], u_name[3][1]) == 0 &&
+      c_name[3]     < u_name[3] &&
+      ((long***)c_name)[3][-1][0] == ((long***)u_name)[3][-1][0])
+    getchar();
+  τ = β[2][1], Go(OS);
+}
 S(ani_twist         ) { οOlive(ani), οYellow(Twist), Go(OS); }
 S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
 
-S(ani_tword         ) { οOlive(ani_twist), οOlive(Go, τ, β), οOlive(set_tau);
-                        οRed(Go, o[τ + 1]); 
+S(ani_tword         ) { οRed(Go, o[τ + 1]);
+                        οOlive(ani_twist), οOlive(Go, τ, β), οOlive(set_tau);
                         οYellow(book_of_ani), οYellow(And), οYellow(search), Go(OS); }
 
 S(ani_tab           ) { οYellow(book_of_ani), οYellow(Go, τ + (1 << Σ), α), οYellow(Next);
