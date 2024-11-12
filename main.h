@@ -10,13 +10,13 @@
   X(print)                                                                     \
   X(put)                                                                       \
   X(tab)                                                                       \
-  X(term)                                                                      \
   X(tword)                                                                     \
+  X(sword)                                                                     \
   X(dot)                                                                       \
   X(end)
 
 #define X(n) n,
-enum Names { NAMES };
+enum Names { NAMES Names_Count };
 #undef X
 
 #define X(n) #n,
@@ -49,11 +49,9 @@ extern int printf(const char *__restrict __format, ...);
 #define οPeek(β, ρ)   ((long**)β[ρ][-1])
 
 #define is_a_book_of(...)                                                      \
-  static n_t nars[] = {__VA_ARGS__};                                           \
-  if (o[τ] < sizeof(nars) / sizeof(*nars) && nars[o[τ]])                       \
-    nars[o[τ]](OS);                                                            \
-  else                                                                         \
-    printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
+  static n_t nars[Names_Count] = {__VA_ARGS__};                                \
+  if (nars[o[τ]]) nars[o[τ]](OS);                                              \
+  else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
 N(Go);
 N(G1);
@@ -67,4 +65,8 @@ N(go_n);
 N(go_e);
 N(go_s);
 N(go_w);
+N(to_Blue);
+N(to_Green);
+N(to_Yellow);
+N(to_Red);
 N(Twist);

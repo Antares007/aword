@@ -19,15 +19,19 @@ N(go_n      ) { τ -= 1 << Σ, Go(OS); }
 N(go_e      ) { τ += 11,     Go(OS); }
 N(go_s      ) { τ += 1 << Σ, Go(OS); }
 N(go_w      ) { τ -= 11,     Go(OS); }
+N(to_Blue   ) { ρ  = 0,      Go(OS); }
+N(to_Green  ) { ρ  = 1,      Go(OS); }
+N(to_Yellow ) { ρ  = 2,      Go(OS); }
+N(to_Red    ) { ρ  = 3,      Go(OS); }
 extern const char *rays[];
-N(done      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
+N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani       );
 N(dive      );
 #define begin     o[σ] = begin,               σ += 11,
-#define tword(v)  o[σ] = tword, o[σ + 1] = v, σ += 11,
+#define sword(v)  o[σ] = sword, o[σ + 1] = v, σ += 11,
 #define name(v)   o[σ] = name,  o[σ + 1] = v, σ += 11,
 #define put(v)    o[σ] = put,   o[σ + 1] = v, σ += 11,
-#define term(v)   o[σ] = term,  o[σ + 1] = v, σ += 11,
+#define tword(v)   o[σ] = tword,  o[σ + 1] = v, σ += 11,
 #define print     o[σ] = print,               σ += 11,
 #define tab       o[σ] = tab,                 σ += 11,
 #define nop       o[σ] = nop,                 σ += 11,
@@ -35,13 +39,13 @@ N(dive      );
 #define end       o[σ] = end,                 σ += 11,
 #define nl        o[σ] = nl,                  σ = ((σ >> Σ) + 1) << Σ
 N(program123) {
-  begin tword("123456789") print nop end nl;
+  begin sword("123456789") print nop end nl;
   name("789") nl;
     tab put("7") dot nl;
     tab put("8") dot nl;
     tab put("9") dot nl;
   name("123456789") nl;
-    tab tword("123") tword("456") tword("789") dot nl;
+    tab sword("123") sword("456") sword("789") dot nl;
   name("123") nl;
     tab put("1") dot nl;
     tab put("2") dot nl;
@@ -53,46 +57,45 @@ N(program123) {
   ani(OS);
 }
 N(programTritab) {
-  begin tword("triTAB") print nop end nl;
+  begin sword("triTAB") print nop end nl;
   name("triTAB") nl;
-    tab tword("TAB") tword("TAB") tword("TAB") dot nl;
+    tab sword("TAB") sword("TAB") sword("TAB") dot nl;
   name("TAB") nl;
-    tab term("T") dot nl;
-    tab term("A") dot nl;
-    tab term("B") dot nl;
+    tab tword("T") dot nl;
+    tab tword("A") dot nl;
+    tab tword("B") dot nl;
   οBlue(Go, "TAB", 3, 0), ani(OS);
 }
 N(programS) {
-  begin tword("S") print nop end nl;
+  begin sword("S") print nop end nl;
   name("S") nl;
-    tab term("b") dot nl;
-    tab tword("S") term("a") dot nl;
-    tab tword("S") term("t") dot nl;
-  οBlue(Go, "baaaaaat", 8, 0), ani(OS);
+    tab tword("b") dot nl;
+    tab sword("S") tword("a") dot nl;
+    tab sword("S") tword("t") dot nl;
+  οBlue(Go, "baaat", 5, 0), ani(OS);
 }
 N(programSs) {
-  begin tword("Ss") print nop end nl;
+  begin sword("Ss") print nop end nl;
   name("Ss") nl;
-    tab put("0") dot nl;
-    tab put("1") term("s") tword("Ss") tword("Ss") dot nl;
-    tab put("2") term("s") tword("Ss") tword("Ss") dot nl;
-  οBlue(Go, "ss", 2, 0), ani(OS);
+    tab dot nl;
+    tab tword("s") sword("Ss") sword("Ss") dot nl;
+    tab tword("s") sword("Ss") sword("Ss") dot nl; οBlue(Go, "ss", 2, 0), ani(OS);
 }
 N(programAB) {
-  begin tword("A") print nop end nl;
+  begin sword("A") print nop end nl;
   name("A") nl;
     tab put("o") dot nl;
-    tab tword("B") put("a") dot nl;
+    tab sword("B") put("a") dot nl;
   name("B") nl;
     tab put("y") dot nl;
-    tab tword("A") put("b") dot nl;
+    tab sword("A") put("b") dot nl;
   οBlue(Go, "", 0, 0), ani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
   ti_init();
-  long *root = R(0, done);
-  long *boot = R(0, done);
+  long *root = R(0, zero, 0);
+  long *boot = R(0, zero, 0);
   long ram[0x10000];
   long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
   long **β = (long *[]){root, root, root, root};
@@ -104,7 +107,6 @@ int main(int argc, char **argv) {
   long ν = 1;
 
   //begin put("t") put("a") put("b") print end nl;
-  //ani(OS);
-
+  //ani(OS)
   programSs(OS);
 }

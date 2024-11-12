@@ -9,18 +9,20 @@ S(search            ) { οBlue(Go, o[τ + 1]),
                         οYellow(dive), Go(OS); }
 
 S(book_of_ani       );
-N(ani               ) { οYellow(book_of_ani), go_e(OS); }
+N(ani               ) { long ray = R(β, book_of_ani); β = (long *[]) { β[0],  ray,  ray, ray }, go_e(OS); }
 
-S(ani_term          ) { const char *t = o[τ + 1];
+S(match             ) { const char *t = o[τ + 1];
                         const char *s = β[0][1];
                         long length = β[0][2]; long pos = β[0][3];
                         if (pos < length && s[pos] == t[0])
-                          οBlue(Go, s, length, pos + 1), ani(OS);
+                          οGreen(Go, o[τ+1]), οBlue(Go, s, length, pos + 1), ani(OS);
                         else
                           Gor(OS);
                       }
 
-S(ani_put           ) { οGreen(Go, o[τ + 1]), ani(OS); }
+S(ani_tword         ) { οYellow(match), Go(OS); }
+
+S(ani_put           ) { οBlue(Go, o[τ + 1]), ani(OS); }
 
 S(ani_print         ) { long **b = β;
                         printf("%7s(", ν == 2 ? "Red" : ν ? "Green" : "Blue");
@@ -30,24 +32,15 @@ S(ani_print         ) { long **b = β;
                         ani(OS); }
 #include <stdio.h>
 #include <string.h>
-S(set_tau           ) {
-  long**u_name = β[2][2];
-  long**c_name = α;
-  
-  if (strcmp(c_name[3][1], u_name[3][1]) == 0 &&
-      c_name[3]     < u_name[3] &&
-      ((long***)c_name)[3][-1][0] == ((long***)u_name)[3][-1][0])
-    getchar();
-  τ = β[2][1], Go(OS);
-}
+
+S(set_tau           ) { τ = β[2][1], Go(OS); }
 S(ani_twist         ) { οOlive(ani), οYellow(Twist), Go(OS); }
 S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
+S(ani_sword         ) { οOlive(ani_twist, τ), οOlive(set_tau);
 
-S(ani_tword         ) { οRed(Go, o[τ + 1]);
-                        οOlive(ani_twist), οOlive(Go, τ, β), οOlive(set_tau);
                         οYellow(book_of_ani), οYellow(And), οYellow(search), Go(OS); }
 
-S(ani_tab           ) { οYellow(book_of_ani), οYellow(Go, τ + (1 << Σ), α), οYellow(Next);
+S(ani_tab           ) { οYellow(book_of_ani, τ + (1 << Σ), α), οYellow(Next);
                         ani(OS); }
 
 S(ani_dot           ) { οYellow(Twist), Go(OS); }
@@ -59,10 +52,10 @@ S(book_of_ani       ) {
   is_a_book_of(
     [tab  ] = ani_tab,
     [put  ] = ani_put,
-    [term ] = ani_term,
+    [tword] = ani_tword,
     [nop  ] = ani,
     [print] = ani_print,
-    [tword] = ani_tword,
+    [sword] = ani_sword,
     [dot  ] = ani_dot,
     [end  ] = ani_end,
     [name ] = ani_name,

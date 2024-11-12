@@ -101,9 +101,9 @@ S(drawVMState) {
     long opcode = o[t];
     long selected = t == τ;
     const char *txt =
-        opcode == tword  ? TextFormat("%2s", (char *)o[t + 1])
+        opcode == sword  ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == name ? TextFormat("%2s", (char *)o[t + 1])
-        : opcode == term ? TextFormat("term '%s'", (char *)o[t + 1])
+        : opcode == tword ? TextFormat("tword '%s'", (char *)o[t + 1])
         : opcode == put  ? TextFormat("put \"%s\"", (char *)o[t + 1])
                          : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
@@ -248,7 +248,7 @@ const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
 static int stops[127] = {
     ['b'] = begin, ['d'] = dot,  ['e'] = end,   ['N'] = name,
     ['l'] = nl,    ['n'] = nop,  ['r'] = print, ['p'] = put,
-    ['t'] = tab,   ['a'] = term, ['T'] = tword,
+    ['t'] = tab,   ['a'] = tword, ['T'] = sword,
 };
 static void DrawGoToTable() {
   long top = 0;
