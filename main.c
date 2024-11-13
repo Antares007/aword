@@ -1,29 +1,31 @@
 // clang-format off
 #include "main.h"
 N(sdb       );
-N(Go        ) __attribute__((noinline));
-N(pass      ) __attribute__((noinline)); // propeller
-N(Go        ) { sdb(OS),
-  ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(G1        ) { Go(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(G2        ) { G1(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(Gor       ) { ν = 0, Go(OS); }
-N(God       ) { ν = 1, Go(OS); }
-N(Got       ) { ν = 2, Go(OS); }
-N(NotAndOr  ) { ((n_t *)β[ρYellow])[ν](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(Not       ) { static n_t nars[] = {G1, G1, Go}; nars[ν](OS); }
-N(And       ) { static n_t nars[] = {G1, Go, G1}; nars[ν](OS); }
-N(Or        ) { static n_t nars[] = {Go, G1, G1}; nars[ν](OS); }
-N(Twist     ) { Go(o, α, β, τ, σ, ρ, -δ, ν); }
+N(Yellow    ) __attribute__((noinline));
+N(Red       ) __attribute__((noinline));
+N(Green     ) __attribute__((noinline));
+N(Blue      ) __attribute__((noinline));
 
-N(go_n      ) { τ -= 1 << Σ, Go(OS); }
-N(go_e      ) { τ += 11,     Go(OS); }
-N(go_s      ) { τ += 1 << Σ, Go(OS); }
-N(go_w      ) { τ -= 11,     Go(OS); }
-N(to_Blue   ) { ρ  = 0,      Go(OS); }
-N(to_Green  ) { ρ  = 1,      Go(OS); }
-N(to_Yellow ) { ρ  = 2,      Go(OS); }
-N(to_Red    ) { ρ  = 3,      Go(OS); }
+N(Yellow    ) { sdb(OS), ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+N(Red       ) { sdb(OS), ((n_t *)β[ρRed   ])[0](o, β[ρRed   ][-1], α, τ, σ, ρ, δ, ν); }
+N(Green     ) { sdb(OS), ((n_t *)β[ρGreen ])[0](o, β[ρGreen ][-1], α, τ, σ, ρ, δ, ν); }
+N(Blue      ) { sdb(OS), ((n_t *)β[ρBlue  ])[0](o, β[ρBlue  ][-1], α, τ, σ, ρ, δ, ν); }
+
+N(Yellow_G1 ) { Yellow(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+N(Yellow_G2 ) { Yellow_G1(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+N(Yellow_Gor) { ν = 0, Yellow(OS); }
+N(Yellow_God) { ν = 1, Yellow(OS); }
+N(Yellow_Got) { ν = 2, Yellow(OS); }
+N(Yellow_NAO) { ((n_t *)β[ρYellow])[ν](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+N(Yellow_Not) { static n_t nars[] = {Yellow_G1, Yellow_G1, Yellow}; nars[ν](OS); }
+N(Yellow_And) { static n_t nars[] = {Yellow_G1, Yellow, Yellow_G1}; nars[ν](OS); }
+N(Yellow_Or ) { static n_t nars[] = {Yellow, Yellow_G1, Yellow_G1}; nars[ν](OS); }
+N(Twist     ) { Yellow(o, α, β, τ, σ, ρ, -δ, ν); }
+
+N(Yellow_n  ) { τ -= 1 << Σ, Yellow(OS); }
+N(Yellow_e  ) { τ += 11,     Yellow(OS); }
+N(Yellow_s  ) { τ += 1 << Σ, Yellow(OS); }
+N(Yellow_w  ) { τ -= 11,     Yellow(OS); }
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ % 4 + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(ani       );
@@ -65,7 +67,7 @@ N(programTritab) {
     tab tword("T") dot nl;
     tab tword("A") dot nl;
     tab tword("B") dot nl;
-  oB(ρBlue, Go, "TAB", 3, 0), ani(OS);
+  oB(ρBlue, Yellow, "TAB", 3, 0), ani(OS);
 }
 N(programS) {
   begin sword("S") print nop end nl;
@@ -73,7 +75,7 @@ N(programS) {
     tab tword("b") dot nl;
     tab sword("S") tword("a") dot nl;
     tab sword("S") tword("t") dot nl;
-  oB(ρBlue, Go, "baaat", 5, 0), ani(OS);
+  oB(ρBlue, Yellow, "baaat", 5, 0), ani(OS);
 }
 N(programSs) {
   begin sword("Ss") print nop end nl;
@@ -81,7 +83,7 @@ N(programSs) {
     tab dot nl;
     tab tword("s") sword("Ss") sword("Ss") dot nl;
     tab tword("s") sword("Ss") sword("Ss") dot nl;
-    oB(ρBlue, Go, "ss", 2, 0), ani(OS);
+    oB(ρBlue, Yellow, "ss", 2, 0), ani(OS);
 }
 N(programAB) {
   begin sword("A") print nop end nl;
@@ -91,7 +93,7 @@ N(programAB) {
   name("B") nl;
     tab put("y") dot nl;
     tab sword("A") put("b") dot nl;
-  oB(ρBlue, Go, "", 0, 0), ani(OS);
+  oB(ρBlue, Yellow, "", 0, 0), ani(OS);
 }
 N(program_aText) {
   begin put("t") put("a") put("b") print end nl;
@@ -112,5 +114,5 @@ int main(int argc, char **argv) {
   long δ = 1;
   long ν = 1;
 
-  programS(OS);
+  programSs(OS);
 }

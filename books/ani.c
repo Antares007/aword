@@ -3,19 +3,19 @@
 N(dive);
 N(rise);
 S(nearch            ) { τ = β[ρYellow][1],
-                        oB(ρYellow, rise), Go(OS); }
+                        oB(ρYellow, rise), Yellow(OS); }
 
 /// search name in actionable text twisted in Blue
 /// first search South, then North
-S(search            ) { oB(ρYellow, Go, τ = ((τ >> Σ) << Σ)),
+S(search            ) { oB(ρYellow, Yellow, τ = ((τ >> Σ) << Σ)),
                         oB(ρYellow, nearch),
-                        oB(ρYellow, Or),
-                        oB(ρYellow, dive), Go(OS); }
+                        oB(ρYellow, Yellow_Or),
+                        oB(ρYellow, dive), Yellow(OS); }
 
 S(book_of_ani       );
 
 /// step east and interpret actionable word with book_of_ani
-N(ani               ) { oB(ρYellow, book_of_ani), go_e(OS); }
+N(ani               ) { oB(ρYellow, book_of_ani), Yellow_e(OS); }
 
 S(stop              ) {}
 
@@ -32,14 +32,14 @@ S(match             ) { const char *t = o[τ + 1];
                         long pos      = β[ρBlue][3];
                         if (pos < length && s[pos] == t[0])
                           oA(ρRed,  stop),
-                          oB(ρRed,  Go, o[τ + 1]),
-                          oB(ρBlue, Go, s, length, pos + 1), ani(OS);
+                          oB(ρRed,  Yellow, o[τ + 1]),
+                          oB(ρBlue, Yellow, s, length, pos + 1), ani(OS);
                         else
-                          Gor(OS);
+                          Yellow_Gor(OS);
                       }
 
 /// twist in string from actionable text to B pyramids' Red side for printing.
-S(ani_put           ) { oB(ρRed, Go, o[τ + 1]), ani(OS); }
+S(ani_put           ) { oB(ρRed, Yellow, o[τ + 1]), ani(OS); }
 
 /// print all stuff twisted in B pyramids' Red side.
 S(ani_print         ) { long **b = β;
@@ -57,31 +57,31 @@ extern int getchar (void);
 /// it is twisted in swords interpretation and has access to tau of the "sword".
 /// it stores the result in callers arms (τ+2).
 S(check_lr          ) { if(strcmp(o[β[ρYellow][1]+1], o[τ + 1]) == 0) o[τ + 2] = 1; else
-                        Go(OS); }
+                        Yellow(OS); }
 
-S(set_τ_to_βρYellow1) { τ = β[ρYellow][1], Go(OS); }
+S(set_τ_to_βρYellow1) { τ = β[ρYellow][1], Yellow(OS); }
 
 /// switches Pyramids, restores forward flow from the right side of the sword,
 /// and twists in stop in the left recursion check chain.
 S(ani_twist         ) { oA(ρYellow, ani),
                         oB(ρRed,    stop),
-                        oB(ρYellow, Twist), Go(OS); }
+                        oB(ρYellow, Twist), Yellow(OS); }
 
 /// cursor in time. by climing up to this cursor on B Pyramid, we restore all
 /// accessable state (staff located above us), which is twisted in pyramyds A and B
 /// Now we are free to try new path in actionable text terrain and down grow Pyramyds accordingly.
 S(cursor            ) { τ = β[ρYellow][1],
-                        α = β[ρYellow][2], God(OS); }
+                        α = β[ρYellow][2], Yellow_God(OS); }
 
-/// Go in to the first tab and twist tau of the found name into A pyramids Blue side.
+/// Yellow in to the first tab and twist tau of the found name into A pyramids Blue side.
 /// we need it when we will reach "dot" to know from where definitions is starting
 /// for current tab (paragraph);
 S(marknameandgointab) { oB(ρYellow, book_of_ani),
-                        oB(ρYellow, go_s),
-                        oA(ρBlue,   Go, τ), Go(OS); }
-/// * run left recurrsion check chain so if this is the "tab" which recurses ignore it
-/// and clime to next cursor.
-/// we do not take path which curses. we will handle problem of the left curses form other
+                        oB(ρYellow, Yellow_s),
+                        oA(ρBlue,   Yellow, τ), Yellow(OS); }
+/// * run left recurrsion check chain so if this is the "tab" which curses leave it
+/// and climb to next cursor.
+/// i.e. we do not take path which curses. we will handle problem of the left curses form other
 /// side of the tab (sentence/paragraph).
 ///
 /// note: sentece has two sides begining "tab" and end "dot".(period):w
@@ -89,24 +89,25 @@ S(marknameandgointab) { oB(ρYellow, book_of_ani),
 /// * twist in left recursion check chain and cursor on pyramid A to climb for sword
 /// and continue flow from its rightside. climbing on pyramid A starts when we reach "dot"
 /// in actionable text i.e. when we fully interpret defining "tab" (paragraph) of the sword.
-/// * find definition for swords name and goin into first "tab"
 ///
-S(Yellow_sword      ) { Go( o, α, β, τ, σ, ρRed, -δ, ν);
-                        if(o[τ + 2]) return Gor(OS);
-
+/// * find definition for swords name and goin into first "tab"
+S(Yellow_sword      ) { // *
+                        Yellow( o, α, β, τ, σ, ρRed, -δ, ν);
+                        if(o[τ + 2]) return Yellow_Gor(OS);
+                        // *
                         oA(ρYellow, ani_twist, τ),
                         oA(ρRed,    check_lr),
                         oA(ρYellow, set_τ_to_βρYellow1);
-
+                        // *
                         oB(ρYellow, marknameandgointab),
-                        oB(ρYellow, And),
-                        oB(ρBlue,   Go, o[τ + 1]),
-                        oB(ρYellow, search), Go(OS); }
+                        oB(ρYellow, Yellow_And),
+                        oB(ρBlue,   Yellow, o[τ + 1]),
+                        oB(ρYellow, search), Yellow(OS); }
 
-S(ani_sword         ) { oB(ρYellow, Yellow_sword), Go(OS); }
+S(ani_sword         ) { oB(ρYellow, Yellow_sword), Yellow(OS); }
 
-S(ani_tword         ) { oB(ρGreen,  Go),
-                        oB(ρYellow, match), Go(OS); }
+S(ani_tword         ) { oB(ρGreen,  Yellow),
+                        oB(ρYellow, match), Yellow(OS); }
 
 /// twist cursor, for potentionaly next "tab" into B pyramid  and setep east with book of ani.
 /// on next line we may found 'tab', 'name', or 'halt'. ofcorse we will do same for tab or
@@ -116,20 +117,29 @@ S(ani_tab           ) { oB(ρYellow, book_of_ani, τ + (1 << Σ), α),
                         ani(OS); }
 
 
-S(grow              ) { oB(ρGreen,  book_of_ani),
-                        oB(ρYellow, to_Green), Go(OS); }
-
+//S(grow              ) { oB(ρGreen,  book_of_ani),
+//                        oB(ρYellow, to_Green), Yellow(OS); }
+/// now this is the dot of the tab in which we avoiding left recursion i.e.
+/// it is base case for name we are trying to define/interpret
+/// or it is tab after that sentece above so it is tab in whitch we will grow bases recursivly?
+/// Why its matter?
+/// it does not matter becous when we are in dot it means we derived base or we grown base in bouth cases
+/// we know which name are we growing and in dot all we need to do is grow so why we dont start growing now?
+///
+/// How we can make this information obvious?
+///
+///
 S(Yellow_dot        ) { //oB(ρYellow, grow, α[ρBlue][1] + (1 << Σ), α),
                         //oB(ρYellow, cursor);
-                        oB(ρYellow, Twist), Go(OS); }
+                        oB(ρYellow, Twist), Yellow(OS); }
 
-S(ani_dot           ) { //oB(ρGreen,  Go),
-                        oB(ρYellow, Yellow_dot), Go(OS); }
+S(ani_dot           ) { //oB(ρGreen,  Yellow),
+                        oB(ρYellow, Yellow_dot), Yellow(OS); }
 
 /// climb up to the top of the B pyramid.
-S(ani_name          ) { Go(OS); }
-S(ani_halt          ) { Go(OS); }
-S(ani_end           ) { Go(OS); }
+S(ani_name          ) { Yellow(OS); }
+S(ani_halt          ) { Yellow(OS); }
+S(ani_end           ) { Yellow(OS); }
 
 S(book_of_ani       ) {
   is_a_book_of(
