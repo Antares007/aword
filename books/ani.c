@@ -11,11 +11,12 @@ S(search            ) { οBlue(Go, o[τ + 1]),
 S(book_of_ani       );
 N(ani               ) { long ray = R(β, book_of_ani); β = (long *[]) { β[0],  ray,  ray, ray }, go_e(OS); }
 
+S(stop              ) {}
 S(match             ) { const char *t = o[τ + 1];
                         const char *s = β[0][1];
                         long length = β[0][2]; long pos = β[0][3];
                         if (pos < length && s[pos] == t[0])
-                          οGreen(Go, o[τ+1]), οBlue(Go, s, length, pos + 1), ani(OS);
+                          οMaroon(stop), οGreen(Go, o[τ+1]), οBlue(Go, s, length, pos + 1), ani(OS);
                         else
                           Gor(OS);
                       }
@@ -30,14 +31,21 @@ S(ani_print         ) { long **b = β;
                           printf("%s ", (char *)b[1][1]), b = b[1][-1];
                         printf(")\n");
                         ani(OS); }
-#include <stdio.h>
-#include <string.h>
+
+extern int strcmp(const char *, const char *);
+extern int getchar (void);
+
+S(check_lr          ) { if(strcmp(o[β[2][1]+1], o[τ + 1]) == 0) o[τ + 2] = 1; else
+                        Go(OS); }
 
 S(set_tau           ) { τ = β[2][1], Go(OS); }
-S(ani_twist         ) { οOlive(ani), οYellow(Twist), Go(OS); }
-S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
-S(ani_sword         ) { οOlive(ani_twist, τ), οOlive(set_tau);
 
+S(ani_twist         ) { οOlive(ani), οRed(stop), οYellow(Twist), Go(OS); }
+S(Next              ) { τ = β[2][1], α = β[2][2], God(OS); }
+S(ani_sword         ) { Go( o, α, β, τ, σ, 3, -δ, ν);
+                        if(o[τ + 2]) return Gor(OS);
+
+                        οOlive(ani_twist, τ), οMaroon(check_lr), οOlive(set_tau);
                         οYellow(book_of_ani), οYellow(And), οYellow(search), Go(OS); }
 
 S(ani_tab           ) { οYellow(book_of_ani, τ + (1 << Σ), α), οYellow(Next);

@@ -79,7 +79,8 @@ N(programSs) {
   name("Ss") nl;
     tab dot nl;
     tab tword("s") sword("Ss") sword("Ss") dot nl;
-    tab tword("s") sword("Ss") sword("Ss") dot nl; οBlue(Go, "ss", 2, 0), ani(OS);
+    tab tword("s") sword("Ss") sword("Ss") dot nl;
+    οBlue(Go, "ss", 2, 0), ani(OS);
 }
 N(programAB) {
   begin sword("A") print nop end nl;
@@ -87,10 +88,11 @@ N(programAB) {
     tab put("o") dot nl;
     tab sword("B") put("a") dot nl;
   name("B") nl;
-    tab put("y") dot nl;
     tab sword("A") put("b") dot nl;
+    tab put("y") dot nl;
   οBlue(Go, "", 0, 0), ani(OS);
 }
+S(stop) {}
 void ti_init(void);
 int main(int argc, char **argv) {
   ti_init();
@@ -107,6 +109,6 @@ int main(int argc, char **argv) {
   long ν = 1;
 
   //begin put("t") put("a") put("b") print end nl;
-  //ani(OS)
-  programSs(OS);
+  //ani(OS);
+  programAB(OS);
 }
