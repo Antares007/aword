@@ -36,15 +36,13 @@ extern int printf(const char *__restrict __format, ...);
 #define FIRSTR(a, ...) #a
 #define R(β, ...)                                                              \
   (long[]){__func__, FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 4
-
-#define οRed(...)     β = (long *[]) { β[0], β[1], β[2], R(β, __VA_ARGS__) }
-#define οYellow(...)  β = (long *[]) { β[0], β[1], R(β, __VA_ARGS__), β[3] }
-#define οGreen(...)   β = (long *[]) { β[0], R(β, __VA_ARGS__), β[2], β[3] }
-#define οBlue(...)    β = (long *[]) { R(β, __VA_ARGS__), β[1], β[2], β[3] }
-#define οNavy(...)    α = (long *[]) { R(α, __VA_ARGS__), α[1], α[2], α[3] }
-#define οLime(...)    α = (long *[]) { α[0], R(α, __VA_ARGS__), α[2], α[3] }
-#define οOlive(...)   α = (long *[]) { α[0], α[1], R(α, __VA_ARGS__), α[3] }
-#define οMaroon(...)  α = (long *[]) { α[0], α[1], α[2], R(α, __VA_ARGS__) }
+#define oBR(β, ρ, ...) ({ long r = R(β, __VA_ARGS__); β = (long *[]){β[0],β[1],β[2],β[3]}, β[ρ] = r; })
+#define oB(ρ, ...) oBR(β, ρ, __VA_ARGS__)
+#define oA(ρ, ...) oBR(α, ρ, __VA_ARGS__)
+#define ρRed    ((ρ + 3) % 4)
+#define ρYellow ((ρ + 2) % 4)
+#define ρGreen  ((ρ + 1) % 4)
+#define ρBlue   ((ρ + 0) % 4)
 
 #define οPeek(β, ρ)   ((long**)β[ρ][-1])
 

@@ -211,11 +211,12 @@ void ti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth(), GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(120);
+  SetTargetFPS(15);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 N(sdb) {
 #ifndef NDEBUG
+  ρ = ρ % 4;
   printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
          (char *)β[ρ][-4], sopcode_names[o[τ]]);
   const char **lables = stringify_ray(β[ρ]);
