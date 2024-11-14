@@ -43,9 +43,9 @@ S(set_tau) { τ = α[ρYellow][1], Olive(OS); }
 S(cursor            ) { τ = β[ρYellow][1],
                         α = β[ρYellow][2], Yellow_God(OS); }
 
-S(marknameandgointab) { οYellow(book_of_ani),
-                        οYellow(Yellow_s),
-                        οNavy(  Navy, τ), Yellow(OS); }
+S(marknameandgointab) { οNavy(Navy, τ),
+                        οYellow(book_of_ani),
+                        οYellow(Yellow_s), Yellow(OS); }
 
 S(restore_alfa      ) { α = β[2][1], Yellow(OS); }
 
@@ -71,8 +71,8 @@ S(ani_tword         ) { οYellow(match), Yellow(OS); }
 S(ani_tab           ) { οYellow(book_of_ani, τ + (1 << Σ), α),
                         οYellow(cursor);
                         ani(OS); }
-
-S(ani_dot           ) { Olive(OS); }
+N(bani);
+S(ani_dot           ) { οYellow(bani, α[0][1] + (1 << Σ), α), οYellow(cursor), Olive(OS); }
 
 S(ani_name          ) { Yellow(OS); }
 S(ani_halt          ) { Yellow(OS); }

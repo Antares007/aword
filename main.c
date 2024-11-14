@@ -6,15 +6,15 @@ N(Red       ) __attribute__((noinline));
 N(Green     ) __attribute__((noinline));
 N(Blue      ) __attribute__((noinline));
 
-N(Yellow    ) { sdb(OS), ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(Red       ) { sdb(OS), ((n_t *)β[ρRed   ])[0](o, β[ρRed   ][-1], α, τ, σ, ρ, δ, ν); }
-N(Green     ) { sdb(OS), ((n_t *)β[ρGreen ])[0](o, β[ρGreen ][-1], α, τ, σ, ρ, δ, ν); }
-N(Blue      ) { sdb(OS), ((n_t *)β[ρBlue  ])[0](o, β[ρBlue  ][-1], α, τ, σ, ρ, δ, ν); }
+N(Yellow    ) { sdb(OS), ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, ρ, +1, ν); }
+N(Red       ) { sdb(OS), ((n_t *)β[ρRed   ])[0](o, β[ρRed   ][-1], α, τ, σ, ρ, +1, ν); }
+N(Green     ) { sdb(OS), ((n_t *)β[ρGreen ])[0](o, β[ρGreen ][-1], α, τ, σ, ρ, +1, ν); }
+N(Blue      ) { sdb(OS), ((n_t *)β[ρBlue  ])[0](o, β[ρBlue  ][-1], α, τ, σ, ρ, +1, ν); }
 
-N(Olive     ) { sdb(OS), ((n_t *)α[ρYellow])[0](o, β, α[ρYellow][-1], τ, σ, ρ, δ, ν); }
-N(Maroon    ) { sdb(OS), ((n_t *)α[ρRed   ])[0](o, β, α[ρRed   ][-1], τ, σ, ρ, δ, ν); }
-N(Lime      ) { sdb(OS), ((n_t *)α[ρGreen ])[0](o, β, α[ρGreen ][-1], τ, σ, ρ, δ, ν); }
-N(Navy      ) { sdb(OS), ((n_t *)α[ρBlue  ])[0](o, β, α[ρBlue  ][-1], τ, σ, ρ, δ, ν); }
+N(Olive     ) { sdb(OS), ((n_t *)α[ρYellow])[0](o, β, α[ρYellow][-1], τ, σ, ρ, -1, ν); }
+N(Maroon    ) { sdb(OS), ((n_t *)α[ρRed   ])[0](o, β, α[ρRed   ][-1], τ, σ, ρ, -1, ν); }
+N(Lime      ) { sdb(OS), ((n_t *)α[ρGreen ])[0](o, β, α[ρGreen ][-1], τ, σ, ρ, -1, ν); }
+N(Navy      ) { sdb(OS), ((n_t *)α[ρBlue  ])[0](o, β, α[ρBlue  ][-1], τ, σ, ρ, -1, ν); }
 
 N(Olive_Gor ) { ν = 0, Olive(OS); }
 N(Olive_God ) { ν = 1, Olive(OS); }

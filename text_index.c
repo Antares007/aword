@@ -75,16 +75,16 @@ N(drawEightStacks) {
   float hh = sh / 2.f;
   hw -= 100 * zoom;
   hh -= 100 * zoom;
-  DrawBetaStack(o, β, 3, ρ == 3, δ, k_zoom, 0, hw, 10);
-  DrawBetaStack(o, β, 0, ρ == 0, δ, k_zoom, 90, sw - 10, hh);
-  DrawBetaStack(o, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
-  DrawBetaStack(o, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
+  DrawBetaStack(o, β, 3, δ == +1 && ρ == 3, +1, k_zoom, 0, hw, 10);
+  DrawBetaStack(o, β, 0, δ == +1 && ρ == 0, +1, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(o, β, 1, δ == +1 && ρ == 1, +1, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(o, β, 2, δ == +1 && ρ == 2, +1, k_zoom, 270, 10, hh);
   hw += 200 * zoom;
   hh += 200 * zoom;
-  DrawBetaStack(o, α, 3, 0, -δ, k_zoom, 0, hw, 10);
-  DrawBetaStack(o, α, 0, 0, -δ, k_zoom, 90, sw - 10, hh);
-  DrawBetaStack(o, α, 1, 0, -δ, k_zoom, 180, hw, sh - 10);
-  DrawBetaStack(o, α, 2, 0, -δ, k_zoom, 270, 10, hh);
+  DrawBetaStack(o, α, 3, δ == -1 && ρ == 3, -1, k_zoom, 0, hw, 10);
+  DrawBetaStack(o, α, 0, δ == -1 && ρ == 0, -1, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(o, α, 1, δ == -1 && ρ == 1, -1, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(o, α, 2, δ == -1 && ρ == 2, -1, k_zoom, 270, 10, hh);
 }
 static void DrawGoToTable();
 static void DrawBackGround();
@@ -136,10 +136,11 @@ S(drawVMState) {
   if (full_duplex)
     drawEightStacks(OS);
   else {
-    if (bside)
-      drawStacks(o, α, β, τ, σ, ρ, -δ, ν);
-    else
+    if (bside) δ = -δ;
+    if (δ == +1)
       drawStacks(OS);
+    else
+      drawStacks(o, α, β, τ, σ, ρ, δ, ν);
   }
   if (going_to)
     DrawGoToTable();
