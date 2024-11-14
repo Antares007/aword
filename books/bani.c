@@ -1,8 +1,7 @@
 // clang-format off
 #include "../main.h"
-S(book_of_bani);
+N(book_of_bani);
 
-N(bani        ) { οGreen(book_of_bani), Green(OS); }
 S(bani_e      ) { οGreen(book_of_bani), Green_e(OS); }
 
 S(cursor      ) { τ = β[ρGreen][1],
@@ -34,7 +33,7 @@ S(bani_sword  ) { if(strcmp(o[α[0][1]+1], o[τ+1]) == 0)
                   else
                     goin_sword(OS); }
 
-S(book_of_bani) {
+N(book_of_bani) {
   is_a_book_of(
     [tab  ] = bani_tab,
     [put  ] = bani_e,

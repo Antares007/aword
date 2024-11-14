@@ -72,8 +72,8 @@ S(ani_tword     ) { οYellow(match), Yellow(OS); }
 S(ani_tab       ) { οYellow(book_of_ani, τ + (1 << Σ), α),
                     οYellow(cursor);
                     ani_e(OS); }
-N(bani);
-S(ani_dot       ) { οYellow(bani, α[0][1] + (1 << Σ), α), οYellow(cursor), Olive(OS); }
+N(book_of_bani);
+S(ani_dot       ) { οYellow(book_of_bani, α[0][1] + (1 << Σ), α), οYellow(cursor), Olive(OS); }
 
 S(book_of_ani   ) {
   is_a_book_of(

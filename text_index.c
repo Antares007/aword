@@ -110,6 +110,7 @@ S(drawVMState) {
                           : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
+    if (textsize.x < 20) textsize.x = 20;
 
     Rectangle rect = (Rectangle){x, y, textsize.x + 10, CELL_HEIGHT - 5};
     Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
@@ -204,7 +205,8 @@ N(ti_debug) {
       skip_until = -1;
     else if (key == 'c')
       semi_auto = !semi_auto;
-
+    else if (τ == 1046 || τ == 1291)
+      semi_auto = 0;
     else if (key == '=')
       opacity += 10;
     else if (key == '-')
