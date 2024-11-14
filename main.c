@@ -6,21 +6,21 @@ N(Red       ) __attribute__((noinline));
 N(Green     ) __attribute__((noinline));
 N(Blue      ) __attribute__((noinline));
 
-N(Yellow    ) { sdb(OS), ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, ρ, +1, ν); }
-N(Red       ) { sdb(OS), ((n_t *)β[ρRed   ])[0](o, β[ρRed   ][-1], α, τ, σ, ρ, +1, ν); }
-N(Green     ) { sdb(OS), ((n_t *)β[ρGreen ])[0](o, β[ρGreen ][-1], α, τ, σ, ρ, +1, ν); }
-N(Blue      ) { sdb(OS), ((n_t *)β[ρBlue  ])[0](o, β[ρBlue  ][-1], α, τ, σ, ρ, +1, ν); }
+N(Red       ) { sdb(OS), ((n_t *)β[ρRed   ])[0](o, β[ρRed   ][-1], α, τ, σ, 3, +1, ν); }
+N(Yellow    ) { sdb(OS), ((n_t *)β[ρYellow])[0](o, β[ρYellow][-1], α, τ, σ, 2, +1, ν); }
+N(Green     ) { sdb(OS), ((n_t *)β[ρGreen ])[0](o, β[ρGreen ][-1], α, τ, σ, 1, +1, ν); }
+N(Blue      ) { sdb(OS), ((n_t *)β[ρBlue  ])[0](o, β[ρBlue  ][-1], α, τ, σ, 0, +1, ν); }
 
-N(Olive     ) { sdb(OS), ((n_t *)α[ρYellow])[0](o, β, α[ρYellow][-1], τ, σ, ρ, -1, ν); }
-N(Maroon    ) { sdb(OS), ((n_t *)α[ρRed   ])[0](o, β, α[ρRed   ][-1], τ, σ, ρ, -1, ν); }
-N(Lime      ) { sdb(OS), ((n_t *)α[ρGreen ])[0](o, β, α[ρGreen ][-1], τ, σ, ρ, -1, ν); }
-N(Navy      ) { sdb(OS), ((n_t *)α[ρBlue  ])[0](o, β, α[ρBlue  ][-1], τ, σ, ρ, -1, ν); }
+N(Maroon    ) { sdb(OS), ((n_t *)α[ρRed   ])[0](o, β, α[ρRed   ][-1], τ, σ, 3, -1, ν); }
+N(Olive     ) { sdb(OS), ((n_t *)α[ρYellow])[0](o, β, α[ρYellow][-1], τ, σ, 2, -1, ν); }
+N(Lime      ) { sdb(OS), ((n_t *)α[ρGreen ])[0](o, β, α[ρGreen ][-1], τ, σ, 1, -1, ν); }
+N(Navy      ) { sdb(OS), ((n_t *)α[ρBlue  ])[0](o, β, α[ρBlue  ][-1], τ, σ, 0, -1, ν); }
 
 N(Olive_Gor ) { ν = 0, Olive(OS); }
 N(Olive_God ) { ν = 1, Olive(OS); }
+N(Green_God ) { ν = 1, Green(OS); }
 
-N(Yellow_G1 ) {    Yellow(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(Yellow_G2 ) { Yellow_G1(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+S(Yellow_G1 ) {    Yellow(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
 N(Yellow_Gor) { ν = 0, Yellow(OS); }
 N(Yellow_God) { ν = 1, Yellow(OS); }
 N(Yellow_Got) { ν = 2, Yellow(OS); }
@@ -33,6 +33,11 @@ N(Yellow_n  ) { τ -= 1 << Σ, Yellow(OS); }
 N(Yellow_e  ) { τ += 11,     Yellow(OS); }
 N(Yellow_s  ) { τ += 1 << Σ, Yellow(OS); }
 N(Yellow_w  ) { τ -= 11,     Yellow(OS); }
+
+N(Green_n   ) { τ -= 1 << Σ, Green(OS); }
+N(Green_e   ) { τ += 11,     Green(OS); }
+N(Green_s   ) { τ += 1 << Σ, Green(OS); }
+N(Green_w   ) { τ -= 11,     Green(OS); }
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
@@ -83,7 +88,7 @@ N(programS) {
     tab tword("b") dot nl;
     tab sword("S") tword("a") dot nl;
     tab sword("S") tword("t") dot nl;
-  οBlue(Blue, "baaat", 5, 0), ani(OS);
+  οBlue(Blue, "batat", 5, 0), ani(OS);
 }
 N(programSs) {
   begin sword("Ss") print nop end nl;
@@ -96,12 +101,12 @@ N(programSs) {
 N(programAB) {
   begin sword("A") print nop end nl;
   name("A") nl;
-    tab put("o") dot nl;
-    tab sword("B") put("a") dot nl;
+    tab tword("o") dot nl;
+    tab sword("B") tword("a") dot nl;
   name("B") nl;
-    tab put("y") dot nl;
-    tab sword("A") put("b") dot nl;
-  οBlue(Blue, "", 0, 0), ani(OS);
+    tab tword("y") dot nl;
+    tab sword("A") tword("b") dot nl;
+  οBlue(Blue, "obabababa", 9, 0), ani(OS);
 }
 N(program_aText) {
   begin put("t") put("a") put("b") print end nl;
@@ -121,5 +126,5 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οMaroon(Yellow_Gor), programS(OS);
+  programAB(OS);
 }
