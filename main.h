@@ -80,3 +80,9 @@ N(Green_n);
 N(Green_e);
 N(Green_s);
 N(Green_w);
+
+N(Red_God);
+N(Red_n);
+N(Red_e);
+N(Red_s);
+N(Red_w);

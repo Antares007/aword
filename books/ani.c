@@ -20,18 +20,17 @@ S(match             ) { const char *t = o[τ + 1];
                         long pos      = β[ρBlue][3];
                         if (pos < length && s[pos] == t[0])
                           οMaroon(Yellow_Gor),
-                          οRed(   Yellow, o[τ + 1]),
                           οBlue(  Yellow, s, length, pos + 1), ani_e(OS);
                         else
                           Yellow_Gor(OS);
                       }
 
-S(ani_put           ) { οRed(Red, o[τ + 1]), ani_e(OS); }
+S(ani_put           ) { οBlue(Blue, o[τ + 1]), ani_e(OS); }
 
 S(ani_print         ) { long **b = β;
                         printf("%7s(", ν == 2 ? "Red" : ν ? "Green" : "Blue");
-                        while (b[ρRed][-1])
-                          printf("%s ", (char *)b[ρRed][1]), b = b[ρRed][-1];
+                        while (b[ρBlue][-1])
+                          printf("%s ", (char *)b[ρBlue][1]), b = b[ρBlue][-1];
                         printf(")\n");
                         ani_e(OS); }
 

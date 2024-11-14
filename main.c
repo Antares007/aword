@@ -19,6 +19,7 @@ N(Navy      ) { sdb(OS), ((n_t *)α[ρBlue  ])[0](o, β, α[ρBlue  ][-1], τ, �
 N(Olive_Gor ) { ν = 0, Olive(OS); }
 N(Olive_God ) { ν = 1, Olive(OS); }
 N(Green_God ) { ν = 1, Green(OS); }
+N(Red_God   ) { ν = 1, Red(OS); }
 
 S(Yellow_G1 ) {    Yellow(o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
 N(Yellow_Gor) { ν = 0, Yellow(OS); }
@@ -38,6 +39,11 @@ N(Green_n   ) { τ -= 1 << Σ, Green(OS); }
 N(Green_e   ) { τ += 11,     Green(OS); }
 N(Green_s   ) { τ += 1 << Σ, Green(OS); }
 N(Green_w   ) { τ -= 11,     Green(OS); }
+
+N(Red_n   ) { τ -= 1 << Σ, Red(OS); }
+N(Red_e   ) { τ += 11,     Red(OS); }
+N(Red_s   ) { τ += 1 << Σ, Red(OS); }
+N(Red_w   ) { τ -= 11,     Red(OS); }
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
@@ -115,30 +121,30 @@ N(program_aText) {
 N(program_bat) {
   begin Sword("s") print end nl;
   name("s") nl;                             //  s
-    tab Sword("np") Sword("vp") dot nl;     //        ::= np vp
-    tab Sword("s") Sword("pp") dot nl;      //          | s pp
+    tab Sword("np") Sword("vp") dot nl;     //      ::= np vp
+    tab Sword("s") Sword("pp") dot nl;      //        | s pp
   name("np") nl;                            //  np
-    tab Sword("noun") dot nl;               //        ::= noun
-    tab Sword("det") Sword("noun") dot nl;  //          | det noun
-    tab Sword("np") Sword("pp") dot nl;     //          | np pp
+    tab Sword("noun") dot nl;               //      ::= noun
+    tab Sword("det") Sword("noun") dot nl;  //        | det noun
+    tab Sword("np") Sword("pp") dot nl;     //        | np pp
   name("pp") nl;                            //  pp
-    tab Sword("prep") Sword("np") dot nl;   //        ::= prep np
+    tab Sword("prep") Sword("np") dot nl;   //      ::= prep np
   name("vp") nl;                            //  vp
-    tab Sword("verb") Sword("np") dot nl;   //        ::= verb np
+    tab Sword("verb") Sword("np") dot nl;   //      ::= verb np
   name("det") nl;                           //  det
-    tab Tword("a") dot nl;                  //        ::= ’a’
-    tab Tword("t") dot nl;                  //          | ’t’
+    tab Tword("a") dot nl;                  //      ::= ’a’
+    tab Tword("t") dot nl;                  //        | ’t’
   name("noun") nl;                          //  noun
-    tab Tword("i") dot nl;                  //        ::= ’i’
-    tab Tword("m") dot nl;                  //          | ’m’
-    tab Tword("p") dot nl;                  //          | ’p’
-    tab Tword("b") dot nl;                  //          | ’b’
+    tab Tword("i") dot nl;                  //      ::= ’i’
+    tab Tword("m") dot nl;                  //        | ’m’
+    tab Tword("p") dot nl;                  //        | ’p’
+    tab Tword("b") dot nl;                  //        | ’b’
   name("verb") nl;                          //  verb
-    tab Tword("s") dot nl;                  //        ::= ’s’
+    tab Tword("s") dot nl;                  //      ::= ’s’
   name("prep") nl;                          //  prep
-    tab Tword("n") dot nl;                  //        ::= ’n’
-    tab Tword("w") dot nl;                  //          | ’w’
-                                                   
+    tab Tword("n") dot nl;                  //      ::= ’n’
+    tab Tword("w") dot nl;                  //        | ’w’
+
   οBlue(Blue, "isamntpwab", 10, 0), ani(OS);
 }
 void ti_init(void);
@@ -155,5 +161,5 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  program_bat(OS);
+  programS(OS);
 }
