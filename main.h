@@ -39,10 +39,20 @@ extern int printf(const char *__restrict __format, ...);
 #define oBR(β, ρ, ...) ({ long r = R(β, __VA_ARGS__); β = (long *[]){β[0],β[1],β[2],β[3]}, β[ρ] = r; })
 #define oB(ρ, ...) oBR(β, ρ, __VA_ARGS__)
 #define oA(ρ, ...) oBR(α, ρ, __VA_ARGS__)
-#define ρRed    ((ρ + 3) % 4)
-#define ρYellow ((ρ + 2) % 4)
-#define ρGreen  ((ρ + 1) % 4)
-#define ρBlue   ((ρ + 0) % 4)
+#define ρRed    3
+#define ρYellow 2
+#define ρGreen  1
+#define ρBlue   0
+
+#define οRed(...)     oB(ρRed   , __VA_ARGS__)
+#define οYellow(...)  oB(ρYellow, __VA_ARGS__)
+#define οGreen(...)   oB(ρGreen , __VA_ARGS__)
+#define οBlue(...)    oB(ρBlue  , __VA_ARGS__)
+#define οNavy(...)    oA(ρBlue  , __VA_ARGS__)
+#define οLime(...)    oA(ρGreen , __VA_ARGS__)
+#define οOlive(...)   oA(ρYellow, __VA_ARGS__)
+#define οMaroon(...)  oA(ρRed   , __VA_ARGS__)
+
 
 #define οPeek(β, ρ)   ((long**)β[ρ][-1])
 
@@ -51,7 +61,15 @@ extern int printf(const char *__restrict __format, ...);
   if (nars[o[τ]]) nars[o[τ]](OS);                                              \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
+N(Red   );
 N(Yellow);
+N(Green );
+N(Blue  );
+N(Navy  );
+N(Lime  );
+N(Olive );
+N(Maroon);
+
 N(Yellow_G1);
 N(Yellow_G2);
 N(Yellow_Got);
