@@ -10,6 +10,7 @@ static Font font;
 static float zoom = 2;
 static Vector2 off = {300, 200};
 static int bside = 0;
+static int raw = 0;
 static int auto_center = 1;
 static int full_duplex = 1;
 static int going_to = 0;
@@ -101,11 +102,12 @@ S(drawVMState) {
     long opcode = o[t];
     long selected = t == τ;
     const char *txt =
-        opcode == sword  ? TextFormat("%2s", (char *)o[t + 1])
-        : opcode == name ? TextFormat("%2s", (char *)o[t + 1])
+        raw               ? TextFormat("%ld", o[t])
+        : opcode == sword ? TextFormat("%2s", (char *)o[t + 1])
+        : opcode == name  ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == tword ? TextFormat("tword '%s'", (char *)o[t + 1])
-        : opcode == put  ? TextFormat("put \"%s\"", (char *)o[t + 1])
-                         : TextFormat("%s", sopcode_names[o[t]]);
+        : opcode == put   ? TextFormat("put \"%s\"", (char *)o[t + 1])
+                          : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
 
@@ -136,7 +138,8 @@ S(drawVMState) {
   if (full_duplex)
     drawEightStacks(OS);
   else {
-    if (bside) δ = -δ;
+    if (bside)
+      δ = -δ;
     if (δ == +1)
       drawStacks(OS);
     else
@@ -195,6 +198,8 @@ N(ti_debug) {
       auto_center = !auto_center;
     else if (key == 'b')
       bside = !bside;
+    else if (key == 'r')
+      raw = !raw;
     else if (key == 'c' && skip_until != -1)
       skip_until = -1;
     else if (key == 'c')
@@ -212,7 +217,7 @@ void ti_init(void) {
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth(), GetScreenHeight());
   SetWindowPosition(0, 0);
-  SetTargetFPS(150);
+  SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
 N(sdb) {
@@ -247,8 +252,8 @@ static const Color colors[][2] = {
 const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
                       "Blue",    "Green",  "Yellow", "Red",  "Purple"};
 static int stops[127] = {
-    ['b'] = begin, ['d'] = dot,  ['e'] = end,   ['N'] = name,
-    ['l'] = nl,    ['n'] = nop,  ['r'] = print, ['p'] = put,
+    ['b'] = begin, ['d'] = dot,   ['e'] = end,   ['N'] = name,
+    ['l'] = nl,    ['n'] = nop,   ['r'] = print, ['p'] = put,
     ['t'] = tab,   ['a'] = tword, ['T'] = sword,
 };
 static void DrawGoToTable() {

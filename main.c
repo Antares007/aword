@@ -44,10 +44,10 @@ N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν
 N(ani       );
 N(dive      );
 #define begin     o[σ] = begin,               σ += 11,
-#define sword(v)  o[σ] = sword, o[σ + 1] = v, σ += 11,
+#define Sword(v)  o[σ] = sword, o[σ + 1] = v, σ += 11,
 #define name(v)   o[σ] = name,  o[σ + 1] = v, σ += 11,
 #define put(v)    o[σ] = put,   o[σ + 1] = v, σ += 11,
-#define tword(v)  o[σ] = tword, o[σ + 1] = v, σ += 11,
+#define Tword(v)  o[σ] = tword, o[σ + 1] = v, σ += 11,
 #define print     o[σ] = print,               σ += 11,
 #define tab       o[σ] = tab,                 σ += 11,
 #define nop       o[σ] = nop,                 σ += 11,
@@ -55,13 +55,13 @@ N(dive      );
 #define end       o[σ] = end,                 σ += 11,
 #define nl        o[σ] = nl,                  σ = ((σ >> Σ) + 1) << Σ
 N(program123) {
-  begin sword("123456789") print nop end nl;
+  begin Sword("123456789") print nop end nl;
   name("789") nl;
     tab put("7") dot nl;
     tab put("8") dot nl;
     tab put("9") dot nl;
   name("123456789") nl;
-    tab sword("123") sword("456") sword("789") dot nl;
+    tab Sword("123") Sword("456") Sword("789") dot nl;
   name("123") nl;
     tab put("1") dot nl;
     tab put("2") dot nl;
@@ -73,44 +73,73 @@ N(program123) {
   ani(OS);
 }
 N(programTritab) {
-  begin sword("triTAB") print nop end nl;
+  begin Sword("triTAB") print nop end nl;
   name("triTAB") nl;
-    tab sword("TAB") sword("TAB") sword("TAB") dot nl;
+    tab Sword("TAB") Sword("TAB") Sword("TAB") dot nl;
   name("TAB") nl;
-    tab tword("T") dot nl;
-    tab tword("A") dot nl;
-    tab tword("B") dot nl;
+    tab Tword("T") dot nl;
+    tab Tword("A") dot nl;
+    tab Tword("B") dot nl;
   οBlue(Blue, "TAB", 3, 0), ani(OS);
 }
 N(programS) {
-  begin sword("S") print nop end nl;
+  begin Sword("S") print nop end nl;
   name("S") nl;
-    tab tword("b") dot nl;
-    tab sword("S") tword("a") dot nl;
-    tab sword("S") tword("t") dot nl;
+    tab Tword("b") dot nl;
+    tab Sword("S") Tword("a") dot nl;
+    tab Sword("S") Tword("t") dot nl;
   οBlue(Blue, "batat", 5, 0), ani(OS);
 }
 N(programSs) {
-  begin sword("Ss") print nop end nl;
+  begin Sword("Ss") print nop end nl;
   name("Ss") nl;
     tab dot nl;
-    tab tword("s") sword("Ss") sword("Ss") dot nl;
-    tab tword("s") sword("Ss") sword("Ss") dot nl;
+    tab Tword("s") Sword("Ss") Sword("Ss") dot nl;
+    tab Tword("s") Sword("Ss") Sword("Ss") dot nl;
   οBlue(Blue, "ss", 2, 0), ani(OS);
 }
 N(programAB) {
-  begin sword("A") print nop end nl;
+  begin Sword("A") print nop end nl;
   name("A") nl;
-    tab tword("o") dot nl;
-    tab sword("B") tword("a") dot nl;
+    tab Tword("o") dot nl;
+    tab Sword("B") Tword("a") dot nl;
   name("B") nl;
-    tab tword("y") dot nl;
-    tab sword("A") tword("b") dot nl;
-  οBlue(Blue, "obabababa", 9, 0), ani(OS);
+    tab Tword("y") dot nl;
+    tab Sword("A") Tword("b") dot nl;
+  οBlue(Blue, "oba", 3, 0), ani(OS);
 }
 N(program_aText) {
   begin put("t") put("a") put("b") print end nl;
   ani(OS);
+}
+N(program_bat) {
+  begin Sword("s") print end nl;
+  name("s") nl;                             //  s
+    tab Sword("np") Sword("vp") dot nl;     //        ::= np vp
+    tab Sword("s") Sword("pp") dot nl;      //          | s pp
+  name("np") nl;                            //  np
+    tab Sword("noun") dot nl;               //        ::= noun
+    tab Sword("det") Sword("noun") dot nl;  //          | det noun
+    tab Sword("np") Sword("pp") dot nl;     //          | np pp
+  name("pp") nl;                            //  pp
+    tab Sword("prep") Sword("np") dot nl;   //        ::= prep np
+  name("vp") nl;                            //  vp
+    tab Sword("verb") Sword("np") dot nl;   //        ::= verb np
+  name("det") nl;                           //  det
+    tab Tword("a") dot nl;                  //        ::= ’a’
+    tab Tword("t") dot nl;                  //          | ’t’
+  name("noun") nl;                          //  noun
+    tab Tword("i") dot nl;                  //        ::= ’i’
+    tab Tword("m") dot nl;                  //          | ’m’
+    tab Tword("p") dot nl;                  //          | ’p’
+    tab Tword("b") dot nl;                  //          | ’b’
+  name("verb") nl;                          //  verb
+    tab Tword("s") dot nl;                  //        ::= ’s’
+  name("prep") nl;                          //  prep
+    tab Tword("n") dot nl;                  //        ::= ’n’
+    tab Tword("w") dot nl;                  //          | ’w’
+                                                   
+  οBlue(Blue, "isamntpwab", 10, 0), ani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
@@ -126,5 +155,5 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  programAB(OS);
+  program_bat(OS);
 }
