@@ -110,7 +110,8 @@ S(drawVMState) {
                           : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
-    if (textsize.x < 20) textsize.x = 20;
+    if (textsize.x < 20)
+      textsize.x = 20;
 
     Rectangle rect = (Rectangle){x, y, textsize.x + 10, CELL_HEIGHT - 5};
     Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
@@ -153,7 +154,8 @@ S(drawVMState) {
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
 static const char *backgroundImages[] = {"background_2000.png",
-                                         "background_2048.png"};
+                                         "background_2048.png",
+                                         "background_2049.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
 N(ti_debug) {
