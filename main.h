@@ -69,7 +69,6 @@ N(Yellow_Got);
 N(Yellow_God);
 N(Yellow_Gor);
 N(Yellow_NAO);
-N(Yellow_Not); N(Yellow_And); N(Yellow_Or);
 N(Yellow_n);
 N(Yellow_e);
 N(Yellow_s);
@@ -82,7 +81,14 @@ N(Green_s);
 N(Green_w);
 
 N(Red_God);
+N(Red_Gor);
 N(Red_n);
 N(Red_e);
 N(Red_s);
 N(Red_w);
+
+N(Blue_God);
+N(Blue_n);
+N(Blue_e);
+N(Blue_s);
+N(Blue_w);
