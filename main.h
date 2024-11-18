@@ -12,6 +12,7 @@
   X(tab)                                                                       \
   X(tword)                                                                     \
   X(sword)                                                                     \
+  X(rword)                                                                     \
   X(dot)                                                                       \
   X(end)
 
@@ -51,9 +52,10 @@ extern int printf(const char *__restrict __format, ...);
 #define ρGreen  1
 #define ρBlue   0
 
+N(sdb);
 #define is_a_book_of(...)                                                      \
   static n_t nars[Names_Count] = {__VA_ARGS__};                                \
-  if (nars[o[τ]]) nars[o[τ]](OS);                                              \
+  if (nars[o[τ]]) sdb(OS), nars[o[τ]](OS);                                     \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
 N(Red   );
@@ -69,26 +71,8 @@ N(Yellow_Got);
 N(Yellow_God);
 N(Yellow_Gor);
 N(Yellow_NAO);
-N(Yellow_n);
-N(Yellow_e);
-N(Yellow_s);
-N(Yellow_w);
-
 N(Green_God);
-N(Green_n);
-N(Green_e);
-N(Green_s);
-N(Green_w);
-
 N(Red_God);
 N(Red_Gor);
-N(Red_n);
-N(Red_e);
-N(Red_s);
-N(Red_w);
-
 N(Blue_God);
-N(Blue_n);
-N(Blue_e);
-N(Blue_s);
-N(Blue_w);
+

@@ -106,7 +106,8 @@ S(drawVMState) {
         : opcode == sword ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == name  ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == tword ? TextFormat("tword '%s'", (char *)o[t + 1])
-        : opcode == put   ? TextFormat("put \"%s\"", (char *)o[t + 1])
+        : opcode == put   ? (o[t + 1] < 1000  ? TextFormat("put %ld", o[t + 1])
+                                              : TextFormat("put \"%s\"", (char *)o[t + 1]))
                           : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
