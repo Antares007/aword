@@ -71,8 +71,3 @@ N(Yellow_Got);
 N(Yellow_God);
 N(Yellow_Gor);
 N(Yellow_NAO);
-N(Green_God);
-N(Red_God);
-N(Red_Gor);
-N(Blue_God);
-

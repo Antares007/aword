@@ -14,19 +14,16 @@ N(Return);
 N(search);
 extern int strcmp(const char *, const char *);
 
-S(lr_check      ) { (strcmp(o[α[2][1] + 1], o[τ + 1]) == 0 ? Yellow_Got : Maroon)(OS); }
+S(check_lr      ) { (strcmp(o[α[2][1] + 1], o[τ + 1]) == 0 ? Yellow : Maroon)(OS); }
 
-S(goin          ) { οOlive( book_of_gani_e, τ),
-                    οMaroon(lr_check),
-                    οOlive( Return),
+S(goin          ) { οOlive(book_of_gani_e, τ), οMaroon(check_lr, "bani"), οOlive(Return);
+                    οGreen(book_of_bani_s, τ), οBlue(stop), search(OS); }
 
-                    οYellow(stop, book_of_bani_s, stop),
-                    οYellow(Yellow_NAO),
-                    οBlue(  Blue, o[τ + 1]), search(OS); }
-N(re_alfa);
-S(bani_sword    ) { οYellow(goin, book_of_gani_e, Yellow),
-                    οYellow(Yellow_NAO, α),
-                    οYellow(re_alfa), Maroon(OS); }
+S(re_alfa_Green ) { α = β[1][1], Green(OS); }
+N(re_alfa_Blue);
+S(bani_sword    ) { οGreen(book_of_gani_e, α), οBlue(goin, α),      
+                    οGreen(re_alfa_Green),     οBlue(re_alfa_Blue),  Maroon(OS); }
+
 S(book_of_bani  ) {
   is_a_book_of(
     [tab  ] = bani_tab,

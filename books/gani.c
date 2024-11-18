@@ -5,8 +5,8 @@ N(book_of_gani_e) { οGreen(book_of_gani), τ += 11, Green(OS); }
 
 extern int strcmp(const char *, const char *);
 N(book_of_ani_s);
-S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Yellow_God : Yellow_Gor)(OS); }
-S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr), book_of_ani_s(OS); }
+S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Green : Blue)(OS); }
+S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "gani"), book_of_ani_s(OS); }
 N(search);
 N(stop);
 N(Return);
@@ -30,13 +30,12 @@ N(gani_tword    ) { const char *t = o[τ + 1];
                       οBlue(Blue, s, length, pos + 1),
                       book_of_gani_e(OS);
                     else
-                      Yellow_Gor(OS); }
+                      Yellow(OS); }
 
-S(grow_check    ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Yellow_God : Yellow_Gor)(OS); }
 
 N(book_of_bani_s);
 N(cursor);
-S(gani_dot      ) { οMaroon(grow_check), οYellow(book_of_bani_s, α[0][1], α), οYellow(cursor);
+S(gani_dot      ) { οMaroon(check_lr, "dot"), οYellow(book_of_bani_s, α[0][1], α), οYellow(cursor);
                     Olive(OS); }
 S(gani_put      ) { οRed(Red, o[τ + 1]), book_of_gani_e(OS); }
 S(gani_rword    ) { ((n_t)o[τ + 1])(OS); }

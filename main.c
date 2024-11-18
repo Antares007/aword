@@ -15,16 +15,10 @@ N(Lime      ) { ρ = 1, δ = -1, sdb(OS), ((n_t *)α[ρGreen ])[0](o, β, α[ρG
 N(Olive     ) { ρ = 2, δ = -1, sdb(OS), ((n_t *)α[ρYellow])[0](o, β, α[ρYellow][-1], τ, σ, ρ, δ, ν); }
 N(Maroon    ) { ρ = 3, δ = -1, sdb(OS), ((n_t *)α[ρRed   ])[0](o, β, α[ρRed   ][-1], τ, σ, ρ, δ, ν); }
 
-N(Olive_Gor ) { ν = 0, Olive(OS); }
-N(Olive_God ) { ν = 1, Olive(OS); }
-N(Green_God ) { ν = 1, Green(OS); }
-N(  Red_Gor ) { ν = 0,   Red(OS); }
-N(  Red_God ) { ν = 1,   Red(OS); }
 N(Yellow_Gor) { ν = 0, Yellow(OS); }
 N(Yellow_God) { ν = 1, Yellow(OS); }
 N(Yellow_Got) { ν = 2, Yellow(OS); }
 N(Yellow_NAO) { ((n_t *)β[ρYellow])[ν](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
-N(  Blue_NAO) { ((n_t *)β[ρBlue  ])[ν](o, β[ρBlue  ][-1], α, τ, σ, ρ, δ, ν); }
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
@@ -132,5 +126,5 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  programExpr(OS);
+  program_isamntpwab(OS);
 }
