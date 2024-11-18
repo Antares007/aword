@@ -102,10 +102,12 @@ S(drawVMState) {
     long opcode = o[t];
     long selected = t == τ;
     const char *txt =
-        raw               ? TextFormat("%ld", o[t])
+        raw == 1          ? TextFormat("%ld", o[t])
+        : raw == 2        ? TextFormat("%s", sopcode_names[o[t]])
         : opcode == sword ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == name  ? TextFormat("%2s", (char *)o[t + 1])
-        : opcode == tword ? TextFormat("tword '%s'", (char *)o[t + 1])
+        : opcode == tword ? TextFormat("'%s'", (char *)o[t + 1])
+        : opcode == rword ? TextFormat("r()")
         : opcode == put   ? (o[t + 1] < 1000  ? TextFormat("put %ld", o[t + 1])
                                               : TextFormat("put \"%s\"", (char *)o[t + 1]))
                           : TextFormat("%s", sopcode_names[o[t]]);
@@ -203,7 +205,7 @@ N(ti_debug) {
     else if (key == 'b')
       bside = !bside;
     else if (key == 'r')
-      raw = !raw;
+      raw = (raw + 1) % 3;
     else if (key == 'c' && skip_until != -1)
       skip_until = -1;
     else if (key == 'c')

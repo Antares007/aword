@@ -12,9 +12,7 @@ N(stop);
 N(Return);
 S(gani_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
 
-                    οYellow(stop, on_name, stop),
-                    οYellow(Yellow_NAO),
-                    οBlue(  Blue, o[τ + 1]), search(OS); }
+                    οGreen(on_name, τ), οBlue(stop), search(OS); }
 
 S(gani_print    ) { long**b = β;
                     while(b[3][-1])
@@ -29,7 +27,6 @@ N(gani_tword    ) { const char *t = o[τ + 1];
                     long length   = β[ρBlue][2];
                     long pos      = β[ρBlue][3];
                     if (pos < length && s[pos] == t[0])
-                      οGreen(Green, o[τ + 1]),
                       οBlue(Blue, s, length, pos + 1),
                       book_of_gani_e(OS);
                     else

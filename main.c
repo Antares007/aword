@@ -24,6 +24,7 @@ N(Yellow_Gor) { ν = 0, Yellow(OS); }
 N(Yellow_God) { ν = 1, Yellow(OS); }
 N(Yellow_Got) { ν = 2, Yellow(OS); }
 N(Yellow_NAO) { ((n_t *)β[ρYellow])[ν](o, β[ρYellow][-1], α, τ, σ, ρ, δ, ν); }
+N(  Blue_NAO) { ((n_t *)β[ρBlue  ])[ν](o, β[ρBlue  ][-1], α, τ, σ, ρ, δ, ν); }
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
@@ -106,13 +107,13 @@ N(minus ) { οRed(Red, ((long****)β)[3][-1][3][1] - β[3][1]), book_of_gani_e(O
 N(mul   ) { οRed(Red, ((long****)β)[3][-1][3][1] * β[3][1]), book_of_gani_e(OS); }
 N(div   ) { οRed(Red, ((long****)β)[3][-1][3][1] / β[3][1]), book_of_gani_e(OS); }
 N(programExpr) {
-  begin Sword("S") print end nl;
-  name("S") nl;
-    tab Sword("S") Tword("+") Sword("S") Rword(plus) dot nl;
-    tab Sword("S") Tword("-") Sword("S") Rword(minus) dot nl;
-    tab Sword("S") Tword("*") Sword("S") Rword(mul) dot nl;
-    tab Sword("S") Tword("/") Sword("S") Rword(div) dot nl;
-    tab Tword("(") Sword("S") Tword(")") dot nl;
+  begin Sword("E") print end nl;
+  name("E") nl;
+    tab Sword("E") Tword("+") Sword("E") Rword(plus) dot nl;
+    tab Sword("E") Tword("-") Sword("E") Rword(minus) dot nl;
+    tab Sword("E") Tword("*") Sword("E") Rword(mul) dot nl;
+    tab Sword("E") Tword("/") Sword("E") Rword(div) dot nl;
+    tab Tword("(") Sword("E") Tword(")") dot nl;
     tab Tword("2") Put(2) dot nl;
     tab Tword("3") Put(3) dot nl;
   οBlue(Blue, "(2+3)*3", 7, 0), book_of_gani_e(OS);
