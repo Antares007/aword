@@ -108,9 +108,10 @@ S(drawVMState) {
         : opcode == name  ? TextFormat("%2s", (char *)o[t + 1])
         : opcode == tword ? TextFormat("'%s'", (char *)o[t + 1])
         : opcode == rword ? TextFormat("r()")
-        : opcode == put   ? (o[t + 1] < 1000  ? TextFormat("put %ld", o[t + 1])
-                                              : TextFormat("put \"%s\"", (char *)o[t + 1]))
-                          : TextFormat("%s", sopcode_names[o[t]]);
+        : opcode == put
+            ? (o[t + 1] < 1000 ? TextFormat("put %ld", o[t + 1])
+                               : TextFormat("put \"%s\"", (char *)o[t + 1]))
+            : TextFormat("%s", sopcode_names[o[t]]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
     if (textsize.x < 20)
@@ -123,8 +124,9 @@ S(drawVMState) {
       DrawRectangleRoundedLines(rect, 0.2f, 10, 5, oan_colors[ν][0]);
     DrawTextEx(font, txt, (Vector2){x + 3, y - 3}, fontSize, spacing,
                colors[color_index][1]);
-    DrawTextEx(font, TextFormat("%ld", t), (Vector2){x + 3, y + 12},
-               fontSize / 1.5f, spacing, colors[color_index][1]);
+    if (raw)
+      DrawTextEx(font, TextFormat("%ld", t), (Vector2){x + 3, y + 12},
+                 fontSize / 1.5f, spacing, colors[color_index][1]);
     long this_cell_width = textsize.x + 15;
     if (o[t] == nl)
       y += CELL_HEIGHT,
@@ -148,7 +150,7 @@ S(drawVMState) {
     if (δ == +1)
       drawStacks(OS);
     else
-      drawStacks(o, α, β, τ, σ, ρ, δ, ν);
+      drawStacks(o, α, β, ω, τ, σ, ρ, δ, ν);
   }
   if (going_to)
     DrawGoToTable();
@@ -156,9 +158,8 @@ S(drawVMState) {
   EndDrawing();
 }
 extern void exit(int __status) __THROW __attribute__((__noreturn__));
-static const char *backgroundImages[] = {"background_2000.png",
-                                         "background_2048.png",
-                                         "background_2049.png"};
+static const char *backgroundImages[] = {
+    "background_2000.png", "background_2048.png", "background_2049.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
 N(ti_debug) {
@@ -257,8 +258,8 @@ static const Color colors[][2] = {
 const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
                       "Blue",    "Green",  "Yellow", "Red",  "Purple"};
 static int stops[127] = {
-    ['b'] = begin, ['d'] = dot,   ['e'] = end,   ['N'] = name,
-    ['l'] = nl,    ['n'] = nop,   ['r'] = print, ['p'] = put,
+    ['b'] = begin, ['d'] = dot,   ['e'] = end,   ['n'] = name,
+    ['l'] = nl,    ['N'] = nop,   ['r'] = print, ['p'] = put,
     ['t'] = tab,   ['a'] = tword, ['T'] = sword,
 };
 static void DrawGoToTable() {

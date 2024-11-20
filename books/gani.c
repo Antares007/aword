@@ -5,21 +5,23 @@ N(book_of_gani_e) { οGreen(book_of_gani), τ += 11, Green(OS); }
 
 extern int strcmp(const char *, const char *);
 N(book_of_ani_s);
-S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Green : Blue)(OS); }
-S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "gani"), book_of_ani_s(OS); }
+S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Yellow_Green : Yellow_Blue)(OS); }
+S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "gani", τ),
+                    book_of_ani_s(OS); }
 N(search);
 N(stop);
 N(Return);
 S(gani_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
-
                     οGreen(on_name, τ), οBlue(stop), search(OS); }
 
-S(gani_print    ) { long**b = β;
-                    while(b[3][-1])
-                      (b[3][1] < 1000
-                       ? printf("%ld ", b[3][1])
-                       : printf("%s", (char*)b[3][1])), b = b[3][-1];
-                    printf("\n");
+S(gani_print    ) { //long**b = β;
+                    //while(b[3][-1])
+                    //  (b[3][1] < 1000
+                    //   ? printf("%ld ", b[3][1])
+                    //   : printf("%s", (char*)b[3][1])), b = b[3][-1];
+                    //printf("\n");
+                    οRed(Red, ω[3][0]);
+                    printf("ω=%ld\n", ω[3][0]);
                     book_of_gani_e(OS); }
 
 N(gani_tword    ) { const char *t = o[τ + 1];
@@ -30,14 +32,15 @@ N(gani_tword    ) { const char *t = o[τ + 1];
                       οBlue(Blue, s, length, pos + 1),
                       book_of_gani_e(OS);
                     else
-                      Yellow(OS); }
+                      Yellow_Blue(OS); }
 
 
 N(book_of_bani_s);
 N(cursor);
-S(gani_dot      ) { οMaroon(check_lr, "dot"), οYellow(book_of_bani_s, α[0][1], α), οYellow(cursor);
+S(gani_dot      ) { οMaroon(check_lr, "dot", τ), οYellow(book_of_bani_s, α[0][1], α, ω), οYellow(cursor);
                     Olive(OS); }
-S(gani_put      ) { οRed(Red, o[τ + 1]), book_of_gani_e(OS); }
+S(gani_put      ) { οRed(Red, o[τ + 1]), ωRed(o[τ + 1]),
+                    book_of_gani_e(OS); }
 S(gani_rword    ) { ((n_t)o[τ + 1])(OS); }
 S(book_of_gani  ) {
   is_a_book_of(
