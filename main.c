@@ -62,9 +62,9 @@ N(programS) {
   begin Sword("S") print end nl;
   name("S") nl;
     tab Tword("b") dot nl;
-    tab Sword("S") Tword("a") dot nl;
+    tab Sword("S") Tword("a") dot Tword("t") dot Tword("o") dot  nl;
     tab Sword("S") Tword("t") dot nl;
-  οBlue(Blue, "bat", 3, 0), book_of_gani_e(OS);
+  οBlue(Blue, "bato", 4, 0), book_of_gani_e(OS);
 }
 N(programAB) {
   begin Sword("A") print end nl;
@@ -110,16 +110,16 @@ N(program_isamntpwab) {
 }
 N(plus  ) { long right = ω[3][0]; ω = ω[3][-1];
             long left = ω[3][0]; ω = ω[3][-1]; 
-            ωRed(left + right), book_of_gani_e(OS); }
+            οTomato(left + right), book_of_gani_e(OS); }
 N(minus ) { long right = ω[3][0]; ω = ω[3][-1];
             long left = ω[3][0]; ω = ω[3][-1]; 
-            ωRed(left - right), book_of_gani_e(OS); }
+            οTomato(left - right), book_of_gani_e(OS); }
 N(mul   ) { long right = ω[3][0]; ω = ω[3][-1];
             long left = ω[3][0]; ω = ω[3][-1]; 
-            ωRed(left * right), book_of_gani_e(OS); }
+            οTomato(left * right), book_of_gani_e(OS); }
 N(div   ) { long right = ω[3][0]; ω = ω[3][-1];
             long left = ω[3][0]; ω = ω[3][-1]; 
-            ωRed(left / right), book_of_gani_e(OS); }
+            οTomato(left / right), book_of_gani_e(OS); }
 N(programExpr) {
   begin Sword("E") print end nl;
   name("E") nl;
@@ -133,6 +133,15 @@ N(programExpr) {
     tab Tword("8") Put(8) dot nl;
     tab Tword("9") Put(9) dot nl;
   οBlue(Blue, "(2+3)*(8+9)", 11, 0), book_of_gani_e(OS);
+}
+N(program123) {
+  begin Sword("d") print end nl;
+  name("d") nl;
+    tab Tword("1") dot Tword("2") dot Tword("3") dot Sword("s") dot  nl;
+  name("s") nl;
+    tab Tword("6") dot nl;
+    tab Tword("5") dot nl;
+  οBlue(Blue, "1235", 4, 0), book_of_gani_e(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
@@ -149,5 +158,5 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  programExpr(OS);
+  οOlive(Yellow), programS(OS);
 }

@@ -38,10 +38,10 @@ extern int printf(const char *__restrict __format, ...);
 #define R(β, ...)                                                                                            \
   (long[]){__func__, FIRSTR(__VA_ARGS__), sizeof((long[]){__VA_ARGS__}) / sizeof(long), β, __VA_ARGS__} + 4
 
-#define ωRed(...)     ω = (long *[]){ω[0],ω[1],ω[2],R(ω,__VA_ARGS__)}
-#define ωYellow(...)  ω = (long *[]){ω[0],ω[1],R(ω,__VA_ARGS__),ω[3]}
-#define ωGreen(...)   ω = (long *[]){ω[0],R(ω,__VA_ARGS__),ω[2],ω[3]}
-#define ωBlue(...)    ω = (long *[]){R(ω,__VA_ARGS__),ω[1],ω[2],ω[3]}
+#define οTomato(...)  ω = (long *[]){ω[0],ω[1],ω[2],R(ω,__VA_ARGS__)}
+#define οGold(...)    ω = (long *[]){ω[0],ω[1],R(ω,__VA_ARGS__),ω[3]}
+#define οTeal(...)    ω = (long *[]){ω[0],R(ω,__VA_ARGS__),ω[2],ω[3]}
+#define οCyan(...)    ω = (long *[]){R(ω,__VA_ARGS__),ω[1],ω[2],ω[3]}
 
 #define οRed(...)     β = (long *[]){β[0],β[1],β[2],R(β,__VA_ARGS__)}
 #define οYellow(...)  β = (long *[]){β[0],β[1],R(β,__VA_ARGS__),β[3]}
