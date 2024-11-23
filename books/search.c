@@ -3,7 +3,7 @@
 extern int strcmp(const char *, const char *);
 S(match         ) { (strcmp(o[τ + 1], o[β[ρGreen][1] + 1]) == 0 ? Green : Blue)(OS); }
 S(book_of_rise);
-N(book_of_rise_n) { οBlue(book_of_rise), τ = ((τ >> Σ) - 1) << Σ, Blue(OS); }
+N(book_of_rise_n) { τ = ((τ >> Σ) - 1) << Σ, sdb(OS), book_of_rise(OS); }
 S(rise_name     ) { οBlue(book_of_rise_n), match(OS); }
 S(book_of_rise  ) {
   is_a_book_of(
@@ -14,7 +14,7 @@ S(book_of_rise  ) {
   )
 }
 S(book_of_dive);
-N(book_of_dive_n) { οBlue(book_of_dive), τ = ((τ >> Σ) + 1) << Σ, Blue(OS); }
+N(book_of_dive_n) { τ = ((τ >> Σ) + 1) << Σ, sdb(OS), book_of_dive(OS); }
 S(dive_name     ) { οBlue(book_of_dive_n), match(OS); }
 S(book_of_dive  ) {
   is_a_book_of(

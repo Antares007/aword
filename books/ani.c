@@ -6,8 +6,9 @@ S(nearch        ) { τ = β[ρGreen][1], book_of_rise_n(OS); }
 N(search        ) { οBlue(nearch), book_of_dive_n(OS); }
 
 S(book_of_ani);
-N(book_of_ani_e ) { οYellow(book_of_ani), τ += 11, Yellow(OS); }
-N(book_of_ani_s ) { οYellow(book_of_ani), τ += 1 << Σ, Yellow(OS); }
+N(sdb);
+N(book_of_ani_e ) { τ += 11, sdb(OS), book_of_ani(OS); }
+N(book_of_ani_s ) { τ += 1 << Σ, sdb(OS), book_of_ani(OS); }
 N(ani           ) { book_of_ani_e(OS); }
 
 N(gani_tword);
@@ -40,8 +41,8 @@ S(ani_tab       ) { οYellow(book_of_ani_s, τ, α, ω), οYellow(cursor);
 S(book_of_ani   ) {
   is_a_book_of(
     [tab  ] = ani_tab,
-    [tword] = gani_tword,
-    [sword] = ani_sword,
+    [aword] = gani_tword,
+    [tword] = ani_sword,
     [name ] = Yellow,
     [halt ] = Yellow,
   )

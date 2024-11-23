@@ -10,8 +10,8 @@
   X(print)                                                                     \
   X(put)                                                                       \
   X(tab)                                                                       \
+  X(aword)                                                                     \
   X(tword)                                                                     \
-  X(sword)                                                                     \
   X(rword)                                                                     \
   X(dot)                                                                       \
   X(end)
@@ -59,9 +59,9 @@ extern int printf(const char *__restrict __format, ...);
 #define ρBlue   0
 
 N(sdb);
-#define is_a_book_of(...)                                                      \
-  static n_t nars[Names_Count] = {__VA_ARGS__};                                \
-  if (nars[o[τ]]) sdb(OS), nars[o[τ]](OS);                                     \
+#define is_a_book_of(...)                                                     \
+  static n_t nars[Names_Count] = {__VA_ARGS__};                               \
+  if (nars[o[τ]]) nars[o[τ]](OS);                                             \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
 N(Red   );

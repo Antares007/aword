@@ -2,8 +2,8 @@
 #include "../main.h"
 S(book_of_bani);
 
-S(book_of_bani_e) { οRed(book_of_bani), τ += 11, Red(OS); }
-N(book_of_bani_s) { οRed(book_of_bani), τ += 1 << Σ, Red(OS); }
+S(book_of_bani_e) { τ += 11, sdb(OS), book_of_bani(OS); }
+N(book_of_bani_s) { τ += 1 << Σ, sdb(OS), book_of_bani(OS); }
 
 N(cursor);
 S(bani_tab      ) { οYellow(book_of_bani_s, τ, α, ω), οYellow(cursor);
@@ -27,9 +27,9 @@ S(bani_sword    ) { οYellow(goin, book_of_gani_e, Yellow),
 S(book_of_bani  ) {
   is_a_book_of(
     [tab  ] = bani_tab,
-    [sword] = bani_sword,
+    [tword] = bani_sword,
     [name ] = Yellow,
     [halt ] = Yellow,
-    [tword] = Yellow,
+    [aword] = Yellow,
   )
 }
