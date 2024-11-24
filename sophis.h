@@ -54,10 +54,18 @@ extern int printf(const char *__restrict __format, ...);
 #define οOlive(...)   α = (long *[]){α[0],α[1],R(α,__VA_ARGS__),α[3]}
 #define οMaroon(...)  α = (long *[]){α[0],α[1],α[2],R(α,__VA_ARGS__)}
 
-#define ρRed    3
-#define ρYellow 2
-#define ρGreen  1
-#define ρBlue   0
+#define βRed    β[3]
+#define βYellow β[2]
+#define βGreen  β[1]
+#define βBlue   β[0]
+#define αMaroon α[3]
+#define αOlive  α[2]
+#define αLime   α[1]
+#define αNavy   α[0]
+#define ωTomato ω[3]
+#define ωGold   ω[2]
+#define ωTeal   ω[1]
+#define ωCyan   ω[0]
 
 N(sdb);
 #define is_a_book_of(...)                                                     \

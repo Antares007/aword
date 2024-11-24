@@ -6,20 +6,16 @@ N(book_of_ani_e);
 N(book_of_ani_s);
 extern int strcmp(const char *, const char *);
 extern int getchar(void);
-N(cursor        ) { τ = β[ρYellow][1],
-                    α = β[ρYellow][2],
-                    ω = β[ρYellow][3], Yellow_Green(OS); }
+N(reset_alfa    ) { α = βYellow[1], Yellow(OS); }
 
-N(reset_alfa    ) { α = β[2][1], Yellow(OS); }
-
-S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0
+S(check_lr      ) { (strcmp(o[αNavy[1] + 1], o[τ + 1]) == 0
                     ? Yellow_Green
                     : Maroon)(OS); }
 
 S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "ani", τ),
                     book_of_ani_s(OS); }
 
-N(Return        ) { τ = α[ρYellow][1], Olive(OS); }
+N(Return        ) { τ = αOlive[1], Olive(OS); }
 N(stop          ) { P; } 
 N(book_of_gani_e);
 S(goin_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
@@ -28,6 +24,10 @@ S(goin_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
 S(ani_tword     ) { οYellow(goin_sword, Yellow, Yellow),
                     οYellow(Yellow_NAO, α),
                     οYellow(reset_alfa), Maroon(OS); }
+
+N(cursor        ) { τ = βYellow[1],
+                    α = βYellow[2],
+                    ω = βYellow[3], Yellow_Green(OS); }
 
 S(ani_tab       ) { οYellow(book_of_ani_s, τ, α, ω), οYellow(cursor);
                     book_of_ani_e(OS); }
