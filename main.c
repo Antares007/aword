@@ -1,36 +1,32 @@
 // clang-format off
 #include "main.h"
-N(sdb       );
-N(Yellow    ) __attribute__((noinline));
-N(Red       ) __attribute__((noinline));
-N(Green     ) __attribute__((noinline));
-N(Blue      ) __attribute__((noinline));
+#define Step(Name, Side, Nau, Ray, Capstone, Delta) \
+  N(Name) { ρ = Side, δ = Delta, ν = Nau, sdb(OS);  \
+            n_t nar = Capstone[Side][Ray];          \
+            Capstone = Capstone[Side][-1], nar(OS); \
+  }
+#define Steps(Name, Side, Capstone, Delta)    \
+  Step(Name,        Side, ν, 0, Capstone, +1) \
+  Step(Name##_Red,  Side, 2, 0, Capstone, +1) \
+  Step(Name##_Green,Side, 1, 0, Capstone, +1) \
+  Step(Name##_Blue, Side, 0, 0, Capstone, +1) \
+  Step(Name##_NAO,  Side, ν, ν, Capstone, +1)
 
-N(Red       ) { ρ = ρRed   , δ = +1, sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Yellow    ) { ρ = ρYellow, δ = +1, sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Green     ) { ρ = ρGreen , δ = +1, sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Blue      ) { ρ = ρBlue  , δ = +1, sdb(OS), ((n_t *)β[ρ])[0](o, β[ρ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Navy      ) { ρ = ρBlue  , δ = -1, sdb(OS), ((n_t *)α[ρ])[0](o, β, α[ρ][-1], ω, τ, σ, ρ, δ, ν); }
-N(Lime      ) { ρ = ρGreen , δ = -1, sdb(OS), ((n_t *)α[ρ])[0](o, β, α[ρ][-1], ω, τ, σ, ρ, δ, ν); }
-N(Olive     ) { ρ = ρYellow, δ = -1, sdb(OS), ((n_t *)α[ρ])[0](o, β, α[ρ][-1], ω, τ, σ, ρ, δ, ν); }
-N(Maroon    ) { ρ = ρRed   , δ = -1, sdb(OS), ((n_t *)α[ρ])[0](o, β, α[ρ][-1], ω, τ, σ, ρ, δ, ν); }
+Steps(Red,    3, β, +1)
+Steps(Yellow, 2, β, +1)
+Steps(Green,  1, β, +1)
+Steps(Blue,   0, β, +1)
 
-N(Yellow_Blue ) { ν = 0, Yellow(OS); }
-N(Yellow_Green) { ν = 1, Yellow(OS); }
-N(Yellow_Red  ) { ν = 2, Yellow(OS); }
-N(Yellow_NAO  ) { ((n_t *)β[ρYellow ])[ν](o, β[ρYellow][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Red_Blue    ) { ν = 0, Red(OS); }                              
-N(Red_Green   ) { ν = 1, Red(OS); }                              
-N(Red_Red     ) { ν = 2, Red(OS); }                              
-N(Red_NAO     ) { ((n_t *)β[ρRed    ])[ν](o, β[ρRed   ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Green_Blue  ) { ν = 0, Green(OS); }                            
-N(Green_Green ) { ν = 1, Green(OS); }                            
-N(Green_Red   ) { ν = 2, Green(OS); }                            
-N(Green_NAO   ) { ((n_t *)β[ρGreen  ])[ν](o, β[ρGreen ][-1], α, ω, τ, σ, ρ, δ, ν); }
-N(Blue_Blue   ) { ν = 0, Blue(OS); }                             
-N(Blue_Green  ) { ν = 1, Blue(OS); }                             
-N(Blue_Red    ) { ν = 2, Blue(OS); }                             
-N(Blue_NAO    ) { ((n_t *)β[ρBlue   ])[ν](o, β[ρBlue  ][-1], α, ω, τ, σ, ρ, δ, ν); }
+Steps(Maroon, 3, α, -1)
+Steps(Olive,  2, α, -1)
+Steps(Lime,   1, α, -1)
+Steps(Navy,   0, α, -1)
+
+Steps(Tomato, 3, ω, +1)
+Steps(Gold,   2, ω, +1)
+Steps(Teal,   1, ω, +1)
+Steps(Cyan,   0, ω, +1)
+
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
