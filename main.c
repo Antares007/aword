@@ -174,5 +174,5 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οOlive(Yellow), programS(OS);
+  οOlive(Yellow), programExpr(OS);
 }

@@ -1,9 +1,6 @@
 // clang-format off
 #include "../main.h"
-N(sdb);
-S(book_of_gani);
-N(book_of_gani_e) { τ += 11, sdb(OS), book_of_gani(OS); }
-
+N(book_of_gani_e);
 extern int strcmp(const char *, const char *);
 N(book_of_ani_s);
 S(check_lr      ) { (strcmp(o[α[0][1] + 1], o[τ + 1]) == 0 ? Yellow_Green : Yellow_Blue)(OS); }
@@ -45,7 +42,9 @@ S(gani_dot      ) { οYellow(book_of_gani_e, τ, α, ω), οYellow(cursor);
 S(gani_put      ) { οRed(Red, o[τ + 1]), οTomato(o[τ + 1]),
                     book_of_gani_e(OS); }
 S(gani_rword    ) { ((n_t)o[τ + 1])(OS); }
-S(book_of_gani  ) {
+N(sdb);
+N(book_of_gani_e) {
+  τ += 11;
   is_a_book_of(
     [aword] = gani_tword,
     [tword] = gani_sword,

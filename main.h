@@ -61,7 +61,7 @@ extern int printf(const char *__restrict __format, ...);
 N(sdb);
 #define is_a_book_of(...)                                                     \
   static n_t nars[Names_Count] = {__VA_ARGS__};                               \
-  if (nars[o[τ]]) nars[o[τ]](OS);                                             \
+  if (nars[o[τ]]) sdb(OS), nars[o[τ]](OS);                                    \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
 N(Red   );
