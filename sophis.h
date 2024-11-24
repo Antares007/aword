@@ -64,28 +64,22 @@ N(sdb);
   if (nars[o[τ]]) sdb(OS), nars[o[τ]](OS);                                    \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
-N(Red   );
-N(Yellow);
-N(Green );
-N(Blue  );
-N(Navy  );
-N(Lime  );
-N(Olive );
-N(Maroon);
-
-N(Yellow_Red);
-N(Yellow_Green);
-N(Yellow_Blue);
-N(Yellow_NAO);
-N(Red_Red);
-N(Red_Green);
-N(Red_Blue);
-N(Red_NAO);
-N(Green_Red);
-N(Green_Green);
-N(Green_Blue);
-N(Green_NAO);
-N(Blue_Red);
-N(Blue_Green);
-N(Blue_Blue);
-N(Blue_NAO);
+#define Protos(Name)  \
+  N(Name);            \
+  N(Name##_Red);      \
+  N(Name##_Green);    \
+  N(Name##_Blue);     \
+  N(Name##_NAO)
+Protos(Red);
+Protos(Yellow);
+Protos(Green);
+Protos(Blue);
+Protos(Maroon);
+Protos(Olive);
+Protos(Lime);
+Protos(Navy);
+Protos(Tomato);
+Protos(Gold);
+Protos(Teal);
+Protos(Cyan);
+#undef Protos

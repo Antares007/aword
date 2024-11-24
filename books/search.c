@@ -1,5 +1,5 @@
 // clang-format off
-#include "../main.h"
+#include "../sophis.h"
 extern int strcmp(const char *, const char *);
 S(book_of_rise);
 N(search      ) { τ = σ, book_of_rise(OS); }

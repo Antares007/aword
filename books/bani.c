@@ -1,5 +1,5 @@
 // clang-format off
-#include "../main.h"
+#include "../sophis.h"
 N(cursor);
 N(book_of_bani_s);
 S(book_of_bani_e);
@@ -15,7 +15,7 @@ S(check_lr      ) { (strcmp(o[α[2][1] + 1], o[τ + 1]) == 0 ? Yellow_Red : Maro
 S(goin          ) { οOlive(book_of_gani_e, τ), οMaroon(check_lr, "bani", τ), οOlive(Return);
                     οGreen(book_of_bani_s, τ), οBlue(stop), search(OS); }
 N(reset_alfa);
-S(bani_sword    ) { οYellow(goin, book_of_gani_e, Yellow),
+S(bani_tword    ) { οYellow(goin, book_of_gani_e, Yellow),
                     οYellow(Yellow_NAO, α),
                     οYellow(reset_alfa),  Maroon(OS); }
 N(book_of_bani_s) {
@@ -29,7 +29,7 @@ N(book_of_bani_s) {
 S(book_of_bani_e) {
   τ += 11;
   is_a_book_of(
-    [tword] = bani_sword,
+    [tword] = bani_tword,
     [aword] = Yellow,
   )
 }

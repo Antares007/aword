@@ -1,5 +1,5 @@
 // clang-format off
-#include "main.h"
+#include "sophis.h"
 #define Step(Name, Side, Nau, Ray, Capstone, Delta) \
   N(Name) { ρ = Side, δ = Delta, ν = Nau, sdb(OS);  \
             n_t nar = Capstone[Side][Ray];          \

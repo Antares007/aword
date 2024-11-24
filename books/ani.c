@@ -1,5 +1,5 @@
 // clang-format off
-#include "../main.h"
+#include "../sophis.h"
 N(book_of_rise);
 N(search);
 N(book_of_ani_e);
@@ -25,19 +25,19 @@ N(book_of_gani_e);
 S(goin_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
                     οGreen(on_name, τ), οBlue(stop), search(OS); }
 
-S(ani_sword     ) { οYellow(goin_sword, Yellow, Yellow),
+S(ani_tword     ) { οYellow(goin_sword, Yellow, Yellow),
                     οYellow(Yellow_NAO, α),
                     οYellow(reset_alfa), Maroon(OS); }
 
 S(ani_tab       ) { οYellow(book_of_ani_s, τ, α, ω), οYellow(cursor);
                     book_of_ani_e(OS); }
 
-N(gani_tword);
+N(gani_aword);
 N(book_of_ani_e ) {
   τ += 11;
   is_a_book_of(
-    [aword] = gani_tword,
-    [tword] = ani_sword,
+    [aword] = gani_aword,
+    [tword] = ani_tword,
   )
 }
 N(book_of_ani_s ) {

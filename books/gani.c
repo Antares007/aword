@@ -1,5 +1,5 @@
 // clang-format off
-#include "../main.h"
+#include "../sophis.h"
 N(book_of_gani_e);
 extern int strcmp(const char *, const char *);
 N(book_of_ani_s);
@@ -9,7 +9,7 @@ S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "gani", τ),
 N(search);
 N(stop);
 N(Return);
-S(gani_sword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
+S(gani_tword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
                     οGreen(on_name, τ), οBlue(stop), search(OS); }
 
 S(gani_print    ) { long**b = β;
@@ -22,7 +22,7 @@ S(gani_print    ) { long**b = β;
                     //printf("ω=%ld\n", ω[3][0]);
                     book_of_gani_e(OS); }
 
-N(gani_tword    ) { const char *t = o[τ + 1];
+N(gani_aword    ) { const char *t = o[τ + 1];
                     const char *s = β[ρBlue][1];
                     long length   = β[ρBlue][2];
                     long pos      = β[ρBlue][3];
@@ -42,12 +42,11 @@ S(gani_dot      ) { οYellow(book_of_gani_e, τ, α, ω), οYellow(cursor);
 S(gani_put      ) { οRed(Red, o[τ + 1]), οTomato(o[τ + 1]),
                     book_of_gani_e(OS); }
 S(gani_rword    ) { ((n_t)o[τ + 1])(OS); }
-N(sdb);
 N(book_of_gani_e) {
   τ += 11;
   is_a_book_of(
-    [aword] = gani_tword,
-    [tword] = gani_sword,
+    [aword] = gani_aword,
+    [tword] = gani_tword,
     [dot  ] = gani_dot,
     [nl   ] = Yellow,
     [end  ] = Yellow,

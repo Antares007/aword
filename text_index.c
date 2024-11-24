@@ -1,4 +1,4 @@
-#include "main.h"
+#include "sophis.h"
 #include <raylib.h>
 #include <raymath.h>
 const long CELL_WIDTH = 90;
