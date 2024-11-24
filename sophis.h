@@ -26,8 +26,9 @@ static const char *sopcode_names[] = {NAMES};
 
 #define Σ 8
 #define OS o, β, α, ω, τ, σ, ρ, δ, ν
-#define N(argo)                                                                \
-  void argo(long *o, long **β, long **α, long**ω, long τ, long σ, long ρ, long δ, long ν)
+#define SC long *o, long **β, long **α, long**ω, long τ, long σ, long ρ, long δ, long ν
+
+#define N(argo) void argo(SC)
 #define S(argo) static N(argo)
 typedef N((*n_t));
 
@@ -61,7 +62,7 @@ extern int printf(const char *__restrict __format, ...);
 N(sdb);
 #define is_a_book_of(...)                                                     \
   static n_t nars[Names_Count] = {__VA_ARGS__};                               \
-  if (nars[o[τ]]) sdb(OS), nars[o[τ]](OS);                                    \
+  if (nars[o[τ]]) nars[o[τ]](OS);                                             \
   else printf("%s[%s] is not implemented!\n", __func__, sopcode_names[o[τ]]);
 
 #define Protos(Name)  \

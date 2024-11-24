@@ -8,6 +8,7 @@ S(rise_name   ) { (strcmp(o[τ + 1], o[β[ρGreen][1] + 1]) == 0
                   : book_of_rise)(OS); }
 S(book_of_rise) {
   τ -= 1 << Σ;
+  ρ = 0, δ = -1, sdb(OS);
   is_a_book_of(
     [name ] = rise_name,
     [tab  ] = book_of_rise,

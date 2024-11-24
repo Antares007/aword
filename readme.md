@@ -69,5 +69,5 @@ If bodies of our actionable words,
 those which are expressed in the source language,  
 don't halt then the halting problem can be boiled down to  
 the problem of left recursion.  
-The solution is to create a new fractal layer within the CPU and add more details and missing capabilities to enable the new Central Language Processing Unit to handle left recursion naturally, by design.  
+The solution is to create a new fractal layer within the CPU and add more details and missing capabilities to enable the new Sophisticated Language Processing Unit to handle left recursion naturally, by design.  
 Once we settle the solution in its best form, we can move the implementation into the hardware.

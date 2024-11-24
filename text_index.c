@@ -57,7 +57,7 @@ static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
         colors[color_index][0]);
   EndMode2D();
 }
-N(drawStacks) {
+void drawStacks(long *o, long **β, long ρ, long δ) {
   float k_zoom = zoom / 1.5f;
   float sw = GetScreenWidth();
   float sh = GetScreenHeight();
@@ -68,7 +68,7 @@ N(drawStacks) {
   DrawBetaStack(o, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
   DrawBetaStack(o, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
 }
-N(drawEightStacks) {
+void drawEightStacks(long *o, long **β, long **α, long ρ, long δ) {
   float k_zoom = zoom / 1.5f;
   float sw = GetScreenWidth();
   float sh = GetScreenHeight();
@@ -89,7 +89,7 @@ N(drawEightStacks) {
 }
 static void DrawGoToTable();
 static void DrawBackGround();
-S(drawVMState) {
+static void drawVMState(long *o, long **β, long **α, long τ, long σ, long ρ, long δ, long ν) {
   ClearBackground(DARKGRAY);
   DrawBackGround();
 
@@ -143,14 +143,14 @@ S(drawVMState) {
   }
   EndMode2D();
   if (full_duplex)
-    drawEightStacks(OS);
+    drawEightStacks(o, β, α, ρ, δ);
   else {
     if (bside)
       δ = -δ;
     if (δ == +1)
-      drawStacks(OS);
+      drawStacks(o, β, ρ, δ);
     else
-      drawStacks(o, α, β, ω, τ, σ, ρ, δ, ν);
+      drawStacks(o, α, ρ, δ);
   }
   if (going_to)
     DrawGoToTable();
@@ -162,7 +162,8 @@ static const char *backgroundImages[] = {
     "background_2000.png", "background_2048.png", "background_2049.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
-N(ti_debug) {
+static void ti_debug(long *o, long **β, long **α, long τ, long σ, long ρ,
+              long δ, long ν) {
   o[τ - 1] = ρ;
   o[τ - 2] = δ;
   long key;
@@ -176,7 +177,7 @@ N(ti_debug) {
     else if (wheelMove < 0)
       zoom -= 0.1;
     key = GetCharPressed();
-    drawVMState(OS);
+    drawVMState(o, β, α, τ, σ, ρ, δ, ν);
 
     if (WindowShouldClose())
       CloseWindow(), exit(0);
@@ -226,7 +227,7 @@ void ti_init(void) {
   SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
-N(sdb) {
+void sdb(long *o, long **β, long **α, long **ω, long τ, long σ, long ρ, long δ, long ν) {
 #ifndef NDEBUG
   printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
          (char *)β[ρ][-4], sopcode_names[o[τ]]);
@@ -234,7 +235,7 @@ N(sdb) {
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);
   printf("\n");
-  ti_debug(OS);
+  ti_debug(o, β, α, τ, σ, ρ, δ, ν);
 #endif
 }
 static const Color oan_colors[][2] = {

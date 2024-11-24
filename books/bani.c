@@ -20,6 +20,7 @@ S(bani_tword    ) { οYellow(goin, book_of_gani_e, Yellow),
                     οYellow(reset_alfa),  Maroon(OS); }
 N(book_of_bani_s) {
   τ += 1 << Σ;
+  ρ = 3, δ = +1, sdb(OS);
   is_a_book_of(
     [tab  ] = bani_tab,
     [name ] = Yellow,
@@ -28,6 +29,7 @@ N(book_of_bani_s) {
 }
 S(book_of_bani_e) {
   τ += 11;
+  ρ = 3, δ = +1, sdb(OS);
   is_a_book_of(
     [tword] = bani_tword,
     [aword] = Yellow,

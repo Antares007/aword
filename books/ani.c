@@ -35,6 +35,7 @@ S(ani_tab       ) { οYellow(book_of_ani_s, τ, α, ω), οYellow(cursor);
 N(gani_aword);
 N(book_of_ani_e ) {
   τ += 11;
+  ρ = 2, δ = +1, sdb(OS);
   is_a_book_of(
     [aword] = gani_aword,
     [tword] = ani_tword,
@@ -42,6 +43,7 @@ N(book_of_ani_e ) {
 }
 N(book_of_ani_s ) {
   τ += 1 << Σ;
+  ρ = 2, δ = +1, sdb(OS);
   is_a_book_of(
     [tab  ] = ani_tab,
     [name ] = Yellow,

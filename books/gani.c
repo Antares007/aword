@@ -44,6 +44,7 @@ S(gani_put      ) { οRed(Red, o[τ + 1]), οTomato(o[τ + 1]),
 S(gani_rword    ) { ((n_t)o[τ + 1])(OS); }
 N(book_of_gani_e) {
   τ += 11;
+  ρ = 1, δ = +1, sdb(OS);
   is_a_book_of(
     [aword] = gani_aword,
     [tword] = gani_tword,
