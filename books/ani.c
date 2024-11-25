@@ -33,11 +33,13 @@ S(ani_tab       ) { οYellow(book_of_ani_s, τ, α, ω), οYellow(cursor);
                     book_of_ani_e(OS); }
 
 N(gani_aword);
+N(gani_dot);
 N(book_of_ani_e ) {
   τ += 11;
   ρ = 2, δ = +1, sdb(OS);
   is_a_book_of(
     [aword] = gani_aword,
+    [dot  ] = gani_dot,
     [tword] = ani_tword,
   )
 }

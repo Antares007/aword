@@ -130,31 +130,13 @@ N(programExpr) {
     tab aword("9") Put(9) dot nl;
   οBlue(Blue, "(2+3)*(8+9)", 11, 0), book_of_gani_e(OS);
 }
-N(program123) {
-  begin tword("programs") print end nl;
-  name("programs") nl;
-    tab aword("d") tword("d") dot nl;
-    tab aword("E") tword("E") dot nl;
-
-  name("d") nl;
-    tab aword("1") dot aword("2") dot aword("3") dot tword("s") dot  nl;
-
-  name("s") nl;
-    tab aword("6") dot nl;
-    tab aword("5") dot nl;
-
-  name("E") nl;
-    tab tword("E") aword("+") tword("E") Rword(plus) dot nl;
-    tab tword("E") aword("-") tword("E") Rword(minus) dot nl;
-    tab tword("E") aword("*") tword("E") Rword(mul) dot nl;
-    tab tword("E") aword("/") tword("E") Rword(div) dot nl;
-    tab aword("(") tword("E") aword(")") dot nl;
-    tab aword("2") Put(2) dot nl;
-    tab aword("3") Put(3) dot nl;
-    tab aword("8") Put(8) dot nl;
-    tab aword("9") Put(9) dot nl;
-
-  οBlue(Blue, "2+3", 3, 0), book_of_gani_e(OS);
+N(programSs) {
+  begin tword("Ss") print end nl;
+  name("Ss") nl;
+    tab dot nl;
+    tab aword("s") tword("Ss") tword("Ss") dot nl;
+    tab aword("s") tword("Ss") tword("Ss") dot nl;
+  οBlue(Blue, "ss", 2, 0), book_of_gani_e(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) { ti_init();
@@ -170,5 +152,5 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οOlive(Yellow), program_isamntpwab(OS);
+  οOlive(Yellow), programSs(OS);
 }

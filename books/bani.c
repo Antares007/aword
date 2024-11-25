@@ -33,5 +33,6 @@ S(book_of_bani_e) {
   is_a_book_of(
     [tword] = bani_tword,
     [aword] = Yellow,
+    [dot  ] = Yellow,
   )
 }

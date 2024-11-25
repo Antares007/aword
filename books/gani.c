@@ -13,11 +13,12 @@ S(gani_tword    ) { οOlive(book_of_gani_e, τ), οOlive(Return);
                     οGreen(on_name, τ), οBlue(stop), search(OS); }
 
 S(gani_print    ) { long**b = β;
+                    printf("Green(");
                     while(b[3][-1])
                       (b[3][1] < 1000
                        ? printf("%ld ", b[3][1])
                        : printf("%s", (char*)b[3][1])), b = b[3][-1];
-                    printf("\n");
+                    printf(")\n");
                     //οRed(Red, ωTomato[0]);
                     //printf("ω=%ld\n", ωTomato[0]);
                     book_of_gani_e(OS); }
@@ -35,7 +36,7 @@ N(gani_aword    ) { const char *t = o[τ + 1];
 
 N(book_of_bani_s);
 N(cursor);
-S(gani_dot      ) { οYellow(book_of_gani_e, τ, α, ω), οYellow(cursor);
+N(gani_dot      ) { οYellow(book_of_gani_e, τ, α, ω), οYellow(cursor);
                     οMaroon(check_lr, "dot", τ), οYellow(book_of_bani_s, αNavy[1], α, ω), οYellow(cursor);
                     Olive(OS); }
 S(gani_put      ) { οRed(Red, o[τ + 1]), οTomato(o[τ + 1]),
