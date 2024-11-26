@@ -14,7 +14,13 @@
   X(tword)                                                                     \
   X(rword)                                                                     \
   X(dot)                                                                       \
-  X(end)
+  X(end)                                                                       \
+  X(bword)                                                                     \
+  X(cword)                                                                     \
+  X(dword)  \
+  X(NOT)    \
+  X(AND)    \
+  X(OR)
 
 #define X(n) n,
 enum Names { NAMES Names_Count };
