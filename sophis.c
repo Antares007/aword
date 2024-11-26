@@ -31,18 +31,38 @@ extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(gani);
 
-#include "sisa.h"
+N(prn) {
+  long**b = ω;
+  printf("Green(");
+  while(b[3][-1])
+    (b[3][1] < 1000 ? printf("%ld ", b[3][1]) : printf("%s", (char*)b[3][1])), b = b[3][-1];
+  printf(")\n");
+  Green(OS);
+}
+N(term) {
+  const char *t = ο[τ + 2];
+  const char *s = ωCyan[1];
+  long length   = ωCyan[2];
+  long pos      = ωCyan[3];
+  if (pos < length && s[pos] == t[0])
+    οTomato(Tomato, t), οCyan(Cyan, s, length, pos + 1), Green(OS);
+  else
+    Blue(OS);
+}
 N(s) { Green(OS); }
+N(b) { term(OS); }
+N(a) { term(OS); }
+N(t) { term(OS); }
+#include "sisa.h"
 N(programS) {
-  begin tword(s) print end nl;
-  name(s) nl;
-    tab aword("b") dot nl;
-    tab tword(s) aword("a") dot nl;
-    tab tword(s) aword("t") dot nl;
-  οBlue(Blue, "bat", 3, 0), gani(OS);
+  B D(s) T(prn) _;
+  D(s) _;
+  B T(b) O _;
+  B D(s) T(a) O _;
+  B D(s) T(t) O _;
+  οCyan(Cyan, "bat", 3, 0), gani(OS);
 }
 void ti_init(void);
-N(program_aText);
 N(programAB);
 N(programExpr);
 N(programSs);
@@ -51,7 +71,7 @@ int main(int argc, char **argv) { ti_init();
   long *root = R(0, zero, 0);
   long *boot = R(0, zero, 0);
   long ram[0x10000];
-  long *o = ram + sizeof(ram) / sizeof(*ram) / 2;
+  long *ο = ram + sizeof(ram) / sizeof(*ram) / 2;
   long **β = (long *[]){root, root, root, root};
   long **α = (long *[]){boot, boot, boot, boot};
   long **ω = (long *[]){boot, boot, boot, boot};

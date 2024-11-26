@@ -19,7 +19,7 @@ static int skip_this_word = 0;
 static unsigned char opacity = 91;
 static int stops[127];
 static const char **stringify_ray(long *ray);
-static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
+static void DrawBetaStack(long *ο, long **β, int ρ, int selected, long δ,
                           float zoom, int r, int x, int y) {
   Camera2D k1 = {
       .target = {0, 0}, .rotation = r, .zoom = zoom, .offset = {x, y}};
@@ -57,18 +57,18 @@ static void DrawBetaStack(long *o, long **β, int ρ, int selected, long δ,
         colors[color_index][0]);
   EndMode2D();
 }
-void drawStacks(long *o, long **β, long ρ, long δ) {
+void drawStacks(long *ο, long **β, long ρ, long δ) {
   float k_zoom = zoom / 1.5f;
   float sw = GetScreenWidth();
   float sh = GetScreenHeight();
   float hw = sw / 2.f;
   float hh = sh / 2.f;
-  DrawBetaStack(o, β, 3, ρ == 3, δ, k_zoom, 0, hw, 10);
-  DrawBetaStack(o, β, 0, ρ == 0, δ, k_zoom, 90, sw - 10, hh);
-  DrawBetaStack(o, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
-  DrawBetaStack(o, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
+  DrawBetaStack(ο, β, 3, ρ == 3, δ, k_zoom, 0, hw, 10);
+  DrawBetaStack(ο, β, 0, ρ == 0, δ, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(ο, β, 1, ρ == 1, δ, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(ο, β, 2, ρ == 2, δ, k_zoom, 270, 10, hh);
 }
-void drawEightStacks(long *o, long **β, long **α, long ρ, long δ) {
+void drawEightStacks(long *ο, long **β, long **α, long ρ, long δ) {
   float k_zoom = zoom / 1.5f;
   float sw = GetScreenWidth();
   float sh = GetScreenHeight();
@@ -76,20 +76,21 @@ void drawEightStacks(long *o, long **β, long **α, long ρ, long δ) {
   float hh = sh / 2.f;
   hw -= 100 * zoom;
   hh -= 100 * zoom;
-  DrawBetaStack(o, β, 3, δ == +1 && ρ == 3, +1, k_zoom, 0, hw, 10);
-  DrawBetaStack(o, β, 0, δ == +1 && ρ == 0, +1, k_zoom, 90, sw - 10, hh);
-  DrawBetaStack(o, β, 1, δ == +1 && ρ == 1, +1, k_zoom, 180, hw, sh - 10);
-  DrawBetaStack(o, β, 2, δ == +1 && ρ == 2, +1, k_zoom, 270, 10, hh);
+  DrawBetaStack(ο, β, 3, δ == +1 && ρ == 3, +1, k_zoom, 0, hw, 10);
+  DrawBetaStack(ο, β, 0, δ == +1 && ρ == 0, +1, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(ο, β, 1, δ == +1 && ρ == 1, +1, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(ο, β, 2, δ == +1 && ρ == 2, +1, k_zoom, 270, 10, hh);
   hw += 200 * zoom;
   hh += 200 * zoom;
-  DrawBetaStack(o, α, 3, δ == -1 && ρ == 3, -1, k_zoom, 0, hw, 10);
-  DrawBetaStack(o, α, 0, δ == -1 && ρ == 0, -1, k_zoom, 90, sw - 10, hh);
-  DrawBetaStack(o, α, 1, δ == -1 && ρ == 1, -1, k_zoom, 180, hw, sh - 10);
-  DrawBetaStack(o, α, 2, δ == -1 && ρ == 2, -1, k_zoom, 270, 10, hh);
+  DrawBetaStack(ο, α, 3, δ == -1 && ρ == 3, -1, k_zoom, 0, hw, 10);
+  DrawBetaStack(ο, α, 0, δ == -1 && ρ == 0, -1, k_zoom, 90, sw - 10, hh);
+  DrawBetaStack(ο, α, 1, δ == -1 && ρ == 1, -1, k_zoom, 180, hw, sh - 10);
+  DrawBetaStack(ο, α, 2, δ == -1 && ρ == 2, -1, k_zoom, 270, 10, hh);
 }
 static void DrawGoToTable();
 static void DrawBackGround();
-static void drawVMState(long *o, long **β, long **α, long τ, long σ, long ρ, long δ, long ν) {
+static void drawVMState(long *ο, long **β, long **α, long τ, long σ, long ρ,
+                        long δ, long ν) {
   ClearBackground(DARKGRAY);
   DrawBackGround();
 
@@ -98,27 +99,22 @@ static void drawVMState(long *o, long **β, long **α, long τ, long σ, long ρ
   BeginMode2D(camera);
   long text_width = 0, y = 0;
   for (long x = 0, t = 512; t < σ;) {
-    long color_index = (o[t - 1] + 1) * o[t - 2] + 5;
-    long opcode = o[t];
+    long color_index = (ο[t - 1] + 1) * ο[t - 2] + 5;
+    long opcode = ο[t];
     long selected = t == τ;
-    const char *txt =
-        raw == 1          ? TextFormat("%ld", o[t])
-        : raw == 2        ? TextFormat("%s", sopcode_names[o[t]])
-        : opcode == tword ? TextFormat("%2s", (char *)o[t + 1])
-        : opcode == name  ? TextFormat("%2s", (char *)o[t + 1])
-        : opcode == aword ? TextFormat("'%s'", (char *)o[t + 1])
-        : opcode == rword ? TextFormat("r()")
-        : opcode == put
-            ? (o[t + 1] < 1000 ? TextFormat("put %ld", o[t + 1])
-                               : TextFormat("put \"%s\"", (char *)o[t + 1]))
-            : TextFormat("%s", sopcode_names[o[t]]);
+    const char *txt = raw == 1          ? TextFormat("%ld", ο[t])
+                      : opcode == 1 ? TextFormat("b")
+                      : opcode == 2 ? TextFormat("'%s'", (char *)ο[t + 2])
+                      : opcode == 3 ? TextFormat("%s", (char *)ο[t + 2])
+                      : opcode == 4   ? TextFormat(".")
+                                        : TextFormat("%ld", ο[t]);
     float fontSize = 20, spacing = 0;
     Vector2 textsize = MeasureTextEx(font, txt, fontSize, spacing);
     if (textsize.x < 20)
       textsize.x = 20;
 
     Rectangle rect = (Rectangle){x, y, textsize.x + 10, CELL_HEIGHT - 5};
-    Color bgcolor = opcode == halt ? GRAY : colors[color_index][0];
+    Color bgcolor = opcode == 0 ? GRAY : colors[color_index][0];
     DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
     if (selected)
       DrawRectangleRoundedLines(rect, 0.2f, 10, 5, oan_colors[ν][0]);
@@ -128,7 +124,7 @@ static void drawVMState(long *o, long **β, long **α, long τ, long σ, long ρ
       DrawTextEx(font, TextFormat("%ld", t), (Vector2){x + 3, y + 12},
                  fontSize / 1.5f, spacing, colors[color_index][1]);
     long this_cell_width = textsize.x + 15;
-    if (o[t] == nl)
+    if (ο[t] == 0)
       y += CELL_HEIGHT,
           (text_width = text_width < (x + this_cell_width) ? x + this_cell_width
                                                            : text_width),
@@ -143,14 +139,14 @@ static void drawVMState(long *o, long **β, long **α, long τ, long σ, long ρ
   }
   EndMode2D();
   if (full_duplex)
-    drawEightStacks(o, β, α, ρ, δ);
+    drawEightStacks(ο, β, α, ρ, δ);
   else {
     if (bside)
       δ = -δ;
     if (δ == +1)
-      drawStacks(o, β, ρ, δ);
+      drawStacks(ο, β, ρ, δ);
     else
-      drawStacks(o, α, ρ, δ);
+      drawStacks(ο, α, ρ, δ);
   }
   if (going_to)
     DrawGoToTable();
@@ -162,10 +158,10 @@ static const char *backgroundImages[] = {
     "background_2000.png", "background_2048.png", "background_2049.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
-static void ti_debug(long *o, long **β, long **α, long τ, long σ, long ρ,
-              long δ, long ν) {
-  o[τ - 1] = ρ;
-  o[τ - 2] = δ;
+static void ti_debug(long *ο, long **β, long **α, long τ, long σ, long ρ,
+                     long δ, long ν) {
+  ο[τ - 1] = ρ;
+  ο[τ - 2] = δ;
   long key;
   static int semi_auto = 0;
   do {
@@ -177,7 +173,7 @@ static void ti_debug(long *o, long **β, long **α, long τ, long σ, long ρ,
     else if (wheelMove < 0)
       zoom -= 0.1;
     key = GetCharPressed();
-    drawVMState(o, β, α, τ, σ, ρ, δ, ν);
+    drawVMState(ο, β, α, τ, σ, ρ, δ, ν);
 
     if (WindowShouldClose())
       CloseWindow(), exit(0);
@@ -190,7 +186,7 @@ static void ti_debug(long *o, long **β, long **α, long τ, long σ, long ρ,
       going_to = 1;
     else if (going_to && key < (sizeof(stops) / sizeof(*stops)) && stops[key])
       going_to = 0, skip_until = stops[key];
-    else if (skip_until == o[τ])
+    else if (skip_until == ο[τ])
       skip_until = -1;
     else if (going_to && key)
       going_to = 0;
@@ -207,7 +203,7 @@ static void ti_debug(long *o, long **β, long **α, long τ, long σ, long ρ,
     else if (key == 'b')
       bside = !bside;
     else if (key == 'r')
-      raw = (raw + 1) % 3;
+      raw = !raw;
     else if (key == 'c' && skip_until != -1)
       skip_until = -1;
     else if (key == 'c')
@@ -227,15 +223,16 @@ void ti_init(void) {
   SetTargetFPS(0);
   font = LoadFontEx("NovaMono-Regular.ttf", 135, 0, 0);
 }
-void sdb(long *o, long **β, long **α, long **ω, long τ, long σ, long ρ, long δ, long ν) {
+void sdb(long *ο, long **β, long **α, long **ω, long τ, long σ, long ρ, long δ,
+         long ν) {
 #ifndef NDEBUG
-  printf("%5s %7s %15s %7s ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
-         (char *)β[ρ][-4], sopcode_names[o[τ]]);
+  printf("%5s %7s %15s %ld ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
+         (char *)β[ρ][-4], ο[τ]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);
   printf("\n");
-  ti_debug(o, β, α, τ, σ, ρ, δ, ν);
+  ti_debug(ο, β, α, τ, σ, ρ, δ, ν);
 #endif
 }
 static const Color oan_colors[][2] = {
@@ -259,9 +256,10 @@ static const Color colors[][2] = {
 const char *rays[] = {"Fuchsia", "Maroon", "Olive",  "Lime", "Navy",  "White",
                       "Blue",    "Green",  "Yellow", "Red",  "Purple"};
 static int stops[127] = {
-    ['b'] = begin, ['d'] = dot,   ['e'] = end,   ['n'] = name,
-    ['l'] = nl,    ['N'] = nop,   ['r'] = print, ['p'] = put,
-    ['t'] = tab,   ['a'] = aword, ['T'] = tword,
+    ['b'] = 1,
+    ['a'] = 2,
+    ['t'] = 3,
+    ['o'] = 4,
 };
 static void DrawGoToTable() {
   long top = 0;
@@ -271,7 +269,7 @@ static void DrawGoToTable() {
       continue;
     Rectangle rect = {0, top, 6 * font_size, font_size + 5};
     DrawRectangleRounded(rect, 0.1f, 10, WHITE);
-    DrawTextEx(font, TextFormat("%c - %s", i, sopcode_names[stops[i]]),
+    DrawTextEx(font, TextFormat("%c - %ld", i, stops[i]),
                (Vector2){rect.x + 10, rect.y}, font_size, 0, BLACK);
     top += font_size + 5;
   }

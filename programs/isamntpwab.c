@@ -1,39 +1,50 @@
 #include "../sophis.h"
 #include "../sisa.h"
 N(gani);
-S(s) { Green(OS); }
 S(np) { Green(OS); }
 S(vp) { Green(OS); }
 S(pp) { Green(OS); }
+S(det) { Green(OS); }
 S(noun) { Green(OS); }
 S(verb) { Green(OS); }
 S(prep) { Green(OS); }
+N(term);
+S(i) { term(OS); }
+S(s) { if(ο[τ] == 3) Green(OS); else term(OS); }
+S(a) { term(OS); }
+S(m) { term(OS); }
+S(n) { term(OS); }
+S(t) { term(OS); }
+S(p) { term(OS); }
+S(w) { term(OS); }
+S(b) { term(OS); }
+N(prn);
 N(program_isamntpwab) {
-  begin tword(s) end nl;
-  name(s) nl;                             //  s
-    tab tword(np) tword(vp) dot nl;       //      ::= np vp
-    tab tword(s) tword(pp) dot nl;        //        | s pp
-  name(np) nl;                            //  np
-    tab tword(noun) dot nl;               //      ::= noun
-    tab tword("det") tword(noun) dot nl;  //        | det noun
-    tab tword(np) tword(pp) dot nl;       //        | np pp
-  name(pp) nl;                            //  pp
-    tab tword(prep) tword(np) dot nl;     //      ::= prep np
-  name(vp) nl;                            //  vp
-    tab tword(verb) tword(np) dot nl;     //      ::= verb np
-  name("det") nl;                         //  det
-    tab aword("a") dot nl;                //      ::= ’a’
-    tab aword("t") dot nl;                //        | ’t’
-  name(noun) nl;                          //  noun
-    tab aword("i") dot nl;                //      ::= ’i’
-    tab aword("m") dot nl;                //        | ’m’
-    tab aword("p") dot nl;                //        | ’p’
-    tab aword("b") dot nl;                //        | ’b’
-  name(verb) nl;                          //  verb
-    tab aword("s") dot nl;                //      ::= ’s’
-  name(prep) nl;                          //  prep
-    tab aword("n") dot nl;                //      ::= ’n’
-    tab aword("w") dot nl;                //        | ’w’
-  οBlue(Blue, "isamntpwab", 10, 0), gani(OS);
+  B D(s) T(prn) _;
+  D(s) _;               //  s
+  B D(np) D(vp) O _;    //      ::= np vp
+  B D(s) D(pp) O _;     //        | s pp
+  D(np) _;              //  np
+  B D(noun) O _;        //      ::= noun
+  B D(det) D(noun) O _; //        | det noun
+  B D(np) D(pp) O _;    //        | np pp
+  D(pp) _;              //  pp
+  B D(prep) D(np) O _;  //      ::= prep np
+  D(vp) _;              //  vp
+  B D(verb) D(np) O _;  //      ::= verb np
+  D(det) _;             //  det
+  B T(a) O _;           //      ::= ’a’
+  B T(t) O _;           //        | ’t’
+  D(noun) _;            //  noun
+  B T(i) O _;           //      ::= ’i’
+  B T(m) O _;           //        | ’m’
+  B T(p) O _;           //        | ’p’
+  B T(b) O _;           //        | ’b’
+  D(verb) _;            //  verb
+  B T(s) O _;           //      ::= ’s’
+  D(prep) _;            //  prep
+  B T(n) O _;           //      ::= ’n’
+  B T(w) O _;           //        | ’w’
+  οCyan(Cyan, "isamntpwab", 10, 0), gani(OS);
 }
 

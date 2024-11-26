@@ -1,14 +1,18 @@
 #include "../sophis.h"
 #include "../sisa.h"
-N(gani);
 
-S(Ss) { Green(OS); }
+N(gani);
+N(term);
+N(prn);
+N(Ss) { Green(OS); }
+S(s) { term(OS); }
+
 N(programSs) {
-  begin tword(Ss) print end nl;
-  name(Ss) nl;
-    tab dot nl;
-    tab aword("s") tword(Ss) tword(Ss) dot nl;
-    tab aword("s") tword(Ss) tword(Ss) dot nl;
-  οBlue(Blue, "ss", 2, 0), gani(OS);
+  B D(Ss) T(prn) _;
+  D(Ss) _;
+  B O _;
+  B T(s) D(Ss) D(Ss) O _;
+  B T(s) D(Ss) D(Ss) O _;
+  οCyan(Cyan, "ss", 2, 0), gani(OS);
 }
 

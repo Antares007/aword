@@ -1,32 +1,22 @@
 #include "../sophis.h"
 #include "../sisa.h"
 N(gani);
-
-N(plus  ) { long right = ω[3][0]; ω = ω[3][-1];
-            long left = ω[3][0]; ω = ω[3][-1]; 
-            οTomato(left + right), gani(OS); }
-N(minus ) { long right = ω[3][0]; ω = ω[3][-1];
-            long left = ω[3][0]; ω = ω[3][-1]; 
-            οTomato(left - right), gani(OS); }
-N(mul   ) { long right = ω[3][0]; ω = ω[3][-1];
-            long left = ω[3][0]; ω = ω[3][-1]; 
-            οTomato(left * right), gani(OS); }
-N(div   ) { long right = ω[3][0]; ω = ω[3][-1];
-            long left = ω[3][0]; ω = ω[3][-1]; 
-            οTomato(left / right), gani(OS); }
+#undef T
+N(term);
+#define T(v) ο[σ] = 2, ο[σ + 1] = term,  ο[σ + 2] = v, σ += 11,
 S(E) { Green(OS); }
 N(programExpr) {
-  begin tword(E) print end nl;
-  name(E) nl;
-    tab tword(E) aword("+") tword(E) Rword(plus) dot nl;
-    tab tword(E) aword("-") tword(E) Rword(minus) dot nl;
-    tab tword(E) aword("*") tword(E) Rword(mul) dot nl;
-    tab tword(E) aword("/") tword(E) Rword(div) dot nl;
-    tab aword("(") tword(E) aword(")") dot nl;
-    tab aword("2") Put(2) dot nl;
-    tab aword("3") Put(3) dot nl;
-    tab aword("8") Put(8) dot nl;
-    tab aword("9") Put(9) dot nl;
-  οBlue(Blue, "(2+3)*(8+9)", 11, 0), gani(OS);
+  B D(E) _;
+  D(E) _;
+  B D(E) T("+") D(E) O _;
+  B D(E) T("-") D(E) O _;
+  B D(E) T("*") D(E) O _;
+  B D(E) T("/") D(E) O _;
+  B T("(") D(E) T(")") O _;
+  B T("2") O _;
+  B T("3") O _;
+  B T("8") O _;
+  B T("9") O _;
+  οCyan(Cyan, "(2+3)*(8+9)", 11, 0), gani(OS);
 }
 
