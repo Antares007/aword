@@ -4,16 +4,12 @@ N(book_of_rise);
 N(search);
 N(book_of_ani_e);
 N(book_of_ani_s);
-extern int strcmp(const char *, const char *);
 extern int getchar(void);
 N(reset_alfa    ) { α = βYellow[1], Yellow(OS); }
 
-S(check_lr      ) { (strcmp(o[αNavy[1] + 1], o[τ + 1]) == 0
-                    ? Yellow_Green
-                    : Maroon)(OS); }
+S(check_lr      ) { (o[αNavy[1] + 2] == o[τ + 2] ? Yellow_Green : Maroon)(OS); }
 
-S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "ani", τ),
-                    book_of_ani_s(OS); }
+S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "ani", τ), book_of_ani_s(OS); }
 
 N(Return        ) { τ = αOlive[1], Olive(OS); }
 N(stop          ) { P; } 

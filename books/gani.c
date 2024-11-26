@@ -1,9 +1,8 @@
 // clang-format off
 #include "../sophis.h"
 N(book_of_gani_e);
-extern int strcmp(const char *, const char *);
 N(book_of_ani_s);
-S(check_lr      ) { (strcmp(o[αNavy[1] + 1], o[τ + 1]) == 0 ? Yellow_Green : Yellow_Blue)(OS); }
+S(check_lr      ) { (o[αNavy[1] + 2] ==  o[τ + 2] ? Yellow_Green : Yellow_Blue)(OS); }
 S(on_name       ) { οNavy(Navy, τ), οMaroon(check_lr, "gani", τ),
                     book_of_ani_s(OS); }
 N(search);

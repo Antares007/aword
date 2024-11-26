@@ -10,8 +10,7 @@ N(stop);
 N(book_of_gani_e);
 N(Return);
 N(search);
-extern int strcmp(const char *, const char *);
-S(check_lr      ) { (strcmp(o[αOlive[1] + 1], o[τ + 1]) == 0 ? Yellow_Red : Maroon)(OS); }
+S(check_lr      ) { (o[αOlive[1] + 2] == o[τ + 2] ? Yellow_Red : Maroon)(OS); }
 S(goin          ) { οOlive(book_of_gani_e, τ), οMaroon(check_lr, "bani", τ), οOlive(Return);
                     οGreen(book_of_bani_s, τ), οBlue(stop), search(OS); }
 N(reset_alfa);
