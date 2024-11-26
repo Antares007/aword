@@ -1,16 +1,19 @@
 #include "../sophis.h"
 #include "../sisa.h"
-S(ab) { Green(OS); }
-S(bo) { Green(OS); }
+N(dot_simbol);
+S(ab) { dot_simbol(OS); }
+S(bo) { dot_simbol(OS); }
 N(gani);
-N(prn);
-N(term);
-S(a) { term(OS); }
-S(b) { term(OS); }
-S(o) { term(OS); }
-S(y) { term(OS); }
+
+N(dot_terminal);
+S(a) { dot_terminal(OS); }
+S(b) { dot_terminal(OS); }
+S(o) { dot_terminal(OS); }
+S(y) { dot_terminal(OS); }
+N(dot_begin);
+N(dot_end);
 N(programAB) {
-  B D(ab) T(prn) _;
+  B T(dot_begin) D(ab) T(dot_end) _;
 
   D(ab) _;
   B T(o) O _;

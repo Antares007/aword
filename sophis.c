@@ -49,18 +49,54 @@ N(term) {
   else
     Blue(OS);
 }
-N(s) { Green(OS); }
-N(b) { term(OS); }
-N(a) { term(OS); }
-N(t) { term(OS); }
+S(print_Teal  ) {
+  if (ωTeal[1])
+    printf("%s_%ld -> %s_%ld;\n", (char*)ωTeal[1], ωTeal[2], (char*)ωTeal[3], ωTeal[4]);
+  Teal(OS);
+}
+
+N(dot_begin   ) { οNavy(Navy, τ), οTeal(Yellow, 0), Green(OS); }
+static long stack_top;
+N(dot_simbol  ) {
+  long**pa = α[0][-1];
+  long p = pa[0][1]; 
+  long s = α[0][1];
+  οTeal(print_Teal, ο[p+2], stack_top-(long)pa[0], ο[s+2], stack_top-(long)α[0]);
+  Green(OS);
+}
+
+
+N(dot_epsilon) {
+  long s = α[0][1];
+  οTeal(print_Teal, ο[s+2], stack_top-(long)α[0], ο[τ+2], ++ο[τ+3]);
+  Green(OS);
+}
+
+N(dot_terminal) {
+  long s = α[0][1];
+  οTeal(print_Teal, ο[s+2], stack_top-(long)α[0], ο[τ+2], ++ο[τ+3]);
+  term(OS);
+}
+
+S(re_omega    ) { ω = βYellow[1], Yellow(OS); }
+N(dot_end     ) {
+  οYellow(prn, ω),
+    οYellow(re_omega),
+      print_Teal(OS);
+}
+
+N(s) { dot_simbol(OS); }
+N(b) { dot_terminal(OS); }
+N(a) { dot_terminal(OS); }
+N(t) { dot_terminal(OS); }
 #include "sisa.h"
 N(programS) {
-  B D(s) T(prn) _;
+  B T(dot_begin) D(s) T(dot_end) _;
   D(s) _;
   B T(b) O _;
   B D(s) T(a) O _;
   B D(s) T(t) O _;
-  οCyan(Cyan, "bat", 3, 0), gani(OS);
+  οCyan(Cyan, "bataata", 7, 0), gani(OS);
 }
 void ti_init(void);
 N(programAB);
@@ -80,5 +116,6 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
+  stack_top = (long)boot;
   οOlive(Yellow), program_isamntpwab(OS);
 }

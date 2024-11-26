@@ -1,26 +1,30 @@
 #include "../sophis.h"
 #include "../sisa.h"
+N(dot_simbol);
+S(np) { dot_simbol(OS); }
+S(vp) { dot_simbol(OS); }
+S(pp) { dot_simbol(OS); }
+S(det) { dot_simbol(OS); }
+S(noun) { dot_simbol(OS); }
+S(verb) { dot_simbol(OS); }
+S(prep) { dot_simbol(OS); }
+
+N(dot_terminal);
+S(i) { dot_terminal(OS); }
+S(s) { if(ο[τ] == 3) dot_simbol(OS); else dot_terminal(OS); }
+S(a) { dot_terminal(OS); }
+S(m) { dot_terminal(OS); }
+S(n) { dot_terminal(OS); }
+S(t) { dot_terminal(OS); }
+S(p) { dot_terminal(OS); }
+S(w) { dot_terminal(OS); }
+S(b) { dot_terminal(OS); }
+
+N(dot_begin);
+N(dot_end);
 N(gani);
-S(np) { Green(OS); }
-S(vp) { Green(OS); }
-S(pp) { Green(OS); }
-S(det) { Green(OS); }
-S(noun) { Green(OS); }
-S(verb) { Green(OS); }
-S(prep) { Green(OS); }
-N(term);
-S(i) { term(OS); }
-S(s) { if(ο[τ] == 3) Green(OS); else term(OS); }
-S(a) { term(OS); }
-S(m) { term(OS); }
-S(n) { term(OS); }
-S(t) { term(OS); }
-S(p) { term(OS); }
-S(w) { term(OS); }
-S(b) { term(OS); }
-N(prn);
 N(program_isamntpwab) {
-  B D(s) T(prn) _;
+  B T(dot_begin) D(s) T(dot_end) _;
   D(s) _;               //  s
   B D(np) D(vp) O _;    //      ::= np vp
   B D(s) D(pp) O _;     //        | s pp
