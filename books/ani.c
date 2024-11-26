@@ -13,7 +13,7 @@ S(cursor    ) { τ = βYellow[1],
                 α = βYellow[2],
                 ω = βYellow[3], Yellow_Green(OS); }
 S(vini_name ) { if (ο[τ + 1] == ο[βGreen[1] + 1])
-                  οNavy(Navy, τ), ((n_t*)ο)[τ + 1](OS);
+                  οNavy(Navy, τ, ο[τ + 3]++), ((n_t*)ο)[τ + 1](OS);
                 else
                   vini(OS); }
 S(clr       ) { (ο[αNavy[ 1] + 1] == ο[τ + 1] ? Yellow_Green : Maroon     )(OS); }

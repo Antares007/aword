@@ -1,22 +1,24 @@
 #include "../sophis.h"
 #include "../sisa.h"
+N(dot_simbol);
+S(E) { dot_simbol(OS); }
+N(dot_terminal);
+#define Ts(v) ο[σ] = 2, ο[σ + 1] = dot_terminal,  ο[σ + 2] = v, σ += 11,
+N(dot_begin);
+N(dot_end);
 N(gani);
-#undef T
-N(term);
-#define T(v) ο[σ] = 2, ο[σ + 1] = term,  ο[σ + 2] = v, σ += 11,
-S(E) { Green(OS); }
 N(programExpr) {
-  B D(E) _;
+  B T(dot_begin) D(E) T(dot_end) _;
   D(E) _;
-  B D(E) T("+") D(E) O _;
-  B D(E) T("-") D(E) O _;
-  B D(E) T("*") D(E) O _;
-  B D(E) T("/") D(E) O _;
-  B T("(") D(E) T(")") O _;
-  B T("2") O _;
-  B T("3") O _;
-  B T("8") O _;
-  B T("9") O _;
-  οCyan(Cyan, "(2+3)*(8+9)", 11, 0), gani(OS);
+  B D(E) Ts("+") D(E) O _;
+  B D(E) Ts("-") D(E) O _;
+  B D(E) Ts("*") D(E) O _;
+  B D(E) Ts("/") D(E) O _;
+  B Ts("(") D(E) Ts(")") O _;
+  B Ts("2") O _;
+  B Ts("3") O _;
+  B Ts("8") O _;
+  B Ts("9") O _;
+  οCyan(Cyan, "2+3*8+9", 7, 0), gani(OS);
 }
 

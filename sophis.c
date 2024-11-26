@@ -31,58 +31,46 @@ extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
 N(gani);
 
-N(prn) {
-  long**b = ω;
-  printf("Green(");
-  while(b[3][-1])
-    (b[3][1] < 1000 ? printf("%ld ", b[3][1]) : printf("%s", (char*)b[3][1])), b = b[3][-1];
-  printf(")\n");
-  Green(OS);
-}
+N(prn) { printf("Green()\n"), Green(OS); }
 N(term) {
   const char *t = ο[τ + 2];
   const char *s = ωCyan[1];
   long length   = ωCyan[2];
   long pos      = ωCyan[3];
   if (pos < length && s[pos] == t[0])
-    οTomato(Tomato, t), οCyan(Cyan, s, length, pos + 1), Green(OS);
+    οCyan(Cyan, s, length, pos + 1), Green(OS);
   else
     Blue(OS);
 }
 S(print_Teal  ) {
-  if (ωTeal[1])
-    printf("%s_%ld -> %s_%ld;\n", (char*)ωTeal[1], ωTeal[2], (char*)ωTeal[3], ωTeal[4]);
+  if(ωTeal[1])
+    printf("\"%s_%ld\" -> \"%s_%ld\";\n", (char*)ωTeal[1], ωTeal[2], (char*)ωTeal[3], ωTeal[4]);
   Teal(OS);
 }
-
-N(dot_begin   ) { οNavy(Navy, τ), οTeal(Yellow, 0), Green(OS); }
-static long stack_top;
+N(dot_begin   ) {
+  οNavy(Navy, τ, 0),
+  οTeal(Yellow, 0),
+  Green(OS);
+}
 N(dot_simbol  ) {
   long**pa = α[0][-1];
-  long p = pa[0][1]; 
-  long s = α[0][1];
-  οTeal(print_Teal, ο[p+2], stack_top-(long)pa[0], ο[s+2], stack_top-(long)α[0]);
+  οTeal(print_Teal, ο[pa[0][1] + 2], pa[0][2], ο[α[0][1] + 2], α[0][2]);
   Green(OS);
 }
-
-
 N(dot_epsilon) {
-  long s = α[0][1];
-  οTeal(print_Teal, ο[s+2], stack_top-(long)α[0], ο[τ+2], ++ο[τ+3]);
+  οTeal(print_Teal, ο[α[0][1] + 2], α[0][2], ο[τ+2], ο[τ+3]++);
   Green(OS);
 }
-
 N(dot_terminal) {
-  long s = α[0][1];
-  οTeal(print_Teal, ο[s+2], stack_top-(long)α[0], ο[τ+2], ++ο[τ+3]);
+  οTeal(print_Teal, ο[α[0][1] + 2], α[0][2], ο[τ+2], ο[τ+3]++);
   term(OS);
 }
-
-S(re_omega    ) { ω = βYellow[1], Yellow(OS); }
-N(dot_end     ) {
+S(re_omega) { ω = βYellow[1], Yellow(OS); }
+N(dot_end) {
   οYellow(prn, ω),
     οYellow(re_omega),
-      print_Teal(OS);
+      οYellow(print_Teal),
+        Yellow(OS);
 }
 
 N(s) { dot_simbol(OS); }
@@ -104,18 +92,16 @@ N(programExpr);
 N(programSs);
 N(program_isamntpwab);
 int main(int argc, char **argv) { ti_init();
-  long *root = R(0, zero, 0);
-  long *boot = R(0, zero, 0);
+  long *cap = R(0, zero, 0);
   long ram[0x10000];
   long *ο = ram + sizeof(ram) / sizeof(*ram) / 2;
-  long **β = (long *[]){root, root, root, root};
-  long **α = (long *[]){boot, boot, boot, boot};
-  long **ω = (long *[]){boot, boot, boot, boot};
+  long **β = (long *[]){cap, cap, cap, cap};
+  long **α = (long *[]){cap, cap, cap, cap};
+  long **ω = (long *[]){cap, cap, cap, cap};
   long τ;
   long σ = τ = 512;
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  stack_top = (long)boot;
-  οOlive(Yellow), program_isamntpwab(OS);
+  οOlive(Yellow), programExpr(OS);
 }

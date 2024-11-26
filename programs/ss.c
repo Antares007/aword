@@ -19,6 +19,6 @@ N(programSs) {
   B T(epsilon) O _;
   B T(s) D(Ss) D(Ss) O _;
   B T(s) D(Ss) D(Ss) O _;
-  οCyan(Cyan, "ss", 2, 0), gani(OS);
+  οCyan(Cyan, "sss", 3, 0), gani(OS);
 }
 

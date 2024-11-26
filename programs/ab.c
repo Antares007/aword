@@ -23,6 +23,6 @@ N(programAB) {
   B T(y) O _;
   B D(ab) T(b) O _;
 
-  οCyan(Cyan, "oba", 3, 0), gani(OS);
+  οCyan(Cyan, "obababa", 7, 0), gani(OS);
 }
 
