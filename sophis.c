@@ -29,7 +29,7 @@ Steps(Cyan,   0, ω, +1)
 
 extern const char *rays[];
 N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
-N(book_of_gani_e);
+N(gani);
 
 #include "sisa.h"
 N(s) { Green(OS); }
@@ -39,7 +39,7 @@ N(programS) {
     tab aword("b") dot nl;
     tab tword(s) aword("a") dot nl;
     tab tword(s) aword("t") dot nl;
-  οBlue(Blue, "bat", 3, 0), book_of_gani_e(OS);
+  οBlue(Blue, "bat", 3, 0), gani(OS);
 }
 void ti_init(void);
 N(program_aText);
@@ -60,5 +60,5 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οOlive(Yellow), programS(OS);
+  οOlive(Yellow), program_isamntpwab(OS);
 }

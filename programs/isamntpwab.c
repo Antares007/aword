@@ -1,6 +1,6 @@
 #include "../sophis.h"
 #include "../sisa.h"
-N(book_of_gani_e);
+N(gani);
 S(s) { Green(OS); }
 S(np) { Green(OS); }
 S(vp) { Green(OS); }
@@ -9,7 +9,7 @@ S(noun) { Green(OS); }
 S(verb) { Green(OS); }
 S(prep) { Green(OS); }
 N(program_isamntpwab) {
-  begin tword(s) print end nl;
+  begin tword(s) end nl;
   name(s) nl;                             //  s
     tab tword(np) tword(vp) dot nl;       //      ::= np vp
     tab tword(s) tword(pp) dot nl;        //        | s pp
@@ -34,6 +34,6 @@ N(program_isamntpwab) {
   name(prep) nl;                          //  prep
     tab aword("n") dot nl;                //      ::= ’n’
     tab aword("w") dot nl;                //        | ’w’
-  οBlue(Blue, "isamntpwab", 10, 0), book_of_gani_e(OS);
+  οBlue(Blue, "isamntpwab", 10, 0), gani(OS);
 }
 

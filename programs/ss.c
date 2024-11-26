@@ -1,6 +1,6 @@
 #include "../sophis.h"
 #include "../sisa.h"
-N(book_of_gani_e);
+N(gani);
 
 S(Ss) { Green(OS); }
 N(programSs) {
@@ -9,6 +9,6 @@ N(programSs) {
     tab dot nl;
     tab aword("s") tword(Ss) tword(Ss) dot nl;
     tab aword("s") tword(Ss) tword(Ss) dot nl;
-  οBlue(Blue, "ss", 2, 0), book_of_gani_e(OS);
+  οBlue(Blue, "ss", 2, 0), gani(OS);
 }
 

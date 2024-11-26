@@ -10,5 +10,5 @@
 #define nop       o[σ] = nop,                                 σ += 11,
 #define dot       o[σ] = dot,                                 σ += 11,
 #define end       o[σ] = end,                                 σ += 11,
-#define nl        o[σ] = nl,                                  σ = ((σ >> Σ) + 1) << Σ
+#define nl        o[σ] = 0,                                   σ = ((σ >> Σ) + 1) << Σ
 
