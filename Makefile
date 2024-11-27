@@ -6,7 +6,7 @@ BookObjects := $(patsubst %.c,%.o,$(BookSources))
 ProgramSources := $(wildcard programs/*.c)
 ProgramObjects := $(patsubst %.c,%.o,$(ProgramSources))
 
-sophis.out: sophis.c text_index.o ${BookObjects} ${ProgramObjects}
+sophis.out: sophis.c dot.o text_index.o ${BookObjects} ${ProgramObjects}
 	${CC} ${CFLAGS} -lraylib -lm $^ -o $@
 
 %.out: %.c
@@ -14,5 +14,5 @@ sophis.out: sophis.c text_index.o ${BookObjects} ${ProgramObjects}
 %.o: %.c
 	${CC} ${CFLAGS} -c $^ -o $@
 clean:
-	rm -f **/*.o **/*.out *.o *.out
+	rm -f **/*.o **/*.out *.o *.out *.dot.png *.dot
 .PHONY: clean run

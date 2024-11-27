@@ -42,37 +42,10 @@ N(term) {
   else
     Blue(OS);
 }
-S(print_Teal  ) {
-  if(ωTeal[1])
-    printf("\"%s_%ld\" -> \"%s_%ld\";\n", (char*)ωTeal[1], ωTeal[2], (char*)ωTeal[3], ωTeal[4]);
-  Teal(OS);
-}
-N(dot_begin   ) {
-  οNavy(Navy, τ, 0),
-  οTeal(Yellow, 0),
-  Green(OS);
-}
-N(dot_simbol  ) {
-  long**pa = α[0][-1];
-  οTeal(print_Teal, ο[pa[0][1] + 2], pa[0][2], ο[α[0][1] + 2], α[0][2]);
-  Green(OS);
-}
-N(dot_epsilon) {
-  οTeal(print_Teal, ο[α[0][1] + 2], α[0][2], ο[τ+2], ο[τ+3]++);
-  Green(OS);
-}
-N(dot_terminal) {
-  οTeal(print_Teal, ο[α[0][1] + 2], α[0][2], ο[τ+2], ο[τ+3]++);
-  term(OS);
-}
-S(re_omega) { ω = βYellow[1], Yellow(OS); }
-N(dot_end) {
-  οYellow(prn, ω),
-    οYellow(re_omega),
-      οYellow(print_Teal),
-        Yellow(OS);
-}
-
+N(dot_begin);
+N(dot_simbol);
+N(dot_terminal);
+N(dot_end);
 N(s) { dot_simbol(OS); }
 N(b) { dot_terminal(OS); }
 N(a) { dot_terminal(OS); }
@@ -103,5 +76,5 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οOlive(Yellow), programExpr(OS);
+  οOlive(Yellow), programS(OS);
 }
