@@ -26,6 +26,10 @@ N(zero) { printf("The %s end!\n", rays[(ρ + 1) + 5]); }
 #define O    ο[σ] = 4,                σ += 11,
 #define _    σ = ((σ >> Σ) + 1) << Σ
 N(gani);
+// S
+// b.
+// S a.
+// S t.
 N(programS) {
   b D(S) _;
   D(S) _;

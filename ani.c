@@ -45,14 +45,14 @@ S(ani) {
     [2] = gani_aword,
     [3] = ani_tword,
     [4] = gani_dot,
-  }; τ += 11; ρ = 2, δ = +1, sdb(OS), narg[ο[τ]](OS);
+  }; τ += 11, sdb(OS), narg[ο[τ]](OS);
 }
 S(bani) {
   static n_t narg[5] = {
     [1] = bani_tab,
     [3] = Yellow,
     [0] = Yellow,
-  }; τ += 1 << Σ, ρ = 2, δ = +1, sdb(OS), narg[ο[τ]](OS);
+  }; τ += 1 << Σ, sdb(OS), narg[ο[τ]](OS);
 }
 N(gani) {
   static n_t narg[5] = {
@@ -60,26 +60,26 @@ N(gani) {
     [3] = gani_tword,
     [4] = gani_dot,
     [0] = Yellow,
-  }; τ += 11; ρ = 1, δ = +1, sdb(OS), narg[ο[τ]](OS);
+  }; τ += 11, sdb(OS), narg[ο[τ]](OS);
 }
 S(doni) {
   static n_t narg[5] = {
     [1] = doni_tab,
     [3] = Yellow,
     [0] = Yellow,
-  }; τ += 1 << Σ, ρ = 3, δ = +1, sdb(OS), narg[ο[τ]](OS);
+  }; τ += 1 << Σ, sdb(OS), narg[ο[τ]](OS);
 }
 S(eni) {
   static n_t narg[5] = {
     [3] = eni_tword,
     [2] = Yellow,
     [4] = Yellow,
-  }; τ += 11; ρ = 3, δ = +1, sdb(OS), narg[ο[τ]](OS);
+  }; τ += 11, sdb(OS), narg[ο[τ]](OS);
 }
 S(vini) {
   static n_t narg[5] = {
     [0] = Navy,
     [3] = vini_name,
     [1] = vini,
-  }; τ -= 1 << Σ, ρ = 0, δ = -1, sdb(OS), narg[ο[τ]](OS);
+  }; τ -= 1 << Σ, sdb(OS), narg[ο[τ]](OS);
 }
