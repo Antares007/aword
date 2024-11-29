@@ -104,8 +104,8 @@ static void drawVMState(long *ο, long **β, long **α, long τ, long σ, long �
     long selected = t == τ;
     const char *txt = raw == 1          ? TextFormat("%ld", ο[t])
                       : opcode == 1 ? TextFormat("b")
-                      : opcode == 2 ? TextFormat("'%s'", (char *)ο[t + 2])
-                      : opcode == 3 ? TextFormat("%s", (char *)ο[t + 2])
+                      : opcode == 2 ? TextFormat("'%s'", (char *)ο[t + 1])
+                      : opcode == 3 ? TextFormat("%s", (char *)ο[t + 1])
                       : opcode == 4   ? TextFormat(".")
                                         : TextFormat("%ld", ο[t]);
     float fontSize = 20, spacing = 0;
@@ -226,8 +226,7 @@ void ti_init(void) {
 void sdb(long *ο, long **β, long **α, long **ω, long τ, long σ, long ρ, long δ,
          long ν) {
 #ifndef NDEBUG
-  printf("%5s %7s %15s %ld ", rays[6 + ν], rays[(ρ + 1) * δ + 5],
-         (char *)β[ρ][-4], ο[τ]);
+  printf("%5s %7s %ld ", rays[6 + ν], rays[(ρ + 1) * δ + 5], ο[τ]);
   const char **lables = stringify_ray(β[ρ]);
   for (long i = 0; i < β[ρ][-2]; i++)
     printf("%s ", lables[i]);

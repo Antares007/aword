@@ -1,70 +1,70 @@
 // clang-format off
 #include "sophis.h"
-#define Step(Name, Side, Nau, Ray, Capstone, Delta) \
-  N(Name) { ρ = Side, δ = Delta, ν = Nau, sdb(OS);  \
-            n_t nar = Capstone[Side][Ray];          \
-            Capstone = Capstone[Side][-1], nar(OS); \
-  }
-#define Steps(Name, Side, Capstone, Delta)    \
-  Step(Name,        Side, ν, 0, Capstone, +1) \
-  Step(Name##_Red,  Side, 2, 0, Capstone, +1) \
-  Step(Name##_Green,Side, 1, 0, Capstone, +1) \
-  Step(Name##_Blue, Side, 0, 0, Capstone, +1) \
-  Step(Name##_NAO,  Side, ν, ν, Capstone, +1)
+#include "colours_fly.h"
 
-Steps(Red,    3, β, +1)
-Steps(Yellow, 2, β, +1)
-Steps(Green,  1, β, +1)
-Steps(Blue,   0, β, +1)
+N(Red         ) { n_t narg = β[3][0]; β = β[3][-1]; sdb(OS), narg(OS); }
+N(Yellow      ) { n_t narg = β[2][0]; β = β[2][-1]; sdb(OS), narg(OS); }
+N(Green       ) { n_t narg = β[1][0]; β = β[1][-1]; sdb(OS), narg(OS); }
+N(Blue        ) { n_t narg = β[0][0]; β = β[0][-1]; sdb(OS), narg(OS); }
 
-Steps(Maroon, 3, α, -1)
-Steps(Olive,  2, α, -1)
-Steps(Lime,   1, α, -1)
-Steps(Navy,   0, α, -1)
+N(Maroon      ) { n_t narg = α[3][0]; α = α[3][-1]; sdb(OS), narg(OS); }
+N(Olive       ) { n_t narg = α[2][0]; α = α[2][-1]; sdb(OS), narg(OS); }
+N(Lime        ) { n_t narg = α[1][0]; α = α[1][-1]; sdb(OS), narg(OS); }
+N(Navy        ) { n_t narg = α[0][0]; α = α[0][-1]; sdb(OS), narg(OS); }
 
-Steps(Tomato, 3, ω, +1)
-Steps(Gold,   2, ω, +1)
-Steps(Teal,   1, ω, +1)
-Steps(Cyan,   0, ω, +1)
+N(Red_Red     ) { ν = 2, Red(OS); }
+N(Red_Green   ) { ν = 1, Red(OS); }
+N(Red_Blue    ) { ν = 0, Red(OS); }
+N(Red_aradani ) { n_t narg = β[3][ν]; β = β[3][-1]; sdb(OS), narg(OS); }
 
 extern const char *rays[];
-N(zero      ) { printf("The %s(%s)!\n", rays[(ρ + 1) + 5], ν == 2 ? "not" : ν ? "and" : "or"); }
-N(gani);
+N(zero) { printf("The %s end!\n", rays[(ρ + 1) + 5]); }
 
-N(prn) { printf("Green()\n"), Green(OS); }
-N(term) {
-  const char *t = ο[τ + 2];
-  const char *s = ωCyan[1];
-  long length   = ωCyan[2];
-  long pos      = ωCyan[3];
-  if (pos < length && s[pos] == t[0])
-    οCyan(Cyan, s, length, pos + 1), Green(OS);
-  else
-    Blue(OS);
-}
-N(dot_begin);
-N(dot_simbol);
-N(dot_terminal);
-N(dot_end);
-N(s) { dot_simbol(OS); }
-N(b) { dot_terminal(OS); }
-N(a) { dot_terminal(OS); }
-N(t) { dot_terminal(OS); }
-#include "sisa.h"
+#define b    ο[σ] = 1,                σ += 11,
+#define T(v) ο[σ] = 2, ο[σ + 1] = v,  σ += 11,
+#define D(v) ο[σ] = 3, ο[σ + 1] = #v, σ += 11,
+#define O    ο[σ] = 4,                σ += 11,
+#define _    σ = ((σ >> Σ) + 1) << Σ
+N(gani);
 N(programS) {
-  B T(dot_begin) D(s) T(dot_end) _;
-  D(s) _;
-  B T(b) O _;
-  B D(s) T(a) O _;
-  B D(s) T(t) O _;
-  οCyan(Cyan, "bataata", 7, 0), gani(OS);
+  b D(S) _;
+  D(S) _;
+  b T("b") O _;
+  b D(S) T("a") O _;
+  b D(S) T("a") O _;
+  οBlue(Blue, "bataata", 7, 0), gani(OS);
+}
+N(program_isamntpwab) {
+  b D(s) _;
+  D(s) _;               //  s
+  b D(np) D(vp) O _;    //      ::= np vp
+  b D(s) D(pp) O _;     //        | s pp
+  D(np) _;              //  np
+  b D(noun) O _;        //      ::= noun
+  b D(det) D(noun) O _; //        | det noun
+  b D(np) D(pp) O _;    //        | np pp
+  D(pp) _;              //  pp
+  b D(prep) D(np) O _;  //      ::= prep np
+  D(vp) _;              //  vp
+  b D(verb) D(np) O _;  //      ::= verb np
+  D(det) _;             //  det
+  b T("a") O _;         //      ::= ’a’
+  b T("t") O _;         //        | ’t’
+  D(noun) _;            //  noun
+  b T("i") O _;         //      ::= ’i’
+  b T("m") O _;         //        | ’m’
+  b T("p") O _;         //        | ’p’
+  b T("b") O _;         //        | ’b’
+  D(verb) _;            //  verb
+  b T("s") O _;         //      ::= ’s’
+  D(prep) _;            //  prep
+  b T("n") O _;         //      ::= ’n’
+  b T("w") O _;         //        | ’w’
+  οBlue(Blue, "isamntpwab", 10, 0), gani(OS);
 }
 void ti_init(void);
-N(programAB);
-N(programExpr);
-N(programSs);
-N(program_isamntpwab);
-int main(int argc, char **argv) { ti_init();
+int main(int argc, char **argv) {
+  ti_init();
   long *cap = R(0, zero, 0);
   long ram[0x10000];
   long *ο = ram + sizeof(ram) / sizeof(*ram) / 2;
@@ -76,5 +76,6 @@ int main(int argc, char **argv) { ti_init();
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  οOlive(Yellow), programS(OS);
+  programS(OS);
 }
+

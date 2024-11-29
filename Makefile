@@ -1,12 +1,7 @@
 CC|=clang
 CFLAGS+=-std=gnu17 -Wall
 
-BookSources := $(wildcard books/*.c)
-BookObjects := $(patsubst %.c,%.o,$(BookSources))
-ProgramSources := $(wildcard programs/*.c)
-ProgramObjects := $(patsubst %.c,%.o,$(ProgramSources))
-
-sophis.out: sophis.c dot.o text_index.o ${BookObjects} ${ProgramObjects}
+sophis.out: sophis.c ani.o text_index.o
 	${CC} ${CFLAGS} -lraylib -lm $^ -o $@
 
 %.out: %.c
