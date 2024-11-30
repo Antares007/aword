@@ -23,20 +23,23 @@ S(gani_tword) { οLime(gani, τ), οMaroon(clr_top), οOlive(re_tau); οGreen(ba
 S(re_alfa   ) { α = ΔRed[1], Red(OS); }
 S(ani_tword ) { οRed(ani_sword, Yellow, Yellow), οRed(Red_aradani, α), οRed(re_alfa), Maroon(OS); }
 S(eni_tword ) { οRed(eni_sword, gani,   Yellow), οRed(Red_aradani, α), οRed(re_alfa), Maroon(OS); }
-S(cursor    ) { τ = ΔYellow[1],
-                α = ΔYellow[2],
-                ω = ΔYellow[3], Yellow(OS); }
-S(bani_tab  ) { οYellow(bani, τ,        α, ω), οYellow(cursor);   ani(OS); }
-S(doni_tab  ) { οYellow(doni, τ,        α, ω), οYellow(cursor);   eni(OS); }
-S(gani_dot  ) { οYellow(gani, τ,        α, ω), οYellow(cursor);
+S(cursor    ) { τ = ΔGreen[1],
+                α = ΔGreen[2],
+                ω = ΔGreen[3], Green(OS); }
+S(bani_tab  ) { οGreen(bani, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);   ani(OS); }
+S(doni_tab  ) { οGreen(doni, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);   eni(OS); }
+S(gani_dot  ) { οGreen(gani, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);
                 οMaroon(clr_top),
-                οYellow(doni, ΔNavy[1], α, ω), οYellow(cursor); Olive(OS); }
-N(gani_aword) { const char *t = ο[τ + 1];
+                οGreen(doni, ΔNavy[1], α, ω), οYellow(cursor, ΔYellow[1] + 1); Olive(OS); }
+S(gani_aword) { if(ΔYellow[1] < ΔBlue[1]) οRed(Red, ο[τ + 1]), gani(OS);
+                else Yellow(OS); }
+S(gani_print) { long**b = β; while(b[3][1]) { printf("%s ", (char*)b[3][1]); b = b[3][-1]; } printf("\n"), gani(OS); }
+N(gani_aword_){ const char *t = ο[τ + 1];
                 const char *s = ΔBlue[1];
                 long length   = ΔBlue[2];
                 long pos      = ΔBlue[3];
                 if (pos < length && s[pos] == t[0])
-                  οGreen(Green, t),
+                  οRed(Red, t),
                   οBlue(Blue, s, length, pos + 1), gani(OS);
                 else
                   Yellow(OS); }
@@ -55,10 +58,11 @@ S(bani) {
   }; τ += 1 << Σ, sdb(OS), narg[ο[τ]](OS);
 }
 N(gani) {
-  static n_t narg[5] = {
+  static n_t narg[6] = {
     [2] = gani_aword,
     [3] = gani_tword,
     [4] = gani_dot,
+    [5] = gani_print,
     [0] = Yellow,
   }; τ += 11, sdb(OS), narg[ο[τ]](OS);
 }

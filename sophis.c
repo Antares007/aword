@@ -31,15 +31,28 @@ N(gani);
 // S a.
 // S t.
 N(programS) {
-  b D(S) _;
+  b D(S) ο[σ]=5,σ+=11, _;
   D(S) _;
   b T("b") O _;
   b D(S) T("a") O _;
   b D(S) T("t") O _;
-  οBlue(Blue, "bataata", 7, 0), gani(OS);
+  οBlue(Blue, 10), gani(OS);
+}
+N(programAB) {
+  b D(A) ο[σ]=5,σ+=11, _;
+  D(A) _;
+  b T("b") O _;
+  b D(B) T("a") O _;
+  D(B) _;
+  b T("y") O _;
+  b D(O) T("b") O _;
+  D(O) _;
+  b T("n") O _;
+  b D(A) T("t") O _;
+  οBlue(Blue, 20), gani(OS);
 }
 N(program_isamntpwab) {
-  b D(s) _;
+  b D(s) ο[σ]=5,σ+=11, _;
   D(s) _;               //  s
   b D(np) D(vp) O _;    //      ::= np vp
   b D(s) D(pp) O _;     //        | s pp
@@ -64,7 +77,7 @@ N(program_isamntpwab) {
   D(prep) _;            //  prep
   b T("n") O _;         //      ::= ’n’
   b T("w") O _;         //        | ’w’
-  οBlue(Blue, "isamntpwab", 10, 0), gani(OS);
+  οBlue(Blue, 30), gani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
@@ -80,6 +93,6 @@ int main(int argc, char **argv) {
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  programS(OS);
+  program_isamntpwab(OS);
 }
 
