@@ -35,7 +35,7 @@ N(programS) {
   D(S) _;
   b T("b") O _;
   b D(S) T("a") O _;
-  b D(S) T("a") O _;
+  b D(S) T("t") O _;
   οBlue(Blue, "bataata", 7, 0), gani(OS);
 }
 N(program_isamntpwab) {

@@ -52,7 +52,7 @@ static void DrawBetaStack(long *ο, long **β, int ρ, int selected, long δ,
     β = β[ρ][-1];
   }
   if (selected)
-    DrawRectangleRoundedLines(
+    DrawRectangleRoundedLinesEx(
         (Rectangle){-max_width / 2.f, -3, max_width, top + 3}, 0.1f, 10, 3,
         colors[color_index][0]);
   EndMode2D();
@@ -117,7 +117,7 @@ static void drawVMState(long *ο, long **β, long **α, long τ, long σ, long �
     Color bgcolor = opcode == 0 ? GRAY : colors[color_index][0];
     DrawRectangleRounded(rect, 0.2f, 10, bgcolor);
     if (selected)
-      DrawRectangleRoundedLines(rect, 0.2f, 10, 5, oan_colors[ν][0]);
+      DrawRectangleRoundedLinesEx(rect, 0.2f, 10, 5, oan_colors[ν][0]);
     DrawTextEx(font, txt, (Vector2){x + 3, y - 3}, fontSize, spacing,
                colors[color_index][1]);
     if (raw)
