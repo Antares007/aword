@@ -20,64 +20,72 @@ N(Red_aradani ) { n_t narg = β[3][ν]; β = β[3][-1]; sdb(OS), narg(OS); }
 extern const char *rays[];
 N(zero) { printf("The %s end!\n", rays[(ρ + 1) + 5]); }
 
-#define b    ο[σ] = 1,                σ += 11,
-#define T(v) ο[σ] = 2, ο[σ + 1] = v,  σ += 11,
-#define D(v) ο[σ] = 3, ο[σ + 1] = #v, σ += 11,
-#define O    ο[σ] = 4,                σ += 11,
-#define _    σ = ((σ >> Σ) + 1) << Σ
+#define one       ο[σ] = 1,               σ += 11,
+#define two(a)    ο[σ] = 2, ο[σ + 1] = a, σ += 11,
+#define three(a)  ο[σ] = 3, ο[σ + 1] = a, σ += 11,
+#define four      ο[σ] = 4,               σ += 11,
+#define five      ο[σ] = 5,               σ += 11,
+#define align                             σ  = ((σ>>Σ)+1)<<Σ
 N(gani);
-// S
-// b.
-// S a.
-// S t.
 N(programS) {
-  b D(S) ο[σ]=5,σ+=11, _;
-  D(S) _;
-  b T("b") O _;
-  b D(S) T("a") O _;
-  b D(S) T("t") O _;
-  οBlue(Blue, 10), gani(OS);
+  one three("S") five align;
+  three("S") align;
+  one two("b") four align;
+  one three("S") two("a") four align;
+  one three("S") two("t") four align;
+  οBlue(Blue, 20), gani(OS);
 }
 N(programAB) {
-  b D(A) ο[σ]=5,σ+=11, _;
-  D(A) _;
-  b T("b") O _;
-  b D(B) T("a") O _;
-  D(B) _;
-  b T("y") O _;
-  b D(O) T("b") O _;
-  D(O) _;
-  b T("n") O _;
-  b D(A) T("t") O _;
+  one three("A") ο[σ]=5,σ+=11, align;
+  three("A") align;
+  one two("b") four align;
+  one three("B") two("a") four align;
+  three("B") align;
+  one two("y") four align;
+  one three("A") two("b") four align;
   οBlue(Blue, 20), gani(OS);
 }
 N(program_isamntpwab) {
-  b D(s) ο[σ]=5,σ+=11, _;
-  D(s) _;               //  s
-  b D(np) D(vp) O _;    //      ::= np vp
-  b D(s) D(pp) O _;     //        | s pp
-  D(np) _;              //  np
-  b D(noun) O _;        //      ::= noun
-  b D(det) D(noun) O _; //        | det noun
-  b D(np) D(pp) O _;    //        | np pp
-  D(pp) _;              //  pp
-  b D(prep) D(np) O _;  //      ::= prep np
-  D(vp) _;              //  vp
-  b D(verb) D(np) O _;  //      ::= verb np
-  D(det) _;             //  det
-  b T("a") O _;         //      ::= ’a’
-  b T("t") O _;         //        | ’t’
-  D(noun) _;            //  noun
-  b T("i") O _;         //      ::= ’i’
-  b T("m") O _;         //        | ’m’
-  b T("p") O _;         //        | ’p’
-  b T("b") O _;         //        | ’b’
-  D(verb) _;            //  verb
-  b T("s") O _;         //      ::= ’s’
-  D(prep) _;            //  prep
-  b T("n") O _;         //      ::= ’n’
-  b T("w") O _;         //        | ’w’
-  οBlue(Blue, 30), gani(OS);
+  one three("s") ο[σ]=5,σ+=11, align;
+  three("s") align;
+  one three("np") three("vp") four align;
+  one three("s") three("pp") four align;
+  three("np") align;
+  one three("noun") four align;
+  one three("det") three("noun") four align;
+  one three("np") three("pp") four align;
+  three("pp") align;
+  one three("prep") three("np") four align;
+  three("vp") align;
+  one three("verb") three("np") four align;
+  three("det") align;
+  one two("a") four align;
+  one two("t") four align;
+  three("noun") align;
+  one two("i") four align;
+  one two("m") four align;
+  one two("p") four align;
+  one two("b") four align;
+  three("verb") align;
+  one two("s") four align;
+  three("prep") align;
+  one two("n") four align;
+  one two("w") four align;
+  οBlue(Blue, 35), gani(OS);
+}
+N(programSexpression) {
+  one three("S") ο[σ]=5, σ+=11, align;
+  three("S") align;
+  one three("S") two("+") three("S") four align;
+  one three("S") two("-") three("S") four align;
+  one three("S") two("*") three("S") four align;
+  one three("S") two("/") three("S") four align;
+  one two("(") three("S") two(")") four align;
+  one three("N") four align;
+  three("N") align;
+  one two("2") four align;
+  one two("3") four align;
+  οBlue(Blue, 10), gani(OS);
 }
 void ti_init(void);
 int main(int argc, char **argv) {
@@ -86,13 +94,13 @@ int main(int argc, char **argv) {
   long ram[0x10000];
   long *ο = ram + sizeof(ram) / sizeof(*ram) / 2;
   long **β = (long *[]){cap, cap, cap, cap};
-  long **α = (long *[]){cap, cap, cap, cap};
-  long **ω = (long *[]){cap, cap, cap, cap};
+  long **α = β;
+  long **ω = α;
   long τ;
   long σ = τ = 512;
   long ρ = 2;
   long δ = 1;
   long ν = 1;
-  program_isamntpwab(OS);
+  programAB(OS);
 }
 

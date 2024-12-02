@@ -29,20 +29,16 @@ S(cursor    ) { τ = ΔGreen[1],
 S(bani_tab  ) { οGreen(bani, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);   ani(OS); }
 S(doni_tab  ) { οGreen(doni, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);   eni(OS); }
 S(gani_dot  ) { οGreen(gani, τ,        α, ω), οYellow(cursor, ΔYellow[1] + 1);
-                οMaroon(clr_top),
+                οMaroon(clr_top);
                 οGreen(doni, ΔNavy[1], α, ω), οYellow(cursor, ΔYellow[1] + 1); Olive(OS); }
 S(gani_aword) { if(ΔYellow[1] < ΔBlue[1]) οRed(Red, ο[τ + 1]), gani(OS);
                 else Yellow(OS); }
-S(gani_print) { long**b = β; while(b[3][1]) { printf("%s ", (char*)b[3][1]); b = b[3][-1]; } printf("\n"), gani(OS); }
-N(gani_aword_){ const char *t = ο[τ + 1];
-                const char *s = ΔBlue[1];
-                long length   = ΔBlue[2];
-                long pos      = ΔBlue[3];
-                if (pos < length && s[pos] == t[0])
-                  οRed(Red, t),
-                  οBlue(Blue, s, length, pos + 1), gani(OS);
-                else
-                  Yellow(OS); }
+S(gani_print) { long**b = β;
+                long i = 100;
+                static char*s[100];
+                while(b[3][1]) s[--i] = b[3][1], b = b[3][-1];
+                for(;i < 100; i++) printf("%s", s[i]);
+                printf("\n"), gani(OS); }
 S(ani) {
   static n_t narg[5] = {
     [2] = gani_aword,
