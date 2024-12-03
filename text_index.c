@@ -102,8 +102,7 @@ static void drawVMState(long *ο, long **β, long **α, long τ, long σ, long �
     long color_index = (ο[t - 1] + 1) * ο[t - 2] + 5;
     long opcode = ο[t];
     long selected = t == τ;
-    const char *txt = raw == 1      ? TextFormat("%ld", ο[t])
-                      : opcode == 1 ? TextFormat("1")
+    const char *txt = opcode == 1   ? TextFormat("1")
                       : opcode == 2 ? TextFormat("2 \"%s\"", (char *)ο[t + 1])
                       : opcode == 3 ? TextFormat("3 \"%s\"", (char *)ο[t + 1])
                       : opcode == 4 ? TextFormat("4")
@@ -256,6 +255,7 @@ static int stops[127] = {
     ['a'] = 2,
     ['t'] = 3,
     ['o'] = 4,
+    ['s'] = 5,
 };
 static void DrawGoToTable() {
   long top = 0;
