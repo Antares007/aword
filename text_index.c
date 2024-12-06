@@ -158,7 +158,7 @@ static const char *backgroundImages[] = {
     "background_2000.png", "background_2048.png", "background_2049.png"};
 static long texture_index = 0;
 static Texture2D textures[sizeof(backgroundImages) / sizeof(*backgroundImages)];
-void ti_debug(long *ο, long **β, long **α, long τ, long σ, long ρ,
+static void ti_debug(long *ο, long **β, long **α, long τ, long σ, long ρ,
                      long δ, long ν) {
   ο[τ - 1] = ρ;
   ο[τ - 2] = δ;
