@@ -73,36 +73,43 @@ N(Red_Blue    ) { δ = 0, Red(EE); }
 #define P printf("%s\n", __func__)
 #include<stdio.h>
 
-N(gani);
+N(Green_book);
+enum names {S = 9, Ss};
 N(programS) {
 
-  one three("S") five align;
+  one three(Ss) five align;
 
-  three("S") align;
+
+  three(S) align;
   one two("b") four align;
-  one three("S") two("a") four align;
-  one three("S") two("t") four align;
+  one three(S) two("a") four align;
+  one three(S) two("t") four align;
 
-  gani(EE);
+  three(Ss) align;
+  one two("s") four align;
+  one three(Ss) two("a") four align;
+  one three(Ss) two("t") four align;
+
+  Green_book(EE);
 }
 
 N(programE) {
-  one three("S") five align;
-  three("S") align;
-  one three("S") two("+") three("S") four align;
-  one three("S") two("-") three("S") four align;
-  one three("S") two("*") three("S") four align;
-  one three("S") two("/") three("S") four align;
-  one two("(") three("S") two(")") four align;
+  one three(S) five align;
+  three(S) align;
+  one three(S) two("+") three(S) four align;
+  one three(S) two("-") three(S) four align;
+  one three(S) two("*") three(S) four align;
+  one three(S) two("/") three(S) four align;
+  one two("(") three(S) two(")") four align;
   one two("2") four align;
   one two("3") four align;
-  gani(EE);
+  Green_book(EE);
 }
 
 N(dodo) { P; }
 N(halted) { Yellow(EE); }
 int main() {
-  long ο[2500];
+  long ο[3100];
   long β = 0;
   long α = 0;
   long τ = 0;
@@ -117,93 +124,92 @@ int main() {
 }
 
 // clang-format off
-N(ani);   //  ani T gani gani .
-N(bani);  //      b           d eni T gani
-N(gani);  //      a n i       o     d
-N(doni);  //      n           n     o N gani
-N(eni);   //      i           i     n
-N(vini);  //                        i
-extern int strcmp(const char *, const char *);
+N(Yellow_book);
+N(Blue_book);
+N(Green_book);
+N(Red_book);
+N(Purple_book);
+N(Navy_book);
 #define CM(nar) (σ + (1 << 8) < ρ ? (nar) : Navy)
-N(vini_name ) { if (strcmp(ο[ΔLime(1) + 1], ο[τ + 1]) == 0)
-                  οNavy(Navy, τ), CM(Green)(EE);
-                else
-                  vini(EE); }
-N(clr_top   ) { (strcmp(ο[ΔLime(1) + 1], ο[τ + 1]) == 0 ? Red_Green : Red_Blue )(EE); }
-N(clr       ) { (strcmp(ο[ΔLime(1) + 1], ο[τ + 1]) == 0 ? Red_Green : Maroon   )(EE); }
-N(clr_Red   ) { (strcmp(ο[ΔLime(1) + 1], ο[τ + 1]) == 0 ? Red_Red   : Maroon   )(EE); }
-N(search    ) { τ = σ, vini(EE); }
-N(re_tau    ) { τ = ΔLime(1), Lime(EE); }
-N(eni_sword ) { οLime(gani, τ), οMaroon(clr_Red), οOlive(re_tau); οGreen(doni), CM(search)(EE); }
-N(ani_sword ) { οLime(gani, τ), οMaroon(clr    ), οOlive(re_tau); οGreen(bani), CM(search)(EE); }
-N(gani_tword) { οLime(gani, τ), οMaroon(clr_top), οOlive(re_tau); οGreen(bani), CM(search)(EE); }
-N(re_alfa   ) { α = ΔRed(1), Red(EE); }
-N(ani_tword ) { οRed(ani_sword, Yellow, Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
-N(eni_tword ) { οRed(eni_sword, gani,   Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
-N(cursor    ) { τ = ΔGreen(1),
-                α = ΔGreen(2),
-                ρ = ΔGreen(3), Green(EE); }
-N(bani_tab  ) { οGreen(bani, τ,        α, ρ), οYellow(cursor, ΔYellow(1) + 1);   CM(ani)(EE); }
-N(doni_tab  ) { οGreen(doni, τ,        α, ρ), οYellow(cursor, ΔYellow(1) + 1);   CM(eni)(EE); }
-N(gani_dot  ) { οGreen(gani, τ,        α, ρ), οYellow(cursor, ΔYellow(1) + 1);
-                οMaroon(clr_top);
-                οGreen(doni, ΔNavy(1), α, ρ), οYellow(cursor, ΔYellow(1) + 1); CM(Olive)(EE); }
-N(gani_aword) { οRed(Red, ο[τ+1]), CM(gani)(EE); }
+N(Navy_3      ) { (ΔLime(1) == ο[τ + 1] ? Green     : Navy_book)(EE); }
+N(clr_top     ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Red_Blue )(EE); }
+N(clr         ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Maroon   )(EE); }
+N(clr_top_Red ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Red_Blue )(EE); }
+N(clr_Red     ) { (ΔLime(1) == ο[τ + 1] ? Red_Red   : Maroon   )(EE); }
+N(search      ) { τ = σ, Navy_book(EE); }
+N(re_tau      ) { τ = ΔLime(2), Lime(EE); }
+N(Navy_name   ) { οNavy(Navy, τ), Blue_book(EE); }
+N(Purple_31   ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr_Red), οOlive(re_tau); οGreen(Red_book),  CM(search)(EE); }
+N(Yellow_31   ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr    ), οOlive(re_tau); οGreen(Navy_name), CM(search)(EE); }
+N(Green_3     ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr_top), οOlive(re_tau); οGreen(Navy_name), CM(search)(EE); }
+N(re_alfa     ) { α = ΔRed(1), Red(EE); }
+N(Yellow_3    ) { οRed(Yellow_31, Yellow,       Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
+N(Purple_3    ) { οRed(Purple_31, Green_book,   Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
 
-N(gani_print) { long bo = β;
-                while(ΔRed(1)) printf("%s", (char*)ΔRed(1)), β = ΔRed(-1);
-                printf("\n"), β = bo, gani(EE); }
+N(cursor      ) { τ = ΔGreen(1),
+                  α = ΔGreen(2),
+                  ρ = ΔGreen(3), Green(EE); }
+N(Blue_1      ) { οGreen(Blue_book,  τ,         α, ρ), οYellow(cursor); CM(Yellow_book)(EE); }
+N(Red_1       ) { οGreen(Red_book,   τ,         α, ρ), οYellow(cursor); CM(Purple_book)(EE); }
+N(Green_4     ) { οGreen(Green_book, τ,         α, ρ), οYellow(cursor);
+                  οMaroon(clr_top_Red);
+                  οGreen(Red_book,   ΔNavy(1),  α, ρ), οYellow(cursor); CM(Olive)(EE); }
 
-//N(gani_aword) { const char *t = ο[τ + 1];
+N(Green_2     ) { οRed(Red, ο[τ+1]), CM(Green_book)(EE); }
+N(Green_5     ) { long bo = β;
+                  while(ΔRed(1)) printf("%s", (char*)ΔRed(1)), β = ΔRed(-1);
+                  printf("\n"), β = bo, Green_book(EE); }
+
+//N(Green_2) { const char *t = ο[τ + 1];
 //                const char *s = ΔBlue(1);
 //                long length   = ΔBlue(2);
 //                long pos      = ΔBlue(3);
 //                if (pos < length && s[pos] == t[0])
 //                  οRed(Red, t),
-//                  οBlue(Blue, s, length, pos + 1), gani(EE);
+//                  οBlue(Blue, s, length, pos + 1), Green_book(EE);
 //                else
 //                  Yellow(EE); }
-N(ani) {
+N(Yellow_book) {
   static n_t narg[5] = {
-    [2] = gani_aword,
-    [3] = ani_tword,
-    [4] = gani_dot,
+    [2] = Green_2,
+    [3] = Yellow_3,
+    [4] = Green_4,
   }; τ += 11, narg[ο[τ]](EE);
 }
-N(bani) {
+N(Blue_book) {
   static n_t narg[5] = {
-    [1] = bani_tab,
+    [1] = Blue_1,
     [3] = Yellow,
     [0] = Yellow,
   }; τ += 1 << 8, narg[ο[τ]](EE);
 }
-N(gani) {
+N(Green_book) {
   static n_t narg[6] = {
-    [2] = gani_aword,
-    [3] = gani_tword,
-    [4] = gani_dot,
-    [5] = gani_print,
+    [2] = Green_2,
+    [4] = Green_4,
+    [3] = Green_3,
+    [5] = Green_5,
     [0] = Yellow,
   }; τ += 11, narg[ο[τ]](EE);
 }
-N(doni) {
+N(Red_book) {
   static n_t narg[5] = {
-    [1] = doni_tab,
+    [1] = Red_1,
     [3] = Yellow,
     [0] = Yellow,
   }; τ += 1 << 8, narg[ο[τ]](EE);
 }
-N(eni) {
+N(Purple_book) {
   static n_t narg[5] = {
-    [3] = eni_tword,
+    [3] = Purple_3,
     [2] = Yellow,
     [4] = Yellow,
   }; τ += 11, narg[ο[τ]](EE);
 }
-N(vini) {
+N(Navy_book) {
   static n_t narg[5] = {
     [0] = Navy,
-    [3] = vini_name,
-    [1] = vini,
+    [3] = Navy_3,
+    [1] = Navy_book,
   }; τ -= 1 << 8, narg[ο[τ]](EE);
 }
