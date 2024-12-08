@@ -74,33 +74,32 @@ N(Red_Blue    ) { δ = 0, Red(EE); }
 #include<stdio.h>
 
 N(Green_book);
-enum names {S = 9, Ss};
+enum names {S = 9, A, E,};
 N(programS) {
 
-  one three(Ss) five align;
-
+  one three(S) five align;
 
   three(S) align;
   one two("b") four align;
-  one three(S) two("a") four align;
+  one three(A) two("a") four align;
   one three(S) two("t") four align;
 
-  three(Ss) align;
-  one two("s") four align;
-  one three(Ss) two("a") four align;
-  one three(Ss) two("t") four align;
+  three(A) align;
+  one two("d") four align;
+  one three(S) two("s") four align;
+  one three(A) two("r") four align;
 
   Green_book(EE);
 }
 
 N(programE) {
-  one three(S) five align;
-  three(S) align;
-  one three(S) two("+") three(S) four align;
-  one three(S) two("-") three(S) four align;
-  one three(S) two("*") three(S) four align;
-  one three(S) two("/") three(S) four align;
-  one two("(") three(S) two(")") four align;
+  one three(E) five align;
+  three(E) align;
+  one three(E) two("+") three(E) four align;
+  one three(E) two("-") three(E) four align;
+  one three(E) two("*") three(E) four align;
+  one three(E) two("/") three(E) four align;
+  one two("(") three(E) two(")") four align;
   one two("2") four align;
   one two("3") four align;
   Green_book(EE);
@@ -109,7 +108,7 @@ N(programE) {
 N(dodo) { P; }
 N(halted) { Yellow(EE); }
 int main() {
-  long ο[3100];
+  long ο[3500];
   long β = 0;
   long α = 0;
   long τ = 0;
