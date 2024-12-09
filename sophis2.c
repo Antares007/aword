@@ -1,6 +1,6 @@
 #pragma GCC diagnostic ignored "-Wint-conversion"
-#define N(args) void args(long*ο, long β, long α, long τ, long σ, long ρ, long δ)
-#define EE ο, β, α, τ, σ, ρ, δ
+#define N(args) void args(long*ο, long β, long α, long τ, long σ, long ρ, long δ, long ι)
+#define EE ο, β, α, τ, σ, ρ, δ, ι
 typedef N((*n_t));
 
 #define ob0(β)  ο[--ρ] = β,      \
@@ -44,8 +44,10 @@ typedef N((*n_t));
 #define ΔBlue(n)   ο[ο[β+0]+n]
 
 #define ΔMaroon(n) ο[ο[α+3]+n]
+#define ιMaroon(n) ο[ο[ι+3]+n]
 #define ΔOlive(n)  ο[ο[α+2]+n]
 #define ΔLime(n)   ο[ο[α+1]+n]
+#define ιLime(n)   ο[ο[ι+1]+n]
 #define ΔNavy(n)   ο[ο[α+0]+n]
 
 N(Red         ) { n_t n = ΔRed(0);    β = ΔRed(-1);    n(EE); }
@@ -54,14 +56,10 @@ N(Green       ) { n_t n = ΔGreen(0);  β = ΔGreen(-1);  n(EE); }
 N(Blue        ) { n_t n = ΔBlue(0);   β = ΔBlue(-1);   n(EE); }
                                                      
 N(Maroon      ) { n_t n = ΔMaroon(0); α = ΔMaroon(-1); n(EE); }
+N(Maroonι     ) { n_t n = ιMaroon(0); ι = ιMaroon(-1); n(EE); }
 N(Olive       ) { n_t n = ΔOlive(0);  α = ΔOlive(-1);  n(EE); }
 N(Lime        ) { n_t n = ΔLime(0);   α = ΔLime(-1);   n(EE); }
 N(Navy        ) { n_t n = ΔNavy(0);   α = ΔNavy(-1);   n(EE); }
-
-N(Red_aradani ) { n_t n = ΔRed(δ); β = ΔRed(-1); n(EE); }
-N(Red_Red     ) { δ = 2, Red(EE); }
-N(Red_Green   ) { δ = 1, Red(EE); }
-N(Red_Blue    ) { δ = 0, Red(EE); }
 
 #define one       ο[σ] = 1,               σ += 11,
 #define two(a)    ο[σ] = 2, ο[σ + 1] = a, σ += 11,
@@ -108,18 +106,19 @@ N(programE) {
 N(dodo) { P; }
 N(halted) { Yellow(EE); }
 int main() {
-  long ο[3500];
+  long ο[3000];
   long β = 0;
   long α = 0;
   long τ = 0;
   long σ = 0;
   long ρ = sizeof(ο) / sizeof(*ο);
   long δ = 1;
+  long ι = 0;
 
   ο[--ρ] = 0;   ο[--ρ] = dodo; long ray = ρ; ο[--ρ] = 0;
   ο[--ρ] = ray; ο[--ρ] = ray;  ο[--ρ] = ray; ο[--ρ] = ray;
   β = α = ρ;
-  οNavy(halted), programS(EE);
+  οNavy(halted), programE(EE);
 }
 
 // clang-format off
@@ -130,20 +129,22 @@ N(Red_book);
 N(Purple_book);
 N(Navy_book);
 #define CM(nar) (σ + (1 << 8) < ρ ? (nar) : Navy)
-N(Navy_3      ) { (ΔLime(1) == ο[τ + 1] ? Green     : Navy_book)(EE); }
-N(clr_top     ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Red_Blue )(EE); }
-N(clr         ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Maroon   )(EE); }
-N(clr_top_Red ) { (ΔLime(1) == ο[τ + 1] ? Red_Green : Red_Blue )(EE); }
-N(clr_Red     ) { (ΔLime(1) == ο[τ + 1] ? Red_Red   : Maroon   )(EE); }
+N(Yellow_31);
+N(Purple_31);
+N(Navy_3      ) { (ΔLime(1) == ο[τ + 1] ? Green       : Navy_book)(EE); }
+N(clr_top     ) { (ιLime(1) == ο[τ + 1] ? Yellow      : Yellow_31)(EE); }
+N(clr         ) { (ιLime(1) == ο[τ + 1] ? Yellow      : Maroonι  )(EE); }
+N(clr_top_Red ) { (ιLime(1) == ο[τ + 1] ? Green_book  : Purple_31)(EE); }
+N(clr_Red     ) { (ιLime(1) == ο[τ + 1] ? Yellow      : Maroonι  )(EE); }
 N(search      ) { τ = σ, Navy_book(EE); }
 N(re_tau      ) { τ = ΔLime(2), Lime(EE); }
 N(Navy_name   ) { οNavy(Navy, τ), Blue_book(EE); }
 N(Purple_31   ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr_Red), οOlive(re_tau); οGreen(Red_book),  CM(search)(EE); }
 N(Yellow_31   ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr    ), οOlive(re_tau); οGreen(Navy_name), CM(search)(EE); }
 N(Green_3     ) { οLime(Green_book, ο[τ+1],τ), οMaroon(clr_top), οOlive(re_tau); οGreen(Navy_name), CM(search)(EE); }
-N(re_alfa     ) { α = ΔRed(1), Red(EE); }
-N(Yellow_3    ) { οRed(Yellow_31, Yellow,       Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
-N(Purple_3    ) { οRed(Purple_31, Green_book,   Yellow), οRed(Red_aradani, α), οRed(re_alfa), CM(Maroon)(EE); }
+
+N(Yellow_3    ) { ι = α, Maroonι(EE); }
+N(Purple_3    ) { ι = α, Maroonι(EE); }
 
 N(cursor      ) { τ = ΔGreen(1),
                   α = ΔGreen(2),

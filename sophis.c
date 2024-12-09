@@ -74,7 +74,7 @@ int main() {
   long **ω = α;
   long τ;
   long σ = τ = 512;
-  long ρ = 3;
+  long ρ = 2;
   long δ = 1;
   long ν = 1;
   programS(OS);
