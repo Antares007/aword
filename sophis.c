@@ -1,4 +1,4 @@
-// clang-format off
+  // clang-format off
 #include "sophis.h"
 #include "colours_fly.h"
 
@@ -78,4 +78,5 @@ int main() {
   long δ = 1;
   long ν = 1;
   programS(OS);
+  return 0;
 }

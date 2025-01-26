@@ -1,6 +1,6 @@
 #pragma once
 
-#define FIRSTR(a, ...) #a
+#define FIRSTR(a, ...) ((void*)(#a))
 #define VA_ARGS_LENGTH(...) sizeof((long[]){__VA_ARGS__}) / sizeof(long)
 
 #define R(β, ...) (long[]){FIRSTR(__VA_ARGS__), VA_ARGS_LENGTH(__VA_ARGS__), β, __VA_ARGS__} + 3
