@@ -217,6 +217,7 @@ static void ti_debug(long *ο, long **β, long **α, long τ, long σ, long ρ,
 }
 void ti_init(void) {
   SetTraceLogLevel(LOG_ERROR);
+  SetConfigFlags(FLAG_WINDOW_RESIZABLE); 
   InitWindow(0, 0, "Sophisticated text index");
   SetWindowSize(GetScreenWidth(), GetScreenHeight());
   SetWindowPosition(0, 0);
