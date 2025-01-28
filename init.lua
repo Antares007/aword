@@ -96,9 +96,22 @@ require('packer').startup(function(use)
   }
   use 'norcalli/nvim-colorizer.lua' -- Colorizer for color codes highlighting
   use 'neovim/nvim-lspconfig'       -- LSP configuration
-  use 'altercation/vim-colors-solarized' -- Solarized color scheme
+  use {
+      'maxmx03/solarized.nvim',
+      config = function()
+        vim.o.background = 'dark'
+        ---@type solarized
+        local solarized = require('solarized')
+        vim.o.termguicolors = true
+        vim.o.background = 'dark'
+        solarized.setup()
+        vim.cmd.colorscheme 'solarized'
+      end
+  }
   use 'sbdchd/neoformat'            -- Code formatter
   use 'tpope/vim-fugitive'          -- Git integration
+  use 'nvim-lualine/lualine.nvim'
+  use 'tpope/vim-fugitive'
 
   if packer_bootstrap then
     require('packer').sync()
@@ -132,10 +145,11 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gd', vim.lsp.buf.implementation, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
 end
-
--- Enable Syntax Highlighting and Set Color Scheme
-vim.cmd("syntax enable")
-vim.opt.background = "dark"
-vim.cmd("colorscheme solarized")
-
+require('lualine').setup {
+  options = {
+    -- ... your lualine config
+    theme = 'solarized'
+    -- ... your lualine config
+  }
+}
 
