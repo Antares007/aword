@@ -1,5 +1,9 @@
 #!/bin/bash
 gcc tun.c
+ext=$?
+if [[ $ext -ne 0 ]]; then
+  exit $ext
+fi
 sudo setcap cap_net_admin=eip ./a.out
 ./a.out &
 pid=$!
