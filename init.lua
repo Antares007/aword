@@ -130,21 +130,22 @@ require('nvim-treesitter.configs').setup {
 require('colorizer').setup({ '*' }, { mode = 'foreground' })
 
 -- LSP Configuration with Clangd
-local lspconfig = require('lspconfig')
-lspconfig.clangd.setup {
-  cmd = { "clangd" },            -- Ensure clangd is installed and in PATH
-  filetypes = { "c", "cpp" },
-  root_dir = lspconfig.util.root_pattern(".git", "compile_commands.json", "build"),
-}
-
 -- Keybindings for LSP
 local on_attach = function(client, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  vim.keymap.set('n', 'gD', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'gd', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.implementation, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
 end
+local lspconfig = require('lspconfig')
+lspconfig.clangd.setup {
+  cmd = { "clangd", "--background-index" },
+  filetypes = { "c", "cpp" },
+  root_dir = lspconfig.util.root_pattern(".git", "compile_commands.json", "build"),
+  on_attach = on_attach, 
+}
+
 require('lualine').setup {
   options = {
     -- ... your lualine config
