@@ -71,6 +71,9 @@ local function gen_asm_and_view_it(cc, cflags)
     "\\.Lfunc_end",
     "\\.LFB\\d\\d*:",
     "\\.LFE\\d\\d*:",
+	  "\\.def",
+	  "\\.scl",
+	  "\\.endef",
     "#" }
   local buf = vim.api.nvim_get_current_buf()
   for i, s in ipairs(strs) do
