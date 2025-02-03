@@ -13,10 +13,20 @@ vim.opt.signcolumn = "yes:1"
 -- Set Leader Key
 vim.g.mapleader = " " -- Set the leader key to space
 
+if vim.g.neovide then
+  vim.g.neovide_scale_factor = vim.g.neovide_scale_factor or 1.0
+  vim.keymap.set("n", "<C-=>", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.01
+  end, { silent = true })
+  vim.keymap.set("n", "<C-->", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.01
+  end, { silent = true })
+end
+
 -- Keybindings
 -- Close the current buffer with <Leader>q
 vim.keymap.set('n', '<Leader>q', ':bd!<CR>', { noremap = true, silent = true })
-local RunCurrentBuffer = function()
+local run_current_buffer = function()
   local filename = vim.fn.expand("%:t")  -- Get the current file name (e.g., "name.c")
   local extension = vim.fn.expand("%:e") -- Get the file extension (e.g., "c")
   local basename = vim.fn.expand("%:r")  -- Get the file name without extension (e.g., "name")
@@ -36,16 +46,35 @@ local RunCurrentBuffer = function()
   elseif extension == "js" then
     -- Run the JavaScript file with Node.js
     vim.cmd("w|vsplit term://node " .. filename)
+  elseif extension == "lua" then
+    -- Run the JavaScript file with Node.js
+    vim.cmd("w|vsplit term://lua " .. filename)
   else
     print("Unsupported file type: " .. extension)
   end
 end
-vim.keymap.set("n", "<Leader>c", RunCurrentBuffer, { noremap = true, silent = true })
+vim.keymap.set("n", "<Leader>c", run_current_buffer, { noremap = true, silent = true })
 
 -- Keybinding for Generate assembly and view it
+local prefixes_of_lines_to_remove = {
+  "\\.addrsig",
+  "\\.addrsig_sym",
+  "\\.cfi_",
+  "\\.file",
+  "\\.globl",
+  "\\.p2align",
+  "\\.section",
+  "\\.size",
+  "\\.text",
+  "\\.type",
+  "\\.Lfunc_end",
+  "\\.LFB\\d\\d*:",
+  "\\.LFE\\d\\d*:",
+  "#"
+}
 local function gen_asm_and_view_it(cc, cflags)
   local ifname = vim.fn.expand("%")             -- Current file name
-  local ofname = vim.fn.expand("%:r") .. ".asm" -- Output file name
+  local ofname = vim.fn.tempname() .. ".asm" -- Output file name
   local name = vim.fn.expand("<cword>")         -- Word under cursor
   vim.cmd("w")                                  -- Save current file
   local compile_command = cc .. " -S -masm=intel " ..
@@ -56,35 +85,22 @@ local function gen_asm_and_view_it(cc, cflags)
       " -DNDEBUG " ..
       cflags ..
       " -o " .. vim.fn.shellescape(ofname)
-  os.execute(compile_command)
-  vim.cmd("vsplit " .. ofname) -- Open assembly file in a vertical split
-  local strs = { "\\.addrsig",
-    "\\.addrsig_sym",
-    "\\.cfi_",
-    "\\.file",
-    "\\.globl",
-    "\\.p2align",
-    "\\.section",
-    "\\.size",
-    "\\.text",
-    "\\.type",
-    "\\.Lfunc_end",
-    "\\.LFB\\d\\d*:",
-    "\\.LFE\\d\\d*:",
-	  "\\.def",
-	  "\\.scl",
-	  "\\.endef",
-    "#" }
-  local buf = vim.api.nvim_get_current_buf()
-  for i, s in ipairs(strs) do
-    vim.cmd("%s/^\\s*" .. s .. ".*\\n//ge") -- Remove matched lines
+  local rez = vim.fn.system(compile_command)
+  local exit_code = vim.v.shell_error
+  if exit_code ~= 0 then
+    vim.notify(rez, vim.log.levels.INFO)
+  else
+    vim.cmd("vsplit " .. ofname) -- Open assembly file in a vertical split
+    for _, s in ipairs(prefixes_of_lines_to_remove) do
+      vim.cmd("%s/^\\s*" .. s .. ".*\\n//ge") -- Remove matched lines
+    end
+    vim.cmd("w")                              -- Save cleaned assembly file
+    vim.cmd("normal gg0")                     -- Move to the beginning of the file
+    local _, _ = pcall(function()
+      vim.cmd("/" .. name .. ":")             -- Search for the word in the file
+    end)
+    vim.cmd("normal zt")                      -- Center the match in the window
   end
-  vim.cmd("w")                              -- Save cleaned assembly file
-  vim.cmd("normal gg0")                     -- Move to the beginning of the file
-  local success, err = pcall(function()
-    vim.cmd("/" .. name .. ":")             -- Search for the word in the file
-  end)
-  vim.cmd("normal zt")                      -- Center the match in the window
 end
 vim.keymap.set('n', '<leader>3', function() gen_asm_and_view_it("clang", "-O3") end, { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>2', function() gen_asm_and_view_it("clang", "-O2") end, { noremap = true, silent = true })
@@ -161,47 +177,7 @@ require('colorizer').setup({ '*' }, { mode = 'foreground' })
 
 -- LSP Configuration with Clangd
 -- Keybindings for LSP
--- Define the LSP actions menu
-local lsp_actions = {
-  "document_highlight",
-  "document_symbol",
-  "rename",
-  "definition",
-  "references",
-  "incoming_calls",
-  "outgoing_calls",
-  "hover",
-  "completion",
-  "implementation",
-  "signature_help",
-  "execute_command",
-  "code_action",
-  "clear_references",
-  "workspace_symbol",
-  "typehierarchy",
-  "list_workspace_folders",
-  "add_workspace_folder",
-  "declaration",
-  "type_definition",
-  "format",
-  "remove_workspace_folder"
-}
--- Function to show the LSP actions menu
-function ShowLspMenu()
-  vim.ui.select(lsp_actions, {
-    prompt = "Select LSP Action:",
-    format_item = function(item)
-      return item:gsub("_", " "):gsub("^%l", string.upper)       -- Format menu items (e.g., "code_action" -> "Code action")
-    end,
-  }, function(choice)
-    if choice then
-      -- Execute the corresponding vim.lsp.buf function
-      vim.lsp.buf[choice]()
-    else
-      print("No action selected")
-    end
-  end)
-end
+
 
 local on_attach = function(client, bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -209,6 +185,26 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
   vim.keymap.set('n', 'gD', vim.lsp.buf.implementation, bufopts)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  local lsp_actions = {}
+  for key in pairs(vim.lsp.buf) do
+    table.insert(lsp_actions, key)
+  end
+  table.sort(lsp_actions)
+  local ShowLspMenu = function()
+    vim.ui.select(lsp_actions, {
+      prompt = "Select LSP Action:",
+      format_item = function(item)
+        return item:gsub("_", " "):gsub("^%l", string.upper) -- Format menu items (e.g., "code_action" -> "Code action")
+      end,
+    }, function(choice)
+      if choice then
+        -- Execute the corresponding vim.lsp.buf function
+        vim.lsp.buf[choice]()
+      else
+        print("No action selected")
+      end
+    end)
+  end
   vim.keymap.set("n", "<Leader>l", ShowLspMenu, bufopts)
 end
 local lspconfig = require('lspconfig')
@@ -238,7 +234,6 @@ lspconfig.lua_ls.setup({
   },
   on_attach = on_attach,
 })
-
 require('lualine').setup {
   options = {
     -- ... your lualine config
@@ -246,3 +241,9 @@ require('lualine').setup {
     -- ... your lualine config
   }
 }
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "SignColumn", { link = "Normal" })
+  end,
+})
