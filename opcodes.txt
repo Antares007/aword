@@ -1,0 +1,4 @@
+beginning
+input ab nb sss j s
+tword int
+name int
