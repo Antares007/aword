@@ -68,7 +68,7 @@ N(dodo3) {P, *--ρ = Red_s, Red_r, Red_s(Go); }
 N(dodo4) {P, o_Red, *ο++ = b_Red, b_Red(Go); }
 
 N(capstone) { P; }
-
+#define WriteBytes(buf, ...) do { unsigned char*o = buf; __VA_ARGS__} while(0)
 int main() {
   void**ο = orgn, **β, **α, **τ=ο, **σ, **ρ = ο, **δ;
 
@@ -90,5 +90,28 @@ int main() {
     o_Blue,   *ο++ = Maroon_d, *--ρ = b_Blue,    Green_r,
     o_Yellow, *ο++ = Green_s,  *--ρ = b_Yellow,    Red_r;
 
+  
   Red_s(Go);
+}
+#define XNAMES\
+  X(HALT) X(BEGINNING) X(END) X(TAB) X(NAME) X(TWORD) X(AWORD) X(PRINT) X(DOT) X(NL)
+
+#define X(name) o##name,
+typedef enum { XNAMES } Names;
+#undef X
+
+//#define X(name) n##name,
+//N((*nars[])) = {XNAMES};
+//#undef X
+
+N(grammer) {
+  *ο++ = oBEGINNING, *ο++ = oTWORD, *ο++ = 's', *ο++ = oPRINT,  *ο++ = oEND,  *ο++ = oNL,
+  *ο++ = oNAME,      *ο++ = 's',    *ο++ = oNL,
+  *ο++ = oTAB,       *ο++ = oAWORD, *ο++ = 'b', *ο++ = oDOT,    *ο++ = oNL,
+  *ο++ = oTAB,       *ο++ = oTWORD, *ο++ = 's', *ο++ = oAWORD,  *ο++ = 's',   *ο++ = oDOT, *ο++ = oNL,
+  *ο++ = oTAB,       *ο++ = oTWORD, *ο++ = 's', *ο++ = oAWORD,  *ο++ = 't',   *ο++ = oDOT, *ο++ = oAWORD, *ο++ = 'o', *ο++ = oDOT, *ο++ = oNL,
+  *ο++ = 0;
+
+//  nars[*t](o, 0, 0, t + 1, s, 0);
+
 }
